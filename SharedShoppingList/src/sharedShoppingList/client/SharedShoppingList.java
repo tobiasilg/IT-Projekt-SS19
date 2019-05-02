@@ -50,6 +50,7 @@ public class SharedShoppingList implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("nameFieldContainer").add(label);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
