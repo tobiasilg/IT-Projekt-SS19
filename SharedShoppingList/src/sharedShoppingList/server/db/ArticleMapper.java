@@ -1,7 +1,13 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+
+import sharedShoppingList.shared.bo.Article;
 
 
 /**
@@ -45,7 +51,31 @@ public class ArticleMapper {
 	 */
 	
 	public Article findByID(int id) {
+		Connection con = DBConnection.connection();
 		
+		String sql="select * from article where id=" + id
+				;
+		try {
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("name"));
+				article.setCreateDate(rs.getTimestamp("Creationdate"));
+				article.setUnit(rs.getString("unit"));
+			
+				return article;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 	
 	/*
@@ -64,13 +94,25 @@ public class ArticleMapper {
 		
 	}
 	
+	/*
+	 * Methode zum Löschen eines Artikels aus der Datenbank
+	 */
+	
 	public void delete (Article article) {
 		
 	}
 	
+	/*
+	 * Methode um einen neuen Artikel der Datenbank hinzuzufügen
+	 */
+	
 	public void insert (Article article) {
 		
 	}
+	
+	/*
+	 * Methode um einen bestehen Artikel in der Datenbank abzuändern
+	 */
 	public void update (Article article) {
 		
 	}

@@ -37,8 +37,10 @@ public class SharedShoppingList implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send");
+		final Button sendButton = new Button("Hallo IT");
 		final TextBox nameField = new TextBox();
+		final Label label = new Label("HALLO");
+
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
 
@@ -50,6 +52,7 @@ public class SharedShoppingList implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("nameFieldContainer").add(label);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
