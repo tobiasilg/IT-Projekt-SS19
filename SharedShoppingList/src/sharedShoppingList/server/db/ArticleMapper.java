@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 
 
 import sharedShoppingList.shared.bo.Article;
@@ -47,14 +48,13 @@ public class ArticleMapper {
 	
 	/*
 	 * Methode zur Findung eines Artikels anhand der ID
-	 * Artikel BO ist noch nicht angelegt
+	 * 
 	 */
 	
 	public Article findByID(int id) {
 		Connection con = DBConnection.connection();
 		
-		String sql="select * from article where id=" + id
-				;
+		String sql="select * from article where id=" + id;
 		try {
 
 			Statement stmt = con.createStatement();
@@ -65,8 +65,9 @@ public class ArticleMapper {
 				Article article = new Article();
 				article.setId(rs.getInt("id"));
 				article.setName(rs.getString("name"));
-				article.setCreateDate(rs.getTimestamp("Creationdate"));
+				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setUnit(rs.getString("unit"));
+				article.setFavourite(rs.getBoolean("favourite"));
 			
 				return article;
 			}
@@ -83,7 +84,30 @@ public class ArticleMapper {
 	 * @return: ArrayList mit allen Artikeln wird zurückgegeben
 	 */
 	
-	public ArrayList<Article>findAllArticles(){
+	public Vector<Article>findAllArticles(){
+		Connection con = DBConnection.connection();
+		String sql = "select * from article order by name";
+		
+		Vector<Article> result= new Vector<Article>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("name"));
+				article.setCreateDate(rs.getTimestamp("createDate"));
+				article.setUnit(rs.getString("unit"));
+				article.setFavourite(rs.getBoolean("favourite"));
+				
+				result.addElement(article);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
+		
 		
 	}
 	/*
@@ -98,7 +122,20 @@ public class ArticleMapper {
 	 * Methode zum Löschen eines Artikels aus der Datenbank
 	 */
 	
-	public void delete (Article article) {
+	public void delete (int id) {
+	Connection con = DBConnection.connection();
+		
+		String sql= "delete from article where id=" + id +")";
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 		
 	}
 	
@@ -107,15 +144,22 @@ public class ArticleMapper {
 	 */
 	
 	public void insert (Article article) {
+		Connection con = DBConnection.connection();
 		
+		String sql= "insert into article values ("+article.getId() + "," + article.getName()+ "," +article.getUnit() + "," + article.getCreateDate()+ "," + article.isFavourite()+ ")";
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
-	/*
-	 * Methode um einen bestehen Artikel in der Datenbank abzuändern
-	 */
-	public void update (Article article) {
-		
-	}
+
 
 
 

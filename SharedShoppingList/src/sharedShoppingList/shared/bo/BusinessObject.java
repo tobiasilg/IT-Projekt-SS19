@@ -4,7 +4,12 @@ import java.sql.Timestamp;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-
+/*
+ * Die Klasse BusinessObject definiert alle gemeinsamen Attribute in Form einer Superklasse.
+ * Klassen wie Article, User, etc. können von dieser Klasse erben. Somit unnötiger Programmieraufwand verhindert.
+ * 
+ * @author Nico Weiler
+ */
 public abstract class BusinessObject implements IsSerializable {
 	
 	private int id;

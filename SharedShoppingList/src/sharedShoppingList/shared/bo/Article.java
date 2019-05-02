@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 public class Article extends BusinessObject{
 	
 	private String unit;
+	private boolean favourite;
 	
 	public Article() {
 		super();	
@@ -28,6 +29,15 @@ public class Article extends BusinessObject{
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
+
+	public boolean isFavourite() {
+		return favourite;
+	}
+
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite;
+	}
+	
 	
 	
 
