@@ -14,7 +14,7 @@ import sharedShoppingList.shared.bo.Article;
 /**
  * Mapper Klasse für </code>Article</code> Objekte.
  * Diese umfasst  Methoden um ArticleMapper Objekte zu erstellen, zu suchen, zu  ändern und zu löschen.
- * Das Mapping funktioniert dabei bidirektional. Es können Objekte in DB-Strukturen und DB-Stukturen in Objekte umgewandelt werden.
+ * Das Mapping funktioniert dabei bidirektional.. Es können Objekte in DB-Strukturen und DB-Stukturen in Objekte umgewandelt werden.
  * 
  * @author Nico Weiler
  */
