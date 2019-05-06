@@ -24,6 +24,58 @@ public class ListEntry extends BusinessObject {
 	 */
 	private double amount;
 
+	/*
+	 * Fremdschlüssel-Beziehungen
+	 */
+	
+	private int articleId;
+	private int storeId;
+	private int userId;
+	private int shoppinglistId;
+	
+	
+	
+	
+	public int getShoppinglistId() {
+		return shoppinglistId;
+	}
+
+	public void setShoppinglistId(int shoppinglistId) {
+		this.shoppinglistId = shoppinglistId;
+	}
+
+	public int getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	
+	public double getAmount() {
+		return amount;
+	}
+
 	public boolean isChecked() {
 		return checked;
 	}
@@ -32,13 +84,6 @@ public class ListEntry extends BusinessObject {
 		this.checked = checked;
 	}
 
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
 	
 	
 
