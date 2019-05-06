@@ -1,3 +1,4 @@
+
 package sharedShoppingList.client.gui;
 
 import com.google.gwt.user.client.ui.Button;
@@ -23,3 +24,4 @@ public class GroupForm extends VerticalPanel{
 	
 	Button addGroupButton = new Button("Gruppe mit genannten Usern anlegen");
 }
+
