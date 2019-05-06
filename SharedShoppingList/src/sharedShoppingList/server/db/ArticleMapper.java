@@ -9,6 +9,7 @@ import java.util.Vector;
 
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.ShoppingList;
 
 
 /**
@@ -66,6 +67,7 @@ public class ArticleMapper {
 				article.setId(rs.getInt("id"));
 				article.setName(rs.getString("name"));
 				article.setCreateDate(rs.getTimestamp("createDate"));
+				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
 				article.setFavourite(rs.getBoolean("favourite"));
 			
@@ -98,6 +100,7 @@ public class ArticleMapper {
 				article.setId(rs.getInt("id"));
 				article.setName(rs.getString("name"));
 				article.setCreateDate(rs.getTimestamp("createDate"));
+				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
 				article.setFavourite(rs.getBoolean("favourite"));
 				
@@ -114,8 +117,30 @@ public class ArticleMapper {
 	 * Methode zur Auflistung aller Artikel einer Einkaufsliste
 	 */
 	
-	public ArrayList<Article> findAllByCurrentUser(User user){
+	public Vector<Article> findAllByCurrentUser(User user){
+		Connection con = DBConnection.connection();
+		String sql = "select * from article where id=" + user.getId;
 		
+		Vector<Article> result= new Vector<Article>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("name"));
+				article.setCreateDate(rs.getTimestamp("createDate"));
+				article.setModDate(rs.getTimestamp("modDate"));
+				article.setUnit(rs.getString("unit"));
+				article.setFavourite(rs.getBoolean("favourite"));
+				
+				result.addElement(article);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
 	}
 	
 	/*
@@ -146,7 +171,7 @@ public class ArticleMapper {
 	public void insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article values ("+article.getId() + "," + article.getName()+ "," +article.getUnit() + "," + article.getCreateDate()+ "," + article.isFavourite()+ ")";
+		String sql= "insert into article values ("+article.getId() + "," + article.getName()+ "," + article.getCreateDate()+ ","+ article.getModDate() +"," +article.getUnit() +","+ article.isFavourite()+ ")";
 		
 	    try {
 	    	
