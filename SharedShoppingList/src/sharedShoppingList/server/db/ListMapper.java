@@ -64,6 +64,8 @@ public class ListMapper {
 				shoppinglist.setId(rs.getInt("id"));
 				shoppinglist.setName(rs.getString("name"));
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
+				shoppinglist.setModDate(rs.getTimestamp("modDate"));
+				shoppinglist.setGroupId(rs.getInt("groupid"));
 				
 			
 				return shoppinglist;
@@ -94,6 +96,8 @@ public class ListMapper {
 				shoppinglist.setId(rs.getInt("id"));
 				shoppinglist.setName(rs.getString("name"));
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
+				shoppinglist.setModDate(rs.getTimestamp("modDate"));
+				shoppinglist.setGroupId(rs.getInt("groupid"));
 				
 				result.addElement(shoppinglist);
 			}
@@ -104,12 +108,12 @@ public class ListMapper {
 		
 	}
 	/*
-	 * Methode zur Auflistung aller Einkaufslisten eines bestimmten Benutzers
+	 * Methode zur Auflistung aller Einkaufslisten einer bestimmten Gruppe
 	 */
 	
-	public Vector<ShoppingList> findAllByCurrentUser(User user){
+	public Vector<ShoppingList> findAllByGroup(Group group){
 		Connection con = DBConnection.connection();
-		String sql = "select * from shoppingList where id=" + user.getId;
+		String sql = "select * from shoppingList where groupid=" + group.getId;
 		
 		Vector<ShoppingList> result= new Vector<ShoppingList>();
 		try {
@@ -121,6 +125,8 @@ public class ListMapper {
 				shoppinglist.setId(rs.getInt("id"));
 				shoppinglist.setName(rs.getString("name"));
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
+				shoppinglist.setModDate(rs.getTimestamp("modDate"));
+				shoppinglist.setGroupId(rs.getInt("groupid"));
 				
 				result.addElement(shoppinglist);
 			}
@@ -158,7 +164,7 @@ public class ListMapper {
 	public void insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into shoppingList values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ "," + shoppinglist.getCreateDate()+ ")";
+		String sql= "insert into shoppingList (id, name, createDate, modDate, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ "," + shoppinglist.getCreateDate()+ ","+ shoppinglist.getModDate()+","+shoppinglist.getGroupId()+ ")";
 		
 	    try {
 	    	

@@ -15,6 +15,7 @@ public abstract class BusinessObject implements IsSerializable {
 	private int id;
 	private String name;
 	private Timestamp createDate;
+	private Timestamp modDate;
 	
 	public int getId() {
 		return id;
@@ -35,7 +36,16 @@ public abstract class BusinessObject implements IsSerializable {
 		this.createDate = createDate;
 	}
 	
-	 public boolean equals(Object obj) {
+	
+	
+	 public Timestamp getModDate() {
+		return modDate;
+	}
+	public void setModDate(Timestamp modDate) {
+		this.modDate = modDate;
+	}
+	
+	public boolean equals(Object obj) {
 	    	if (obj != null && obj instanceof BusinessObject) {
 				BusinessObject bo = (BusinessObject) obj;
 				
