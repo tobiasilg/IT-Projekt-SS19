@@ -40,11 +40,11 @@ public class SharedShoppingList implements EntryPoint {
 		
 		final Button groupButton = new Button("Gruppe anlegen");
 		final Button articleButton = new Button("Artikel anlegen"); 
-		final Button storeButten = new Button("Händler anlegen");
+		final Button storeButton = new Button("Händler anlegen");
 		
 		buttonPanel.add(groupButton);
 		buttonPanel.add(articleButton);
-		buttonPanel.add(storeButten);
+		buttonPanel.add(storeButton);
 		
 		VerticalPanel navigationsPanel = new VerticalPanel();
 		
