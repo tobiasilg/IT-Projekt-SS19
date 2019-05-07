@@ -87,7 +87,7 @@ public class ListEntryMapper {
 		 * @return: Vector mit allen Einträgen wird zurückgegeben
 		 */
 		
-		public Vector<ListEntry>findAllArticles(){
+		public Vector<ListEntry>findAllListEntries(){
 			Connection con = DBConnection.connection();
 			String sql = "select * from article order by name";
 			
