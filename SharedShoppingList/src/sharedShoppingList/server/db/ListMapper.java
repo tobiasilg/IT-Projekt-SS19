@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ShoppingList;
 
 /**
@@ -113,7 +114,7 @@ public class ListMapper {
 	
 	public Vector<ShoppingList> findAllByGroup(Group group){
 		Connection con = DBConnection.connection();
-		String sql = "select * from shoppingList where groupid=" + group.getId;
+		String sql = "select * from shoppingList where groupid=" + group.getId();
 		
 		Vector<ShoppingList> result= new Vector<ShoppingList>();
 		try {

@@ -42,6 +42,20 @@ public class Group extends BusinessObject{
 	public void setGroupId(int groupId) {
 		this.id = groupId;
 	}
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 
 }

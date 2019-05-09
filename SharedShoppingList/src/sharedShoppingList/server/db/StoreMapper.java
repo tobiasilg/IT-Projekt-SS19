@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
+
 /**
 * Author dieser Klasse:
 * @author Tobias Ilg
@@ -57,7 +60,7 @@ ResultSet rs = stmt.executeQuery("SELECT S_ID, name, createDate, modDate FROM T_
 if (rs.next()){
 
 s.setId(rs.getInt("S_ID"));
-s.setOwnerId(rs.getInt("name"));
+//s.setOwnerId(rs.getInt("name"));
 s.setCreateDate(rs.getTimestamp("createDate"));
 s.setModDate(rs.getTimestamp("modDate"));
 
@@ -91,7 +94,7 @@ ResultSet rs = stmt.executeQuery("SELECT S_ID, name, createDate, modDate FROM T_
 while (rs.next()){
 Store s = new Store();
 s.setId(rs.getInt("S_ID"));
-s.setOwnerId(rs.getInt("name"));
+//s.setOwnerId(rs.getInt("name"));
 s.setCreateDate(rs.getTimestamp("createDate"));
 s.setModDate(rs.getTimestamp("modDate"));
 result.addElement(p);
@@ -120,7 +123,7 @@ ResultSet rs = stmt.executeQuery("SELECT S_ID, name, createDate, modDate FROM T_
 while (rs.next()){
 Store s = new Store();
 s.setId(rs.getInt("S_ID"));
-s.setOwnerId(rs.getInt("name"));
+//s.setOwnerId(rs.getInt("name"));
 s.setCreateDate(rs.getTimestamp("createDate"));
 s.setModDate(rs.getTimestamp("modDate"));
 result.addElement(p);

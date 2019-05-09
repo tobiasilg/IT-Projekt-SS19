@@ -16,7 +16,7 @@ public class DBConnection {
 	 * Die folgende Variable speichert die einzige Instanz dieser Klasse.
 	 * Sie ist nur einmal für sämtliche Instanzen vorhanden.
 	 */
-    private static Connection con = null;
+    private static Connection con = null;  
 
     /**
      * Über die folgende zwei URLs werden die Datenbanken angesprochen.
