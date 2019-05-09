@@ -42,6 +42,19 @@ public class User extends BusinessObject{
 	public void setUserId(int userId) {
 		this.id = userId;
 	}
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	
 
 }

@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.User;
 
 
 /**
@@ -119,7 +120,7 @@ public class ArticleMapper {
 	
 	public Vector<Article> findAllByCurrentUser(User user){
 		Connection con = DBConnection.connection();
-		String sql = "select * from article where id=" + user.getId;
+		String sql = "select * from article where id=" + user.getId();
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
