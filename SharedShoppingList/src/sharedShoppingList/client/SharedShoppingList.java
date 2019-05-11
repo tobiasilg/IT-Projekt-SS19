@@ -29,34 +29,9 @@ public class SharedShoppingList implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		
-		/* Das ButtonPanel besteht aus drei Buttons, welche dazu dienen, 
-		 * Gruppe, Artikel und Händler anzulegen.
-		 * Die Buttons sind nebeneinender in einem horizontal Panel angeordnet
-		 */
-		HorizontalPanel buttonPanel = new HorizontalPanel();
-		/*Verweis auf das Selection Div in der HTML page
-		 */
-		RootPanel.get("selection").add(buttonPanel);
+		RootPanel rootPanelHeader = RootPanel.get("header");
 		
-		final Button groupButton = new Button("Gruppe anlegen");
-		final Button articleButton = new Button("Artikel anlegen"); 
-		final Button storeButton = new Button("Händler anlegen");
 		
-		buttonPanel.add(groupButton);
-		buttonPanel.add(articleButton);
-		buttonPanel.add(storeButton);
-		
-		VerticalPanel navigationsPanel = new VerticalPanel();
-		
-		/*Verweis auf das Navigations Div in der HTML page
-		 */
-		RootPanel.get("Navigation").add(navigationsPanel);
-		
-		/*HIER MÜSSEN WIR EINE LÖSUNG FINDEN
-		 */
-		final Button listButton = new Button("EK anlegen");
-		
-		navigationsPanel.add(listButton);
 
 	}
 }

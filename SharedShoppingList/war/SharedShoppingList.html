@@ -30,7 +30,7 @@
 <!-- you can leave the body empty if you want  -->
 <!-- to create a completely dynamic UI.        -->
 <!--                                           -->
-<body>
+<body style="border: 0px none !important; margin: 0; padding: 0;">
 
 	<!-- OPTIONAL: include this if you want history support -->
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
@@ -44,22 +44,14 @@
 			application to display correctly.</div>
 	</noscript>
 
+       <div id="header"></div>
 
-
-		<div id="Header">
-			<h1>Buy it - Share it</h1>
-		</div>
-
-		<div id="selection"></div>
-		<!-- Anordnung der Buttons -->
-
-		<div class="wrapper"></div>
-		<div id="Navigation" class="Navigation"></div>
-		<!-- linke Seite -->
-		<div id="Information" class="Information"></div>
-		<!-- rechte Seite -->
-		<div id="Trailer">IT-Projekt 2019</div>
-
-
-</body>
+      <div id="wrapper">
+          <div id="zweispaltig">
+              <div id="navigator">Nav</div>
+              <div id="Inhalt">Inhalt</div>
+          </div>
+          <div id="footer">Fußzeile</div>
+      </div>
+  </body>
 </html>
