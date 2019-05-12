@@ -2,43 +2,45 @@ package sharedShoppingList.client.gui;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+
+import sharedShoppingList.shared.EinkaufslistenVerwaltungAsync;
 
 public class Header extends FlowPanel {
 	
-	/*
-	 * Erstellung der Header Panels 
-	 */
+	EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
+	
+	// Erstellung der Header Divs
 	private FlowPanel headerLeft = new FlowPanel();
-	private FlowPanel headerRight = new FlowPanel();
+	private FlowPanel headerRight = new FlowPanel(); 
+	private FlowPanel logoutIcon = new FlowPanel();
 	
-	/*
-	 * Erstellung der Header Divs
-	 */
-	private FlowPanel titleDiv = new FlowPanel();
+	// Erstellung der Button und Label Divs
+	private FlowPanel title = new FlowPanel();
+	private FlowPanel article = new FlowPanel(); 
+	private FlowPanel store = new FlowPanel(); 
 	
-	private FlowPanel articleDiv = new FlowPanel();
-	private FlowPanel storeDiv = new FlowPanel();
-	private FlowPanel profileDiv = new FlowPanel();
-	
-	/*
-	 * Erstellung der Buttons im Header 
-	 */
-	private Label title = new Label("KEKBUY");
+	// Erstellung der Buttons und Label 
+	private Label titleLabel = new Label("KEKWAY");
 	private Button articleButton = new Button("Artikel");
 	private Button storeButton = new Button("Store");
 	
+	//Erstellen des Logout Icons
+	Image logout = new Image();
+	
+	
+	public Header() {
+		//super();
+	}
+	
+	/*
+	 * Die Methode onLoad wird beim Aufrufen der Header Klasse aufgurufen und ausgeführt
+	 * In dieser Klasse erfolgt die Zuordnung der Widgets
+	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
+	 */
 	public void onLoad() {
-		
-	titleDiv.add(title);
-	storeDiv.add(storeButton);
-	articleDiv.add(articleButton);
-	
-	headerLeft.add(titleDiv);
-	headerRight.add(articleButton);
-	headerRight.add(storeButton);
-	
-		
+
 	}
 	
 	
