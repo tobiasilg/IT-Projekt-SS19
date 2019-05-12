@@ -8,8 +8,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import sharedShoppingList.shared.CommonSettings;
 import sharedShoppingList.shared.EinkaufslistenVerwaltungAsync;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
-import sharedShoppingList.shared.ReportGenerator;
-import sharedShoppingList.shared.ReportGeneratorAsync;
+import sharedShoppingList.shared.ReportClient;
+import sharedShoppingList.shared.ReportClientAsync;
 
 /*
  * Klasse mit allen Eigenschaften und Diensten, welche für alle 
@@ -28,7 +28,7 @@ public class ClientsideSettings extends CommonSettings {
 	 * Remote Service Proxy zur Verbindungsaufnahme mit dem Server-Seitgen Dienst
 	 */
 
-	private static ReportGeneratorAsync reportGenerator = null;
+	private static ReportClientAsync reportClient = null;
 
 	/**
 	 * Name des Client-seitigen Loggers.
@@ -67,13 +67,13 @@ public class ClientsideSettings extends CommonSettings {
 	/**
 	 * Anlegen und Auslesen des ReportGenerators
 	 */
-	public static ReportGeneratorAsync getReportGenerator() {
+	public static ReportClientAsync getReportGenerator() {
 		// Gab es bislang noch keine ReportGenerator-Instanz, dann...
-		if (reportGenerator == null) {
+		if (reportClient == null) {
 			// Zunächst instantiieren wir ReportGenerator
-			reportGenerator = (ReportGeneratorAsync) GWT.create(ReportGenerator.class);
+			reportClient = (ReportClientAsync) GWT.create(ReportClient.class);
 
-			final AsyncCallback<Void> initReportGeneratorCallback = new AsyncCallback<Void>() {
+			final AsyncCallback<Void> initReportClientCallback = new AsyncCallback<Void>() {
 				@Override
 				public void onFailure(Throwable caught) {
 					ClientsideSettings.getLogger().severe("Der ReportGenerator konnte nicht initialisiert werden!");
@@ -85,10 +85,10 @@ public class ClientsideSettings extends CommonSettings {
 				}
 			};
 
-			reportGenerator.init(initReportGeneratorCallback);
+			reportClient.init(initReportClientCallback);
 		}
 
 		// So, nun brauchen wir den ReportGenerator nur noch zurückzugeben.
-		return reportGenerator;
+		return reportClient;
 	}
 }
