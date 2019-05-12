@@ -177,5 +177,27 @@ public class ListMapper {
 	      e2.printStackTrace();
 	    }
 	}
+	
+	/*
+	 * Methode um eine Einkaufsliste zu editieren
+	 */
+	
+	public ShoppingList update(ShoppingList shoppinglist) {
+		Connection con = DBConnection.connection();
+		String sql="UPDATE shoppinglist " + "SET name=\"" + shoppinglist.getName() + "\", " + "WHERE id=" + shoppinglist.getId();
+
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return shoppinglist;
+	}
 
 }
