@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 
-public class Paragraph implements Serializable {
+public abstract class Paragraph implements Serializable {
 	
 	 private static final long serialVersionUID = 1L;
 

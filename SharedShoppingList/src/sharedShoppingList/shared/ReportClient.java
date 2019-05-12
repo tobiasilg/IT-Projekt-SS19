@@ -3,6 +3,11 @@ package sharedShoppingList.shared;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
+import sharedShoppingList.shared.report.AllArticles;
+import sharedShoppingList.shared.report.AllArticlesByPeriod;
+import sharedShoppingList.shared.report.AllArticlesByStore;
 
 
 /**
@@ -35,5 +40,46 @@ public interface ReportClient extends RemoteService {
 	   * @throws IllegalArgumentException
 	   */
 	  public void setArticle(Article a) throws IllegalArgumentException;
+	  
+	  /**
+	   * Erstellen eines <code>AllArticles</code>-Reports. Dieser
+	   * Report-Typ stellt alle Artikel eines Einkäufers dar.
+	   * 
+	   * @param user eine Referenz auf das UserObject bzgl. dessen der Report
+	   *          erstellt werden soll.
+	   * @return das fertige Reportobjekt
+	   * @throws IllegalArgumentException
+	   * @see AllArticle
+	   */
+	  public abstract AllArticles createAllArticlesByUserReport(User user) 
+			  throws IllegalArgumentException;
+	  
+	  /**
+	   * Erstellen eines <code>AllArticlesByStore</code>-Reports. Dieser
+	   * Report-Typ stellt alle eingekauften Artikel eines bestimmten Händlers dar.
+	   * 
+	   * @param store eine Referenz auf das StoreObject bzgl. dessen der Report
+	   *          erstellt werden soll.
+	   * @return das fertige Reportobjekt
+	   * @throws IllegalArgumentException
+	   * @see AllArticleByStore
+	   */
+	  
+	  public abstract AllArticlesByStore createAllArticlesByStoreReport(Store store) 
+			  throws IllegalArgumentException;
+	  
+	  /**
+	   * Erstellen eines <code>AllArticlesByPeriod</code>-Reports. Dieser
+	   * Report-Typ stellt alle eingekauften Artikel eines bestimmten Zeitraumes dar.
+	   * 
+	   * @param article eine Referenz auf das ArticleObject bzgl. dessen der Report
+	   *          erstellt werden soll.
+	   * @return das fertige Reportobjekt
+	   * @throws IllegalArgumentException
+	   * @see AllArticle
+	   */
+	  
+	  public abstract AllArticlesByPeriod createAllArticlesByPeriodReport(Article article) 
+			  throws IllegalArgumentException;
 
 }
