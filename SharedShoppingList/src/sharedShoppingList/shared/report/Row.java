@@ -4,6 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
+/**
+ * Diese Klasse ist die Zeile einer Tabelle von einem <code>SimpleReport</code>-Objekt.
+ * Dabei implementieren die <code>Row</code>-Objekte das <code>Serializable<code/>-Interface.
+ * Dadurch können diese als Kopie z.B. vom Server an den Client übertragen werden.
+ * 
+ * @see SimpleReport
+ * @see Column
+ * @author Nico Weiler
+ * @version 1.0
+ */
+
 public class Row implements Serializable {
 	
 private static final long serialVersionUID = 1L;
