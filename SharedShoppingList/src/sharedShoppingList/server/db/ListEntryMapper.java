@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.User;
 
 /**
  * Mapper Klasse für </code>ListEntry</code> Objekte.
@@ -124,7 +125,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry> findAllByCurrentUser(User user){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listEntry where userid=" + user.getId;
+			String sql = "select * from listEntry where userid=" + user.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
