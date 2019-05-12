@@ -4,12 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Vector;
 
-
 import sharedShoppingList.shared.bo.Article;
-import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
 
 
@@ -183,6 +180,29 @@ public class ArticleMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+	}
+	
+	/*
+	 * Methode um einen Artikel zu editieren
+	 */
+	
+	public Article update(Article article) {
+		Connection con = DBConnection.connection();
+		String sql="UPDATE article " + "SET name=\"" + article.getName() + "\", " + "unit=\""
+				+ article.getUnit() + "\" " + "WHERE id=" + article.getId();
+
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return article;
 	}
 	
 

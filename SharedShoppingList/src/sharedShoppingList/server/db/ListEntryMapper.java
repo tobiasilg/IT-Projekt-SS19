@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
@@ -192,6 +192,29 @@ public class ListEntryMapper {
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
+		}
+		
+		/*
+		 * Methode um einen Listeneintrag zu editieren
+		 */
+		
+		public ListEntry update(ListEntry listentry) {
+			Connection con = DBConnection.connection();
+			String sql="UPDATE article " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
+					+ listentry.getAmount() + "\" " + "WHERE id=" + listentry.getId();
+
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+
+				
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			
+			return listentry;
 		}
 }
 
