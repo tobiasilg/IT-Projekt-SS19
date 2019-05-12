@@ -16,32 +16,4 @@ public class Store extends BusinessObject{
 		super();	
 	}
 
-
-
-	public Store getStore() {
-		return store;
-	}
-    
-	public void deleteStore() {
-		return null;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String storeName) {
-		this.name = storeName;
-	}
-
-    public int getStoreId() {
-		return id;
-	}
-
-	public void setStoreId(int storeId) {
-		this.id = storeId;
-	}
-	
-
 }
