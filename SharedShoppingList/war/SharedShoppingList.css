@@ -1,32 +1,32 @@
 .container {
   height:100vh;
   display: grid;
-  grid-template-rows: 150px 1fr 30px;
+  grid-template-rows: 100px 1fr 30px;
   grid-template-columns: 25% 25% 25% 25%;
 }
 #header {
-  background:tomato;
+  background:lightgrey;
   grid-column-start:1;
   grid-column-end:5;
   grid-row-start:1;
   grid-row-end:2;
 }
 #details {
-  background:gold;
+  background:white;
   grid-column-start:2;
   grid-column-end:5;
   grid-row-start:2;
   grid-row-end:3;
 }
 #navigator {
-  background:lightgreen;
+  background:grey;
   grid-column-start:1;
   grid-column-end:2;
   grid-row-start:2;
   grid-row-end:3;
 }
 #footer {
-  background:lightblue;
+  background:black;
   grid-column-start:1;
   grid-column-end:5;
   grid-row-start:3;
@@ -34,4 +34,29 @@
 }
 .header {
 	display: flex;
+	height: 100px;
+	flex-direction: row;
+}
+.header-left {
+	justify-content: flex-start;
+}
+.header-right {
+	display: flex; 
+	justify-content: flex-end;
+}
+.header-right-element {
+	display: flex;
+}
+.gwt-Label{ 
+   font-size: 300%; 
+   color: white;
+   font-weight: bold;
+}
+.header-button {
+	height: 2.5em;
+	 text-align: center;
+	 color: black; 
+	 font-weight: bold;
+	  background-color: black;
+	    
 }
