@@ -53,11 +53,20 @@ public class Header extends FlowPanel {
 
 		// Einzelteile des Headers
 		headerLeft.addStyleName("header-left");
-		headerRight.addStyleName("heder-right");
+		headerRight.addStyleName("header-right");
 		logoutIcon.addStyleName("logout-icon");
-
+		
+		article.addStyleName("header-right-element");
+		store.addStyleName("header-right-element");
+		
+		articleButton.addStyleName("header-button");
+		storeButton.addStyleName("header-button");
+		
+		// Einfügen des Icons
+		logout.setUrl("/images/logoutIcon.png");
+		logoutIcon.addStyleName("header-right-element");
+		
 		// Zuordnung der Widgets
-
 		title.add(titleLabel);
 		article.add(articleButton);
 		store.add(storeButton);
@@ -65,7 +74,7 @@ public class Header extends FlowPanel {
 		headerLeft.add(title);
 		headerRight.add(article);
 		headerRight.add(store);
-
+		headerRight.add(logout);
 		this.add(headerLeft);
 		this.add(headerRight);
 
