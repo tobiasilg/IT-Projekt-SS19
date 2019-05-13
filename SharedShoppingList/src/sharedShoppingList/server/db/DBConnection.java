@@ -24,7 +24,7 @@ public class DBConnection {
      * Eine in der Cloud (Google Cloud Plattform)
      */
     private static String googleUrl = "jdbc:google:mysql://it-projekt-hdm-238911:us-central1:myinstance/shoppinglist?user=root&password=Kekbuy2019";
-    private static String localUrl = "jdbc:mysql://127.0.0.1:3306/itproject?user=root&password=demo";
+    private static String localUrl = "jdbc:mysql://127.0.0.1:3306/itproject?user=root&password=Kekbuy2019";
 
     /**
      * Singleton Eigenschaft wird sichergestellt indem nur eine Instanz
@@ -39,9 +39,9 @@ public class DBConnection {
     public static Connection connection() {
         // Wenn es bisher keine Conncetion zur DB gab, ...
         if (con == null) {
-            String url = null;
+            
             try {
-                if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+               /* if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
                     // Load the class that provides the new
                     // "jdbc:google:mysql://" prefix.
                     Class.forName("com.mysql.jdbc.GoogleDriver");
@@ -59,7 +59,7 @@ public class DBConnection {
                  * Diese Verbindung wird dann in der statischen Variable con
                  * abgespeichert und fortan verwendet.
                  */
-                con = DriverManager.getConnection(url);
+                con = DriverManager.getConnection(localUrl);
             } catch (Exception e) {
                 con = null;
                 e.printStackTrace();
