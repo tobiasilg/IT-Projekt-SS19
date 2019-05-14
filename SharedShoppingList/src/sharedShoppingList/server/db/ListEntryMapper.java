@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.User;
 
 /**
  * Mapper Klasse für </code>ListEntry</code> Objekte.
@@ -124,7 +125,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry> findAllByCurrentUser(User user){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listEntry where userid=" + user.getId;
+			String sql = "select * from listEntry where userid=" + user.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -191,6 +192,29 @@ public class ListEntryMapper {
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
+		}
+		
+		/*
+		 * Methode um einen Listeneintrag zu editieren
+		 */
+		
+		public ListEntry update(ListEntry listentry) {
+			Connection con = DBConnection.connection();
+			String sql="UPDATE article " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
+					+ listentry.getAmount() + "\" " + "WHERE id=" + listentry.getId();
+
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+
+				
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			
+			return listentry;
 		}
 }
 
