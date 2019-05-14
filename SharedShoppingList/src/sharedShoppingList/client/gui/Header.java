@@ -13,17 +13,19 @@ public class Header extends FlowPanel {
 	// EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
-	private FlowPanel headerLeft = new FlowPanel();
-	private FlowPanel headerRight = new FlowPanel();
-	private FlowPanel logoutIcon = new FlowPanel();
+	private FlowPanel headerLeft = new FlowPanel(); // Panel indem das Label liegt
+	private FlowPanel headerRight = new FlowPanel();// Panel indem die Buttonspanels liegen
+	private FlowPanel logoutIcon = new FlowPanel(); // Panel indem das Logout Icon liegt
 
 	// Erstellung der Button und Label Divs
-	private FlowPanel title = new FlowPanel();
-	private FlowPanel article = new FlowPanel();
-	private FlowPanel store = new FlowPanel();
+	private FlowPanel title = new FlowPanel(); // Panel indem das titleLabel liegt
+	private FlowPanel report = new FlowPanel(); // Panel indem der reportButton liegt
+	private FlowPanel article = new FlowPanel();// Panel indem der articleButton liegt
+	private FlowPanel store = new FlowPanel(); // Panel indem der storeButton liegt
 
 	// Erstellung der Buttons und Label
 	private Label titleLabel = new Label("KEKWAY");
+	private Button reportButton = new Button("Report");
 	private Button articleButton = new Button("Artikel");
 	private Button storeButton = new Button("Store");
 
@@ -54,28 +56,38 @@ public class Header extends FlowPanel {
 		// Einzelteile des Headers
 		headerLeft.addStyleName("header-left");
 		headerRight.addStyleName("header-right");
-		logoutIcon.addStyleName("logout-icon");
 		
+		logoutIcon.addStyleName("logout-icon-element");
+		
+		title.addStyleName("header-left-element");
 		article.addStyleName("header-right-element");
 		store.addStyleName("header-right-element");
+		report.addStyleName("header-right-element");
 		
+		titleLabel.addStyleName("header-title");
 		articleButton.addStyleName("header-button");
 		storeButton.addStyleName("header-button");
-		
+		reportButton.addStyleName("report-button");
+
 		// Einfügen des Icons
 		logout.setUrl("/images/logoutIcon.png");
-		logoutIcon.addStyleName("header-right-element");
-		
+		logout.addStyleName("logout-icon");
+
 		// Zuordnung der Widgets
 		title.add(titleLabel);
+		report.add(reportButton);
 		article.add(articleButton);
 		store.add(storeButton);
+
+		// Zuordnung des Icons in das logoutIcon Panel
 		logoutIcon.add(logout);
 
 		headerLeft.add(title);
+		headerRight.add(report);
 		headerRight.add(article);
 		headerRight.add(store);
 		headerRight.add(logoutIcon);
+
 		this.add(headerLeft);
 		this.add(headerRight);
 
