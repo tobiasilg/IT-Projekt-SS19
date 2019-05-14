@@ -97,7 +97,7 @@ s.setId(rs.getInt("S_ID"));
 //s.setOwnerId(rs.getInt("name"));
 s.setCreateDate(rs.getTimestamp("createDate"));
 s.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+result.addElement(s);
 }
 }catch(SQLException e2){
 e2.printStackTrace();
@@ -126,7 +126,7 @@ s.setId(rs.getInt("S_ID"));
 //s.setOwnerId(rs.getInt("name"));
 s.setCreateDate(rs.getTimestamp("createDate"));
 s.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+result.addElement(s);
 }
 }catch(SQLException e2){
 e2.printStackTrace();

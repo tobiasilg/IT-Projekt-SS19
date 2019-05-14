@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
+
 
 public class UserMapper {
 
@@ -45,7 +48,7 @@ ResultSet rs = stmt.executeQuery("SELECT U_ID, name, createDate, modDate FROM T_
 if (rs.next()){
 
 u.setId(rs.getInt("U_ID"));
-u.setOwnerId(rs.getInt("name"));
+u.setName(rs.getString("name"));
 u.setCreateDate(rs.getTimestamp("createDate"));
 u.setModDate(rs.getTimestamp("modDate"));
 
@@ -76,12 +79,12 @@ Statement stmt = con.createStatement();
 ResultSet rs = stmt.executeQuery("SELECT U_ID, name, createDate, modDate FROM T_User WHERE creator =" +u.getId()+" ORDER BY modDate");
 
 while (rs.next()){
-User u = new User();
-u.setId(rs.getInt("U_ID"));
-u.setOwnerId(rs.getInt("name"));
-u.setCreateDate(rs.getTimestamp("createDate"));
-u.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+User u1 = new User();
+u1.setId(rs.getInt("U_ID"));
+u1.setName(rs.getString("name"));
+u1.setCreateDate(rs.getTimestamp("createDate"));
+u1.setModDate(rs.getTimestamp("modDate"));
+result.addElement(u);
 }
 }catch(SQLException e2){
 e2.printStackTrace();
@@ -109,10 +112,10 @@ ResultSet rs = stmt.executeQuery("SELECT U_ID, name, createDate, modDate FROM T_
 while (rs.next()){
 User u = new User();
 u.setId(rs.getInt("U_ID"));
-u.setOwnerId(rs.getInt("name"));
+u.setName(rs.getString("name"));
 u.setCreateDate(rs.getTimestamp("createDate"));
 u.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+result.addElement(u);
 }
 }catch(SQLException e2){
 e2.printStackTrace();
