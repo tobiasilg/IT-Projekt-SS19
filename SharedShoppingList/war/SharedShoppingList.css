@@ -1,67 +1,95 @@
 .container {
-  height:100vh;
-  display: grid;
-  grid-template-rows: 100px 1fr 30px;
-  grid-template-columns: 25% 25% 25% 25%;
+	height: 100vh;
+	display: grid;
+	grid-template-rows: 80px 1fr 30px;
+	grid-template-columns: 25% 25% 25% 25%;
 }
+
 #header {
-  background:lightgrey;
-  grid-column-start:1;
-  grid-column-end:5;
-  grid-row-start:1;
-  grid-row-end:2;
+	background: lightgrey;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 1;
+	grid-row-end: 2;
 }
+
 #details {
-  background:white;
-  grid-column-start:2;
-  grid-column-end:5;
-  grid-row-start:2;
-  grid-row-end:3;
+	background: white;
+	grid-column-start: 2;
+	grid-column-end: 5;
+	grid-row-start: 2;
+	grid-row-end: 3;
 }
+
 #navigator {
-  background:grey;
-  grid-column-start:1;
-  grid-column-end:2;
-  grid-row-start:2;
-  grid-row-end:3;
+	background: grey;
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 2;
+	grid-row-end: 3;
 }
+
 #footer {
-  background:black;
-  grid-column-start:1;
-  grid-column-end:5;
-  grid-row-start:3;
-  grid-row-end:4;
+	background: black;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 3;
+	grid-row-end: 4;
 }
+
 .header {
 	display: flex;
-	height: 100px;
+	height: 80px;
 	/*justify-content: space-around;*/
+}
+
+.header-left {
+	flex: 1;
+}
+
+.header-left-element {
 	
 }
-.header-left {
-	text-align: center;
-}
-.header-right {
-	display: flex;
-	margin-left: auto;
 
+.header-title {
+	font-size: 550%;
+	color: white;
+	font-weight: bold;
+	text-align: left;
 }
+
+.header-right {
+	vertical-align: middle;
+	flex: 1;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .header-right-element {
 	display: flex;
-
+	align-items: center; /* Vertikale Zentrierung */
+	justify-content: center;
 }
-.gwt-Label{ 
-   font-size: 300%; 
-   color: white;
-   font-weight: bold;
-   text-align: center;
 
-}
 .header-button {
-	height: 3em;
-	width: 5em;
-	 text-align: center;
-	 color: black; 
-	 font-weight: bold;
-	 background-color: black;
+	height: 2.5em;
+	width: 6em;
+	text-align: center;
+	color: black;
+}
+
+.report-button {
+	height: 2.5em;
+	width: 6em;
+	text-align: center;
+	color: black;
+	font-style: italic;
+}
+
+.logout-icon-element {
+	
+}
+
+.logout-icon {
+	
 }
