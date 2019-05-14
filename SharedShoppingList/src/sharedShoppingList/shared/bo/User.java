@@ -10,51 +10,34 @@ import java.sql.Timestamp;
 public class User extends BusinessObject{
 	
 	private int id;
+	private int groupid;
+	private String username;
 	private String name;
+	private String gmail;
 	
 	public User() {
 		super();	
 	}
-
-
-
-	public User getUser() {
-		return user;
-	}
-    
-	public void deleteUser() {
-		return null;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String userName) {
-		this.name = userName;
-	}
-
-    public int getUserId() {
-		return id;
-	}
-
-	public void setUserId(int userId) {
-		this.id = userId;
-	}
-
-
-
-	public int getId() {
-		return id;
-	}
-
-
-
-	public void setId(int id) {
-		this.id = id;
-	}
 	
+	public int getGroupId() {
+		return groupid;
+	}
+	public void setGroupId(int groupid) {
+		this.groupid = groupid;
+	}	
 	
+	public String getUserName() {
+		return username;
+	}
+	public void setUserName(String username) {
+		this.username = username;
+	}	
+	
+	public String getGmail() {
+		return gmail;
+	}
+	public void setGmail(String gmail) {
+		this.gmail = gmail;
+	}
 
 }

@@ -54,13 +54,13 @@ public class ClientsideSettings extends CommonSettings {
 	 * Anlegen und Auslesen der Einkaufslistenverwaltung
 	 */
 	public static EinkaufslistenVerwaltungAsync getEinkaufslistenverwaltung() {
-		// Gab es bislang noch keine Pinnwandverwaltungs-Instanz, dann...
+	
 		if (einkaufslistenverwaltung == null) {
-			// Zunächst instantiieren wir Pinnwandverwaltung
+			//Instantiieren der Einkaufslistenverwaltung
 			einkaufslistenverwaltung = GWT.create(Einkaufslistenverwaltung.class);
 		}
 
-		// So, nun brauchen wir die Pinnwandverwaltung nur noch zurückzugeben.
+		// So, nun brauchen wir die Einkaufslistenverwaltung nur noch zurückzugeben.
 		return einkaufslistenverwaltung;
 	}
 
@@ -70,7 +70,7 @@ public class ClientsideSettings extends CommonSettings {
 	public static ReportClientAsync getReportGenerator() {
 		// Gab es bislang noch keine ReportGenerator-Instanz, dann...
 		if (reportClient == null) {
-			// Zunächst instantiieren wir ReportGenerator
+			// Zunächst instantiieren wir den ReportGenerator
 			reportClient = (ReportClientAsync) GWT.create(ReportClient.class);
 
 			final AsyncCallback<Void> initReportClientCallback = new AsyncCallback<Void>() {

@@ -53,7 +53,7 @@ ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_
 if (rs.next()){
 
 g.setId(rs.getInt("G_ID"));
-g.setOwnerId(rs.getInt("name"));
+g.setName(rs.getString("name"));
 g.setCreateDate(rs.getTimestamp("createDate"));
 g.setModDate(rs.getTimestamp("modDate"));
 
@@ -81,10 +81,10 @@ ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_
 while (rs.next()){
 Group g = new Group();
 g.setId(rs.getInt("G_ID"));
-g.setOwnerId(rs.getInt("name"));
+g.setName(rs.getString("name"));
 g.setCreateDate(rs.getTimestamp("createDate"));
 g.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+result.addElement(g);
 }
 }catch(SQLException e2){
 e2.printStackTrace();
@@ -99,21 +99,21 @@ return result;
 * @return Ein Vector voller Group Objekte welche befüllt sind
 *
 */
-public Vector<Group> findAllByUID(User u){
+public Vector<Group> findAllByUID(Group g){
 Connection con = DBConnection.connection();
 Vector<Group> result = new Vector<Group>();
 
 try{
 Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_Group WHERE creator =" +u.getId()+" ORDER BY modDate");
+ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_Group WHERE creator =" +g.getId()+" ORDER BY modDate");
 
 while (rs.next()){
-Group g = new Group();
-g.setId(rs.getInt("G_ID"));
-g.setOwnerId(rs.getInt("name"));
-g.setCreateDate(rs.getTimestamp("createDate"));
-g.setModDate(rs.getTimestamp("modDate"));
-result.addElement(p);
+Group g1 = new Group();
+g1.setId(rs.getInt("G_ID"));
+g1.setName(rs.getString("name"));
+g1.setCreateDate(rs.getTimestamp("createDate"));
+g1.setModDate(rs.getTimestamp("modDate"));
+result.addElement(g);
 }
 }catch(SQLException e2){
 e2.printStackTrace();
