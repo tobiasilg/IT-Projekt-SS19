@@ -6,8 +6,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import sharedShoppingList.shared.CommonSettings;
-import sharedShoppingList.shared.EinkaufslistenVerwaltungAsync;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.ReportClient;
 import sharedShoppingList.shared.ReportClientAsync;
 
@@ -22,7 +22,7 @@ public class ClientsideSettings extends CommonSettings {
 	 * Remote Service Proxy zur Verbindungsaufnahme mit dem Server-Seitgen Dienst
 	 */
 
-	private static EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
+	private static EinkaufslistenverwaltungAsync einkaufslistenverwaltung = null;
 
 	/**
 	 * Remote Service Proxy zur Verbindungsaufnahme mit dem Server-Seitgen Dienst
@@ -53,10 +53,10 @@ public class ClientsideSettings extends CommonSettings {
 	/**
 	 * Anlegen und Auslesen der Einkaufslistenverwaltung
 	 */
-	public static EinkaufslistenVerwaltungAsync getEinkaufslistenverwaltung() {
-	
+	public static EinkaufslistenverwaltungAsync getEinkaufslistenverwaltung() {
+
 		if (einkaufslistenverwaltung == null) {
-			//Instantiieren der Einkaufslistenverwaltung
+			// Instantiieren der Einkaufslistenverwaltung
 			einkaufslistenverwaltung = GWT.create(Einkaufslistenverwaltung.class);
 		}
 
