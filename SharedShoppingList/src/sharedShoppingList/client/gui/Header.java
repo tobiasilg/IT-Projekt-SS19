@@ -70,11 +70,12 @@ public class Header extends FlowPanel {
 		title.add(titleLabel);
 		article.add(articleButton);
 		store.add(storeButton);
+		logoutIcon.add(logout);
 
 		headerLeft.add(title);
 		headerRight.add(article);
 		headerRight.add(store);
-		headerRight.add(logout);
+		headerRight.add(logoutIcon);
 		this.add(headerLeft);
 		this.add(headerRight);
 

@@ -35,28 +35,34 @@
 .header {
 	display: flex;
 	height: 100px;
-	flex-direction: row;
+	/*justify-content: space-around;*/
+	
 }
 .header-left {
-	justify-content: flex-start;
+	text-align: center;
 }
 .header-right {
-	display: flex; 
-	justify-content: flex-end;
+	display: flex;
+	margin-left: auto;
+
 }
 .header-right-element {
 	display: flex;
+	
+
 }
 .gwt-Label{ 
    font-size: 300%; 
    color: white;
    font-weight: bold;
+   text-align: center;
+
 }
 .header-button {
-	height: 2.5em;
+	height: 3em;
+	width: 5em;
 	 text-align: center;
 	 color: black; 
 	 font-weight: bold;
-	  background-color: black;
-	    
+	 background-color: black;
 }
