@@ -1,6 +1,10 @@
 package sharedShoppingList.server;
 
-import sharedShoppingList.client.LoginInfo;
+import org.eclipse.jetty.security.LoginService;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import sharedShoppingList.shared.LoginInfo;
 
 public class LoginServiceImpl extends RemoteServiceServlet implements
 LoginService {
