@@ -67,6 +67,24 @@ public class HTMLReportWriter extends ReportWriter {
 	  public String paragraphToHTML(SimpleParagraph sp) {
 		  return sp.toString();
 	  }
+
+	@Override
+	public void process(AllArticles r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void process(AllArticlesByStore r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void process(AllArticlesByPeriod r) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
