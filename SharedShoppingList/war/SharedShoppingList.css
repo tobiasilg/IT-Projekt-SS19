@@ -93,3 +93,24 @@
 .logout-icon {
 	
 }
+
+.loginButton{
+	margin: 50px;
+	color:white;
+	padding-left: 35px;
+	border: none;
+	font-size:170% !important;
+	font-weigth: bolder;
+	cursor: pointer;
+	background: transparent;
+	background-repeat:no-repeat;
+	background-image: url("images/logoutIcon.png");
+	
+}
+
+.loginLabel {
+	margin-top: 150px;
+	font-size: 24pt !important;
+	font-weight: bold;
+	color: white;
+    overflow:auto;
