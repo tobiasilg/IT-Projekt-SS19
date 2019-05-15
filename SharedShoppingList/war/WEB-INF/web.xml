@@ -15,7 +15,7 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>LoginService</servlet-name>
+    <servlet-name>loginService</servlet-name>
     <servlet-class>SharedShoppingList.server.LoginServiceImpl</servlet-class>
   </servlet>
   

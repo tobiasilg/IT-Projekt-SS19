@@ -3,15 +3,18 @@ package sharedShoppingList.shared;
 
 import java.io.Serializable;
 
+/*
+ * Erstellen des LoginInfo-Objekts, das die Anmeldeinformation des Benutzerdienstes enthält
+ */
+
 public class LoginInfo implements Serializable {
 
-	
-		/**
+	 /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-		private boolean loggedIn = false;
+	private boolean loggedIn = false;
 	  private String loginUrl;
 	  private String logoutUrl;
 	  private String emailAddress;
