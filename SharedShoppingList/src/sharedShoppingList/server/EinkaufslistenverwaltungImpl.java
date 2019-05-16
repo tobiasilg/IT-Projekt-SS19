@@ -1,5 +1,7 @@
 package sharedShoppingList.server;
 
+import java.util.Vector;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
@@ -14,6 +16,7 @@ import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.bo.Article;
 
 import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
 
 
 /**
@@ -113,6 +116,12 @@ private static final long serialVersionUID = 1L;
 	 * *************************
 	 **/
 	
+	/**
+	 * Anlegen eines neuen Artikels, der dann in der DB gespeichert wird
+	 * @param String name String unit
+	 * 
+	 */
+	
 
 	public Article createArticle(String name, String unit) throws IllegalArgumentException {
 		Article article =new Article();
@@ -122,6 +131,47 @@ private static final long serialVersionUID = 1L;
 		article.setId(1);
 		
 		return this.articleMapper.insert(article);
+	}
+	
+	
+	/**
+	 * Speichern/Update des Artikels in der DB
+	 * @param Article Objekt
+	 */
+	
+	public void save (Article article) throws IllegalArgumentException {
+		this.articleMapper.update(article);
+	}
+	
+	
+	/**
+	 * Löschen eines Articles und damit entfernen des Article Tupel aus der DB
+	 * @param Article Objekt
+	 */
+	
+	public void delete (Article article)throws IllegalArgumentException{
+		
+	}
+	
+	/**
+	 * Auslesen aller angelegten Artikel
+	 * @return Alle Artikel
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Article> getAllArticles()throws IllegalArgumentException{
+		return this.articleMapper.findAllArticles();
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @return Alle Artikel, welche einem bestimmten Nutzer zugewiesen sind.
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Article> getAllArticlesOf(User user)throws IllegalArgumentException{
+		return this.articleMapper.findAllByCurrentUser(user);
 	}
 	
 	
