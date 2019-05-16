@@ -10,6 +10,7 @@ import sharedShoppingList.server.db.ListMapper;
 import sharedShoppingList.server.db.StoreMapper;
 import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
+import sharedShoppingList.shared.bo.Store;
 
 /**
  * Die Klasse <code>EinkaufslistenverwaltungImpl</code> implementiert das Interface
@@ -107,7 +108,36 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * *************************
 	 **/
+	
+	
+	
+	/**
+	 * *************************
+	 * ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte
+	 * 
+	 * *************************
+	 **/
+	public Store createStore (String name) throws IllegalArgumentException {
+		Store store = new Store();
+		/*
+		 * Setzen einer vorläufigen Storenr.
+		 * Der insert-Aufruf liefert dann ein Objekt, dessen Nummer mit der Datenbank konsistent ist.
+		 */
+		store.setId(1);
+		store.setName(name);
+		
+		return this.storeMapper.insert(store);
+	}
+	
+	public void deleteStore (Store store) throws IllegalArgumentException{
+		
+		/*
+		 * Löschweitergabe zu klären (falls store in ListEntry vorhanden, was passiert?)
+		 */
+		
+		this.storeMapper.delete(store);
 
+	}
 	
 	
 
