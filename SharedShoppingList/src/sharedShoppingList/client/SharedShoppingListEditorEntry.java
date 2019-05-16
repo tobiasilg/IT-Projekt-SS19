@@ -43,7 +43,7 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 		public void onModuleLoad() {
 		// Check login status using login service.
 	    LoginServiceAsync loginService = GWT.create(LoginService.class);
-		loginService.login(GWT.getHostPageBaseURL() +"IT_Projekt_SS1920.html", new AsyncCallback<LoginInfo>() {
+		loginService.login(GWT.getHostPageBaseURL() +"SharedShoppingList.html", new AsyncCallback<LoginInfo>() {
 		public void onFailure(Throwable error) {
 		 }
 		
@@ -96,13 +96,14 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 		}
 	}
 	// Methode wird erst nach erfolgreichem Login geladen
-	private void loadEditor (LoginInfo logininfo){
+	private void loadEditor (){
 		//RootPanels
 		RootPanel rootPanelHeader = RootPanel.get("header");
 		RootPanel rootPanelNav= RootPanel.get("navigator");
 		RootPanel rootPanelDetails = RootPanel.get("details");
 		RootPanel rootPanelFooter = RootPanel.get("footer");
 			
+		Header header = new Header();
 		/*
 		 * 
 		rootPanelHeader.add();
