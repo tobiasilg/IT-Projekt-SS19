@@ -10,11 +10,15 @@ import sharedShoppingList.server.db.ListMapper;
 import sharedShoppingList.server.db.StoreMapper;
 import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
+
 import sharedShoppingList.shared.bo.Article;
+
+import sharedShoppingList.shared.bo.Store;
+
 
 /**
  * Die Klasse <code>EinkaufslistenverwaltungImpl</code> implementiert das Interface
- * Einkaufslistenverwaltung. In der Klasse ist neben der ReportClientImpl sämtliche
+ * Einkaufslistenverwaltung. In der Klasse ist neben der ReportClientImpl sÃ¤mtliche
  * Applikationslogik vorhanden.
  * 
  * @author Nico Weiler, Leon Seiz, Tobias Ilg
@@ -89,8 +93,8 @@ private static final long serialVersionUID = 1L;
 	public void init() throws IllegalArgumentException {
 
 		/**
-		 * Um mit der Datenbank kommunizieren zu können benötigt die Klasse
-		 * EinkaufslistenverwaltungImpl einen vollständigen Satz von Mappern.
+		 * Um mit der Datenbank kommunizieren zu kÃ¶nnen benÃ¶tigt die Klasse
+		 * EinkaufslistenverwaltungImpl einen vollstÃ¤ndigen Satz von Mappern.
 		 */
 
 		this.articleMapper=ArticleMapper.articleMapper();
@@ -104,11 +108,12 @@ private static final long serialVersionUID = 1L;
 	
 	/**
 	 * *************************
-	 * ABSCHNITT, Beginn: Methoden für Article Objekte
+	 * ABSCHNITT, Beginn: Methoden fÃ¼r Article Objekte
 	 * 
 	 * *************************
 	 **/
 	
+
 	public Article createArticle(String name, String unit) throws IllegalArgumentException {
 		Article article =new Article();
 		article.setName(name);
@@ -121,6 +126,36 @@ private static final long serialVersionUID = 1L;
 	
 	
 
+	
+	
+	/**
+	 * *************************
+	 * ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte
+	 * 
+	 * *************************
+	 **/
+	public Store createStore (String name) throws IllegalArgumentException {
+		Store store = new Store();
+		/*
+		 * Setzen einer vorläufigen Storenr.
+		 * Der insert-Aufruf liefert dann ein Objekt, dessen Nummer mit der Datenbank konsistent ist.
+		 */
+		store.setId(1);
+		store.setName(name);
+		
+		return this.storeMapper.insert(store);
+	}
+	
+	public void deleteStore (Store store) throws IllegalArgumentException{
+		
+		/*
+		 * Löschweitergabe zu klären (falls store in ListEntry vorhanden, was passiert?)
+		 */
+		
+		this.storeMapper.delete(store);
+
+
+	}
 	
 	
 
