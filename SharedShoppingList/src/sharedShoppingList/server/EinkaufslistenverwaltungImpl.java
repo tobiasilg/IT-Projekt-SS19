@@ -181,7 +181,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * *************************
 	 * ABSCHNITT, Beginn: Methoden fÃƒÂ¼r Store Objekte
-	 * 
+	 * @author Leon
 	 * *************************
 	 **/
 	public Store createStore (String name) throws IllegalArgumentException {
@@ -204,8 +204,38 @@ private static final long serialVersionUID = 1L;
 		
 		this.storeMapper.delete(store);
 
-
 	}
+
+	public Vector <Store> getAllStores (Store store) throws IllegalArgumentException {
+		return this.storeMapper.findAll();
+		
+	}
+	
+	public Store getStoreByID (Store store) throws IllegalArgumentException{
+		return this.storeMapper.findByID(store);
+	}
+	/*
+	 * Klärung!
+	 */
+	
+	//public Store getStoreByName (String name) throws IllegalArgumentException{
+	//	return this.storeMapper.findByID();
+	//}
+	}
+	
+	/*
+	 * ABSCHNITT, Beginn: Methoden für ListEntry Objekte
+	 * @author Leon
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
