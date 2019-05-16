@@ -166,7 +166,7 @@ public class ArticleMapper {
 	 * Methode um einen neuen Artikel der Datenbank hinzuzufügen
 	 */
 	
-	public void insert (Article article) {
+	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
 		String sql= "insert into article values ("+article.getId() + "," + article.getName()+ "," + article.getCreateDate()+ ","+ article.getModDate() +"," +article.getUnit() +","+ article.isFavourite()+ ")";
@@ -180,6 +180,7 @@ public class ArticleMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+	    return article;
 	}
 	
 	/*

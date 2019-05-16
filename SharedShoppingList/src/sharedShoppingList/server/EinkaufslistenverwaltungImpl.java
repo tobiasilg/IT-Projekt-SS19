@@ -10,6 +10,7 @@ import sharedShoppingList.server.db.ListMapper;
 import sharedShoppingList.server.db.StoreMapper;
 import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
+import sharedShoppingList.shared.bo.Article;
 
 /**
  * Die Klasse <code>EinkaufslistenverwaltungImpl</code> implementiert das Interface
@@ -107,6 +108,18 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * *************************
 	 **/
+	
+	public Article createArticle(String name, String unit) throws IllegalArgumentException {
+		Article article =new Article();
+		article.setName(name);
+		article.setUnit(unit);
+		
+		article.setId(1);
+		
+		return this.articleMapper.insert(article);
+	}
+	
+	
 
 	
 	
