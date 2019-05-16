@@ -219,6 +219,7 @@ private static final long serialVersionUID = 1L;
 	 * Klärung!
 	 */
 	
+	
 	//public Store getStoreByName (String name) throws IllegalArgumentException{
 	//	return this.storeMapper.findByID();
 	//}
