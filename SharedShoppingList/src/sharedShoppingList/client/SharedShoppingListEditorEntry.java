@@ -104,13 +104,12 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 		RootPanel rootPanelFooter = RootPanel.get("footer");
 			
 		Header header = new Header();
-		/*
-		 * 
-		rootPanelHeader.add();
-		rootPanelNav.add();
-		rootPanelDetails.add();
-		rootPanelFooter.add();
-		*/	
+		
+		rootPanelHeader.add(header);
+		//rootPanelNav.add();
+		//rootPanelDetails.add();
+		//rootPanelFooter.add();
+		
 	}
 }
 	
