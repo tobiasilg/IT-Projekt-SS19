@@ -213,6 +213,7 @@ private static final long serialVersionUID = 1L;
 	
 	public Store getStoreByID (Store store) throws IllegalArgumentException{
 		return this.storeMapper.findByID(store);
+		
 	}
 	/*
 	 * Klärung!
