@@ -228,16 +228,3 @@ private static final long serialVersionUID = 1L;
 	 * ABSCHNITT, Beginn: Methoden für ListEntry Objekte
 	 * @author Leon
 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-}
