@@ -3,11 +3,12 @@ package sharedShoppingList.shared;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
-import sharedShoppingList.shared.report.AllArticles;
-import sharedShoppingList.shared.report.AllArticlesByPeriod;
-import sharedShoppingList.shared.report.AllArticlesByStore;
+import sharedShoppingList.shared.report.AllListEntries;
+import sharedShoppingList.shared.report.AllListEntriesByPeriod;
+import sharedShoppingList.shared.report.AllListEntriesByStore;
 
 
 /**
@@ -39,7 +40,7 @@ public interface ReportClient extends RemoteService {
 	   * @para Artikel-Objekt
 	   * @throws IllegalArgumentException
 	   */
-	  public void setArticle(Article a) throws IllegalArgumentException;
+	  public void setListEntry(ListEntry listEntry) throws IllegalArgumentException;
 	  
 	  /**
 	   * Erstellen eines <code>AllArticles</code>-Reports. Dieser
@@ -51,7 +52,7 @@ public interface ReportClient extends RemoteService {
 	   * @throws IllegalArgumentException
 	   * @see AllArticle
 	   */
-	  public abstract AllArticles createAllArticlesByUserReport(User user) 
+	  public abstract AllListEntries createAllListEntriesByUserReport(User user) 
 			  throws IllegalArgumentException;
 	  
 	  /**
@@ -65,7 +66,7 @@ public interface ReportClient extends RemoteService {
 	   * @see AllArticleByStore
 	   */
 	  
-	  public abstract AllArticlesByStore createAllArticlesByStoreReport(Store store) 
+	  public abstract AllListEntriesByStore createAllListEntriesByStoreReport(Store store) 
 			  throws IllegalArgumentException;
 	  
 	  /**
@@ -79,7 +80,7 @@ public interface ReportClient extends RemoteService {
 	   * @see AllArticle
 	   */
 	  
-	  public abstract AllArticlesByPeriod createAllArticlesByPeriodReport(Article article) 
+	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) 
 			  throws IllegalArgumentException;
 
 }
