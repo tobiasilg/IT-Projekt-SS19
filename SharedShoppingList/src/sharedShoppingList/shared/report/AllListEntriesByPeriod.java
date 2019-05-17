@@ -1,7 +1,7 @@
 package sharedShoppingList.shared.report;
 
 /**
- * In dieser Klasse wird ein <code>Report</code> erstellt, der alle gekauften Artikel eines bestimmten Händlers (Supermarkt) darstellt,
+ * In dieser Klasse wird ein <code>Report</code> erstellt, der alle gekauften Artikel innerhalb eines bestimmten Zeitraums darstellt,
  * jedoch befinden sich hier keine weiteren Attribute- und Methoden-Implementierungen, denn diese befinden sich 
  * bereits in den Superklassen. Dennoch ist die Bestehung dieser Klasse relevant für die Deklarierung bestimmter 
  * Report-Typen um objektorientiert umgehen zu können. 
@@ -11,7 +11,7 @@ package sharedShoppingList.shared.report;
  * @version 1.0
  */
 
-public class AllArticlesByStore extends SimpleReport {
+public class AllListEntriesByPeriod extends SimpleReport {
 	
 	private static final long serialVersionUID= 1L;
 
@@ -19,8 +19,9 @@ public class AllArticlesByStore extends SimpleReport {
     /**
      * Default Konstruktor.
      */
-    public AllArticlesByStore() {
+    public AllListEntriesByPeriod() {
     	
     }
+	
 
 }
