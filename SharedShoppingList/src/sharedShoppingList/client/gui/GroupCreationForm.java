@@ -32,11 +32,9 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 	// Konstruktor
 	public GroupCreationForm() {
 
-		createButton.addClickHandler(new CreateGroupClickHandler());
-		hp.add(createButton);
-
+		saveButton.addClickHandler(new CreateGroupClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
-		hp.add(cancelButton);
+		
 
 	}
 
