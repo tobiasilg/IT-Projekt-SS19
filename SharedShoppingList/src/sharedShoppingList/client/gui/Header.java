@@ -1,21 +1,25 @@
 package sharedShoppingList.client.gui;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
-//import sharedShoppingList.client.ClientsideSettings;
-//import sharedShoppingList.shared.EinkaufslistenVerwaltungAsync;
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+
+
 
 public class Header extends FlowPanel {
 
-	// EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
+	EinkaufslistenverwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
 	private FlowPanel headerLeft = new FlowPanel(); // Panel indem das Label liegt
 	private FlowPanel headerRight = new FlowPanel();// Panel indem die Buttonspanels liegen
-	private FlowPanel logoutIcon = new FlowPanel(); // Panel indem das Logout Icon liegt
+	private FlowPanel userIcon = new FlowPanel(); // Panel indem das Logout Icon liegt
 
 	// Erstellung der Button und Label Divs
 	private FlowPanel title = new FlowPanel(); // Panel indem das titleLabel liegt
@@ -30,7 +34,7 @@ public class Header extends FlowPanel {
 	private Button storeButton = new Button("Store");
 
 	// Erstellen des Logout Icons
-	Image logout = new Image();
+	Image user = new Image();
 
 	public Header() {
 		super();
@@ -44,7 +48,7 @@ public class Header extends FlowPanel {
 	 */
 	public void onLoad() {
 
-		// einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
+		einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
 		/*
 		 * Vergeben von Stylenamen, um die Divs über CSS ansprechen zu können
@@ -57,7 +61,7 @@ public class Header extends FlowPanel {
 		headerLeft.addStyleName("header-left");
 		headerRight.addStyleName("header-right");
 		
-		logoutIcon.addStyleName("logout-icon-element");
+		userIcon.addStyleName("user-icon-element");
 		
 		title.addStyleName("header-left-element");
 		article.addStyleName("header-right-element");
@@ -70,8 +74,8 @@ public class Header extends FlowPanel {
 		reportButton.addStyleName("report-button");
 
 		// Einfügen des Icons
-		logout.setUrl("/images/logoutIcon.png");
-		logout.addStyleName("logout-icon");
+		user.setUrl("/images/userIcon.png");
+		user.addStyleName("user-icon");
 
 		// Zuordnung der Widgets
 		title.add(titleLabel);
@@ -80,17 +84,88 @@ public class Header extends FlowPanel {
 		store.add(storeButton);
 
 		// Zuordnung des Icons in das logoutIcon Panel
-		logoutIcon.add(logout);
+		userIcon.add(user);
 
 		headerLeft.add(title);
 		headerRight.add(report);
 		headerRight.add(article);
 		headerRight.add(store);
-		headerRight.add(logoutIcon);
+		headerRight.add(userIcon);
+		
+		
+		
+		/*
+		 * Hinzufügen der Click-Handler an die Buttons
+		 */
+		reportButton.addClickHandler(new ReportGeneratorClickHandler());
+		articleButton.addClickHandler(new CreateArticleClickHandler());
+		storeButton.addClickHandler(new CreateStoreClickHandler());
+		
+		//Hinzufügen eines Clickhandlers an das Image
+		
+		user.addClickHandler(new UserClickHandler());
+		
 
 		this.add(headerLeft);
 		this.add(headerRight);
 
 	}
+		/*
+		 * Klasse ReportGeneratorClickHandler welche den Click-Handler implementiert. 
+		 * Die Klasse dient dazu, um auf die Seite des Report Generators zu gelangen. 
+		 */
+	
+		private class ReportGeneratorClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		
+		/*
+		 * Klasse CreateArticleClickHandler welche den Click-Handler implementiert. 
+		 * Die Klasse dient dazu, um auf die articleForm zu gelangen.   
+		 */
+		
+		private class CreateArticleClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		/*
+		 * Klasse CreateStoreClickHandler welche den Click-Handler implementiert. 
+		 * Die Klasse dient dazu, um auf die storeForm zu gelangen.  
+		 */
+		
+		private class CreateStoreClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		/*
+		 * Klasse CreateArticleClickHandler welche den Click-Handler implementiert. 
+		 * Die Klasse dient dazu, um auf die profileSettingsForm zu gelangen.  
+		 */
+		
+		private class UserClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
 
 }

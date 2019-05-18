@@ -10,7 +10,7 @@ package sharedShoppingList.shared.report;
  * @version 1.0
  */
 
-public class AllArticles extends SimpleReport {
+public class AllListEntries extends SimpleReport {
 	
 	private static final long serialVersionUID= 1L;
 
@@ -18,7 +18,7 @@ public class AllArticles extends SimpleReport {
     /**
      * Default Konstruktor.
      */
-    public AllArticles() {
+    public AllListEntries() {
     	
     }
 	

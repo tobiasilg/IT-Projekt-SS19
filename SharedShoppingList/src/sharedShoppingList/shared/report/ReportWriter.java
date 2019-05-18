@@ -38,7 +38,7 @@ public abstract class ReportWriter implements Serializable {
 	 * 
 	 * @param r Der zu übersetzende Report wird übergeben.
 	 */
-	public abstract void process(AllArticles r);
+	public abstract void process(AllListEntries r);
 	
 
 	/**
@@ -47,7 +47,7 @@ public abstract class ReportWriter implements Serializable {
 	 * 
 	 * @param r Der zu übersetzende Report wird übergeben.
 	 */
-	public abstract void process(AllArticlesByStore r);
+	public abstract void process(AllListEntriesByStore r);
 	
 	
 	/**
@@ -56,6 +56,6 @@ public abstract class ReportWriter implements Serializable {
 	 * 
 	 * @param r Der zu übersetzende Report wird übergeben.
 	 */
-	public abstract void process(AllArticlesByPeriod r);
+	public abstract void process(AllListEntriesByPeriod r);
 
 }

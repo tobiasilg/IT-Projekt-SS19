@@ -219,16 +219,16 @@ private static final long serialVersionUID = 1L;
 		this.storeMapper.update(store);
 	}
 	/*
-	 * Klärung!
+	 * Klï¿½rung!
 	 */
 	
 	
 	//public Store getStoreByName (String name) throws IllegalArgumentException{
 	//	return this.storeMapper.findByID();
 	//}
-	}
+}
 	
 	/*
-	 * ABSCHNITT, Beginn: Methoden für ListEntry Objekte
+	 * ABSCHNITT, Beginn: Methoden fï¿½r ListEntry Objekte
 	 * @author Leon
 	 */

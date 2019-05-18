@@ -5,35 +5,33 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
-
-
-
-
 /**
- * Formular für das Anlegen eines neuen Händlers im Datenstamm
- * @author moritzhampe
+ * Formular für das Anlegen eines neuen Lieblingsartikels, der 
+ * in einer Shoppinglist automatisch angezeigt werden soll 
+ * @author patricktreiber
  *
  */
 
-public class StoreForm extends AbstractAdministrationForm{
+public class FavoriteArticleForm extends AbstractAdministrationForm {
+
 	
 	@Override
 	protected String nameForm() {
 
-		return "Storeverwaltung";
+		return "Meine Lieblingsartikel<3";
 	}
 
 	// Konstruktor
-	public StoreForm() {
+	public FavoriteArticleForm() {
 
-		saveButton.addClickHandler(new CreateStoreClickHandler());
+		saveButton.addClickHandler(new CreateFavArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
-		addButton.addClickHandler(new AddStoreClickHandler());
+		addButton.addClickHandler(new AddFavArticleClickHandler());
 
 	}
 
 	/**
-	 * Hiermit wird der Erstellvorgang einer neuen Store abbgebrochen.
+	 * Hiermit wird der Erstellvorgang eines neuen Favoritens abbgebrochen.
 	 */
 	private class CancelClickHandler implements ClickHandler {
 
@@ -45,10 +43,10 @@ public class StoreForm extends AbstractAdministrationForm{
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorite nach
 	 * dem Klicken des Bestätigungsbutton erstellt.
 	 */
-	private class CreateStoreClickHandler implements ClickHandler {
+	private class CreateFavArticleClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
@@ -56,10 +54,10 @@ public class StoreForm extends AbstractAdministrationForm{
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach dem Klicken
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorit nach dem Klicken
 	 * des addButton erstellt.
 	 */
-	private class AddStoreClickHandler implements ClickHandler {
+	private class AddFavArticleClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
@@ -69,7 +67,7 @@ public class StoreForm extends AbstractAdministrationForm{
 	/**
 	 * Callback wird benötigt, um den Store zu erstellen
 	 */
-	private class StoreCreationCallback implements AsyncCallback<Void> {
+	private class FavArticleCreationCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -81,7 +79,4 @@ public class StoreForm extends AbstractAdministrationForm{
 			Notification.show("Der Store wurde erfolgreich erstellt");
 		}
 	}
-	
-	
-
 }

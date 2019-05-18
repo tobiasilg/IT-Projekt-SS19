@@ -1,5 +1,8 @@
 package sharedShoppingList.server;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import sharedShoppingList.client.LoginService;
 import sharedShoppingList.shared.LoginInfo;
@@ -28,8 +31,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		
 		if (user != null) {
 		  loginInfo.setLoggedIn(true);
-		  loginInfo.setEmailAddress(user.getGmail());
-		  loginInfo.setNickname(user.getUserName());
+		  loginInfo.setEmailAddress(user.getEmail());
+		  loginInfo.setNickname(user.getNickname());
 		  loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 		} else {
 		  loginInfo.setLoggedIn(false);
