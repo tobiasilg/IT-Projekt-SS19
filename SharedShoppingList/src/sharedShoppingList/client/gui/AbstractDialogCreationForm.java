@@ -11,57 +11,30 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.shared.FieldVerifier;
 
-public abstract class AbstractDialogCreationForm extends VerticalPanel{
-	private Label groupNameLabel = new Label(nameDialogForm());
+/*
+ * Die abstract Class <Code> AbstractDialogCreationForm</code> dient dazu, dass die Klassen
+ * GroupCreationForm und ListCrationForm hiervon gemeinsam erben können. 
+ * Erst wenn alle abstrakten Methoden der Superklasse implementiert worden sind, 
+ * kann die Subklasse konkret werden (instanziiert werden).
+ */
+
+public abstract class AbstractDialogCreationForm extends VerticalPanel {
+	private Label NameLabel = new Label(nameDialogForm());
 	private DynamicTextbox insertNameTextBox = new DynamicTextbox();
-	private Button cancelButton = new Button("abbrechen");
-	private Button createButton = new Button("erstellen");
-	private HorizontalPanel hp = new HorizontalPanel();
+	protected Button cancelButton = new Button("abbrechen");
+	protected Button createButton = new Button("erstellen");
+	protected HorizontalPanel hp = new HorizontalPanel();
 
 	// Prüfen des Eingabefelds auf richtige Zeichensetzung
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameDialogForm();
 
-	// Konstruktor
-	public AbstractDialogCreationForm() {
-
-		createButton.addClickHandler(new CreateGroupClickHandler());
-		hp.add(createButton);
-
-		cancelButton.addClickHandler(new CancelClickHandler());
-		hp.add(cancelButton);
-
-	}
-
-	/**
-	 * Hiermit wird der Erstellvorgang eines neuen Kontaktes abbgebrochen.
-	 */
-	private class CancelClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
-
-		}
-
-	}
-
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
 	public void onLoad() {
 
 		// Styling
 
-	}
-
-	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neue Gruppe nach dem Klicken
-	 * des Bestätigungsbutton erstellt.
-	 */
-	private class CreateGroupClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-		}
 	}
 
 	/**
@@ -85,6 +58,10 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel{
 
 	}
 
+	/**
+	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
+	 * definiert.
+	 */
 	private class DynamicTextbox extends TextBox {
 
 		boolean saveable = true;
