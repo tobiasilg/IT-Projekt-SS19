@@ -14,13 +14,18 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.gui.Header;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.LoginInfo;
+import sharedShoppingList.shared.bo.User;
 
-/**
- * /**
+ /**
  * Entry-Point-Klasse des Projekts <b>SharedShoppingList</b>.
  */
 public class SharedShoppingListEditorEntry implements EntryPoint {
+	
+	EinkaufslistenverwaltungAsync einkaufsverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
+	//Erzeugen eines Users
+	User user1 = new User(); 
 	
 	//Objekt, das die Anmeldeinformation des Benutzerdienstes enthält
 	private LoginInfo loginInfo = null;
