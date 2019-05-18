@@ -3,6 +3,7 @@ package sharedShoppingList.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -15,36 +16,46 @@ import sharedShoppingList.shared.FieldVerifier;
  * Die abstract Class <Code> AbstractDialogCreationForm</code> dient dazu, dass die Klassen
  * GroupCreationForm und ListCrationForm hiervon gemeinsam erben können. 
  * Erst wenn alle abstrakten Methoden der Superklasse implementiert worden sind, 
- * kann die Subklasse konkret werden (instanziiert werden).
+ * kann die Subklasse konkret instanziiert werden.
  */
 
 public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	private Label NameLabel = new Label(nameDialogForm());
 	private DynamicTextbox insertNameTextBox = new DynamicTextbox();
 	protected Button cancelButton = new Button("abbrechen");
-	protected Button createButton = new Button("erstellen");
-	protected HorizontalPanel hp = new HorizontalPanel();
+	protected Button saveButton = new Button("speichern");
+	protected HorizontalPanel hpButtonPanel = new HorizontalPanel();
 
 	// Prüfen des Eingabefelds auf richtige Zeichensetzung
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameDialogForm();
 
-	// In dieser Methode werden die Widgets der Form hinzugefügt.
+	// In dieser Methode werden die Widgets der Form hinzugefügt sowie das Styling
+	// durchgeführt
 	public void onLoad() {
-
-		// Styling
+		
+		hpButtonPanel.add(saveButton);
+		hpButtonPanel.add(cancelButton);
+		
+		this.add(saveButton);
+		this.add(cancelButton);
+		
+		cancelButton.setStylePrimaryName("cancelButton");
+		saveButton.setStylePrimaryName("createButton");
+		hpButtonPanel.setSpacing(20);
+		cancelButton.setPixelSize(130, 40);
+		saveButton.setPixelSize(130, 40);
+		hpButtonPanel.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
+		hpButtonPanel.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
 
 	}
 
 	/**
-	 * 
 	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische
 	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
 	 * FieldVerifyer benötigt werden.
-	 * 
 	 */
-
 	private boolean checkTextboxesSaveable() {
 
 		insertNameTextBox
