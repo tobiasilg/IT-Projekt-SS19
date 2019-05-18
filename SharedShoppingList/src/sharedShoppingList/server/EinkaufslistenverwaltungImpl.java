@@ -215,9 +215,13 @@ private static final long serialVersionUID = 1L;
 		return this.storeMapper.findByID(store);
 		
 	}
+	public void save (Store store) throws IllegalArgumentException {
+		this.storeMapper.update(store);
+	}
 	/*
 	 * Kl�rung!
 	 */
+	
 	
 	//public Store getStoreByName (String name) throws IllegalArgumentException{
 	//	return this.storeMapper.findByID();
@@ -228,16 +232,3 @@ private static final long serialVersionUID = 1L;
 	 * ABSCHNITT, Beginn: Methoden f�r ListEntry Objekte
 	 * @author Leon
 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
