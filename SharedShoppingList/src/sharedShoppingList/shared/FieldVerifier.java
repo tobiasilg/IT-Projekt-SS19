@@ -29,7 +29,7 @@ public class FieldVerifier {
     		switch(identifier) {
     		
     		//Cases, die überprüft werden
-    			case "Gruppenname":
+    			case "Name":
     				if (value.matches("[a-zA-ZäöüÄÖÜß ]+")) {
     					return true;
     				}
@@ -57,7 +57,7 @@ public class FieldVerifier {
      * Verifies that the specified name is valid for our service.
      * In this example, we only require that the name is at least four
      * characters. In your application, you can use more complex checks to ensure
-     * that usernames, passwords, email addresses, URLs, and other fields have the
+     * that the username, passwords, email addresses, URLs, and other fields have the
      * proper syntax.
      * 
      * @param name 
