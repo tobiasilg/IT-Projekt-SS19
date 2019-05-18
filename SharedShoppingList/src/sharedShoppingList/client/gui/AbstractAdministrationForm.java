@@ -6,10 +6,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
-import de.hdm.softwarePraktikum.client.gui.Header.HomeClickHandler;
-import de.hdm.softwarePraktikum.client.gui.Header.LogoutClickHandler;
-import de.hdm.softwarePraktikum.client.gui.Header.ReportGeneratorClickHandler;
 import sharedShoppingList.shared.FieldVerifier;
 
 /*
@@ -24,9 +20,9 @@ public class AbstractAdministrationForm extends VerticalPanel {
 	private Label NameLabel = new Label(nameDialogForm());
 	protected FlexTable administrationFlexTable = new FlexTable();
 	protected Button cancelButton = new Button("abbrechen");
-	protected Button safeButton = new Button("speichern");
+	protected Button saveButton = new Button("speichern");
 	protected Button addButton = new Button("Hinzufügen");
-	protected SuggestBox suggestBox = new SuggestBox();
+	protected SuggestBox nameSuggestBox = new SuggestBox();
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
 	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
@@ -38,24 +34,36 @@ public class AbstractAdministrationForm extends VerticalPanel {
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
 	public void onLoad() {
 
-			hpCreate.add(suggestBox);
-			hpCreate.add(addButton);
-			
-			hpCancelandSafe.add(cancelButton);
-			hpCancelandSafe.add(safeButton);
-			
-			this.add(hpCreate);
-			this.add(administrationFlexTable);
-			this.add(hpCancelandSafe);
-			
-			NameLabel.setStylePrimaryName("Namelabel");
+		hpCreate.add(nameSuggestBox);
+		hpCreate.add(addButton);
+
+		hpCancelandSafe.add(cancelButton);
+		hpCancelandSafe.add(saveButton);
+
+		this.add(hpCreate);
+		this.add(administrationFlexTable);
+		this.add(hpCancelandSafe);
+
+		NameLabel.setStylePrimaryName("NameLabel");
+		administrationFlexTable.setStylePrimaryName("FlexTable");
+		cancelButton.setStylePrimaryName("CancelButton");
+		saveButton.setStylePrimaryName("SaveButton");
+		addButton.setStylePrimaryName("AddButton");
+		nameSuggestBox.setStylePrimaryName("SuggestBox");
+
+		hpCreate.setCellHorizontalAlignment(nameSuggestBox, ALIGN_LEFT);
+		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_RIGHT);
+		hpCancelandSafe.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
+		hpCancelandSafe.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
+		this.setCellHorizontalAlignment(hpCreate, ALIGN_CENTER);
+		this.setCellHorizontalAlignment(hpCancelandSafe, ALIGN_CENTER);
 		
-		
-			
-			
+
 	}
 	
-	logoutButton.addClickHandler(new LogoutClickHandler());
-	editorButton.addClickHandler(new HomeClickHandler());
-	reportGeneratorButton.addClickHandler(new ReportGeneratorClickHandler() );
+	
+
 }
+
+
+
