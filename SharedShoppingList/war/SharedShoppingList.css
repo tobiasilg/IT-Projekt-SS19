@@ -86,11 +86,11 @@
 	font-style: italic;
 }
 
-.logout-icon-element {
+.user-icon-element {
 	
 }
 
-.logout-icon {
+.user-icon {
 	
 }
 
@@ -114,3 +114,23 @@
 	font-weight: bold;
 	color: white;
     overflow:auto;
+}
+.regestrationForm {
+	
+  height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    position: fixed;
+}
+
+.welcomeHeadline {
+	
+}
+.greetingLabel {
+	
+}
+.googleloginButton {
+	
+}
