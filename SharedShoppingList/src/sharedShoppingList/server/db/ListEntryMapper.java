@@ -197,10 +197,10 @@ public class ListEntryMapper {
 		 * Methode zum Löschen eines Listeneintrags aus der Datenbank
 		 */
 		
-		public void delete (int id) {
+		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "delete from listEntry where id=" + id +")";
+			String sql= "delete from listEntry where id=" + listEntry.getId() +")";
 			
 		    try {
 		    	

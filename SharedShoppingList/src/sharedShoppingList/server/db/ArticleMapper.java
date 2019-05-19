@@ -145,10 +145,10 @@ public class ArticleMapper {
 	 * Methode zum Löschen eines Artikels aus der Datenbank
 	 */
 	
-	public void delete (int id) {
+	public void delete (Article article) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from article where id=" + id +")";
+		String sql= "delete from article where id=" + article.getId() +")";
 		
 	    try {
 	    	
