@@ -2,6 +2,7 @@ package sharedShoppingList.shared.report;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * <p>
@@ -39,7 +40,7 @@ public abstract class Report implements Serializable {
 	 /**
 	     * Hier wird das Erstellungsdatum des Berichts erstellt.
 	     */
-	    private Timestamp creationDate;
+	    private Date creationDate;
 	 
 	 /**
 	   * Auslesen des Berichtstitels.
@@ -64,7 +65,7 @@ public abstract class Report implements Serializable {
 	   * 
 	   * @return Datum der Erstellung des Berichts
 	   */
-	  public Timestamp getCreated() {
+	  public Date getCreated() {
 	    return this.creationDate;
 	  }
 
@@ -75,8 +76,8 @@ public abstract class Report implements Serializable {
 	   * 
 	   * @param created Zeitpunkt der Erstellung
 	   */
-	  public void setCreated(Timestamp creation) {
-	    this.creationDate = creation;
+	  public void setCreated(Date date) {
+	    this.creationDate = date;
 	  }
 	  
 	  /**

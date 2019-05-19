@@ -1,6 +1,7 @@
 package sharedShoppingList.server.report;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -91,7 +92,7 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	}
 	
 	/**
-	 * Report, der alle Listeneinträge ausgibt, je nachdem, nach was Selektiert wird.
+	 * Report, der alle Listeneinträge ausgibt, je nachdem, was Selektiert wird.
 	 * @see ListEntryMapper.findByStoreAndDate --> Hier befinden sich die jeweiligen
 	 * SQL Statements
 	 * @see sharedShoppingList.shared.ReportClient#createListByPeriodAndStore(sharedShoppingList.shared.bo.Store, java.sql.Timestamp)
@@ -100,7 +101,13 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	@Override
 	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate) {
 		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
-		AllListEntriesByStoreAndPeriod result = null;
+		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
+		
+		result.setTitle("Report:");
+		
+		//result.setCreated(new Date());
+		
+		
 		for(ListEntry l : listEntries) {
 			//result.addParagraph(l.getName());
 		}
