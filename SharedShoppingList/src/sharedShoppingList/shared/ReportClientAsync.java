@@ -5,9 +5,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
-import sharedShoppingList.shared.report.AllArticles;
-import sharedShoppingList.shared.report.AllArticlesByPeriod;
-import sharedShoppingList.shared.report.AllArticlesByStore;
+import sharedShoppingList.shared.report.AllListEntries;
+import sharedShoppingList.shared.report.AllListEntriesByPeriod;
+import sharedShoppingList.shared.report.AllListEntriesByStore;
 
 /**
  * Das asynchrone Gegenstück des Interface ReportClient. Es wird
@@ -24,11 +24,11 @@ public interface ReportClientAsync {
 
 	void setArticle(Article a, AsyncCallback<Void> callback);
 
-	void createAllArticlesByUserReport(User u, AsyncCallback<AllArticles> callback);
+	void createAllListEntriesByUserReport(User user, AsyncCallback<AllListEntries> callback);
 
-	void createAllArticlesByStoreReport(Store store, AsyncCallback<AllArticlesByStore> callback);
+	void createAllListEntriesByStoreReport(Store store, AsyncCallback<AllListEntriesByStore> callback);
 
-	void createAllArticlesByPeriodReport(Article article, AsyncCallback<AllArticlesByPeriod> callback);
+	void createAllListEntriesByPeriodReport(Article article, AsyncCallback<AllListEntriesByPeriod> callback);
 	
 	
 

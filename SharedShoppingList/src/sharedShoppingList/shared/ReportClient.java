@@ -5,9 +5,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
-import sharedShoppingList.shared.report.AllArticles;
-import sharedShoppingList.shared.report.AllArticlesByPeriod;
-import sharedShoppingList.shared.report.AllArticlesByStore;
+import sharedShoppingList.shared.report.AllListEntries;
+import sharedShoppingList.shared.report.AllListEntriesByPeriod;
+import sharedShoppingList.shared.report.AllListEntriesByStore;
 
 
 /**
@@ -42,7 +42,7 @@ public interface ReportClient extends RemoteService {
 	  public void setArticle(Article a) throws IllegalArgumentException;
 	  
 	  /**
-	   * Erstellen eines <code>AllArticles</code>-Reports. Dieser
+	   * Erstellen eines <code>AllListEntries</code>-Reports. Dieser
 	   * Report-Typ stellt alle Artikel eines Einkäufers dar.
 	   * 
 	   * @param user eine Referenz auf das UserObject bzgl. dessen der Report
@@ -51,11 +51,11 @@ public interface ReportClient extends RemoteService {
 	   * @throws IllegalArgumentException
 	   * @see AllArticle
 	   */
-	  public abstract AllArticles createAllArticlesByUserReport(User user) 
+	  public abstract AllListEntries createAllListEntriesByUserReport(User user) 
 			  throws IllegalArgumentException;
 	  
 	  /**
-	   * Erstellen eines <code>AllArticlesByStore</code>-Reports. Dieser
+	   * Erstellen eines <code>AllListEntriesByStore</code>-Reports. Dieser
 	   * Report-Typ stellt alle eingekauften Artikel eines bestimmten Händlers dar.
 	   * 
 	   * @param store eine Referenz auf das StoreObject bzgl. dessen der Report
@@ -65,11 +65,11 @@ public interface ReportClient extends RemoteService {
 	   * @see AllArticleByStore
 	   */
 	  
-	  public abstract AllArticlesByStore createAllArticlesByStoreReport(Store store) 
+	  public abstract AllListEntriesByStore createAllListEntriesByStoreReport(Store store) 
 			  throws IllegalArgumentException;
 	  
 	  /**
-	   * Erstellen eines <code>AllArticlesByPeriod</code>-Reports. Dieser
+	   * Erstellen eines <code>AllListEntriesByPeriod</code>-Reports. Dieser
 	   * Report-Typ stellt alle eingekauften Artikel eines bestimmten Zeitraumes dar.
 	   * 
 	   * @param article eine Referenz auf das ArticleObject bzgl. dessen der Report
@@ -79,7 +79,7 @@ public interface ReportClient extends RemoteService {
 	   * @see AllArticle
 	   */
 	  
-	  public abstract AllArticlesByPeriod createAllArticlesByPeriodReport(Article article) 
+	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) 
 			  throws IllegalArgumentException;
 
 }
