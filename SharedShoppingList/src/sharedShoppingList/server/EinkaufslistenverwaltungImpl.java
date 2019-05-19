@@ -136,12 +136,29 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 	/**
 	 * Löschen eines Articles und damit entfernen des Article Tupel aus der DB
-	 * 
+	 * Die Löschweitergabe sorgt dafür, dass auch Listeneinträge, welche den jeweiligen Artikel
+	 * enthalten, gelöscht werden. 
 	 * @param Article Objekt
 	 */
 
 	public void delete(Article article) throws IllegalArgumentException {
+		
+		Vector<ListEntry> listEntries = this.getAllListEntriesByArticle(article);
+		/*
+		 * Prüfen ob Listeneinträge mit dem jeweiligen Artikel vorhanden sind.
+		 */
+		if(listEntries != null) {
+			for(ListEntry le:listEntries) {
 
+				this.listEntryMapper.delete(le);
+				
+			}
+		}
+		/*
+		 * Eigentliches Löschen des Artikels
+		 */
+		this.articleMapper.delete(article);
+		
 	}
 
 	/**
@@ -238,4 +255,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public void save(ListEntry listentry) {
 		this.listEntryMapper.update(listentry);
 	}
+	
+	public void delete(ListEntry listEntry) throws IllegalArgumentException{
+		this.listEntryMapper.delete(listEntry);
+	}
+	
+	
+	
+	public Vector<ListEntry> getAllListEntriesByArticle(Article article) {
+		return this.listEntryMapper.findByArticle(article);
+		
+	}
+	
 }

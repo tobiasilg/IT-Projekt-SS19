@@ -84,6 +84,46 @@ public class ListEntryMapper {
 		}
 		
 		/*
+		 * Methode zur Findung eines Listeneintrags anhand eines zugewiesenen Artikels
+		 * 
+		 */
+		
+		public Vector<ListEntry> findByArticle(Article article) {
+			Connection con = DBConnection.connection();
+			
+			String sql="select * from listEntry where articleid=" + article.getId();
+			
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+
+					ListEntry listEntry = new ListEntry();
+					listEntry.setId(rs.getInt("id"));
+					listEntry.setName(rs.getString("name"));
+					listEntry.setCreateDate(rs.getTimestamp("createDate"));
+					listEntry.setAmount(rs.getDouble("amount"));
+					listEntry.setChecked(rs.getBoolean("checked"));
+					listEntry.setArticleId(rs.getInt("articleid"));
+					listEntry.setUserId(rs.getInt("userid"));
+					listEntry.setStoreId(rs.getInt("storeid"));
+					listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
+					
+					result.addElement(listEntry);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}
+			return result;
+		}
+		
+		
+		/*
 		 * Methode zur Auflistung aller Listeneinträge
 		 * @return: Vector mit allen Einträgen wird zurückgegeben
 		 */
@@ -157,10 +197,10 @@ public class ListEntryMapper {
 		 * Methode zum Löschen eines Listeneintrags aus der Datenbank
 		 */
 		
-		public void delete (int id) {
+		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "delete from listEntry where id=" + id +")";
+			String sql= "delete from listEntry where id=" + listEntry.getId() +")";
 			
 		    try {
 		    	
