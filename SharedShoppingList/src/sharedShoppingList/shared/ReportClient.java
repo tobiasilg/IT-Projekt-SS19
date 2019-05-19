@@ -1,13 +1,18 @@
 package sharedShoppingList.shared;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.report.AllListEntries;
 import sharedShoppingList.shared.report.AllListEntriesByPeriod;
 import sharedShoppingList.shared.report.AllListEntriesByStore;
+import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
 
 
 /**
@@ -81,5 +86,7 @@ public interface ReportClient extends RemoteService {
 	  
 	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) 
 			  throws IllegalArgumentException;
+	  
+	  public abstract AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate);
 
 }

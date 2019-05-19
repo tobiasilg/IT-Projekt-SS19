@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
 /**
@@ -256,6 +259,63 @@ public class ListEntryMapper {
 
 			
 			return listentry;
+		}
+
+
+		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate) {
+			Connection con = DBConnection.connection();
+			/**
+			 * TODO: buydate anlegen in db
+			 * check .getDate Methode
+			 */
+			String sql = "SELECT * FROM listentry";
+			if(store != null && beginningDate != null) {
+				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getDate();
+			}
+			if(store == null && beginningDate != null) {
+				sql += " WHERE buydate >= " + beginningDate.getDate();
+			} 
+			if(store != null && beginningDate == null) {
+				sql += " WHERE storeid = " + store.getId();
+			}
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					ListEntry listEntry = createEntry(rs);
+					
+					result.addElement(listEntry);
+				}
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}
+			return result;
+		}
+		
+		/**
+		 * Erstellt aus einem ResultSet Eintrag einen ListEntry
+		 * Methode ausgelagert
+		 * @param rs
+		 * @return
+		 * @throws SQLException
+		 */
+
+
+		private ListEntry createEntry(ResultSet rs) throws SQLException {
+			ListEntry listEntry = new ListEntry();
+			listEntry.setId(rs.getInt("id"));
+			listEntry.setName(rs.getString("name"));
+			listEntry.setCreateDate(rs.getTimestamp("createDate"));
+			listEntry.setCreateDate(rs.getTimestamp("modDate"));
+			listEntry.setAmount(rs.getDouble("amount"));
+			listEntry.setChecked(rs.getBoolean("checked"));
+			listEntry.setArticleId(rs.getInt("articleid"));
+			listEntry.setUserId(rs.getInt("userid"));
+			listEntry.setStoreId(rs.getInt("storeid"));
+			listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
+			return listEntry;
 		}
 }
 

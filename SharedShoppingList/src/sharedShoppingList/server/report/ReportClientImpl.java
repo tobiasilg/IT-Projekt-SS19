@@ -1,15 +1,21 @@
 package sharedShoppingList.server.report;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import sharedShoppingList.server.db.ListEntryMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.ReportClient;
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.report.AllListEntries;
 import sharedShoppingList.shared.report.AllListEntriesByPeriod;
 import sharedShoppingList.shared.report.AllListEntriesByStore;
+import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
 
 /**
  * Die Klasse <code>ReportClienImpl</code> implementiert das Interface
@@ -27,7 +33,9 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 * da dort wichtige Methoden für die Koexistenz von Datenobjekten enthalten sind.
 	 */
 	
-	private Einkaufslistenverwaltung verwaltung;
+	private Einkaufslistenverwaltung elv;
+
+	
 	
 	/** OriginalKommentar
      * <p>
@@ -80,6 +88,23 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	public AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Report, der alle Listeneinträge ausgibt, je nachdem, nach was Selektiert wird.
+	 * @see ListEntryMapper.findByStoreAndDate --> Hier befinden sich die jeweiligen
+	 * SQL Statements
+	 * @see sharedShoppingList.shared.ReportClient#createListByPeriodAndStore(sharedShoppingList.shared.bo.Store, java.sql.Timestamp)
+	 */
+
+	@Override
+	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate) {
+		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
+		AllListEntriesByStoreAndPeriod result = null;
+		for(ListEntry l : listEntries) {
+			//result.addParagraph(l.getName());
+		}
+		return result;
 	}
 
 	

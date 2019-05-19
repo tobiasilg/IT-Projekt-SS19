@@ -1,5 +1,7 @@
 package sharedShoppingList.server;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -260,11 +262,14 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listEntryMapper.delete(listEntry);
 	}
 	
-	
-	
 	public Vector<ListEntry> getAllListEntriesByArticle(Article article) {
 		return this.listEntryMapper.findByArticle(article);
 		
+	}
+
+	@Override
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) {
+		return listEntryMapper.findByStoreAndDate(store, beginningDate);
 	}
 	
 }
