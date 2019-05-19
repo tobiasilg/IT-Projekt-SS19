@@ -28,8 +28,8 @@ public class ListEntryMapper {
 		private static ListEntryMapper listEntryMapper = null;
 		
 		/**
-		 * Geschützter Konstrukter verhindert weitere Instanzierungen von ArticleMapper.
-		 * Somit kann nur eine Instanz der Klasse ArticleMapper angelegt werden.
+		 * Geschützter Konstrukter verhindert weitere Instanzierungen von ListEntryMapper.
+		 * Somit kann nur eine Instanz der Klasse ListEntryMapper angelegt werden.
 		 */
 		protected ListEntryMapper() {
 		}
@@ -154,7 +154,7 @@ public class ListEntryMapper {
 		}
 		
 		/*
-		 * Methode zum Löschen eines Artikels aus der Datenbank
+		 * Methode zum Löschen eines Listeneintrags aus der Datenbank
 		 */
 		
 		public void delete (int id) {
@@ -175,10 +175,10 @@ public class ListEntryMapper {
 		}
 		
 		/*
-		 * Methode um einen neuen Artikel der Datenbank hinzuzufügen
+		 * Methode um einen neuen Listeneintrag der Datenbank hinzuzufügen
 		 */
 		
-		public void insert (ListEntry listEntry) {
+		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
 			String sql= "insert into article (id, name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ("+listEntry.getId() + "," + listEntry.getName()+ ","+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
@@ -192,6 +192,7 @@ public class ListEntryMapper {
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
+		    return listEntry;
 		}
 		
 		/*
