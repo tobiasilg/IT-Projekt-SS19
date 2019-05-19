@@ -116,9 +116,9 @@ public class StoreMapper {
 
 	/**
 	 * Gibt alle Store Objekte zurück welche mit S_ID, name, createDate und modDate
-	 * befüllt sind Hierfür holen wir S_ID, creator, cintent, createDate und modDate
-	 * aus der T_Store Tabelle und speichern diese in einem Store Objekt ab und
-	 * fügen diese dem Vector hinzu Diesen Vector befüllt mit Stores geben wir
+	 * befüllt sind Hierfür holen wir S_ID, creator, cintent, createDate und
+	 * modDate aus der T_Store Tabelle und speichern diese in einem Store Objekt ab
+	 * und fügen diese dem Vector hinzu Diesen Vector befüllt mit Stores geben wir
 	 * zurück
 	 *
 	 * @return Ein Vector voller Store Objekte welche befüllt sind
@@ -147,8 +147,8 @@ public class StoreMapper {
 	}
 
 	/**
-	 * Sucht nach der höchsten S_ID um diese um eins zu erhöhen und als neue S_ID zu
-	 * nutzen Befüllt T_Store mit S_ID, name, createDate und modDate Ein Store
+	 * Sucht nach der höchsten S_ID um diese um eins zu erhöhen und als neue S_ID
+	 * zu nutzen Befüllt T_Store mit S_ID, name, createDate und modDate Ein Store
 	 * Objekt wird zurückgegeben
 	 *
 	 * @param store übergebenes Store Objekt mit allen Attributen

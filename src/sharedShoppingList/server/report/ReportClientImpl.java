@@ -20,8 +20,8 @@ import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
 
 /**
  * Die Klasse <code>ReportClienImpl</code> implementiert das Interface
- * ReportClient. In der Klasse ist neben EinkaufslistenverwaltungImpls sämtliche
- * Applikationslogik vorhanden.
+ * ReportClient. In der Klasse ist neben EinkaufslistenverwaltungImpls
+ * sämtliche Applikationslogik vorhanden.
  * 
  * @author Nico Weiler
  * @version 1.0
@@ -30,8 +30,8 @@ import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
 public class ReportClientImpl extends RemoteServiceServlet implements ReportClient {
 
 	/**
-	 * Der ReportClient benötigt Zugriff auf die ELV, da dort wichtige Methoden für
-	 * die Koexistenz von Datenobjekten enthalten sind.
+	 * Der ReportClient benötigt Zugriff auf die ELV, da dort wichtige Methoden
+	 * für die Koexistenz von Datenobjekten enthalten sind.
 	 */
 
 	private Einkaufslistenverwaltung elv;

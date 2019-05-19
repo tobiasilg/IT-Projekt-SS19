@@ -103,9 +103,10 @@ public class UserMapper {
 
 	/**
 	 * Gibt alle User Objekte zurück welche mit U_ID, name, createDate und modDate
-	 * befüllt sind Hierfür holen wir U_ID, creator, cintent, createDate und modDate
-	 * aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen
-	 * diese dem Vector hinzu Diesen Vector befüllt mit Users geben wir zurück
+	 * befüllt sind Hierfür holen wir U_ID, creator, cintent, createDate und
+	 * modDate aus der T_User Tabelle und speichern diese in einem User Objekt ab
+	 * und fügen diese dem Vector hinzu Diesen Vector befüllt mit Users geben wir
+	 * zurück
 	 *
 	 * @return Ein Vector voller User Objekte welche befüllt sind
 	 */
@@ -133,9 +134,9 @@ public class UserMapper {
 	}
 
 	/**
-	 * Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID zu
-	 * nutzen Befüllt T_User mit U_ID, name, createDate und modDate Ein User Objekt
-	 * wird zurückgegeben
+	 * Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID
+	 * zu nutzen Befüllt T_User mit U_ID, name, createDate und modDate Ein User
+	 * Objekt wird zurückgegeben
 	 *
 	 * @param user übergebenes User Objekt mit allen Attributen
 	 * @return Ein vollständiges User Objekt

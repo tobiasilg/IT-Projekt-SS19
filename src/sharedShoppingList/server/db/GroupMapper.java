@@ -128,9 +128,10 @@ public class GroupMapper {
 
 	/**
 	 * Gibt alle Group Objekte zurück welche mit G_ID, name, createDate und modDate
-	 * befüllt sind Hierfür holen wir G_ID, creator, cintent, createDate und modDate
-	 * aus der T_Group Tabelle und speichern diese in einem Group Objekt ab und
-	 * fügen diese dem Vector hinzu Diesen Vector befüllt mit Group geben wir zurück
+	 * befüllt sind Hierfür holen wir G_ID, creator, cintent, createDate und
+	 * modDate aus der T_Group Tabelle und speichern diese in einem Group Objekt ab
+	 * und fügen diese dem Vector hinzu Diesen Vector befüllt mit Group geben wir
+	 * zurück
 	 *
 	 * @return Ein Vector voller Group Objekte welche befüllt sind
 	 *
