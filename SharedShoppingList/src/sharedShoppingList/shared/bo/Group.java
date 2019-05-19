@@ -3,7 +3,7 @@ package sharedShoppingList.shared.bo;
 import java.sql.Timestamp;
 
 /**
- * Diese Klasse erweitert die allgemeine BusinessObject-Klasse um Nutzerspezifische Funktionen und Parameter.
+ * Diese Klasse erweitert die allgemeine BusinessObject-Klasse um nutzerspezifische Funktionen und Parameter.
  * @author Tobias Ilg
  */
 
