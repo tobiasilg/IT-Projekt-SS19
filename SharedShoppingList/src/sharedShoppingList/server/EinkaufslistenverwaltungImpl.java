@@ -226,8 +226,8 @@ private static final long serialVersionUID = 1L;
 	//public Store getStoreByName (String name) throws IllegalArgumentException{
 	//	return this.storeMapper.findByID();
 	//}
-	}
-	
+}
+
 	/*
 	 * ABSCHNITT, Beginn: Methoden für ListEntry Objekte
 	 * @author Leon
