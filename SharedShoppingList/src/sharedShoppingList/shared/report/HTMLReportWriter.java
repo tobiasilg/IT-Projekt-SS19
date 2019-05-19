@@ -69,19 +69,19 @@ public class HTMLReportWriter extends ReportWriter {
 	  }
 
 	@Override
-	public void process(AllListEntries r) {
+	public void process(AllArticles r) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void process(AllListEntriesByStore r) {
+	public void process(AllArticlesByStore r) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void process(AllListEntriesByPeriod r) {
+	public void process(AllArticlesByPeriod r) {
 		// TODO Auto-generated method stub
 		
 	}

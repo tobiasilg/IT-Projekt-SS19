@@ -19,16 +19,6 @@
     <servlet-class>sharedShoppingList.server.LoginServiceImpl</servlet-class>
   </servlet>
   
-   <servlet>
-    <servlet-name>ReportClientImpl</servlet-name>
-    <servlet-class>sharedShoppingList.server.report.ReportClientImpl</servlet-class>
-  </servlet>
-  
-   <servlet>
-    <servlet-name>EinkaufslistenverwaltungImpl</servlet-name>
-    <servlet-class>sharedShoppingList.server.EinkaufslistenverwaltungImpl</servlet-class>
-  </servlet>
-  
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
     <url-pattern>/SharedShoppingList/login</url-pattern>
