@@ -15,21 +15,23 @@ import sharedShoppingList.shared.FieldVerifier;
  * kann die Subklasse konkret werden (instanziiert werden).
  */
 
-public class AbstractAdministrationForm extends VerticalPanel {
+public abstract class AbstractAdministrationForm extends VerticalPanel {
 
-	private Label NameLabel = new Label(nameDialogForm());
-	protected FlexTable administrationFlexTable = new FlexTable();
-	protected Button cancelButton = new Button("abbrechen");
-	protected Button saveButton = new Button("speichern");
-	protected Button addButton = new Button("Hinzufügen");
-	protected SuggestBox nameSuggestBox = new SuggestBox();
-	protected HorizontalPanel hpCreate = new HorizontalPanel();
-	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
+	private Label NameLabel = new Label(nameForm());
+	private FlexTable administrationFlexTable = new FlexTable();
+	private Button cancelButton = new Button("abbrechen");
+	private Button saveButton = new Button("speichern");
+	private Button addButton = new Button("Hinzufügen");
+	private SuggestBox nameSuggestBox = new SuggestBox();
+	private HorizontalPanel hpCreate = new HorizontalPanel();
+	private HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
 	// Prüfen des Eingabefelds auf richtige Zeichensetzung
 	private FieldVerifier verifier = new FieldVerifier();
 
-	protected abstract String nameDialogForm();
+	protected abstract String nameForm();
+
+	protected abstract FlexTable generateFlextable();
 
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
 	public void onLoad() {
@@ -57,13 +59,7 @@ public class AbstractAdministrationForm extends VerticalPanel {
 		hpCancelandSafe.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
 		this.setCellHorizontalAlignment(hpCreate, ALIGN_CENTER);
 		this.setCellHorizontalAlignment(hpCancelandSafe, ALIGN_CENTER);
-		
 
 	}
-	
-	
 
 }
-
-
-
