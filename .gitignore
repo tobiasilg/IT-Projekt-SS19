@@ -177,3 +177,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/gwt,java,macos,windows,eclipse,appengine
+/build/

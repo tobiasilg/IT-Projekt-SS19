@@ -1,7 +1,5 @@
 package sharedShoppingList.client;
 
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,15 +41,10 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	 */
 
 	public void onModuleLoad() {
-
-		loadEditor();
-
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL() + "SharedShoppingList.html", new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
-				Button loginButton = new Button("Einloggen");
-				RootPanel.get("header").add(loginButton);
 			}
 
 			public void onSuccess(LoginInfo result) {
@@ -114,8 +107,10 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 		RootPanel rootPanelFooter = RootPanel.get("footer");
 
 		Header header = new Header();
-
-		rootPanelHeader.add(header);
-
+		/*
+		 * 
+		 * rootPanelHeader.add(); rootPanelNav.add(); rootPanelDetails.add();
+		 * rootPanelFooter.add();
+		 */
 	}
 }

@@ -19,7 +19,7 @@
 
 
 	<inherits name="com.google.gwt.logging.Logging" />
-	
+
 	<!-- Specify the app entry point class. -->
 	<entry-point
 		class='sharedShoppingList.client.SharedShoppingListEditorEntry' />

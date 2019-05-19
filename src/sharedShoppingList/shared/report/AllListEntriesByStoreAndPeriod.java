@@ -1,9 +1,7 @@
 package sharedShoppingList.shared.report;
 
 /**
- * Report der Alle Artikel (Listeneinträge) entweder nach Zeitraum, Händler oder
- * beides ausgibt
- * 
+ * Report der Alle Artikel (Listeneinträge) entweder nach Zeitraum, Händler oder beides ausgibt
  * @author Nico Weiler
  *
  */

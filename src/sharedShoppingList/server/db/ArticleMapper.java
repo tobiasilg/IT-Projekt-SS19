@@ -11,9 +11,9 @@ import sharedShoppingList.shared.bo.User;
 
 /**
  * Mapper Klasse für </code>Article</code> Objekte. Diese umfasst Methoden um
- * ArticleMapper Objekte zu erstellen, zu suchen, zu ändern und zu löschen. Das
- * Mapping funktioniert dabei bidirektional. Es können Objekte in DB-Strukturen
- * und DB-Stukturen in Objekte umgewandelt werden.
+ * ArticleMapper Objekte zu erstellen, zu suchen, zu ändern und zu löschen.
+ * Das Mapping funktioniert dabei bidirektional. Es können Objekte in
+ * DB-Strukturen und DB-Stukturen in Objekte umgewandelt werden.
  * 
  * @author Nico Weiler
  */
@@ -25,8 +25,9 @@ public class ArticleMapper {
 	private static ArticleMapper articleMapper = null;
 
 	/**
-	 * Geschützter Konstrukter verhindert weitere Instanzierungen von ArticleMapper.
-	 * Somit kann nur eine Instanz der Klasse ArticleMapper angelegt werden.
+	 * Geschützter Konstrukter verhindert weitere Instanzierungen von
+	 * ArticleMapper. Somit kann nur eine Instanz der Klasse ArticleMapper angelegt
+	 * werden.
 	 */
 	protected ArticleMapper() {
 	}
