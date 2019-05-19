@@ -14,7 +14,7 @@ import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 
 import sharedShoppingList.shared.bo.Article;
-
+import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
@@ -219,16 +219,36 @@ private static final long serialVersionUID = 1L;
 		this.storeMapper.update(store);
 	}
 	/*
-	 * Klärung!
+	 * Klï¿½rung!
 	 */
 	
 	
 	//public Store getStoreByName (String name) throws IllegalArgumentException{
 	//	return this.storeMapper.findByID();
 	//}
-}
 
 	/*
-	 * ABSCHNITT, Beginn: Methoden für ListEntry Objekte
+	 * ABSCHNITT, Beginn: Methoden fï¿½r ListEntry Objekte
 	 * @author Leon
 	 */
+	public ListEntry createListentry (String name) throws IllegalArgumentException {
+		ListEntry listentry = new ListEntry();
+		
+		/*
+		 * Setzen einer vorlÃ¤ufigen Storenr.
+		 * Der insert-Aufruf liefert dann ein Objekt, dessen Nummer mit der Datenbank konsistent ist.
+		 */
+		
+		listentry.setId(1);
+		listentry.setName(name);
+		/*
+		 * void bei Mapper ändern? und return listentry?
+		 */
+		return this.listEntryMapper.insert(listentry);
+	}
+	public void save (ListEntry listentry) {
+		this.listEntryMapper.update(listentry);
+	}
+}
+
+	
