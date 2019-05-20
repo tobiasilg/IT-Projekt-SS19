@@ -4,13 +4,10 @@ import java.sql.Timestamp;
 
 /**
  * Diese Klasse erweitert die allgemeine BusinessObject-Klasse um nutzerspezifische Funktionen und Parameter.
- * @author Tobias Ilg
+ * @author Tobias Ilg, Leon Seiz
  */
 
 public class Group extends BusinessObject{
-	
-	private int id;
-	private String name;
 	
 	public Group() {
 		super();	
