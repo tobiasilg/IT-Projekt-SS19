@@ -103,6 +103,10 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
+		/**
+		 * folglich muss der Report noch zusammengebaut werden
+		 */
+		
 		result.setTitle("Report:");
 		
 		//result.setCreated(new Date());
