@@ -249,7 +249,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		listentry.setId(1);
 		listentry.setName(name);
 		/*
-		 * void bei Mapper �ndern? und return listentry?
+		 * 
 		 */
 		return this.listEntryMapper.insert(listentry);
 	}
