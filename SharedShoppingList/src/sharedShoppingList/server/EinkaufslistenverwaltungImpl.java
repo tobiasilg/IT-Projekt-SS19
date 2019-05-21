@@ -15,6 +15,7 @@ import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -274,6 +275,58 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	public Vector <User> getAllUser (User user) {
 		return this.userMapper.findAll();
+	}
+	
+	
+	
+	
+	
+	/** GRUPPE @author Tobi **/
+
+	
+	/** Create einer neuen Gruppe */
+
+	public Group createGroup(String name) throws IllegalArgumentException {
+		Group group = new Group();
+		group.setName(name);
+
+        /** ACHTUNG! NUR VORLÄUFIG!
+        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
+        * @TODO ID-Verabe anpassen.
+        */
+		group.setId(1);
+
+		return this.groupMapper.insert(group);
+	}
+
+		
+	/** Read einer Gruppe */
+
+    /** Ausgabe aller Gruppen
+    *@TODO Klären, ob mehrere Gruppen parallel existieren können*/
+
+    public Vector<Group> getAll() throws IllegalArgumentException {
+		return this.groupMapper.findAll();
+	}
+
+    
+    /** Ausgabe einer Gruppe */
+    public Group findId(int id) throws IllegalArgumentException {
+		return this.groupMapper.findById(id);
+	}
+
+
+	/** Update einer Gruppe */
+
+	public void save(Group group) throws IllegalArgumentException {
+		this.groupMapper.update(group);
+	}
+
+	/** Löschen einer Gruppe */
+
+	public void delete(Group group) throws IllegalArgumentException {
+		this.groupMapper.delete(group);
+		
 	}
 	
 	

@@ -38,7 +38,7 @@ public class GroupMapper {
 	
 /* CREATE (insert) - Dieser Block verfügt nur über eine Methode, die für alle Neueinträge verantwortlich ist*/
 	
-	public void insert (Group group) {
+	public Group insert (Group group) {
 		Connection con = DBConnection.connection();
 		
 		String sql= "insert into group (id, name, createDate, modDate) values ("+group.getId() + "," + group.getName()+ "," + group.getCreateDate()+ ","+ group.getModDate() +")";  
@@ -52,6 +52,8 @@ public class GroupMapper {
 	    catch (SQLException e) {
 	      e.printStackTrace();
 	    }
+	    
+	    return group;
 	}
 	
 	
@@ -135,10 +137,10 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 
 /*DELETE*/
 	
-	public void delete (int id) {
+	public void delete (Group group) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from group where id=" + id +")";
+		String sql= "delete from group where id=" + group +")";
 		
 	    try {
 	    	
