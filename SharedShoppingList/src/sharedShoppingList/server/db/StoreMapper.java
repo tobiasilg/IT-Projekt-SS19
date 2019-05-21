@@ -12,6 +12,8 @@ import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
 /**
+* Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - des BOs "Store" verantwortlich.
+* Er ermöglicht die Durchführung aller "CRUD-Vorgänge". Dazu bietet er verschiedene Methoden an.
 * Author dieser Klasse:
 * @author Tobias Ilg
 */

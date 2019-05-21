@@ -11,11 +11,147 @@ import java.util.Vector;
 import sharedShoppingList.shared.bo.Group;
 
 /**
+* Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - verantwortlich.
+* Er ermöglicht die Durchführung aller "CRUD-Vorgänge". Dazu bietet er verschiedene Methoden (z.B. findByID vs findAll) an.
 * Author dieser Klasse:
 * @author Tobias Ilg
 */
 
+
+
 public class GroupMapper {
+	
+	private static GroupMapper groupMapper = null;
+	
+    /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
+	protected GroupMapper() {}
+	
+	public static GroupMapper groupMapper() {
+		if (groupMapper == null) {
+			groupMapper = new GroupMapper();
+		}
+		return groupMapper;
+	}
+	
+	/* Alle weiteren Methoden sind in 4 Blöcke eingeteilt (Create, Read, Updated, Delete)*/
+	
+	
+/* CREATE (insert) - Dieser Block verfügt nur über eine Methode, die für alle Neueinträge verantwortlich ist*/
+	
+	public void insert (Group group) {
+		Connection con = DBConnection.connection();
+		
+		String sql= "insert into group (id, name, createDate, modDate) values ("+group.getId() + "," + group.getName()+ "," + group.getCreateDate()+ ","+ group.getModDate() +")";  
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+	}
+	
+	
+/* READ (find) - Dieser Block sorgt für Ausgabe bestehender Datensätze. 
+Dazu stehen zwei Methoden zur Verfügung. Zur Ausgabe aller Groupen eignet sich findAll.
+Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
+	
+	/* find all */
+	public Vector<Group> findAll(){
+		Connection con = DBConnection.connection();
+		String sql = "select * from group order by name";
+		
+		Vector<Group> groups= new Vector<Group>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
 
+				Group group = new Group();
 
+				group.setId(rs.getInt("id"));
+				group.setName(rs.getString("name"));
+				group.setCreateDate(rs.getTimestamp("createDate"));
+				group.setModDate(rs.getTimestamp("modDate"));
+				
+				groups.addElement(group);
+			}
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return groups;
+	}
+	
+	/* find by id */
+	public Group findById(int id) {
+		Connection con = DBConnection.connection();
+		Group group = new Group();
+		String sql="select * from group where id=" + id;
+			
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+					group.setId(rs.getInt("id"));
+					group.setName(rs.getString("name"));
+					group.setCreateDate(rs.getTimestamp("createDate"));
+					group.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return group;
+		}
+	
+	
+/*UPDATE*/
+	
+	public Group update(Group group) {
+		Connection con = DBConnection.connection();
+		String sql="UPDATE group " + "SET name=\"" + group.getName() + "\", " + "WHERE id=" + group.getId();
+
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return group;
+	}
+	
+
+/*DELETE*/
+	
+	public void delete (int id) {
+	Connection con = DBConnection.connection();
+		
+		String sql= "delete from group where id=" + id +")";
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+		
+	}
+	
+	
 } 
+
