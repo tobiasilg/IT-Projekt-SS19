@@ -31,6 +31,7 @@ public class HeaderRepo extends VerticalPanel {
 
 		// Gesamtes Header Div
 		 this.addStyleName("header");
+		 this.add(label);
 
 	}
 }
