@@ -34,7 +34,7 @@ public interface EinkaufslistenverwaltungAsync {
 
     void getAll(AsyncCallback<Vector<Group>> callback);
 
-	void findById(User user, AsyncCallback<Vector<Group>> callback);
+//	void findId(User user, AsyncCallback<Vector<Group>> callback);
 
 	void save(Group group, AsyncCallback<Void> callback);
 

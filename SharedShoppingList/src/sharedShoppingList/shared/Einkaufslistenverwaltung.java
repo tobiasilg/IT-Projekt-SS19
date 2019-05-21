@@ -34,7 +34,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	Vector<Group> getAll() throws IllegalArgumentException;
 
-	Group findById(int id) throws IllegalArgumentException;
+//	Group findId(int id) throws IllegalArgumentException;
 
 	void save(Group group) throws IllegalArgumentException;
 

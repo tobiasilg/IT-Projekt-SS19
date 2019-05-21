@@ -311,7 +311,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
     
     /** Ausgabe einer Gruppe */
-    public Group findById(int id) throws IllegalArgumentException {
+    public Group findId(int id) throws IllegalArgumentException {
 		return this.groupMapper.findById(id);
 	}
 
