@@ -28,7 +28,7 @@ public class ArticleMapper {
 	 * Geschützter Konstrukter verhindert weitere Instanzierungen von ArticleMapper.
 	 * Somit kann nur eine Instanz der Klasse ArticleMapper angelegt werden.
 	 */
-	protected ArticleMapper() {
+	public ArticleMapper() {
 	}
 
 	
@@ -169,7 +169,7 @@ public class ArticleMapper {
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article values ("+article.getId() + "," + article.getName()+ "," + article.getCreateDate()+ ","+ article.getModDate() +"," +article.getUnit() +","+ article.isFavourite()+ ")";
+		String sql= "insert into article (id, name, createDate, modDate, favourite, unit) values ("+article.getId() + "," + article.getName()+ "," + article.getCreateDate()+ ","+ article.getModDate() +"," + article.isFavourite()+","+article.getUnit() + ")";
 		
 	    try {
 	    	
