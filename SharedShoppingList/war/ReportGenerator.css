@@ -1,0 +1,7 @@
+#header {
+	background: lightgrey;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 1;
+	grid-row-end: 2;
+}
