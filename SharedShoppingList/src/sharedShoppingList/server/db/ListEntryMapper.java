@@ -34,7 +34,7 @@ public class ListEntryMapper {
 		 * Geschützter Konstrukter verhindert weitere Instanzierungen von ListEntryMapper.
 		 * Somit kann nur eine Instanz der Klasse ListEntryMapper angelegt werden.
 		 */
-		protected ListEntryMapper() {
+		public ListEntryMapper() {
 		}
 
 		
@@ -224,7 +224,7 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "insert into listentry (id, name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ("+listEntry.getId() + "," + listEntry.getName()+ ","+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
+			String sql= "insert into listentry (name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
 		    try {
 		    	

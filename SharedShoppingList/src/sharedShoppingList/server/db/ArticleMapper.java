@@ -148,7 +148,7 @@ public class ArticleMapper {
 	public void delete (Article article) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from article where id=" + article.getId() +")";
+		String sql= "delete from article where id=" + article.getId();
 		
 	    try {
 	    	

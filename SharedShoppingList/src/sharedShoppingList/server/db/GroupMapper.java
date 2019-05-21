@@ -24,7 +24,7 @@ public class GroupMapper {
 	private static GroupMapper groupMapper = null;
 	
     /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
-	protected GroupMapper() {}
+	public GroupMapper() {}
 	
 	public static GroupMapper groupMapper() {
 		if (groupMapper == null) {
@@ -41,7 +41,7 @@ public class GroupMapper {
 	public Group insert (Group group) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into group (id, name, createDate, modDate) values ("+group.getId() + "," + group.getName()+ "," + group.getCreateDate()+ ","+ group.getModDate() +")";  
+		String sql= "insert into group (name, createDate, modDate) values ('"+ group.getName()+ "'," + group.getCreateDate()+ ","+ group.getModDate() +")";  
 		
 	    try {
 	    	
