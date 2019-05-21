@@ -31,7 +31,7 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameForm();
-	protected abstract String createTable();
+	
 
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
 	public void onLoad() {

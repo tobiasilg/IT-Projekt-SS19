@@ -169,7 +169,7 @@ public class ArticleMapper {
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article (id, name, createDate, modDate, favourite, unit) values ("+article.getId() + "," + article.getName()+ "," + article.getCreateDate()+ ","+ article.getModDate() +"," + article.isFavourite()+","+article.getUnit() + ")";
+		String sql= "insert into article (name, createDate, modDate, favourite, unit) values ('"+ article.getName()+ "'," + article.getCreateDate()+ ","+ article.getModDate() +"," + article.isFavourite()+",'"+article.getUnit() + "')";
 		
 	    try {
 	    	
