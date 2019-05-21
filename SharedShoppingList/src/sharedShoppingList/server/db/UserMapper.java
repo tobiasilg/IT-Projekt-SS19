@@ -22,7 +22,7 @@ public class UserMapper {
 	private static UserMapper userMapper = null;
 	
     /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
-	protected UserMapper() {}
+	public UserMapper() {}
 	
 	public static UserMapper userMapper() {
 		if (userMapper == null) {

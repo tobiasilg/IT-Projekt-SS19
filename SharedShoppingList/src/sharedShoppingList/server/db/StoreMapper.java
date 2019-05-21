@@ -22,7 +22,7 @@ public class StoreMapper {
 	
 	private static StoreMapper storeMapper = null;
 	
-	protected StoreMapper() {}
+	public StoreMapper() {}
 	
 	public static StoreMapper storeMapper() {
 		if (storeMapper == null) {
@@ -39,7 +39,7 @@ public class StoreMapper {
 	public void insert (Store store) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into store (id, name, createDate, modDate) values ("+store.getId() + "," + store.getName()+ "," + store.getCreateDate()+ ","+ store.getModDate() +")";  
+		String sql= "insert into store (name, createDate, modDate) values ('"+ store.getName()+ "'," + store.getCreateDate()+ ","+ store.getModDate() +")";  
 		
 	    try {
 	    	
