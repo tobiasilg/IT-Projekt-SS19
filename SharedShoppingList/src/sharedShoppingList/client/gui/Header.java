@@ -156,6 +156,7 @@ public class Header extends FlowPanel {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				
+				
 			}
 			
 		}
