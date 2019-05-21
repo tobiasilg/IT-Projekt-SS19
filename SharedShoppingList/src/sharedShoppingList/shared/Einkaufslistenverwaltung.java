@@ -10,6 +10,7 @@ import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
+import sharedShoppingList.shared.bo.Group;
 
 /*
  * @author: Leon Seiz, Nico Weiler, Tobias Ilg
@@ -29,6 +30,14 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException;
 	
-	
+	Group createGroup(String name) throws IllegalArgumentException;
+
+	Vector<Group> getAll() throws IllegalArgumentException;
+
+	Group findById(int id) throws IllegalArgumentException;
+
+	void save(Group group) throws IllegalArgumentException;
+
+	void delete(Group group) throws IllegalArgumentException;
 
 }
