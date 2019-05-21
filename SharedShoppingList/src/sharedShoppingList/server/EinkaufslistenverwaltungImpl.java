@@ -272,4 +272,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return listEntryMapper.findByStoreAndDate(store, beginningDate);
 	}
 	
+	public Vector <User> getAllUser (User user) {
+		return this.userMapper.findAll();
+	}
+	
+	
 }
