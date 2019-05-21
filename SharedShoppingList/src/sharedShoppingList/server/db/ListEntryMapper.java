@@ -59,7 +59,7 @@ public class ListEntryMapper {
 		public ListEntry findByID(int id) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listEntry where id=" + id;
+			String sql="select * from listentry where id=" + id;
 			try {
 
 				Statement stmt = con.createStatement();
@@ -94,7 +94,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findByArticle(Article article) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listEntry where articleid=" + article.getId();
+			String sql="select * from listentry where articleid=" + article.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -133,7 +133,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry>findAllListEntries(){
 			Connection con = DBConnection.connection();
-			String sql = "select * from article order by name";
+			String sql = "select * from listentry order by name";
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -168,7 +168,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry> findAllByCurrentUser(User user){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listEntry where userid=" + user.getId();
+			String sql = "select * from listentry where userid=" + user.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -203,7 +203,7 @@ public class ListEntryMapper {
 		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "delete from listEntry where id=" + listEntry.getId() +")";
+			String sql= "delete from listentry where id=" + listEntry.getId() +")";
 			
 		    try {
 		    	
@@ -224,7 +224,7 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "insert into article (id, name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ("+listEntry.getId() + "," + listEntry.getName()+ ","+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
+			String sql= "insert into listentry (id, name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ("+listEntry.getId() + "," + listEntry.getName()+ ","+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
 		    try {
 		    	
@@ -244,7 +244,7 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-			String sql="UPDATE article " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
+			String sql="UPDATE listentry " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
 					+ listentry.getAmount() + "\" " + "WHERE id=" + listentry.getId();
 
 			try {
