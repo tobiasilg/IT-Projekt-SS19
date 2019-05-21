@@ -96,17 +96,19 @@ body {
 	color: white;
 }
 .header_title {
-    color: #363636;
+     color: white;
     font-size: 2rem;
     font-weight: 600;
     line-height: 1.125;
+    font-weight: bold;
 }
 
 .header_subtitle {
-    color: #4a4a4a;
+    color: #4db1e2;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.25;
+    font-style: italic;
 }
 
 .header_right {
@@ -130,7 +132,6 @@ body {
   line-height: 1.5;
   padding: .5rem .75rem;
   position: relative;
-	font-weight: bold;
 	color: white;
 	text-decoration: none;
 	font-size: 1.2rem;
