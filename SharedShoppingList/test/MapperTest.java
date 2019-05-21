@@ -14,11 +14,17 @@ public class MapperTest {
 		//System.out.println(am.findByID(1));
 		
 		Article apfel = new Article();
+		Article banane = new Article();
 		
 		apfel.setName("Apfel");
-		apfel.setId(2);
-		apfel.setCreateDate(new Timestamp());
+		apfel.setUnit("St");
 		
+		banane.setName("Banane");
+		banane.setUnit("St");
+		
+		
+		am.insert(banane);
+
 		
 		
 		
