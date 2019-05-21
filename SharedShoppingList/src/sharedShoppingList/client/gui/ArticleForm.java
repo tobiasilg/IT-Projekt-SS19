@@ -1,10 +1,14 @@
 package sharedShoppingList.client.gui;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * Formular fÃ¼r das Anlegen eines neuen Artikels im Datenstamm
@@ -12,17 +16,75 @@ import com.google.gwt.user.client.ui.ListBox;
  *
  */
 
-public class ArticleForm extends VerticalPanel {
+public class ArticleForm extends AbstractAdministrationForm { 
 	
-	Label articleNameLabel = new Label("Name des Artikels");
-	Label articleUnitLabel = new Label("Einheit in");
-	Label articleAmountLabel = new Label("Menge");
-	TextBox articelNameTextBox = new TextBox();
-	TextBox articleAmountTextBox = new TextBox();
-	ListBox articleUnitlistBox = new ListBox();
-    Button addArticleButton = new Button("Artikel hinzufÃ¼gen");
-	Button deleteArticleButton = new Button("Artikel lÃ¶schen");
-	Button saveArticleButton = new Button("Artikel speichern");
+	
+	@Override
+	protected String nameForm() {
+
+		return "Artikelverwaltung";
+	}
+
+
+	// Konstruktor
+	public ArticleForm() {
+
+		saveButton.addClickHandler(new CreateArticleClickHandler());
+		cancelButton.addClickHandler(new CancelClickHandler());
+		addButton.addClickHandler(new AddArticleClickHandler());
+
+	}
+
+	/**
+	 * Hiermit wird der Erstellvorgang einer neuen Artikel abbgebrochen.
+	 */
+	private class CancelClickHandler implements ClickHandler {
+
+		public void onClick(ClickEvent event) {
+			RootPanel.get("Details").clear();
+
+		}
+
+	}
+
+	/**
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Artikel nach
+	 * dem Klicken des Bestätigungsbutton erstellt.
+	 */
+	private class CreateArticleClickHandler implements ClickHandler {
+
+		public void onClick(ClickEvent event) {
+
+		}
+	}
+
+	/**
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Artikel nach dem Klicken
+	 * des addButton erstellt.
+	 */
+	private class AddArticleClickHandler implements ClickHandler {
+
+		public void onClick(ClickEvent event) {
+
+		}
+	}
+
+	/**
+	 * Callback wird benötigt, um den Artikel zu erstellen
+	 */
+	private class ArticleCreationCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Der Artikel konnte nicht erstellt werden");
+		}
+
+		@Override
+		public void onSuccess(Void event) {
+			Notification.show("Der Artikel wurde erfolgreich erstellt");
+		}
+	}
+
 	
 
 }
