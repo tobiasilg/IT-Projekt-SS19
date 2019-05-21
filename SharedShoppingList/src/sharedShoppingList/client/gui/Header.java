@@ -1,6 +1,7 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.user.client.ui.Button;
+
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -13,21 +14,23 @@ public class Header extends FlowPanel {
 	// EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
-	private FlowPanel headerLeft = new FlowPanel(); // Panel indem das Label liegt
-	private FlowPanel headerRight = new FlowPanel();// Panel indem die Buttonspanels liegen
-	private FlowPanel logoutIcon = new FlowPanel(); // Panel indem das Logout Icon liegt
-
-	// Erstellung der Button und Label Divs
-	private FlowPanel title = new FlowPanel(); // Panel indem das titleLabel liegt
-	private FlowPanel report = new FlowPanel(); // Panel indem der reportButton liegt
-	private FlowPanel article = new FlowPanel();// Panel indem der articleButton liegt
-	private FlowPanel store = new FlowPanel(); // Panel indem der storeButton liegt
-
-	// Erstellung der Buttons und Label
-	private Label titleLabel = new Label("KEKWAY");
-	private Button reportButton = new Button("Report");
-	private Button articleButton = new Button("Artikel");
-	private Button storeButton = new Button("Store");
+	private FlowPanel headerLeft = new FlowPanel(); 
+	private FlowPanel headerLeftElement = new FlowPanel();
+	private FlowPanel headerRight = new FlowPanel();
+	private FlowPanel headerEnd = new FlowPanel();
+	private FlowPanel headerRightElement = new FlowPanel();
+	
+	private FlowPanel headerImage = new FlowPanel();
+	
+	// Erstellung Label Div
+	private Label headerTitle = new Label("KEKWAY");
+	private Label headerSubtitle = new Label("share it - by it");
+	
+	
+	// Anchors 
+	private Anchor report = new Anchor("Report");
+	private Anchor article = new Anchor("Artikel");
+	private Anchor store = new Anchor("Store");
 
 	// Erstellen des Logout Icons
 	Image logout = new Image();
@@ -54,39 +57,39 @@ public class Header extends FlowPanel {
 		this.addStyleName("header");
 
 		// Einzelteile des Headers
-		headerLeft.addStyleName("header-left");
-		headerRight.addStyleName("header-right");
+		headerLeft.addStyleName("header_left");
+		headerRight.addStyleName("header_right");
+		headerEnd.addStyleName("header_end");
+		headerLeftElement.addStyleName("header_left_element");
+		headerTitle.addStyleName("header_title");
+		headerSubtitle.addStyleName("header_subtitle");
+		headerRightElement.addStyleName("header_right_elememt");
 		
-		logoutIcon.addStyleName("logout-icon-element");
 		
-		title.addStyleName("header-left-element");
-		article.addStyleName("header-right-element");
-		store.addStyleName("header-right-element");
-		report.addStyleName("header-right-element");
 		
-		titleLabel.addStyleName("header-title");
-		articleButton.addStyleName("header-button");
-		storeButton.addStyleName("header-button");
-		reportButton.addStyleName("report-button");
-
+		report.addStyleName("header_right_elememt");
+		article.addStyleName("header_right_elememt");
+		store.addStyleName("header_right_elememt");
+		
+		headerImage.addStyleName("header_image");
+		
+		
 		// Einfügen des Icons
 		logout.setUrl("/images/logoutIcon.png");
-		logout.addStyleName("logout-icon");
-
-		// Zuordnung der Widgets
-		title.add(titleLabel);
-		report.add(reportButton);
-		article.add(articleButton);
-		store.add(storeButton);
-
-		// Zuordnung des Icons in das logoutIcon Panel
-		logoutIcon.add(logout);
-
-		headerLeft.add(title);
-		headerRight.add(report);
-		headerRight.add(article);
-		headerRight.add(store);
-		headerRight.add(logoutIcon);
+		logout.addStyleName("img");
+		
+		headerLeft.add(headerLeftElement);
+		headerLeftElement.add(headerTitle);
+		headerLeftElement.add(headerSubtitle);
+		
+		headerRight.add(headerEnd);
+		headerEnd.add(report);
+		headerEnd.add(article);
+		headerEnd.add(store);
+		headerEnd.add(headerRightElement);
+		
+		headerRightElement.add(headerImage);
+		headerImage.add(logout);
 
 		this.add(headerLeft);
 		this.add(headerRight);
