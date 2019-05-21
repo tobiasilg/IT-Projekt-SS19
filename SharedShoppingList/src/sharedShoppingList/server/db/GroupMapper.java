@@ -11,211 +11,147 @@ import java.util.Vector;
 import sharedShoppingList.shared.bo.Group;
 
 /**
+* Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - verantwortlich.
+* Er ermöglicht die Durchführung aller "CRUD-Vorgänge". Dazu bietet er verschiedene Methoden (z.B. findByID vs findAll) an.
 * Author dieser Klasse:
 * @author Tobias Ilg
 */
 
+
+
 public class GroupMapper {
+	
+	private static GroupMapper groupMapper = null;
+	
+    /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
+	protected GroupMapper() {}
+	
+	public static GroupMapper groupMapper() {
+		if (groupMapper == null) {
+			groupMapper = new GroupMapper();
+		}
+		return groupMapper;
+	}
+	
+	/* Alle weiteren Methoden sind in 4 Blöcke eingeteilt (Create, Read, Updated, Delete)*/
+	
+	
+/* CREATE (insert) - Dieser Block verfügt nur über eine Methode, die für alle Neueinträge verantwortlich ist*/
+	
+	public void insert (Group group) {
+		Connection con = DBConnection.connection();
+		
+		String sql= "insert into group (id, name, createDate, modDate) values ("+group.getId() + "," + group.getName()+ "," + group.getCreateDate()+ ","+ group.getModDate() +")";  
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+	}
+	
+	
+/* READ (find) - Dieser Block sorgt für Ausgabe bestehender Datensätze. 
+Dazu stehen zwei Methoden zur Verfügung. Zur Ausgabe aller Groupen eignet sich findAll.
+Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
+	
+	/* find all */
+	public Vector<Group> findAll(){
+		Connection con = DBConnection.connection();
+		String sql = "select * from group order by name";
+		
+		Vector<Group> groups= new Vector<Group>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
 
-private static GroupMapper groupmapper = null;
+				Group group = new Group();
 
-/**
-* Falls noch kein GroupMapper existiert wird ein neuen GroupMapper erstellt und zurückgegeben
-*
-* @return erstmalig erstellter GroupMapper
-*
-*/
+				group.setId(rs.getInt("id"));
+				group.setName(rs.getString("name"));
+				group.setCreateDate(rs.getTimestamp("createDate"));
+				group.setModDate(rs.getTimestamp("modDate"));
+				
+				groups.addElement(group);
+			}
 
-public static GroupMapper groupMapper() {
-if (groupmapper == null){
-groupmapper = new GroupMapper();
-}
-return groupmapper;
-}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return groups;
+	}
+	
+	/* find by id */
+	public Group findById(int id) {
+		Connection con = DBConnection.connection();
+		Group group = new Group();
+		String sql="select * from group where id=" + id;
+			
+		try {
 
-/**
-* Findet Groups durch eine G_ID und speichert die dazugehörigen Werte (G_ID, name, createDate, modDate) in einem Group Objekt ab und gibt dieses wieder
-*
-* @param sid übergebener Integer der G_ID
-* @return Ein vollständiges Group Objekt
-*
-* @author Tobias Ilg
-*/
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
 
-public Group findByID(Group group){
-Connection con = DBConnection.connection();
-Group g = new Group();
+				if (rs.next()) {
+					
+					group.setId(rs.getInt("id"));
+					group.setName(rs.getString("name"));
+					group.setCreateDate(rs.getTimestamp("createDate"));
+					group.setModDate(rs.getTimestamp("modDate"));
+					
+				}
 
-try{
-Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_Group WHERE G_ID ="+ group.getId() + " ORDER BY modDate");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return group;
+		}
+	
+	
+/*UPDATE*/
+	
+	public Group update(Group group) {
+		Connection con = DBConnection.connection();
+		String sql="UPDATE group " + "SET name=\"" + group.getName() + "\", " + "WHERE id=" + group.getId();
 
-if (rs.next()){
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
 
-g.setId(rs.getInt("G_ID"));
-g.setName(rs.getString("name"));
-g.setCreateDate(rs.getTimestamp("createDate"));
-g.setModDate(rs.getTimestamp("modDate"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return group;
+	}
+	
 
-return g;
-}
-}
-
-catch (SQLException e){
-e.printStackTrace();
-return g;
-}
-
-return g;
-}
-
-
-public Vector<Group> findAll(){
-Connection con = DBConnection.connection();
-Vector<Group> result = new Vector<Group>();
-
-try{
-Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_Group ORDER BY modDate");
-
-while (rs.next()){
-Group g = new Group();
-g.setId(rs.getInt("G_ID"));
-g.setName(rs.getString("name"));
-g.setCreateDate(rs.getTimestamp("createDate"));
-g.setModDate(rs.getTimestamp("modDate"));
-result.addElement(g);
-}
-}catch(SQLException e2){
-e2.printStackTrace();
-}
-return result;
-}
-
-
-/**
-* Gibt alle Group Objekte eine spez. Users zurück welche mit G_ID, name, createDate und modDate befüllt sind
-*
-* @return Ein Vector voller Group Objekte welche befüllt sind
-*
-*/
-public Vector<Group> findAllByUID(Group g){
-Connection con = DBConnection.connection();
-Vector<Group> result = new Vector<Group>();
-
-try{
-Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("SELECT G_ID, name, createDate, modDate FROM T_Group WHERE creator =" +g.getId()+" ORDER BY modDate");
-
-while (rs.next()){
-Group g1 = new Group();
-g1.setId(rs.getInt("G_ID"));
-g1.setName(rs.getString("name"));
-g1.setCreateDate(rs.getTimestamp("createDate"));
-g1.setModDate(rs.getTimestamp("modDate"));
-result.addElement(g);
-}
-}catch(SQLException e2){
-e2.printStackTrace();
-}
-return result;
-}
-/**
-* Gibt alle Group Objekte zurück welche mit G_ID, name, createDate und modDate befüllt sind
-* Hierfür holen wir G_ID, creator, cintent, createDate und modDate aus der T_Group Tabelle und speichern diese in einem Group Objekt ab und fügen diese dem Vector hinzu
-* Diesen Vector befüllt mit Group geben wir zurück
-*
-* @return Ein Vector voller Group Objekte welche befüllt sind
-*
-*/
-
-
-
-public Group insert(Group group){
-Connection con = DBConnection.connection();
-Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-String g = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts);
-
-try{
-Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("SELECT MAX(G_ID) AS maxsid FROM T_Group");
-if (rs.next()){
-
-group.setId(rs.getInt("maxsid")+1);
-Statement stmt2 = con.createStatement();
-stmt2.executeUpdate("INSERT INTO T_Group (G_ID, name, createDate, modDate)"
-+ " VALUES ("
-+ group.getId()
-+ ", "
-+ group.getName()
-+ ", '"
-+ g
-+ "', '"
-+ g
-+ "')") ;
-
-return group;
-
-}
-}
-catch (SQLException e2){
-e2.printStackTrace();
-return group;
-}
-return group;}
-
-/**
-* Befüllt T_Group mit G_ID, name, createDate und modDate, falls sich was geändert hat
-* Ein Group Objekt wird zurückgegeben
-*
-* @param group übergebenes Group Objekt mit Attributen G_ID und type
-* @return Ein vollständiges Group Objekt
-*
-*/
-public Group update(Group group){
-Connection con = DBConnection.connection();
-Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-String g = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts);
-
-try{
-Statement stmt = con.createStatement();
-stmt.executeUpdate("UPDATE T_Group SET G_ID ="
-+group.getId()
-+", creator ="
-+ group.getName()
-// +"', createDate="
-// + group.getCreateDate()
-+"', modDate='"
-+ g
-+ "' WHERE G_ID="
-+ group.getId());
-}
-catch (SQLException e2){
-e2.printStackTrace();
-return group;
-}
-return group;}
-
-/**
-* Entfernt alles aus T_Group wo die G_ID der ID des übergebenen Objekts entspricht
-*
-* @param group übergebenes Group Objekt mit Attribut G_ID
-*
-*/
-public void delete (Group group){
-Connection con = DBConnection.connection();
-
-try{
-
-Statement stmt = con.createStatement();
-stmt.executeUpdate("DELETE FROM T_Group WHERE G_ID =" + group.getId());
-}
-
-catch (SQLException e2){
-e2.printStackTrace();
-}
-}
+/*DELETE*/
+	
+	public void delete (int id) {
+	Connection con = DBConnection.connection();
+		
+		String sql= "delete from group where id=" + id +")";
+		
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	stmt.executeUpdate(sql);	 
+	      
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+		
+	}
+	
+	
 } 
 
