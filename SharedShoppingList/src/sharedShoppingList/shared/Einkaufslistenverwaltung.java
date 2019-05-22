@@ -32,9 +32,9 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	Group createGroup(String name) throws IllegalArgumentException;
 
-	Vector<Group> getAll() throws IllegalArgumentException;
+	Vector<Group> getAllGroups() throws IllegalArgumentException;
 
-//	Group findId(int id) throws IllegalArgumentException;
+//	Group findGroupById(int id) throws IllegalArgumentException;
 
 	void save(Group group) throws IllegalArgumentException;
 

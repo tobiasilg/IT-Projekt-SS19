@@ -17,6 +17,7 @@ import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
+import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
@@ -296,7 +297,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
         */
 		group.setId(1);
 
-		return this.groupMapper.insert(group);
+		this.groupMapper.insert(group);
+		
+		return group;
 	}
 
 		
@@ -305,13 +308,13 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
     /** Ausgabe aller Gruppen
     *@TODO Klären, ob mehrere Gruppen parallel existieren können*/
 
-    public Vector<Group> getAll() throws IllegalArgumentException {
+    public Vector<Group> getAllGroups() throws IllegalArgumentException {
 		return this.groupMapper.findAll();
 	}
 
     
     /** Ausgabe einer Gruppe */
-    public Group findId(int id) throws IllegalArgumentException {
+    public Group findGroupbyId(int id) throws IllegalArgumentException {
 		return this.groupMapper.findById(id);
 	}
 
@@ -330,7 +333,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 	
 	
-/** BO: SHOPPINGLISTE @author Tobi **/
+/** SHOPPINGLISTE @author Tobi **/
 
 	
 	/** Create einer neuen Shoppingliste */
@@ -345,7 +348,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
         */
 		shoppingList.setId(1);
 
-		return this.listmapper.insert(shoppingList);
+		this.listMapper.insert(shoppingList);
+		
+		return shoppingList;
 	}
 
 		
@@ -354,32 +359,32 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
         /** Ausgabe aller Listen **/
 
     public Vector<ShoppingList> getAll() throws IllegalArgumentException {
-		return this.listmapper.findAll();
+		return this.listMapper.findAll();
 	}
 
         /** Ausgabe aller Listen einer Gruppe **/
 
     public Vector<ShoppingList> getAllByGroup(Group group) throws IllegalArgumentException {
-		return this.listmapper.findAllByGroup();
+		return this.listMapper.findAllByGroup(group);
 	}
 
     
         /** Ausgabe einer Shoppingliste */
-    public ShoppingList findId(int id) throws IllegalArgumentException {
-		return this.listmapper.findById(id);
+    public ShoppingList findShoppingListById(int id) throws IllegalArgumentException {
+		return this.listMapper.findById(id);
 	}
 
 
 	/** Update einer Shoppingliste */
 
 	public void save(ShoppingList shoppingList) throws IllegalArgumentException {
-		this.listmapper.update(shoppingList);
+		this.listMapper.update(shoppingList);
 	}
 
 	/** Löschen einer Shoppingliste */
 
-	public void delete(ShoppingList shoppingList) throws IllegalArgumentException {
-		this.listmapper.delete(shoppingList);
+	public void delete(int id) throws IllegalArgumentException {
+		this.listMapper.delete(id);
 		
 	}
 	

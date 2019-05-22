@@ -32,9 +32,9 @@ public interface EinkaufslistenverwaltungAsync {
 	
 	void createGroup(String name, AsyncCallback<Group> callback);
 
-    void getAll(AsyncCallback<Vector<Group>> callback);
+    void getAllGroups(AsyncCallback<Vector<Group>> callback);
 
-//	void findId(User user, AsyncCallback<Vector<Group>> callback);
+//	void findGroupById(User user, AsyncCallback<Vector<Group>> callback);
 
 	void save(Group group, AsyncCallback<Void> callback);
 
