@@ -26,7 +26,7 @@ public class Header extends FlowPanel {
 	private FlowPanel headerImage = new FlowPanel();
 
 	// Erstellung Label Divs
-	private Label headerTitle = new Label("K E K W A Y");
+	private Label headerTitle = new Label("KEKBUY");
 	private Label headerSubtitle = new Label("share it - by it");
 
 	// Anchors

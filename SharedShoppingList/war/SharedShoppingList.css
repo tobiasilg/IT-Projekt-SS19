@@ -68,6 +68,10 @@ body {
 	grid-row-end: 4;
 }
 
+/*
+	Stylen der Header Elemente
+*/
+
 .header {
   min-height: 3.25rem;
   align-items: stretch;
@@ -96,19 +100,20 @@ body {
 	color: white;
 }
 .header_title {
-     color: white;
-    font-size: 2rem;
-    font-weight: 600;
-    line-height: 1.125;
-    font-weight: bold;
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	font-weight: bold;
+    
 }
 
 .header_subtitle {
-    color: #4db1e2;
+    color: #4a4a4a;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.25;
-    font-style: italic;
+
 }
 
 .header_right {
@@ -119,8 +124,8 @@ body {
 .header_end {
     justify-content: flex-end;
     margin-left: auto;
-		align-items: stretch;
-		display: flex;
+	align-items: stretch;
+	display: flex;
 }
 
 .header_right_elememt {
@@ -135,21 +140,77 @@ body {
 	color: white;
 	text-decoration: none;
 	font-size: 1.2rem;
+	font-weight: bold;
 }
 
 .header_image {
     height: 64px;
     width: 64px;
-		display: block;
-		position: relative;
-		color: #3273dc;
-		cursor: pointer;
-		text-decoration: none;
+	display: block;
+	position: relative;
+	color: #3273dc;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 .img {
     height: auto;
     max-width: 100%;
+}
+/*
+	Stylen der Nav Elemente
+*/
+.nav {
+	 margin-right: 50px;
+	 font-size: 2rem;
+	 display: block;
+}
+
+.navButton.gwt-Button {
+	margin-top: 10px;
+	background: #209cee;
+	border-color: transparent;
+	color: white;
+	cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(.375em - 1px);
+    padding-left: .75em;
+    padding-right: .75em;
+    padding-top: calc(.375em - 1px);
+    text-align: center;
+    white-space: nowrap;
+	border-width: 1px;
+	-webkit-appearance: none;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    display: inline-flex;
+    font-size: 1rem;
+    height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+    vertical-align: top;
+	user-select: none;
+    
+}
+
+.navTitle {
+	border-style: inset;
+	border-left: none;
+	border-top: none;
+	border-right: none;
+	border-width: 3px;
+	border-color: #d5dee0;
+	font-size: 1.5rem;
+	color: #363636;
+	font-weight: 600;
+	line-height: 1.125;
+	display: block;
+	margin-block-start: 1em;
+  	margin-block-end: 1em;
+  	margin-inline-start: 0px;
+  	margin-inline-end: 0px;
 }
 
 .loginButton{
@@ -172,4 +233,4 @@ body {
 	font-weight: bold;
 	color: white;
     overflow:auto;
-)
+}

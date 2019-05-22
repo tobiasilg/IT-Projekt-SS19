@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import sharedShoppingList.client.gui.Header;
+import sharedShoppingList.client.gui.Navigator;
 
 
 /**
@@ -15,6 +16,10 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 	Header header = new Header();
 	RootPanel rootPanelHeader = RootPanel.get("header");
+	
+	Navigator navigator = new Navigator();
+	RootPanel rootPanelNavigator = RootPanel.get("navigator");
+	
 
 	/*
 	 * 
@@ -41,6 +46,7 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	public void onModuleLoad() {
 
 		rootPanelHeader.add(header);
+		rootPanelNavigator.add(navigator);
 
 	}
 	
