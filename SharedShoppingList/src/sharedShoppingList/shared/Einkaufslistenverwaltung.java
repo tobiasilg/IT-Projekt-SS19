@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
+import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.bo.Group;
@@ -32,12 +33,24 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	Group createGroup(String name) throws IllegalArgumentException;
 
-	Vector<Group> getAll() throws IllegalArgumentException;
+	Vector<Group> getAllGroups() throws IllegalArgumentException;
 
-//	Group findId(int id) throws IllegalArgumentException;
+//	Group findGroupById(int id) throws IllegalArgumentException;
 
 	void save(Group group) throws IllegalArgumentException;
 
 	void delete(Group group) throws IllegalArgumentException;
+	
+	ShoppingList createShoppingList(String name) throws IllegalArgumentException;
+
+	Vector<ShoppingList> getAll() throws IllegalArgumentException;
+
+	Vector<ShoppingList> getAllByGroup(Group group) throws IllegalArgumentException;
+
+	ShoppingList findShoppingListById(int id) throws IllegalArgumentException;
+
+	void save(ShoppingList shoppingList) throws IllegalArgumentException;
+
+	void delete(int id) throws IllegalArgumentException;
 
 }
