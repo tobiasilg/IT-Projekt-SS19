@@ -281,7 +281,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	
 	
-	/** GRUPPE @author Tobi **/
+/** BO: GRUPPE @author Tobi **/
 
 	
 	/** Create einer neuen Gruppe */
@@ -329,5 +329,58 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 	}
 	
+	
+/** BO: SHOPPINGLISTE @author Tobi **/
+
+	
+	/** Create einer neuen Shoppingliste */
+
+	public ShoppingList createShoppingList(String name) throws IllegalArgumentException {
+		ShoppingList shoppingList = new ShoppingList();
+		shoppingList.setName(name);
+
+        /** ACHTUNG! NUR VORLÄUFIG!
+        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
+        * @TODO ID-Verabe anpassen.
+        */
+		shoppingList.setId(1);
+
+		return this.listmapper.insert(shoppingList);
+	}
+
+		
+	/** Read einer Shoppingliste */
+
+        /** Ausgabe aller Listen **/
+
+    public Vector<ShoppingList> getAll() throws IllegalArgumentException {
+		return this.listmapper.findAll();
+	}
+
+        /** Ausgabe aller Listen einer Gruppe **/
+
+    public Vector<ShoppingList> getAllByGroup(Group group) throws IllegalArgumentException {
+		return this.listmapper.findAllByGroup();
+	}
+
+    
+        /** Ausgabe einer Shoppingliste */
+    public ShoppingList findId(int id) throws IllegalArgumentException {
+		return this.listmapper.findById(id);
+	}
+
+
+	/** Update einer Shoppingliste */
+
+	public void save(ShoppingList shoppingList) throws IllegalArgumentException {
+		this.listmapper.update(shoppingList);
+	}
+
+	/** Löschen einer Shoppingliste */
+
+	public void delete(ShoppingList shoppingList) throws IllegalArgumentException {
+		this.listmapper.delete(shoppingList);
+		
+	}
 	
 }
