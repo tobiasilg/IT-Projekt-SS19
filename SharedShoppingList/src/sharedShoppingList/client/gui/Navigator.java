@@ -1,6 +1,5 @@
 package sharedShoppingList.client.gui;
 
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -14,35 +13,35 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 
 public class Navigator extends FlowPanel {
-	
+
 	private Button neuButton = new Button("NEU");
-	
+
 	private Label navTitle = new Label("Meine Gruppen");
 	
-	 private GroupCreationForm gcf;
+	private GroupCreationForm gcf;
 
-	//public Navigator() {
-	//	super();
-	//}
-	
+	// public Navigator() {
+	// super();
+	// }
+
 	public void onLoad() {
-		
+
 		// Vergeben der Stylenamen
 		this.addStyleName("nav");
-		
+
 		neuButton.addStyleName("navButton");
 		navTitle.addStyleName("navTitle");
-		
+
 		this.add(neuButton);
 		this.add(navTitle);
-		
+
 		neuButton.addClickHandler(new ShowGroupCreationForm());
-		
+
 	}
-	
+
 	/*
-	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung 
-	 * zur FroupCreationForm
+	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung zur
+	 * FroupCreationForm
 	 */
 	private class ShowGroupCreationForm implements ClickHandler {
 
@@ -53,8 +52,7 @@ public class Navigator extends FlowPanel {
 			gcf = new GroupCreationForm();
 			RootPanel.get("details").add(gcf);
 		}
-		
+
 	}
-	
 
 }

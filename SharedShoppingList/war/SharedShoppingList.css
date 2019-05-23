@@ -234,3 +234,93 @@ body {
 	color: white;
     overflow:auto;
 }
+/*
+	Stylen der ProfilForm Elemente
+*/
+.profilBox {
+	  margin-bottom: .75rem;
+	  text-align: center;
+}
+
+.profilTitle {
+	font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+    display: block;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    text-align: center;
+}
+.profilLabel.gwt-Label {
+	  margin-bottom: .5em;
+		color: #363636;
+		display: block;
+		font-size: 1rem;
+		font-weight: 700;
+		cursor: default;
+}
+.profilTextBox.gwt-TextBox {
+	box-sizing: border-box;
+    clear: both;
+    font-size: 1rem;
+    position: relative;
+    text-align: left;
+
+}
+.speicherProfilButton.gwt-Button  {
+	background: #00d1b2;
+border-color: transparent;
+color: #fff;
+border-width: 1px;
+cursor: pointer;
+justify-content: center;
+padding-bottom: calc(.375em - 1px);
+padding-left: .75em;
+padding-right: .75em;
+padding-top: calc(.375em - 1px);
+text-align: center;
+white-space: nowrap;
+-webkit-appearance: none;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    display: inline-flex;
+    font-size: 1rem;
+    height: 2.25em;
+		    line-height: 1.5;
+				position: relative;
+vertical-align: top;
+    user-select: none;
+		    text-decoration: none;
+}
+.logoutButton.gwt-Button  {
+    background: #ff3860;
+    border-color: transparent;
+    color: #fff;
+		border-width: 1px;
+		cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(.375em - 1px);
+    padding-left: .75em;
+    padding-right: .75em;
+    padding-top: calc(.375em - 1px);
+    text-align: center;
+    white-space: nowrap;
+		-webkit-appearance: none;
+align-items: center;
+border: 1px solid transparent;
+border-radius: 4px;
+box-shadow: none;
+display: inline-flex;
+font-size: 1rem;
+height: 2.25em;
+    line-height: 1.5;
+		position: relative;
+    vertical-align: top;
+		user-select: none;
+}
