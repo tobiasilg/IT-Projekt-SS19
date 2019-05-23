@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.shared.bo.ShoppingList;
+
 public class ListCreationForm extends AbstractDialogCreationForm {
 
 	@Override
@@ -23,8 +25,8 @@ public class ListCreationForm extends AbstractDialogCreationForm {
 }
 
 /**
- * Hiermit wird der Erstellvorgang einer neuen Gruppe abbgebrochen.
- * TODO: Clickhandler private setzen -> Fehler!
+ * Hiermit wird der Erstellvorgang einer neuen Gruppe abbgebrochen. TODO:
+ * Clickhandler private setzen -> Fehler!
  */
 class CancelListClickHandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
@@ -38,19 +40,20 @@ class CancelListClickHandler implements ClickHandler {
  */
 class SaveListClickHandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
+
 	}
 }
 
 /**
  * Callback wird benötigt, um die Gruppe zu erstellen
  */
-class ListCreationCallback implements AsyncCallback<Void> {
+class ListCreationCallback implements AsyncCallback<ShoppingList> {
 
 	public void onFailure(Throwable caught) {
 		Notification.show("Die Gruppen konnte nicht erstellt werden");
 	}
 
-	public void onSuccess(Void event) {
+	public void onSuccess(ShoppingList event) {
 		Notification.show("Die Gruppe wurde erfolgreich erstellt");
 	}
 }
