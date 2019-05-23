@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.shared.FieldVerifier;
 
@@ -19,11 +19,13 @@ import sharedShoppingList.shared.FieldVerifier;
 public abstract class AbstractAdministrationForm extends VerticalPanel {
 
 	private Label NameLabel = new Label(nameForm());
-	protected FlexTable administrationFlexTable = new FlexTable();
+	protected FlexTable administrationFlexTable = (createTable());
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("speichern");
-	protected Button addButton = new Button("Hinzufügen");
-	protected SuggestBox nameSuggestBox = new SuggestBox();
+	protected Button addButton = new Button("hinzufuegen");
+	protected Button deleteButton = new Button("loeschen");
+	protected TextBox nTextBox = new TextBox();
+	protected TextBox unitTextBox = (createUnitTextBox());
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
 	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
@@ -31,27 +33,35 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameForm();
-	
+	protected abstract FlexTable createTable();
+	protected abstract TextBox createUnitTextBox();
 
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
 	public void onLoad() {
 
-		hpCreate.add(nameSuggestBox);
+		hpCreate.add(nTextBox);
+		hpCreate.add(unitTextBox);
 		hpCreate.add(addButton);
+		
+		
+		
 
 		hpCancelandSafe.add(cancelButton);
 		hpCancelandSafe.add(saveButton);
+		hpCancelandSafe.add(deleteButton);
 
+		this.add(NameLabel);
 		this.add(hpCreate);
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
 
-		NameLabel.setStylePrimaryName("Namelabel");
-		administrationFlexTable.setStylePrimaryName("Table");
-		cancelButton.setStylePrimaryName("Button");
-		saveButton.setStylePrimaryName("Button");
-		addButton.setStylePrimaryName("Button");
-		nameSuggestBox.setStylePrimaryName("SuggestBox");
+		nTextBox.addStyleName("TextBox");
+		addButton.addStyleName("Button");
+		cancelButton.addStyleName("Button");
+		saveButton.addStyleName("Button");
+		deleteButton.addStyleName("Button");
+		administrationFlexTable.addStyleName("FlexTable");
 	}
+	
 
 }
