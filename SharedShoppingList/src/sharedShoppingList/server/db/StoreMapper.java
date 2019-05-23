@@ -36,7 +36,7 @@ public class StoreMapper {
 	
 /* CREATE (insert) */
 	
-	public void insert (Store store) {
+	public Store insert (Store store) {
 		Connection con = DBConnection.connection();
 		
 		String sql= "insert into store (name, createDate, modDate) values ('"+ store.getName()+ "'," + store.getCreateDate()+ ","+ store.getModDate() +")";  
@@ -50,6 +50,7 @@ public class StoreMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+	    return store;
 	}
 	
 	
@@ -131,10 +132,10 @@ public class StoreMapper {
 
 /*DELETE*/
 	
-	public void delete (int id) {
+	public void delete (Store store) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from store where id=" + id +")";
+		String sql= "delete from store where id=" + store +")";
 		
 	    try {
 	    	

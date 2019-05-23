@@ -106,8 +106,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 
 	/**
-	 * ************************* ABSCHNITT, Beginn: Methoden fÃ¼r Article Objekte
-	 * 
+	 * ************************* 
+	 * ABSCHNITT, Beginn: Methoden fuer Article Objekte
+	 * @author Nico Weiler
 	 * *************************
 	 **/
 
@@ -205,10 +206,20 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 
 	public void delete(Store store) throws IllegalArgumentException {
-
+		
+		Vector<ListEntry> listEntries = this.getAllListEntriesByStore(store);
 		/*
-		 * Löschweitergabe zu klären (falls store in ListEntry vorhanden, was passiert?)
+		 * Prüfen ob Listeneinträge mit dem jeweiligen Artikel vorhanden sind.
 		 */
+		
+		if(listEntries != null) {
+			for(ListEntry le:listEntries) {
+
+				this.listEntryMapper.delete(le);
+				
+			}
+		}
+		
 
 		this.storeMapper.delete(store);
 
@@ -219,8 +230,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 	}
 
-	public Store getStoreByID(Store store) throws IllegalArgumentException {
-		return this.storeMapper.findByID(store);
+	public Store getStoreByID( int id) throws IllegalArgumentException {
+		return this.storeMapper.findById(id);
 
 	}
 
@@ -268,6 +279,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.listEntryMapper.findByArticle(article);
 		
 	}
+	
+	public Vector<ListEntry> getAllListEntriesByStore(Store store) {
+		return this.listEntryMapper.findByStore(store);
+		
+	}
+	
 
 	@Override
 	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) {
