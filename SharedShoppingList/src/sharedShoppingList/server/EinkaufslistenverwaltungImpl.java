@@ -123,7 +123,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Article article = new Article();
 		article.setName(name);
 		article.setUnit(unit);
-
+		/*
+		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
+		 * dessen Nummer mit der Datenbank konsistent ist.
+		 * autoincrement=1
+		 */
 		article.setId(1);
 
 		return this.articleMapper.insert(article);
@@ -209,7 +213,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByStore(store);
 		/*
-		 * Prüfen ob Listeneinträge mit dem jeweiligen Artikel vorhanden sind.
+		 * Prüfen ob Listeneinträge mit dem jeweiligen Händler vorhanden sind.
 		 */
 		
 		if(listEntries != null) {
