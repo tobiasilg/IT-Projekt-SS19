@@ -23,7 +23,8 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 /**
  * Hiermit wird der Erstellvorgang einer neuen Gruppe abbgebrochen.
  */
-	private class CancelGroupClickHandler implements ClickHandler {
+	class CancelGroupClickHandler implements ClickHandler {
+		
 	public void onClick(ClickEvent event) {
 		RootPanel.get("Details").clear();
 	}
@@ -33,7 +34,12 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
  * Sobald das Textfeld ausgefüllt wurde, wird ein neue Gruppe/neuer Liste nach
  * dem Klicken des Bestätigungsbutton erstellt.
  */
-	private class SaveGroupClickHandler implements ClickHandler {
+	class SaveGroupClickHandler implements ClickHandler {
+		
+	public SaveGroupClickHandler() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void onClick(ClickEvent event) {
 	}
 }
@@ -41,7 +47,7 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 /**
  * Callback wird benötigt, um die Gruppe zu erstellen
  */
-	private class GroupCreationCallback implements AsyncCallback<Void> {
+	class GroupCreationCallback implements AsyncCallback<Void> {
 
 	public void onFailure(Throwable caught) {
 		Notification.show("Die Gruppen konnte nicht erstellt werden");

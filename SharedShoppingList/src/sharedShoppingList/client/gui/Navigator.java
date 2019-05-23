@@ -1,9 +1,12 @@
 package sharedShoppingList.client.gui;
 
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /*
  * Bildet die Navigationsleiste zum anzeigen und selektieren der Einkaufsliste, 
@@ -15,6 +18,8 @@ public class Navigator extends FlowPanel {
 	private Button neuButton = new Button("NEU");
 	
 	private Label navTitle = new Label("Meine Gruppen");
+	
+	 private GroupCreationForm gcf;
 
 	//public Navigator() {
 	//	super();
@@ -31,6 +36,23 @@ public class Navigator extends FlowPanel {
 		this.add(neuButton);
 		this.add(navTitle);
 		
+		neuButton.addClickHandler(new ShowGroupCreationForm());
+		
+	}
+	
+	/*
+	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung 
+	 * zur FroupCreationForm
+	 */
+	private class ShowGroupCreationForm implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			gcf = new GroupCreationForm();
+			RootPanel.get("details").add(gcf);
+		}
 		
 	}
 	
