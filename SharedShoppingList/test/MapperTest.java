@@ -21,25 +21,43 @@ public class MapperTest {
 		StoreMapper sm=new StoreMapper();
 		//UserMapper um= new UserMapper();
 		GroupMapper gm= new GroupMapper();
+		UserMapper um=new UserMapper();
 		
 		Group wg= new Group();
 		wg.setName("WG");
 		
-		gm.insert(wg);
+		//gm.insert(wg);
 		
 		User nico=new User();
+		User leon = new User();
+		
+		leon.setName("Leon");
+		leon.setUserName("LeonKek");
+		leon.setGmail("leon.seiz@kekmail.de");
+		leon.setGroupId(1);
 		
 		nico.setName("Nico");
 		nico.setUserName("nico154");
-		/*
-		 * ListEntry le1 = new ListEntry();
+		nico.setGmail("nicow154@googlemail.com");
+		nico.setGroupId(1);
+		
+		//um.insert(leon);
+		
+		
+	
+		ListEntry le1 = new ListEntry();
 		
 		le1.setArticleId(1);
 		le1.setAmount(5);
 		le1.setName("1. Eintrag");
+		//le1.setShoppinglistId(1);
+		le1.setStoreId(1);
+		le1.setUserId(1);
+		
+		
 		
 		lem.insert(le1);
-		 */
+		
 		
 		
 		
@@ -61,6 +79,10 @@ public class MapperTest {
 		
 		banane.setName("Banane");
 		banane.setUnit("St");
+		
+		//am.update(klop);
+		
+		
 		
 
 		

@@ -38,7 +38,11 @@ public class Header extends FlowPanel {
 	// Erstellen des Logout Icons
 	Image logout = new Image();
 	
+
 	private ProfilForm pf;
+	 private ArticleForm af;
+	 private StoreForm sf;
+
 
 	public Header() {
 		super();
@@ -132,7 +136,9 @@ public class Header extends FlowPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				RootPanel.get("details").clear();
+				af = new ArticleForm();
+				RootPanel.get("details").add(af);
 			}
 			
 		}
@@ -145,7 +151,9 @@ public class Header extends FlowPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				RootPanel.get("details").clear();
+				sf = new StoreForm();
+				RootPanel.get("details").add(sf);
 			}
 			
 		}
