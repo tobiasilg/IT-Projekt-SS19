@@ -25,7 +25,7 @@ public class DBConnection {
      */
     private static String googleUrl = "jdbc:google:mysql://it-projekt-hdm-238911:us-central1:myinstance/shoppinglist?user=root&password=Kekbuy2019";
     private static String localUrl = "jdbc:mysql://127.0.0.1:3306/itproject?user=root&password=Kekbuy2019";
-
+    
     /**
      * Singleton Eigenschaft wird sichergestellt indem nur eine Instanz
      * von DBConnection vorhanden ist.
@@ -59,7 +59,8 @@ public class DBConnection {
                  * Diese Verbindung wird dann in der statischen Variable con
                  * abgespeichert und fortan verwendet.
                  */
-                con = DriverManager.getConnection(localUrl);
+               // con = DriverManager.getConnection(localUrl);
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "Kekbuy2019");
             } catch (Exception e) {
                 con = null;
                 e.printStackTrace();

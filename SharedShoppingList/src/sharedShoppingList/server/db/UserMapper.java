@@ -39,7 +39,7 @@ public class UserMapper {
 	public void insert (User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into user (id, name, username, gmail, groupid, createDate, modDate) values ("+user.getId() + "," + user.getName() + "," + user.getUserName() + "," + user.getGmail()+ "," + user.getGroupId()+ "," + user.getCreateDate()+ ","+ user.getModDate() +")";  
+		String sql= "insert into user (name, username, gmail, groupid, createDate, modDate) values ('" + user.getName() + "','" + user.getUserName() + "','" + user.getGmail()+ "'," + user.getGroupId()+ "," + user.getCreateDate()+ ","+ user.getModDate() +")";  
 		
 	    try {
 	    	
