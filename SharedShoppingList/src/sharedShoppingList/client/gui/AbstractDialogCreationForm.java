@@ -1,13 +1,14 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 
 
@@ -19,8 +20,10 @@ import sharedShoppingList.shared.FieldVerifier;
 */
 
 public abstract class AbstractDialogCreationForm extends VerticalPanel {
-	private Label NameLabel = new Label(nameDialogForm());
-	private DynamicTextbox insertNameTextBox = new DynamicTextbox();
+	
+	protected Label NameLabel = new Label(nameDialogForm());
+	protected DynamicTextbox insertNameTextBox = new DynamicTextbox();
+	protected TextBox inNameBox=new TextBox();
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("speichern");
 	protected HorizontalPanel hpButtonPanel = new HorizontalPanel();
@@ -36,8 +39,9 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 		hpButtonPanel.add(saveButton);
 		hpButtonPanel.add(cancelButton);
 
-		this.add(saveButton);
-		this.add(cancelButton);
+		this.add(hpButtonPanel);
+		this.add(insertNameTextBox);
+		this.add(NameLabel);
 
 		cancelButton.setStylePrimaryName("cancelButton");
 		saveButton.setStylePrimaryName("saveButton");
@@ -56,8 +60,7 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	 */
 	private boolean checkTextboxesSaveable() {
 
-		insertNameTextBox
-				.setSaveable(verifier.checkValue(insertNameTextBox.getlabelText(), insertNameTextBox.getText()));
+		insertNameTextBox.setSaveable(verifier.checkValue(insertNameTextBox.getlabelText(), insertNameTextBox.getText()));
 		if (insertNameTextBox.saveable == false) {
 			return false;
 		}

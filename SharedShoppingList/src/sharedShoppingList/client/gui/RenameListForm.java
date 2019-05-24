@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.shared.bo.ShoppingList;
+
 public class RenameListForm extends AbstractDialogCreationForm {
 
 	protected String nameDialogForm() {
@@ -23,7 +25,7 @@ public class RenameListForm extends AbstractDialogCreationForm {
 /**
  * Hiermit wird der Erstellvorgang einer neuen Gruppe abbgebrochen.
  */
-private class CancelRenameListClickHandler implements ClickHandler {
+ class CancelRenameListClickHandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
 		RootPanel.get("Details").clear();
 	}
@@ -33,7 +35,7 @@ private class CancelRenameListClickHandler implements ClickHandler {
  * Sobald das Textfeld ausgefüllt wurde, wird ein neue Gruppe/neuer Liste nach
  * dem Klicken des Bestätigungsbutton erstellt.
  */
-private class SaveRenameListClickhandler implements ClickHandler {
+ class SaveRenameListClickhandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
 	}
 }
@@ -41,13 +43,13 @@ private class SaveRenameListClickhandler implements ClickHandler {
 /**
  * Callback wird benötigt, um die Gruppe zu erstellen
  */
-private class GroupCreationCallback implements AsyncCallback<Void> {
+ class RenameListCallback implements AsyncCallback<ShoppingList> {
 
 	public void onFailure(Throwable caught) {
 		Notification.show("Die Liste konnte nicht umbenannt werden");
 	}
 
-	public void onSuccess(Void event) {
+	public void onSuccess(ShoppingList event) {
 		Notification.show("Die Liste wurde erfolgreich umbenannt");
 	}
 }
