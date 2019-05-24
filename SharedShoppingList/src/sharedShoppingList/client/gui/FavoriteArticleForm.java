@@ -3,7 +3,9 @@ package sharedShoppingList.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 public class FavoriteArticleForm extends AbstractAdministrationForm {
 
@@ -12,6 +14,17 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 	protected String nameForm() {
 
 		return "Meine Lieblingsartikel<3";
+	}
+	
+	@Override
+	protected TextBox createUnitTextBox() {
+		return null;
+	}
+	
+	@Override
+	protected FlexTable createTable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// Konstruktor
@@ -72,4 +85,6 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 		}
 	}
+
+	
 }

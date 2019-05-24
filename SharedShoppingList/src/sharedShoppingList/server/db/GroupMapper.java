@@ -41,7 +41,7 @@ public class GroupMapper {
 	public Group insert (Group group) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into group (name, createDate, modDate) values ('"+ group.getName()+ "'," + group.getCreateDate()+ ","+ group.getModDate() +")";  
+		String sql= "insert into einkaufsgruppe (name, createDate, modDate) values ('"+ group.getName()+ "'," + group.getCreateDate()+ ","+ group.getModDate() +")";  
 		
 	    try {
 	    	

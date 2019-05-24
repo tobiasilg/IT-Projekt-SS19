@@ -6,22 +6,46 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-
-
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Formular fÃ¼r das Anlegen eines neuen HÃ¤ndlers im Datenstamm
+ * 
  * @author moritzhampe
  *
  */
 
 public class StoreForm extends AbstractAdministrationForm {
-	
+
+	FlexTable storeFlexTable;
+
 	@Override
 	protected String nameForm() {
 
 		return "Storeverwaltung";
 	}
+	
+	@Override
+	protected TextBox createUnitTextBox() {
+		return null;
+	}
+
+	
+
+	@Override
+	protected FlexTable createTable() {
+		// TODO Auto-generated method stub
+
+		if (storeFlexTable == null) {
+			storeFlexTable = new FlexTable();
+		}
+		storeFlexTable.setText(0, 0, "Store");
+		storeFlexTable.setText(1, 0, "Lidl");
+
+		return storeFlexTable;
+	}
+	
+	
 
 	// Konstruktor
 	public StoreForm() {
@@ -45,8 +69,8 @@ public class StoreForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach
-	 * dem Klicken des Bestätigungsbutton erstellt.
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach dem Klicken
+	 * des Bestätigungsbutton erstellt.
 	 */
 	private class CreateStoreClickHandler implements ClickHandler {
 
@@ -80,13 +104,7 @@ public class StoreForm extends AbstractAdministrationForm {
 		public void onSuccess(Void event) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 		}
-		
-		
-		
-		
+
 	}
-	
-	
-	
 
 }
