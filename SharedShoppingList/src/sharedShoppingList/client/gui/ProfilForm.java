@@ -13,6 +13,7 @@ public class ProfilForm extends FlowPanel {
 	
 	// Erstellung des Panels indem die Daten liegen
 	private FlowPanel profilBox = new FlowPanel();
+	private FlowPanel speicherButtonPanel = new FlowPanel();
 	
 	// Erstellung der Labels für alle Titel
 	private Label profilTitle = new Label("Dein Profil");
@@ -48,12 +49,14 @@ public class ProfilForm extends FlowPanel {
 	firstnameTextBox.addStyleName("profilTextBox");
 	mailTextBox.addStyleName("profilTextBox");
 	
+	speicherButtonPanel.addStyleName("profilLabel");
+	
 	speicherProfilButton.addStyleName("speicherProfilButton");
 	logoutButton.addStyleName("logoutButton");
 	
 	this.add(profilTitle);
 	this.add(profilBox);
-	this.add(speicherProfilButton);
+//	this.add(speicherProfilButton);
 	this.add(logoutButton);
 	
 	profilBox.add(usernameLabel);
@@ -67,7 +70,22 @@ public class ProfilForm extends FlowPanel {
 	
 	profilBox.add(mailLabel);
 	profilBox.add(mailTextBox);
-		
+	
+	speicherButtonPanel.add(speicherProfilButton);
+	profilBox.add(speicherButtonPanel);
+	
+	usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: ");
+	nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: ");
+	firstnameTextBox.getElement().setPropertyString("placeholder", "Dein Vorname: ");
+	mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse: ");
+	
+	/*
+	 * Noch zu erledigen 
+	 * - Daten des Users mit den Methoden aus dem BO User ziehen
+	 * - Löschen Button 
+	 * - Dialog Box für die Abfrage 
+	 */
+	
 	}
 	
 

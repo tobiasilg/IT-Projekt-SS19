@@ -10,10 +10,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-
-
-
-
 /**
  * Formular fÃ¼r das Anlegen einer neuen Gruppe
  * @author moritzhampe
@@ -51,8 +47,8 @@ public class GroupForm extends AbstractAdministrationForm {
 		}
 
 		/**
-		 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorite nach
-		 * dem Klicken des Bestätigungsbutton erstellt.
+		 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Favorite nach
+		 * dem Klicken des Bestï¿½tigungsbutton erstellt.
 		 */
 		private class CreateStoreHandler implements ClickHandler {
 
@@ -62,7 +58,7 @@ public class GroupForm extends AbstractAdministrationForm {
 		}
 
 		/**
-		 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorit nach dem Klicken
+		 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Favorit nach dem Klicken
 		 * des addButton erstellt.
 		 */
 		private class AddFavArticleClickHandler implements ClickHandler {
@@ -73,7 +69,7 @@ public class GroupForm extends AbstractAdministrationForm {
 		}
 
 		/**
-		 * Callback wird benötigt, um den Store zu erstellen
+		 * Callback wird benï¿½tigt, um den Store zu erstellen
 		 */
 		private class FavArticleCreationCallback implements AsyncCallback<Void> {
 
