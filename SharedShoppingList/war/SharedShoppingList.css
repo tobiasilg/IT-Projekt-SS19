@@ -1,26 +1,26 @@
 html {
-    background-color: #fff;
-    font-size: 16px;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    min-width: 300px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    text-rendering: optimizeLegibility;
-    -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-      margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	background-color: #fff;
+	font-size: 16px;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	min-width: 300px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	text-rendering: optimizeLegibility;
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-    color: #4a4a4a;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
+	color: #4a4a4a;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
 }
 
 .container {
@@ -31,11 +31,11 @@ body {
 }
 
 #header {
-    background-color: #d5dee0;
-    grid-column-start: 1;
-    grid-column-end: 5;
-    grid-row-start: 1;
-    grid-row-end: 2;
+	background-color: #d5dee0;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 1;
+	grid-row-end: 2;
 }
 
 #details {
@@ -52,7 +52,7 @@ body {
 	border-top: none;
 	border-bottom: none;
 	border-width: 1px;
-  	padding: 10px;
+	padding: 10px;
 	grid-column-start: 1;
 	grid-column-end: 2;
 	grid-row-start: 2;
@@ -61,7 +61,7 @@ body {
 }
 
 #footer {
-  background-color: #d5dee0;
+	background-color: #d5dee0;
 	grid-column-start: 1;
 	grid-column-end: 5;
 	grid-row-start: 3;
@@ -71,72 +71,70 @@ body {
 /*
 	Stylen der Header Elemente
 */
-
 .header {
-  min-height: 3.25rem;
-  align-items: stretch;
-  display: flex;
-  position: relative;
-  z-index: 30;
+	min-height: 3.25rem;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
 }
 
 .header_left {
-  align-items: stretch;
-  display: flex;
-  flex-shrink: 0;
-  min-height: 3.25rem;
+	align-items: stretch;
+	display: flex;
+	flex-shrink: 0;
+	min-height: 3.25rem;
 }
 
 .header_left_element {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
-  line-height: 1.5;
-  padding: .5rem .75rem;
-  position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
 	font-weight: bold;
 	color: white;
 }
+
 .header_title {
 	color: #363636;
 	font-size: 2rem;
 	font-weight: 600;
 	line-height: 1.125;
 	font-weight: bold;
-    
 }
 
 .header_subtitle {
-    color: #4a4a4a;
-    font-size: 1.25rem;
-    font-weight: 400;
-    line-height: 1.25;
-
+	color: #4a4a4a;
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.25;
 }
 
 .header_right {
-    flex-grow: 1;
-    flex-shrink: 0;
+	flex-grow: 1;
+	flex-shrink: 0;
 }
 
 .header_end {
-    justify-content: flex-end;
-    margin-left: auto;
+	justify-content: flex-end;
+	margin-left: auto;
 	align-items: stretch;
 	display: flex;
 }
 
 .header_right_elememt {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
-  line-height: 1.5;
-  padding: .5rem .75rem;
-  position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
 	color: white;
 	text-decoration: none;
 	font-size: 1.2rem;
@@ -144,8 +142,8 @@ body {
 }
 
 .header_image {
-    height: 64px;
-    width: 64px;
+	height: 64px;
+	width: 64px;
 	display: block;
 	position: relative;
 	color: #3273dc;
@@ -154,16 +152,16 @@ body {
 }
 
 .img {
-    height: auto;
-    max-width: 100%;
+	height: auto;
+	max-width: 100%;
 }
 /*
 	Stylen der Nav Elemente
 */
 .nav {
-	 margin-right: 50px;
-	 font-size: 2rem;
-	 display: block;
+	margin-right: 50px;
+	font-size: 2rem;
+	display: block;
 }
 
 .navButton.gwt-Button {
@@ -172,27 +170,26 @@ body {
 	border-color: transparent;
 	color: white;
 	cursor: pointer;
-    justify-content: center;
-    padding-bottom: calc(.375em - 1px);
-    padding-left: .75em;
-    padding-right: .75em;
-    padding-top: calc(.375em - 1px);
-    text-align: center;
-    white-space: nowrap;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
 	border-width: 1px;
 	-webkit-appearance: none;
-    align-items: center;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: none;
-    display: inline-flex;
-    font-size: 1rem;
-    height: 2.25em;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
 	line-height: 1.5;
 	position: relative;
-    vertical-align: top;
+	vertical-align: top;
 	user-select: none;
-    
 }
 
 .navTitle {
@@ -208,23 +205,22 @@ body {
 	line-height: 1.125;
 	display: block;
 	margin-block-start: 1em;
-  	margin-block-end: 1em;
-  	margin-inline-start: 0px;
-  	margin-inline-end: 0px;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
 }
 
-.loginButton{
+.loginButton {
 	margin: 50px;
-	color:white;
+	color: white;
 	padding-left: 35px;
 	border: none;
-	font-size:170% !important;
+	font-size: 170% !important;
 	font-weigth: bolder;
 	cursor: pointer;
 	background: transparent;
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 	background-image: url("images/logoutIcon.png");
-	
 }
 
 .loginLabel {
@@ -232,95 +228,139 @@ body {
 	font-size: 24pt !important;
 	font-weight: bold;
 	color: white;
-    overflow:auto;
+	overflow: auto;
 }
 /*
 	Stylen der ProfilForm Elemente
 */
 .profilBox {
-	  margin-bottom: .75rem;
-	  text-align: center;
+	margin-bottom: .75rem;
+	text-align: center;
 }
 
 .profilTitle {
 	font-size: 3rem;
-    margin-bottom: 1.5rem;
-    color: #363636;
-    font-weight: 600;
-    line-height: 1.125;
-    display: block;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    text-align: center;
+	margin-bottom: 1.5rem;
+	color: #363636;
+	font-weight: 600;
+	line-height: 1.125;
+	display: block;
+	margin-block-start: 0.67em;
+	margin-block-end: 0.67em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	text-align: center;
 }
+
 .profilLabel.gwt-Label {
-	  margin-bottom: .5em;
-		color: #363636;
-		display: block;
-		font-size: 1rem;
-		font-weight: 700;
-		cursor: default;
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: default;
 }
+
 .profilTextBox.gwt-TextBox {
 	box-sizing: border-box;
-    clear: both;
-    font-size: 1rem;
-    position: relative;
-    text-align: left;
+	clear: both;
+	font-size: 1rem;
+	position: relative;
+	text-align: left;
+}
 
-}
-.speicherProfilButton.gwt-Button  {
+.speicherProfilButton.gwt-Button {
 	background: #00d1b2;
-border-color: transparent;
-color: #fff;
-border-width: 1px;
-cursor: pointer;
-justify-content: center;
-padding-bottom: calc(.375em - 1px);
-padding-left: .75em;
-padding-right: .75em;
-padding-top: calc(.375em - 1px);
-text-align: center;
-white-space: nowrap;
--webkit-appearance: none;
-    align-items: center;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: none;
-    display: inline-flex;
-    font-size: 1rem;
-    height: 2.25em;
-		    line-height: 1.5;
-				position: relative;
-vertical-align: top;
-    user-select: none;
-		    text-decoration: none;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	user-select: none;
+	text-decoration: none;
+	margin-top: 20px;
 }
-.logoutButton.gwt-Button  {
-    background: #ff3860;
-    border-color: transparent;
-    color: #fff;
-		border-width: 1px;
-		cursor: pointer;
-    justify-content: center;
-    padding-bottom: calc(.375em - 1px);
-    padding-left: .75em;
-    padding-right: .75em;
-    padding-top: calc(.375em - 1px);
-    text-align: center;
-    white-space: nowrap;
-		-webkit-appearance: none;
-align-items: center;
-border: 1px solid transparent;
-border-radius: 4px;
-box-shadow: none;
-display: inline-flex;
-font-size: 1rem;
-height: 2.25em;
-    line-height: 1.5;
-		position: relative;
-    vertical-align: top;
-		user-select: none;
+
+.logoutButton.gwt-Button {
+	background: #ff3860;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	user-select: none;
+	margin-right: 13px;
+}
+
+.deleteAccountButton.gwt-Button {
+	background: #209cee;
+	border-color: #209cee;
+	color: white;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	user-select: none;
+	text-decoration: none;
+	margin-right: 5px;
+}
+
+.topPanel {
+	flex-grow: 1;
+	flex-shrink: 0;
+	justify-content: flex-end;
+	margin-left: auto;
+	align-items: stretch;
+	display: flex;
+	margin-top: 15px;
 }

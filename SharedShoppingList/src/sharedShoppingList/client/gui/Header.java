@@ -108,7 +108,7 @@ public class Header extends FlowPanel {
 		article.addClickHandler(new ShowArticleClickHandler());
 		store.addClickHandler(new ShowStoreClickHandler());
 		headerTitle.addClickHandler(new ShowSartPageClickHandler());
-		logout.addClickHandler(new ShowProfilClickHandler());
+		logout.addClickHandler(new ShowProfileClickHandler());
 		
 
 	}	
@@ -176,7 +176,7 @@ public class Header extends FlowPanel {
 		 * Die Klasse ShowProfilClickHandler ermöglicht die Azeige 
 		 * der ProfilForm
 		 */
-		private class ShowProfilClickHandler implements ClickHandler {
+		private class ShowProfileClickHandler implements ClickHandler {
 
 			@Override
 			public void onClick(ClickEvent event) {
