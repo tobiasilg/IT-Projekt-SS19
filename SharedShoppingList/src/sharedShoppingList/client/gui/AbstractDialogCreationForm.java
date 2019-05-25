@@ -1,17 +1,12 @@
 package sharedShoppingList.client.gui;
 
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
-
-
 
 /* Die abstract Class <CodeAbstractDialogCreationForm</code> dient dazu, dass die Klassen
  * GroupCreationForm und ListCrationForm hiervon gemeinsam erben können. 
@@ -21,9 +16,11 @@ import sharedShoppingList.shared.FieldVerifier;
 
 public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	
-	protected Label NameLabel = new Label(nameDialogForm());
+	
+
+	protected Label nameLabel = new Label(nameDialogForm());
 	protected DynamicTextbox insertNameTextBox = new DynamicTextbox();
-	protected TextBox inNameBox=new TextBox();
+	// protected TextBox insertNameTextBox = new TextBox();
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("speichern");
 	protected HorizontalPanel hpButtonPanel = new HorizontalPanel();
@@ -39,18 +36,22 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 		hpButtonPanel.add(saveButton);
 		hpButtonPanel.add(cancelButton);
 
-		this.add(hpButtonPanel);
+		// Add them to VerticalPanel
+		this.add(nameLabel);
 		this.add(insertNameTextBox);
-		this.add(NameLabel);
+		this.add(hpButtonPanel);
 
-		cancelButton.setStylePrimaryName("cancelButton");
-		saveButton.setStylePrimaryName("saveButton");
+		nameLabel.addStyleName("name_label");
+		cancelButton.addStyleName("cancel_button");
+		saveButton.addStyleName("save_button");
 		hpButtonPanel.setSpacing(20);
 		cancelButton.setPixelSize(130, 40);
 		saveButton.setPixelSize(130, 40);
-		hpButtonPanel.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
-		hpButtonPanel.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
-
+		
+//		hpButtonPanel.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
+//		hpButtonPanel.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
+		
+	
 	}
 
 	/**
@@ -60,7 +61,8 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	 */
 	private boolean checkTextboxesSaveable() {
 
-		insertNameTextBox.setSaveable(verifier.checkValue(insertNameTextBox.getlabelText(), insertNameTextBox.getText()));
+		insertNameTextBox
+				.setSaveable(verifier.checkValue(insertNameTextBox.getlabelText(), insertNameTextBox.getText()));
 		if (insertNameTextBox.saveable == false) {
 			return false;
 		}
@@ -71,7 +73,7 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
 	 * definiert.
 	 */
-	private class DynamicTextbox extends TextBox {
+	class DynamicTextbox extends TextBox {
 		boolean saveable = true;
 		String labelText;
 

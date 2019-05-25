@@ -5,9 +5,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.User;
 
 public class RenameGroupForm extends AbstractDialogCreationForm {
+
+	User u = CurrentUser.getUser();
 
 	protected String nameDialogForm() {
 		return "Gruppe umbenennen";
@@ -37,8 +41,6 @@ class CancelRenameGroupClickHandler implements ClickHandler {
  */
 class SaveRenameGroupClickhandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
-		
-		
 
 	}
 }

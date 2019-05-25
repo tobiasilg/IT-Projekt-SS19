@@ -5,9 +5,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.User;
 
 public class RenameListForm extends AbstractDialogCreationForm {
+	User u= CurrentUser.getUser();
 
 	protected String nameDialogForm() {
 		return "Liste umbenennen";

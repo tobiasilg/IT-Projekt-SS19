@@ -2,9 +2,9 @@ package sharedShoppingList.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
-
 import sharedShoppingList.client.gui.Header;
 import sharedShoppingList.client.gui.Navigator;
+import sharedShoppingList.shared.bo.User;
 
 
 /**
@@ -110,4 +110,21 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	 * rootPanelHeader.add(); rootPanelNav.add(); rootPanelDetails.add();
 	 * rootPanelFooter.add();
 	 */
+	
+	/**
+	 * Die Klasse <code>CurrentUser</code> repräsentiert den aktuell am System angemeldeten User.
+	 * Da weitere GUI-Klassen das angemeldetet User-Objekt verwenden, muss diese jederzeit aufrufbar sein.
+	 */
+  	public static class CurrentUser {
+		
+		private static User u = null;
+
+		public static User getUser() {
+			return u;
+		}
+
+		public static void setUser(User u) {
+			CurrentUser.u = u;
+		}
+  	}
 }
