@@ -2,6 +2,7 @@ package sharedShoppingList.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -20,14 +21,14 @@ import sharedShoppingList.shared.bo.User;
 
 public class ProfilForm extends FlowPanel {
 
-	EinkaufslistenverwaltungAsync einkaufsverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
+	EinkaufslistenverwaltungAsync einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
 	User user = null;
 
 	// Erstellung des Panels indem die Daten liegen
 	private FlowPanel profilBox = new FlowPanel();
 	private FlowPanel speicherButtonPanel = new FlowPanel();
-	private FlowPanel topPanel = new FlowPanel();
+	private HorizontalPanel topPanel = new HorizontalPanel();
 
 	// Erstellung der Labels für alle Titel
 	private Label profilTitle = new Label("Dein Profil");
@@ -101,9 +102,56 @@ public class ProfilForm extends FlowPanel {
 		/*
 		 * Hinzufügen der Click-Handler an Anchors, Logo und Icon
 		 */
+		deleteAccountButton.addClickHandler(new DeleteAccountClickHandler());
 		speicherProfilButton.addClickHandler(new SafeProfileClickHandler());
 		logoutButton.addClickHandler(new LogoutClickHandler());
-		deleteAccountButton.addClickHandler(new DeleteAccountClickHandler());
+
+	}
+
+	/*
+	 * Die Klasse DeleteAccountClickHandler öffnet eine DialogBox
+	 */
+	private class DeleteAccountClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			DeleteProfileBox deletePB = new DeleteProfileBox();
+			deletePB.center();
+		}
+
+	}
+
+	/*
+	 * Die Klasse DeleteProfileBox stellt eine Sicherheitsabfrage ob das Profil
+	 * wirklich gelöscht werden soll.
+	 */
+	private class DeleteProfileBox extends DialogBox {
+
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label sicherheitsFrage = new Label("Sind Sie sich sicher, dass Sie Ihr Profil löschen möchten?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		/*
+		 * Konstruktor wird benötigt um die DialogBox zusammenzusetzen
+		 */
+		public DeleteProfileBox() {
+			sicherheitsFrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage rot");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(sicherheitsFrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
+		}
 
 	}
 
@@ -111,7 +159,7 @@ public class ProfilForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+			
 
 		}
 
@@ -127,50 +175,19 @@ public class ProfilForm extends FlowPanel {
 
 	}
 
-	/*
-	 * Die Klasse DeleteAccountClickHandler öffnet eine DialogBox
-	 */
-	private class DeleteAccountClickHandler implements ClickHandler {
+	public class UserCallback implements AsyncCallback<User> {
 
 		@Override
-		public void onClick(ClickEvent event) {
-			DeleteProfileBox pb = new DeleteProfileBox();
-			pb.center();
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
 
 		}
 
-	}
+		@Override
+		public void onSuccess(User result) {
+			// TODO Auto-generated method stub
+			user = result;
 
-	/*
-	 * Die Klasse DeleteProfileBox stellt eine Sicherheitsabfrage ob das Profil
-	 * wirklich gelöscht werden soll.
-	 */
-	private class DeleteProfileBox extends DialogBox {
-
-		private VerticalPanel obenPanel = new VerticalPanel();
-		private HorizontalPanel untenPanel = new HorizontalPanel();
-
-		private Label sicherheitsFrage = new Label("Sind Sie sich sicher, dass Sie Ihr Profil löschen möchten?");
-
-		private Button jaButton = new Button("Ja");
-		private Button neinButton = new Button("Nein");
-
-		/*
-		 * Konstruktor wird benötigt um die DialogBox zusammenzusetzen
-		 */
-		public DeleteProfileBox() {
-			sicherheitsFrage.addStyleName("Abfrage");
-			jaButton.addStyleName("buttonAbfrage rot");
-			neinButton.addStyleName("buttonAbfrage");
-
-			obenPanel.add(sicherheitsFrage);
-			untenPanel.add(jaButton);
-			untenPanel.add(neinButton);
-
-			this.add(obenPanel);
-			this.add(untenPanel);
-
-			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
 		}
 
 	}
