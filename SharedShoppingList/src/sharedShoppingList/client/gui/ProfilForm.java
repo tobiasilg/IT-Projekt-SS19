@@ -140,7 +140,7 @@ public class ProfilForm extends FlowPanel {
 		 */
 		public DeleteProfileBox() {
 			sicherheitsFrage.addStyleName("Abfrage");
-			jaButton.addStyleName("buttonAbfrage rot");
+			jaButton.addStyleName("buttonAbfrage");
 			neinButton.addStyleName("buttonAbfrage");
 
 			buttonPanel.add(jaButton);
@@ -149,12 +149,50 @@ public class ProfilForm extends FlowPanel {
 			verticalPanel.add(buttonPanel);
 
 			this.add(verticalPanel);
+			
+			jaButton.addClickHandler(new FinalDeleteClickHanlder(this));
+			neinButton.addClickHandler(new CancelDeleteClickHandler(this));
 
-			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
 		}
 
 	}
+	/*
+	 * Die Klasse FinalDeleteClickHanlder dient dazu, um den User aus dem System
+	 * zu löschen 
+	 */
+	private class FinalDeleteClickHanlder implements ClickHandler {
 
+		public FinalDeleteClickHanlder(DeleteProfileBox deleteProfileBox) {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	/*
+	 * Die Klasse CancelDeleteClickHandler dient dazu, um den Löschvorgang des 
+	 * Users abzubrechen 
+	 */
+	private class CancelDeleteClickHandler implements ClickHandler {
+		
+		//private DeleteProfilBox deleteProfileBox;
+		
+		public CancelDeleteClickHandler(DeleteProfileBox deleteProfileBox) {
+			// TODO Auto-generated constructor stub
+			//this.deleteProfileBox = deleteProfileBox;
+		
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			
+		}
+		
+	}
 	private class SafeProfileClickHandler implements ClickHandler {
 
 		@Override

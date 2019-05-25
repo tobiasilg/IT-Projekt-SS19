@@ -364,3 +364,6 @@ body {
 	display: flex;
 	margin-top: 15px;
 }
+.Abfrage.gwt-Label {
+	color: red;
+}
