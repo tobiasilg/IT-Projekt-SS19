@@ -53,4 +53,6 @@ public interface EinkaufslistenverwaltungAsync {
     
     void delete(int id, AsyncCallback<Void> callback);
 
+	void delete(User user, AsyncCallback<Void> callback);
+
 }
