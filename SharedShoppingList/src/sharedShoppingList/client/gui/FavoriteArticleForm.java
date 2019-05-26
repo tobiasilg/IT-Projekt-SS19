@@ -4,23 +4,22 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class FavoriteArticleForm extends AbstractAdministrationForm {
-
 
 	@Override
 	protected String nameForm() {
 
 		return "Meine Lieblingsartikel<3";
 	}
-	
+
 	@Override
-	protected TextBox createUnitTextBox() {
+	protected ListBox createUnitListBox() {
 		return null;
 	}
-	
+
 	@Override
 	protected FlexTable createTable() {
 		// TODO Auto-generated method stub
@@ -49,8 +48,8 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorite nach
-	 * dem Klicken des Bestätigungsbutton erstellt.
+	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorite nach dem
+	 * Klicken des Bestätigungsbutton erstellt.
 	 */
 	private class CreateFavArticleClickHandler implements ClickHandler {
 
@@ -86,5 +85,4 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 		}
 	}
 
-	
 }
