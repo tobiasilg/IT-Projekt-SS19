@@ -52,5 +52,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	void save(ShoppingList shoppingList) throws IllegalArgumentException;
 
 	void delete(int id) throws IllegalArgumentException;
+	
+	void delete(User user) throws IllegalArgumentException;
 
 }

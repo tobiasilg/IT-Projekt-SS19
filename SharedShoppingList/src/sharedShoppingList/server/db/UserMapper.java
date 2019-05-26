@@ -137,10 +137,10 @@ public class UserMapper {
 
 /*DELETE*/
 	
-	public void delete (int id) {
+	public void delete (User user) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from user where id=" + id +")";
+		String sql= "delete from user where id=" + user.getId()+")";
 		
 	    try {
 	    	

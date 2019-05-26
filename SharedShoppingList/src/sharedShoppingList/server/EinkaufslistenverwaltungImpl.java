@@ -190,6 +190,39 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 	public Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException {
 		return this.articleMapper.findAllByCurrentUser(user);
+		
+	}
+	
+	/**
+	 * ************************* 
+	 * ABSCHNITT, Beginn: Methoden fuer User Objekte
+	 * @author Nico Weiler
+	 * *************************
+	 **/
+	
+	/**
+	 * Löschen des Accounts eines Users.
+	 * User soll in der Lage sein, seinen eigenen Account zu löschen.
+	 * @param user object
+	 */
+	
+	public void delete (User user)throws IllegalArgumentException {
+		
+		Vector<ListEntry> listEntries = this.getAllListEntriesByUser(user);
+		/*
+		 * Prüfen ob Listeneinträge mit dem jeweiligen User vorhanden sind.
+		 */
+		if(listEntries != null) {
+			for(ListEntry le:listEntries) {
+
+				this.listEntryMapper.delete(le);
+				
+			}
+		}
+		/*
+		 * Eigentliches Löschen des Users
+		 */
+		this.userMapper.delete(user);
 	}
 
 	/**
@@ -208,6 +241,14 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 		return this.storeMapper.insert(store);
 	}
+	
+	
+	/**
+	 * Löschen eines Stores mit zugehöriger Löschweitergabe
+	 * @author Nico Weiler
+	 * @param store
+	 * @throws IllegalArgumentException
+	 */
 
 	public void delete(Store store) throws IllegalArgumentException {
 		
@@ -223,7 +264,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 				
 			}
 		}
-		
+		/*
+		 * Löschen des Händlers
+		 */
 
 		this.storeMapper.delete(store);
 
@@ -289,7 +332,24 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 	}
 	
-
+	/**
+	 * Methode wird benötigt um nach dem Löschen eines Users, die zugehörigen
+	 * Listeneinträge zu löschen
+	 * @param user object
+	 * @return all Listeneinträge des jeweiligen Users
+	 * @author Nico Weiler
+	 */
+	
+	public Vector<ListEntry>getAllListEntriesByUser(User user){
+		return this.listEntryMapper.findAllByCurrentUser(user);
+	}
+	
+	/**
+	 * Methode wird für den Report benötigt
+	 * @author Nico Weiler
+	 * @param Store und ausgewähltes Datum
+	 */
+	
 	@Override
 	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) {
 		return listEntryMapper.findByStoreAndDate(store, beginningDate);
