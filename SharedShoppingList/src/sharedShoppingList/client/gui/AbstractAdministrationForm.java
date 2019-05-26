@@ -33,7 +33,9 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameForm();
+
 	protected abstract FlexTable createTable();
+
 	protected abstract TextBox createUnitTextBox();
 
 	// In dieser Methode werden die Widgets der Form hinzugefügt.
@@ -42,9 +44,6 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		hpCreate.add(nTextBox);
 		hpCreate.add(unitTextBox);
 		hpCreate.add(addButton);
-		
-		
-		
 
 		hpCancelandSafe.add(cancelButton);
 		hpCancelandSafe.add(saveButton);
@@ -62,6 +61,5 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		deleteButton.addStyleName("Button");
 		administrationFlexTable.addStyleName("FlexTable");
 	}
-	
 
 }
