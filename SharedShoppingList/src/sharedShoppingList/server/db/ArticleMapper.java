@@ -1,6 +1,7 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -151,9 +152,15 @@ public class ArticleMapper {
 		String sql= "delete from article where id=" + article.getId();
 		
 	    try {
+	    	/*
+	    	 * Setzt den AutoCommit auf false, um das sichere Schreiben in die Datenbank zu gewährleisten.
+	    	 */
+			con.setAutoCommit(false);
 	    	
 	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	stmt.executeUpdate(sql);	
+	    	
+	    	con.commit();
 	      
 	    }
 	    catch (SQLException e2) {
@@ -189,12 +196,18 @@ public class ArticleMapper {
 	
 	public Article update(Article article) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE article " + "SET name=\"" + article.getName() + "\", " + "unit=\""
-				+ article.getUnit() + "\" " + "WHERE id=" + article.getId();
+		//String sql="UPDATE article " + "SET name=\"" + article.getName() + "\", " + "unit=\""
+				//+ article.getUnit() + "\" " + "WHERE id=" + article.getId();
 
 		try {
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(sql);
+			//Statement stmt = con.createStatement();
+			//stmt.executeUpdate(sql);
+			PreparedStatement stmt = con.prepareStatement("UPDATE article SET name= ?, unit= ? WHERE article.id = ?");
+
+			stmt.setTimestamp(1, article.getModDate());
+			stmt.setString(2, article.getUnit());
+			stmt.setInt(3, article.getId());
+			stmt.executeUpdate();
 
 			
 
