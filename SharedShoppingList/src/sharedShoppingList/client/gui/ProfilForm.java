@@ -2,6 +2,7 @@ package sharedShoppingList.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.User;
 
@@ -23,7 +25,8 @@ public class ProfilForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
-	User user = null;
+	User user = CurrentUser.getUser();
+	String logoutUrl;
 
 	// Erstellung des Panels indem die Daten liegen
 	private FlowPanel profilBox = new FlowPanel();
@@ -149,85 +152,100 @@ public class ProfilForm extends FlowPanel {
 			verticalPanel.add(buttonPanel);
 
 			this.add(verticalPanel);
-			
+
 			jaButton.addClickHandler(new FinalDeleteClickHanlder(this));
 			neinButton.addClickHandler(new CancelDeleteClickHandler(this));
 
 		}
 
 	}
+
 	/*
-	 * Die Klasse FinalDeleteClickHanlder dient dazu, um den User aus dem System
-	 * zu löschen 
+	 * Die Klasse FinalDeleteClickHanlder dient dazu, um den User aus dem System zu
+	 * löschen
 	 */
 	private class FinalDeleteClickHanlder implements ClickHandler {
 
+		private DeleteProfileBox deleteProfileBox;
+
 		public FinalDeleteClickHanlder(DeleteProfileBox deleteProfileBox) {
-			// TODO Auto-generated constructor stub
+			this.deleteProfileBox = deleteProfileBox;
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+			this.deleteProfileBox.hide();
+			
+			// Hier muss noch der zugriff auf die Methode deletUser erfolgen !
+			// user.setLogoutUrl(user.getLogoutUrl());
+			// einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
+		}
+
+	}
+
+	private class DeleteUserCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Dein Profil wurde nicht gelöscht!");
 			
 		}
-		
-	}
+
+		@Override
+		public void onSuccess(Void result) {
+			Notification.show("Dein Profil wurde erfolgreich gelöscht!");
+			Window.Location.assign(logoutUrl);
+			
+		}
+
+	 }
+
 	/*
-	 * Die Klasse CancelDeleteClickHandler dient dazu, um den Löschvorgang des 
-	 * Users abzubrechen 
+	 * Die Klasse CancelDeleteClickHandler dient dazu, um den Löschvorgang des Users
+	 * abzubrechen
 	 */
 	private class CancelDeleteClickHandler implements ClickHandler {
-		
-		//private DeleteProfilBox deleteProfileBox;
-		
+
+		private DeleteProfileBox deleteProfileBox;
+
 		public CancelDeleteClickHandler(DeleteProfileBox deleteProfileBox) {
-			// TODO Auto-generated constructor stub
-			//this.deleteProfileBox = deleteProfileBox;
-		
+			this.deleteProfileBox = deleteProfileBox;
+
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
-			
+			this.deleteProfileBox.hide();
 		}
-		
+
 	}
+
 	private class SafeProfileClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			
 
 		}
 
 	}
-
+	/*
+	 * Die Klasse LogoutClickHandler soll das asuloggen des Users ermöglichen 
+	 * und den User zum Google Konto weiterleiten
+	 */
 	private class LogoutClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+			Window.Location.assign(logoutUrl);
 
 		}
 
 	}
 
-	public class UserCallback implements AsyncCallback<User> {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
 
-		}
-
-		@Override
-		public void onSuccess(User result) {
-			// TODO Auto-generated method stub
-			user = result;
-
-		}
+		
 
 	}
 
-}
+
