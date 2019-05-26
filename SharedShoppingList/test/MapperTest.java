@@ -56,7 +56,7 @@ public class MapperTest {
 		
 		
 		
-		lem.insert(le1);
+		//lem.insert(le1);
 		
 		
 		
@@ -67,9 +67,16 @@ public class MapperTest {
 		Article banane = new Article();
 		Article spüli = new Article();
 		Article klop = new Article();
+		Article mehl = new Article();
+		
+		mehl.setName("Mehl");
+		mehl.setUnit("gramm");
+		
+		am.delete(mehl);
+		
 		
 		klop.setName("Klopapier");
-		klop.setUnit("Pack");
+		klop.setUnit("Packung");
 		
 		spüli.setName("Spülmittel");
 		spüli.setUnit("St");
