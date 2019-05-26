@@ -1,17 +1,21 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.shared.FieldVerifier;
 
 /*
  * Die abstract Class <Code> AbstractAdministrationForm</code> dient dazu, dass die Klassen
- * ArticleForm, StoreForm und ListForm hiervon gemeinsam erben können. 
+ * ArticleForm, StoreForm und ListForm hiervon gemeinsam erben kï¿½nnen. 
  * Erst wenn alle abstrakten Methoden der Superklasse implementiert worden sind, 
  * kann die Subklasse konkret werden (instanziiert werden).
  */
@@ -24,25 +28,27 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	protected Button saveButton = new Button("speichern");
 	protected Button addButton = new Button("hinzufuegen");
 	protected Button deleteButton = new Button("loeschen");
-	protected TextBox nTextBox = new TextBox();
-	protected TextBox unitTextBox = (createUnitTextBox());
+	protected TextBox nameTextBox = new TextBox();
+	protected ListBox unitListBox = (createUnitListBox());
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
 	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
-	// Prüfen des Eingabefelds auf richtige Zeichensetzung
+	// Prï¿½fen des Eingabefelds auf richtige Zeichensetzung
 	private FieldVerifier verifier = new FieldVerifier();
 
 	protected abstract String nameForm();
 
 	protected abstract FlexTable createTable();
 
-	protected abstract TextBox createUnitTextBox();
+	protected abstract ListBox createUnitListBox();
 
-	// In dieser Methode werden die Widgets der Form hinzugefügt.
+	// In dieser Methode werden die Widgets der Form hinzugefï¿½gt.
 	public void onLoad() {
 
-		hpCreate.add(nTextBox);
-		hpCreate.add(unitTextBox);
+		hpCreate.add(nameTextBox);
+		if (unitListBox != null) {
+			hpCreate.add(unitListBox);
+		}
 		hpCreate.add(addButton);
 
 		hpCancelandSafe.add(cancelButton);
@@ -54,12 +60,24 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
 
-		nTextBox.addStyleName("TextBox");
+		nameTextBox.addStyleName("TextBox");
 		addButton.addStyleName("Button");
 		cancelButton.addStyleName("Button");
 		saveButton.addStyleName("Button");
 		deleteButton.addStyleName("Button");
 		administrationFlexTable.addStyleName("FlexTable");
+
+		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					addButton.click();
+					nameTextBox.setText("");
+				}
+
+			}
+		});
 	}
 
 }

@@ -1,12 +1,14 @@
 package sharedShoppingList.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Formular fÃ¼r das Anlegen eines neuen HÃ¤ndlers im Datenstamm
@@ -19,18 +21,18 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	FlexTable storeFlexTable;
 
+	ArrayList<String> stores = new ArrayList<>();
+
 	@Override
 	protected String nameForm() {
 
 		return "Storeverwaltung";
 	}
-	
+
 	@Override
-	protected TextBox createUnitTextBox() {
+	protected ListBox createUnitListBox() {
 		return null;
 	}
-
-	
 
 	@Override
 	protected FlexTable createTable() {
@@ -40,17 +42,14 @@ public class StoreForm extends AbstractAdministrationForm {
 			storeFlexTable = new FlexTable();
 		}
 		storeFlexTable.setText(0, 0, "Store");
-		storeFlexTable.setText(1, 0, "Lidl");
 
 		return storeFlexTable;
 	}
-	
-	
 
 	// Konstruktor
 	public StoreForm() {
 
-		saveButton.addClickHandler(new CreateStoreClickHandler());
+		saveButton.addClickHandler(new SaveStoreClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddStoreClickHandler());
 
@@ -62,36 +61,62 @@ public class StoreForm extends AbstractAdministrationForm {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
+			RootPanel.get().clear();
 
 		}
 
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach dem Klicken
-	 * des Bestätigungsbutton erstellt.
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Store nach dem Klicken
+	 * des Bestï¿½tigungsbutton erstellt.
 	 */
-	private class CreateStoreClickHandler implements ClickHandler {
+	private class SaveStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-
+//			for (int i = 1; i <= storeFlexTable.getRowCount(); i++) {
+//				elv.saveStore(storeFlexTable.getText(i, 0));
+//			}
 		}
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Store nach dem Klicken
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Store nach dem Klicken
 	 * des addButton erstellt.
 	 */
 	private class AddStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
+			final String store = nameTextBox.getValue();
+
+			if (stores.contains(store)) {
+				return;
+			}
+
+			stores.add(store);
+			int rowCount = storeFlexTable.getRowCount();
+			storeFlexTable.setText(rowCount, 0, store);
+
+			Button removeButton = new Button("x");
+
+			removeButton.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					final int removedIndex = stores.indexOf(store);
+					stores.remove(removedIndex);
+					storeFlexTable.removeRow(removedIndex + 1);
+				}
+
+			});
+
+			storeFlexTable.setWidget(rowCount, 1, removeButton);
 		}
 	}
 
 	/**
-	 * Callback wird benötigt, um den Store zu erstellen
+	 * Callback wird benï¿½tigt, um den Store zu erstellen
 	 */
 	private class StoreCreationCallback implements AsyncCallback<Void> {
 
