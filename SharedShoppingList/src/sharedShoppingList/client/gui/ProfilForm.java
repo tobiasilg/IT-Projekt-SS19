@@ -110,6 +110,7 @@ public class ProfilForm extends FlowPanel {
 		logoutButton.addClickHandler(new LogoutClickHandler());
 
 	}
+	
 
 	/*
 	 * Die Klasse DeleteAccountClickHandler öffnet eine DialogBox
@@ -133,7 +134,7 @@ public class ProfilForm extends FlowPanel {
 		private VerticalPanel verticalPanel = new VerticalPanel();
 		private HorizontalPanel buttonPanel = new HorizontalPanel();
 
-		private Label sicherheitsFrage = new Label("Sind Sie sich sicher, dass Sie Ihr Profil löschen möchten?");
+		private Label sicherheitsFrage = new Label("Bist Du Dir sicher Dein Profil zu löschen?");
 
 		private Button jaButton = new Button("Ja");
 		private Button neinButton = new Button("Nein");
@@ -175,10 +176,10 @@ public class ProfilForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			this.deleteProfileBox.hide();
-			
-			// Hier muss noch der zugriff auf die Methode deletUser erfolgen !
+
 			// user.setLogoutUrl(user.getLogoutUrl());
-			// einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
+
+			einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
 		}
 
 	}
@@ -187,18 +188,18 @@ public class ProfilForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Notification.show("Dein Profil wurde nicht gelöscht!");
-			
+			Notification.show("Dein Profil konnte nicht gelöscht werden!");
+
 		}
 
 		@Override
 		public void onSuccess(Void result) {
 			Notification.show("Dein Profil wurde erfolgreich gelöscht!");
 			Window.Location.assign(logoutUrl);
-			
+
 		}
 
-	 }
+	}
 
 	/*
 	 * Die Klasse CancelDeleteClickHandler dient dazu, um den Löschvorgang des Users
@@ -219,33 +220,105 @@ public class ProfilForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * Die Klasse SafeProfileClickHandle öffnet eine DialogBox für eine Anfrage zum
+	 * speichern der geänderten Daten
+	 */
 
 	private class SafeProfileClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			SafeProfileBox safePB = new SafeProfileBox();
+			safePB.center();
 
 		}
 
 	}
+
+	private class SafeProfileBox extends DialogBox {
+
+		private VerticalPanel vPanel = new VerticalPanel();
+		private HorizontalPanel bPanel = new HorizontalPanel();
+
+		private Label sicherheitsAbfrage = new Label("Willst du die geänderten Daten so übernehmen?");
+
+		private Button yesButton = new Button("Ja");
+		private Button noButton = new Button("Nein");
+
+		public SafeProfileBox() {
+
+			sicherheitsAbfrage.addStyleName("Abfrage");
+			yesButton.addStyleName("buttonAbfrage");
+			noButton.addStyleName("buttonAbfrage");
+
+			bPanel.add(yesButton);
+			bPanel.add(noButton);
+			vPanel.add(sicherheitsAbfrage);
+			vPanel.add(bPanel);
+
+			this.add(vPanel);
+
+			yesButton.addClickHandler(new SafeChangesClickHandler(this));
+			noButton.addClickHandler(new CancelChangesClickHandler(this));
+
+		}
+	}
+
 	/*
-	 * Die Klasse LogoutClickHandler soll das asuloggen des Users ermöglichen 
-	 * und den User zum Google Konto weiterleiten
+	 * Die Klasse SafeChangesClickHandler dient dazu die geänderten Daten des Users
+	 * im System zu speichern
+	 */
+	private class SafeChangesClickHandler implements ClickHandler {
+
+		private SafeProfileBox safeProfileBox;
+
+		public SafeChangesClickHandler(SafeProfileBox safeProfileBox) {
+			this.safeProfileBox = safeProfileBox;
+
+		}
+
+		
+		public void onClick(ClickEvent event) {
+
+		}
+
+	}
+
+	/*
+	 * Die Klasse CancelChangesClickHandler dient dazu den Speichervorgang
+	 * abzubrechen
+	 */
+	private class CancelChangesClickHandler implements ClickHandler {
+
+		private SafeProfileBox safeProfileBox;
+
+		public CancelChangesClickHandler(SafeProfileBox safeProfileBox) {
+			this.safeProfileBox = safeProfileBox;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			safeProfileBox.hide();
+
+		}
+
+	}
+
+	/*
+	 * Die Klasse LogoutClickHandler soll das asuloggen des Users ermöglichen und
+	 * den User zum Google Konto weiterleiten
 	 */
 	private class LogoutClickHandler implements ClickHandler {
 
-		@Override
+	@Override
 		public void onClick(ClickEvent event) {
 			Window.Location.assign(logoutUrl);
 
 		}
-
 	}
-
-
-
-		
-
-	}
+	
+}
+	
 
 

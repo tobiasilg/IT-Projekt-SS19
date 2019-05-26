@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.softwarePraktikum.shared.LoginServiceAsync;
+
 import sharedShoppingList.shared.CommonSettings;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
