@@ -39,7 +39,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	void save(Group group) throws IllegalArgumentException;
 
-	void delete(Group group) throws IllegalArgumentException;
+	public void delete(ShoppingList shoppingList) throws IllegalArgumentException;
 	
 	ShoppingList createShoppingList(String name) throws IllegalArgumentException;
 
@@ -50,8 +50,6 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	ShoppingList findShoppingListById(int id) throws IllegalArgumentException;
 
 	void save(ShoppingList shoppingList) throws IllegalArgumentException;
-
-	void delete(int id) throws IllegalArgumentException;
 	
 	void delete(User user) throws IllegalArgumentException;
 	
@@ -76,5 +74,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	public Vector<ListEntry> getAllListEntriesByStore(Store store) throws IllegalArgumentException;
 	
 	public Vector<ListEntry>getAllListEntriesByUser(User user) throws IllegalArgumentException;
+
+	void delete(Group group)throws IllegalArgumentException;
 
 }
