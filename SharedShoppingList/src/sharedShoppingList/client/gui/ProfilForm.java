@@ -94,9 +94,9 @@ public class ProfilForm extends FlowPanel {
 		speicherButtonPanel.add(speicherProfilButton);
 		profilBox.add(speicherButtonPanel);
 
-//	usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: " + user.getUserName());
-//	nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: " + user.getName());
-//	mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse: " + user.getGmail());
+	//	usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: " + user.getUserName());
+	//	nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: " + user.getName());
+	//	mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse: " + user.getGmail());
 
 		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: ");
 		nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: ");
@@ -177,7 +177,7 @@ public class ProfilForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			this.deleteProfileBox.hide();
 
-			// user.setLogoutUrl(user.getLogoutUrl());
+			//user.setLogoutUrl(user.getLogoutUrl());
 
 			einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
 		}
@@ -277,14 +277,35 @@ public class ProfilForm extends FlowPanel {
 			this.safeProfileBox = safeProfileBox;
 
 		}
-
 		
 		public void onClick(ClickEvent event) {
-
-		}
+			
+			//einkaufslistenverwaltung.getUser(user, new GetUserCallback());
+			
+			// Den Wert aus den Textboxen ziehen
+			String usernameNeu = usernameTextBox.getValue();
+			String nameNeu = nameTextBox.getValue();
+			
+			}
 
 	}
+	
+	private class GetUserCallback implements AsyncCallback<User> {
 
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(User result) {
+			user = result; // result ist der neue User 
+			
+		}
+		
+		
+	}
 	/*
 	 * Die Klasse CancelChangesClickHandler dient dazu den Speichervorgang
 	 * abzubrechen
