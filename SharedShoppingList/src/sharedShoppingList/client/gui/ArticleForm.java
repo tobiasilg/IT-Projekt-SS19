@@ -29,6 +29,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 	ListBox articleListBox;
 
 	ArrayList<String> articles = new ArrayList<>();
+	ArrayList<String> units = new ArrayList<>();
 
 	@Override
 	protected String nameForm() {
@@ -70,7 +71,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 		saveButton.addClickHandler(new SaveArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
-		deleteButton.addClickHandler(new DeleteArticleClickHandler());
+
 	}
 
 	/**
@@ -104,8 +105,6 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
-//			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
-
 			final String article = nameTextBox.getValue();
 			final String unit = unitListBox.getSelectedItemText();
 
@@ -114,8 +113,12 @@ public class ArticleForm extends AbstractAdministrationForm {
 			}
 
 			articles.add(article);
+			units.add(unit);
+
 			int rowCount = articleFlexTable.getRowCount();
+
 			articleFlexTable.setText(rowCount, 0, article);
+			articleFlexTable.setText(rowCount, 1, unit);
 
 			Button removeButton = new Button("x");
 
@@ -130,27 +133,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 			});
 
-//			if (units.contains(unit)) {
-//				return;
-//			}
-
-//			units.add(unit);
-//			int rowCountUnit = articleFlexTable.getRowCount();
-//			articleFlexTable.setText(rowCountUnit, 1, unit);
-
-//			Button removeButtonUnit = new Button("x");
-//
-//			removeButton.addClickHandler(new ClickHandler() {
-//
-//				@Override
-//				public void onClick(ClickEvent event) {
-//					final int removedIndex = articles.indexOf(article);
-//					articles.remove(removedIndex);
-//					articleFlexTable.removeRow(removedIndex + 1);
-//				}
-//
-//			});
-
+			articleFlexTable.setWidget(rowCount, 2, removeButton);
+			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedItemText(), new ArticleCreationCallback());
 		}
 
 	}
