@@ -271,6 +271,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.storeMapper.delete(store);
 
 	}
+	/*
+	 * @author Leon Seiz
+	 * store
+	 */
 
 	public Vector<Store> getAllStores(Store store) throws IllegalArgumentException {
 		return this.storeMapper.findAll();
