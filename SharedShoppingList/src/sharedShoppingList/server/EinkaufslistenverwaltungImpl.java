@@ -314,7 +314,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.listEntryMapper.insert(listentry);
 	}
 
-	public void save(ListEntry listentry) {
+	public void save(ListEntry listentry) throws IllegalArgumentException {
 		this.listEntryMapper.update(listentry);
 	}
 	
@@ -322,12 +322,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listEntryMapper.delete(listEntry);
 	}
 	
-	public Vector<ListEntry> getAllListEntriesByArticle(Article article) {
+	public Vector<ListEntry> getAllListEntriesByArticle(Article article) throws IllegalArgumentException {
 		return this.listEntryMapper.findByArticle(article);
 		
 	}
 	
-	public Vector<ListEntry> getAllListEntriesByStore(Store store) {
+	public Vector<ListEntry> getAllListEntriesByStore(Store store) throws IllegalArgumentException {
 		return this.listEntryMapper.findByStore(store);
 		
 	}
@@ -340,7 +340,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @author Nico Weiler
 	 */
 	
-	public Vector<ListEntry>getAllListEntriesByUser(User user){
+	public Vector<ListEntry>getAllListEntriesByUser(User user) throws IllegalArgumentException{
 		return this.listEntryMapper.findAllByCurrentUser(user);
 	}
 	
@@ -351,11 +351,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 	
 	@Override
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) {
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) throws IllegalArgumentException {
 		return listEntryMapper.findByStoreAndDate(store, beginningDate);
 	}
 	
-	public Vector <User> getAllUser (User user) {
+	public Vector <User> getAllUser (User user) throws IllegalArgumentException {
 		return this.userMapper.findAll();
 	}
 	

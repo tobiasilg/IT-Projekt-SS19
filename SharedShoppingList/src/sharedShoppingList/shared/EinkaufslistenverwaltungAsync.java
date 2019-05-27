@@ -55,4 +55,26 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void delete(User user, AsyncCallback<Void> callback);
 
+	void createStore(String name, AsyncCallback<Store> callback);
+
+	void delete(Store store, AsyncCallback<Void> callback);
+
+	void getAllStores(Store store, AsyncCallback<Vector<Store>> callback);
+
+	void getStoreByID(int id, AsyncCallback<Store> callback);
+
+	void save(Store store, AsyncCallback<Void> callback);
+
+	void createListentry(String name, AsyncCallback<ListEntry> callback);
+
+	void save(ListEntry listentry, AsyncCallback<Void> callback);
+
+	void delete(ListEntry listEntry, AsyncCallback<Void> callback);
+
+	void getAllListEntriesByArticle(Article article, AsyncCallback<Vector<ListEntry>> callback);
+
+	void getAllListEntriesByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
+
+	void getAllListEntriesByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
+
 }
