@@ -469,9 +469,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 	/** Löschen einer Shoppingliste */
 
-	public void delete(int id) throws IllegalArgumentException {
-		this.listMapper.delete(id);
+	public void delete(ShoppingList shoppingList) throws IllegalArgumentException {
+		this.listMapper.delete(shoppingList);
 		
 	}
+
 	
 }

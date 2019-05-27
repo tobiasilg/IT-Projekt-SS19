@@ -22,12 +22,11 @@ import sharedShoppingList.shared.FieldVerifier;
 
 public abstract class AbstractAdministrationForm extends VerticalPanel {
 
-	private Label NameLabel = new Label(nameForm());
+	private Label nameLabel = new Label(nameForm());
 	protected FlexTable administrationFlexTable = (createTable());
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("speichern");
 	protected Button addButton = new Button("hinzufuegen");
-	protected Button deleteButton = new Button("loeschen");
 	protected TextBox nameTextBox = new TextBox();
 	protected ListBox unitListBox = (createUnitListBox());
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
@@ -53,9 +52,8 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 
 		hpCancelandSafe.add(cancelButton);
 		hpCancelandSafe.add(saveButton);
-		hpCancelandSafe.add(deleteButton);
 
-		this.add(NameLabel);
+		this.add(nameLabel);
 		this.add(hpCreate);
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
@@ -64,8 +62,8 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		addButton.addStyleName("Button");
 		cancelButton.addStyleName("Button");
 		saveButton.addStyleName("Button");
-		deleteButton.addStyleName("Button");
 		administrationFlexTable.addStyleName("FlexTable");
+		nameLabel.addStyleName("profilTitle");
 
 		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
 

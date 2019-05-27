@@ -141,10 +141,10 @@ public class ListMapper {
 	 * Methode zum Löschen einer Einkaufsliste aus der Datenbank
 	 */
 	
-	public void delete (int id) {
+	public void delete (ShoppingList shoppingList ) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from shoppingList where id=" + id +")";
+		String sql= "delete from shoppingList where id=" + shoppingList.getId() +")";
 		
 	    try {
 	    	
