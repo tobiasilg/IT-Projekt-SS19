@@ -67,7 +67,7 @@ public class StoreForm extends AbstractAdministrationForm {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get().clear();
+			RootPanel.get("details").clear();
 
 		}
 
