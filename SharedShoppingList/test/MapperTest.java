@@ -40,7 +40,7 @@ public class MapperTest {
 		nico.setUserName("nico154");
 		nico.setGmail("nicow154@googlemail.com");
 		nico.setGroupId(1);
-		
+	
 		//um.insert(leon);
 		
 		
@@ -65,21 +65,25 @@ public class MapperTest {
 		
 		Article apfel = new Article();
 		Article banane = new Article();
-		Article spÃ¼li = new Article();
+		Article spüli = new Article();
 		Article klop = new Article();
 		Article mehl = new Article();
 		
 		mehl.setName("Mehl");
 		mehl.setUnit("gramm");
 		
-		am.delete(mehl);
+		//am.delete(mehl);
 		
 		
+		banane.setName("Banane");
+		banane.setUnit("Gramm");
+		am.delete(banane);
+
 		klop.setName("Klopapier");
 		klop.setUnit("Packung");
 		
-		spÃ¼li.setName("SpÃ¼lmittel");
-		spÃ¼li.setUnit("St");
+		spüli.setName("SpÃ¼lmittel");
+		spüli.setUnit("St");
 		
 		apfel.setName("Apfel");
 		apfel.setUnit("St");
@@ -87,17 +91,13 @@ public class MapperTest {
 		banane.setName("Banane");
 		banane.setUnit("St");
 		
-		//am.update(klop);
+		//am.update(klop);	
+		//am.insert(banane);
+		System.out.println(banane.getId());
+		Article testbanane= am.findByID(1);
 		
-		
-		
-
-		
-		
-		
-		
-		
-		
+		System.out.println(testbanane);
+		am.delete(testbanane);
 		
 
 	}
