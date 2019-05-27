@@ -1,8 +1,11 @@
 package sharedShoppingList.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -25,6 +28,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 	FlexTable articleFlexTable;
 	ListBox articleListBox;
 
+	ArrayList<String> articles = new ArrayList<>();
+
 	@Override
 	protected String nameForm() {
 
@@ -37,8 +42,9 @@ public class ArticleForm extends AbstractAdministrationForm {
 		if (articleListBox == null) {
 			articleListBox = new ListBox();
 
+			articleListBox.addItem("gramm");
 			articleListBox.addItem("kg");
-			articleListBox.addItem("St�ck");
+			articleListBox.addItem("Stueck");
 		}
 
 		return articleListBox;
@@ -52,8 +58,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 			articleFlexTable.setText(0, 0, "Artikel");
 			articleFlexTable.setText(0, 1, "Einheit");
-			articleFlexTable.setText(1, 0, "Banane");
-			articleFlexTable.setText(1, 1, "Kg");
+
 		}
 
 		return articleFlexTable;
@@ -74,7 +79,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
+			RootPanel.get("details").clear();
 
 		}
 
@@ -99,7 +104,52 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
+//			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
+
+			final String article = nameTextBox.getValue();
+			final String unit = unitListBox.getSelectedItemText();
+
+			if (articles.contains(article)) {
+				return;
+			}
+
+			articles.add(article);
+			int rowCount = articleFlexTable.getRowCount();
+			articleFlexTable.setText(rowCount, 0, article);
+
+			Button removeButton = new Button("x");
+
+			removeButton.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					final int removedIndex = articles.indexOf(article);
+					articles.remove(removedIndex);
+					articleFlexTable.removeRow(removedIndex + 1);
+				}
+
+			});
+
+//			if (units.contains(unit)) {
+//				return;
+//			}
+
+//			units.add(unit);
+//			int rowCountUnit = articleFlexTable.getRowCount();
+//			articleFlexTable.setText(rowCountUnit, 1, unit);
+
+//			Button removeButtonUnit = new Button("x");
+//
+//			removeButton.addClickHandler(new ClickHandler() {
+//
+//				@Override
+//				public void onClick(ClickEvent event) {
+//					final int removedIndex = articles.indexOf(article);
+//					articles.remove(removedIndex);
+//					articleFlexTable.removeRow(removedIndex + 1);
+//				}
+//
+//			});
 
 		}
 
