@@ -308,6 +308,9 @@ public class ProfilForm extends FlowPanel {
 
 		}
 	}
+	/*
+	 * Die Klasse GetUserCallback wird benötigt um den User aufzurufen
+	 */
 
 	private class GetUserCallback implements AsyncCallback<User> {
 
@@ -319,8 +322,7 @@ public class ProfilForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(User result) {
-			user = result; // result ist der neue User
-
+			user = result; 
 		}
 
 	}
