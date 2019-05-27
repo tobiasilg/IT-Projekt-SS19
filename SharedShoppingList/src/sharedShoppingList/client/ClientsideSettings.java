@@ -56,6 +56,13 @@ public class ClientsideSettings extends CommonSettings {
 	public static Logger getLogger() {
 		return log;
 	}
+	
+	public static LoginServiceAsync getLoginService() {
+		if (loginService == null) {
+			loginService = GWT.create(LoginService.class);
+		}
+		return loginService;
+	}
 
 	/**
 	 * Anlegen und Auslesen der Einkaufslistenverwaltung
