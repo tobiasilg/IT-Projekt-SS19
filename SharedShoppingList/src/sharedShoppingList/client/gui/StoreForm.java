@@ -10,6 +10,10 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.Store;
+
 /**
  * Formular für das Anlegen eines neuen Händlers im Datenstamm
  * 
@@ -20,6 +24,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class StoreForm extends AbstractAdministrationForm {
 
 	FlexTable storeFlexTable;
+	
+	EinkaufslistenverwaltungAsync elv= ClientsideSettings.getEinkaufslistenverwaltung();
 
 	ArrayList<String> stores = new ArrayList<>();
 
@@ -74,9 +80,14 @@ public class StoreForm extends AbstractAdministrationForm {
 	private class SaveStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-//			for (int i = 1; i <= storeFlexTable.getRowCount(); i++) {
-//				elv.saveStore(storeFlexTable.getText(i, 0));
-//			}
+			for (int i = 1; i <= storeFlexTable.getRowCount(); i++) {
+				
+				/*
+				 * save und add( create) zu klären
+				 */
+				
+				elv.createStore(storeFlexTable.getText(i, 0), new StoreCreationCallback());
+			}
 		}
 	}
 
@@ -118,7 +129,7 @@ public class StoreForm extends AbstractAdministrationForm {
 	/**
 	 * Callback wird ben�tigt, um den Store zu erstellen
 	 */
-	private class StoreCreationCallback implements AsyncCallback<Void> {
+	private class StoreCreationCallback implements AsyncCallback<Store> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -126,7 +137,7 @@ public class StoreForm extends AbstractAdministrationForm {
 		}
 
 		@Override
-		public void onSuccess(Void event) {
+		public void onSuccess(Store store) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 		}
 
