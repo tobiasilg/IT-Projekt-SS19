@@ -82,6 +82,10 @@ public class StoreForm extends AbstractAdministrationForm {
 		public void onClick(ClickEvent event) {
 			for (int i = 1; i <= storeFlexTable.getRowCount(); i++) {
 				
+				/*
+				 * save und add( create) zu klären
+				 */
+				
 				elv.createStore(storeFlexTable.getText(i, 0), new StoreCreationCallback());
 			}
 		}
