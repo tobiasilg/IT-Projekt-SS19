@@ -166,6 +166,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		/*
 		 * Eigentliches Löschen des Artikels
 		 */
+		
 		this.articleMapper.delete(article);
 		
 	}
