@@ -1,5 +1,7 @@
 package sharedShoppingList.client.gui;
 
+import java.util.Map;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -12,6 +14,7 @@ import com.google.gwt.view.client.TreeViewModel;
 
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ShoppingList;
 
 /*
  * Bildet die Navigationsleiste zum anzeigen und selektieren der Einkaufsliste, 
@@ -40,11 +43,20 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	
 	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = null; 
 	
+	private Group selectedGroup = null;
+	private ShoppingList selectedList = null;
 	private ListDataProvider<Group> groupDataProvider = null;
+	
+	/*
+	 * in der Map werden die ListDataProviders für die Einkaufslisten der Gruppen 
+	 * gemerkt 
+	 */
+	private Map<Group, ListDataProvider<ShoppingList>> accountDataProviders = null;
 
-	// public Navigator() {
-	// super();
-	// }
+	//Konstruktor
+	public Navigator() {
+	 
+	 }
 
 	public void onLoad() {
 
