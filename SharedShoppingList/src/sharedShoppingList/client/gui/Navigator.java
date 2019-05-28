@@ -7,13 +7,18 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.TreeViewModel;
+
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.Group;
 
 /*
  * Bildet die Navigationsleiste zum anzeigen und selektieren der Einkaufsliste, 
  * welche der Gruppe untergeordnet ist.
  */
 
-public class Navigator extends FlowPanel {
+public class Navigator extends FlowPanel implements TreeViewModel {
 
 	private FlowPanel navPanel = new FlowPanel();
 	private FlowPanel navImage = new FlowPanel();
@@ -26,9 +31,16 @@ public class Navigator extends FlowPanel {
 	// Erstellen des Images für Favorite Article
 	Image star = new Image();
 
-	private GroupCreationForm gcf;
-	private ListCreationForm lcf;
-	private FavoriteArticleForm faf;
+	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
+	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
+
+	private ListCreationForm listCreationForm; // Klasse die das anlegen einer Liste ermöglicht
+	private AdministrationGroupForm groupForm; // Klasse die die Gruppe mit den Gruppenmitgliedern anzeigt
+	private ShoppingListForm shoppingListForm; // Klasse die die Einkaufsliste der jeweiligen Gruppe anzeigt
+	
+	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = null; 
+	
+	private ListDataProvider<Group> groupDataProvider = null;
 
 	// public Navigator() {
 	// super();
@@ -92,6 +104,18 @@ public class Navigator extends FlowPanel {
 
 		}
 
+	}
+
+	@Override
+	public <T> NodeInfo<?> getNodeInfo(T value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isLeaf(Object value) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
