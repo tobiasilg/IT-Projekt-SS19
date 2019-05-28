@@ -192,6 +192,26 @@ body {
 	user-select: none;
 }
 
+.navPanel {
+	display: flex;
+}
+
+.navImage {
+	justify-content: flex-end;
+	margin-top: 6px;
+	margin-left: 160px;
+	cursor: pointer;
+}
+
+.navIcon {
+	height: 40px;
+	width: 40px;
+}
+
+.buttonPanel {
+	justify-content: flex-start;
+}
+
 .navTitle {
 	border-style: inset;
 	border-left: none;
@@ -364,6 +384,7 @@ body {
 	display: flex;
 	margin-top: 15px;
 }
+
 .Abfrage.gwt-Label {
 	color: red;
 }

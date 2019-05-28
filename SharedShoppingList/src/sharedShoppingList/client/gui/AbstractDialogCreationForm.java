@@ -1,11 +1,16 @@
 package sharedShoppingList.client.gui;
 
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 
 /* Die abstract Class <CodeAbstractDialogCreationForm</code> dient dazu, dass die Klassen
@@ -16,7 +21,7 @@ import sharedShoppingList.shared.FieldVerifier;
 
 public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	
-	
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
 	protected Label nameLabel = new Label(nameDialogForm());
 	protected DynamicTextbox insertNameTextBox = new DynamicTextbox();
@@ -51,8 +56,25 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 //		hpButtonPanel.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
 //		hpButtonPanel.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
 		
+		/*
+		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
+		 * Zugleich wird das Eingabefeld geleert.
+		 */
+		insertNameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					saveButton.click();
+					insertNameTextBox.setText("");
+				}
+
+			}
+		});
+
+}
 	
-	}
+	
 
 	/**
 	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische

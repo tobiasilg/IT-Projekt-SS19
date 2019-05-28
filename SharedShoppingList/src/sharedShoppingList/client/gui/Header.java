@@ -37,12 +37,10 @@ public class Header extends FlowPanel {
 
 	// Erstellen des Logout Icons
 	Image logout = new Image();
-	
 
 	private ProfilForm pf;
-	 private ArticleForm af;
-	 private StoreForm sf;
-
+	private ArticleForm af;
+	private StoreForm sf;
 
 	public Header() {
 		super();
@@ -99,96 +97,94 @@ public class Header extends FlowPanel {
 
 		this.add(headerLeft);
 		this.add(headerRight);
-		
+
 		/*
 		 * Hinzufügen der Click-Handler an Anchors, Logo und Icon
 		 */
-		
+
 		report.addClickHandler(new ShowReportClickHandler());
 		article.addClickHandler(new ShowArticleClickHandler());
 		store.addClickHandler(new ShowStoreClickHandler());
 		headerTitle.addClickHandler(new ShowSartPageClickHandler());
 		logout.addClickHandler(new ShowProfileClickHandler());
-		
 
-	}	
-	
-		/*
-		 * Die Klasse ShowReportClickHadler ermöglicht die Weiterletung 
-		 * zum Report Generator
-		 */
-		private class ShowReportClickHandler implements ClickHandler {
+	}
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				report.setHref(GWT.getHostPageBaseURL() + "ReportGenerator.html");
-				Window.open(report.getHref(), "_blank", ""); //öffnet neunen Tab
-			}
-		
+	/*
+	 * Die Klasse ShowReportClickHadler ermöglicht die Weiterletung zum Report
+	 * Generator
+	 */
+	private class ShowReportClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			report.setHref(GWT.getHostPageBaseURL() + "ReportGenerator.html");
+			Window.open(report.getHref(), "_blank", ""); // öffnet neunen Tab
 		}
-		/*
-		 * Die Klasse ShowArticleClickHandler ermöglicht die Weiterletung 
-		 * zur ArticleForm
-		 */
-		private class ShowArticleClickHandler implements ClickHandler {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				RootPanel.get("details").clear();
-				af = new ArticleForm();
-				RootPanel.get("details").add(af);
-			}
-			
-		}
-		/*
-		 * Die Klasse ShowStoreClickHandler ermöglicht die Weiterletung 
-		 * zur StoreForm
-		 */
-		private class ShowStoreClickHandler implements ClickHandler {
+	}
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				RootPanel.get("details").clear();
-				sf = new StoreForm();
-				RootPanel.get("details").add(sf);
-			}
-			
-		}
-		/*
-		 * Die Klasse ShowStartPageClickHandler ermöglicht die Azeige 
-		 * der Startseite
-		 */
-		private class ShowSartPageClickHandler implements ClickHandler {
+	/*
+	 * Die Klasse ShowArticleClickHandler ermöglicht die Weiterletung zur
+	 * ArticleForm
+	 */
+	private class ShowArticleClickHandler implements ClickHandler {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				RootPanel.get("details").clear();
-				
-				
-			}
-			
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			af = new ArticleForm();
+			RootPanel.get("details").add(af);
 		}
-		/*
-		 * Die Klasse ShowProfilClickHandler ermöglicht die Azeige 
-		 * der ProfilForm
-		 */
-		private class ShowProfileClickHandler implements ClickHandler {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				
-				RootPanel.get("details").clear();
-				pf = new ProfilForm();
-				RootPanel.get("details").add(pf);
-				
-				
-			}
-			
+	}
+
+	/*
+	 * Die Klasse ShowStoreClickHandler ermöglicht die Weiterletung zur StoreForm
+	 */
+	private class ShowStoreClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			sf = new StoreForm();
+			RootPanel.get("details").add(sf);
 		}
+
+	}
+
+	/*
+	 * Die Klasse ShowStartPageClickHandler ermöglicht die Azeige der Startseite
+	 */
+	private class ShowSartPageClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+
+		}
+
+	}
+
+	/*
+	 * Die Klasse ShowProfilClickHandler ermöglicht die Azeige der ProfilForm
+	 */
+	private class ShowProfileClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+
+			RootPanel.get("details").clear();
+			pf = new ProfilForm();
+			RootPanel.get("details").add(pf);
+
+		}
+
+	}
 
 }
