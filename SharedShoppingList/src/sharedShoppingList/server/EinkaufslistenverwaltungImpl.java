@@ -225,6 +225,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		 */
 		this.userMapper.delete(user);
 	}
+	
+	/**
+	 * Speichern/Update des Users in der DB
+	 * 
+	 * @param User Objekt
+	 */
+
+	public void save(User user) throws IllegalArgumentException {
+		this.userMapper.update(user);
+	}
 
 	/**
 	 * ************************* ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte
