@@ -16,6 +16,7 @@ import sharedShoppingList.shared.bo.Group;
 
 /*
  * @author: Leon Seiz, Nico Weiler, Tobias Ilg
+ * 
  */
 
 @RemoteServiceRelativePath("einkaufslistenverwaltung")
@@ -59,7 +60,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public void delete(Store store) throws IllegalArgumentException;
 	
-	public Vector<Store> getAllStores(Store store) throws IllegalArgumentException;
+	public Vector<Store> getAllStores() throws IllegalArgumentException;
 	
 	public Store getStoreByID( int id) throws IllegalArgumentException;
 	
@@ -80,5 +81,10 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	void delete(Group group)throws IllegalArgumentException;
 	
 	public void save(User user) throws IllegalArgumentException;
+	
+	public Vector<User> getAllUsers()throws IllegalArgumentException;
+	
+	public User getUserByID(int id) throws IllegalArgumentException;
+	
 
 }

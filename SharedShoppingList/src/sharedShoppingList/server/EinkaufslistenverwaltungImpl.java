@@ -235,7 +235,30 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public void save(User user) throws IllegalArgumentException {
 		this.userMapper.update(user);
 	}
-
+	
+	/**
+	 * gibt alle User Objekte zurück
+	 * 
+	 * @param
+	 * @return alle User Objekte in Form eines Vectors
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<User> getAllUsers()throws IllegalArgumentException{
+		return this.userMapper.findAll();
+	}
+	
+	/**
+	 * gibt einen User mit der angegeben Id zurück
+	 * @param id
+	 * @return UserObjekt mit der entsprechenden Id
+	 * @throws IllegalArgumentException
+	 */
+	public User getUserByID(int id) throws IllegalArgumentException{
+		return this.userMapper.findById(id);
+	}
+	
+	
 	/**
 	 * ************************* ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte
 	 * 
@@ -287,7 +310,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * store
 	 */
 
-	public Vector<Store> getAllStores(Store store) throws IllegalArgumentException {
+	public Vector<Store> getAllStores() throws IllegalArgumentException {
 		return this.storeMapper.findAll();
 
 	}
@@ -483,6 +506,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listMapper.delete(shoppingList);
 		
 	}
+
 
 	
 }
