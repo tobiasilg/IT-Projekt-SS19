@@ -75,7 +75,8 @@ public class HTMLReportWriter extends ReportWriter {
 	 * 
 	 * @return Headerstring
 	 */
-	public String getHeader() {
+	
+	  public String getHeader() {
 		
 		StringBuffer result = new StringBuffer();
 
@@ -83,7 +84,19 @@ public class HTMLReportWriter extends ReportWriter {
 				"<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"><title>SharedShoppingList REPORT GENERATOR</title></head><body>");
 		
 		return result.toString();
-	}
+
+	  }
+	  
+	
+	 /*
+	 * Die HTML-Datei wird mit diesem Abschnitt abgeschlossen
+	 * @return Footerstring
+	 */
+	  
+	 public String getFooter() {
+		 
+		return "</body></html>";
+	 }
 
 	  
 	  
