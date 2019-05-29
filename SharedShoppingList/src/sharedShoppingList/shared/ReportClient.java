@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -28,6 +29,7 @@ import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
  * @author Nico Weiler
  */
 
+@RemoteServiceRelativePath("reportClient")
 public interface ReportClient extends RemoteService {
 	
 	/**

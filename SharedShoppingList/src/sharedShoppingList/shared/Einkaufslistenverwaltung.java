@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -17,6 +18,7 @@ import sharedShoppingList.shared.bo.Group;
  * @author: Leon Seiz, Nico Weiler, Tobias Ilg
  */
 
+@RemoteServiceRelativePath("einkaufslistenverwaltung")
 public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate);
