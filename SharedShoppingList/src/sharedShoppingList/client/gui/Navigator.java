@@ -2,6 +2,7 @@ package sharedShoppingList.client.gui;
 
 import java.util.Map;
 
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -120,14 +121,17 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
-		// TODO Auto-generated method stub
-		return null;
+		ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+		for(int i = 0; i<2; i++) {
+			dataProvider.getList().add(value + " " + String.valueOf(i));
+		}
+		return new DefaultNodeInfo<String>(dataProvider, new TextCell());
 	}
 
 	@Override
 	public boolean isLeaf(Object value) {
-		// TODO Auto-generated method stub
-		return false;
+		// The maximum length of a value is ten characters.
+	      return value.toString().length() > 10;
 	}
 
 }

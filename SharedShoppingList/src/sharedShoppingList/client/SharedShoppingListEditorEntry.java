@@ -1,7 +1,10 @@
 package sharedShoppingList.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.view.client.TreeViewModel;
+
 import sharedShoppingList.client.gui.Header;
 import sharedShoppingList.client.gui.Navigator;
 import sharedShoppingList.shared.bo.User;
@@ -17,6 +20,9 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	Header header = new Header();
 	RootPanel rootPanelHeader = RootPanel.get("header");
 	
+	TreeViewModel nav = new Navigator();
+	CellTree tree = new CellTree(nav,"Item 1");
+
 	Navigator navigator = new Navigator();
 	RootPanel rootPanelNavigator = RootPanel.get("navigator");
 	
@@ -47,6 +53,7 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 		rootPanelHeader.add(header);
 		rootPanelNavigator.add(navigator);
+		rootPanelNavigator.add(tree);
 
 	}
 	
