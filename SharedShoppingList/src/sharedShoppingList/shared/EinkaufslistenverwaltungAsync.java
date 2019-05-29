@@ -58,7 +58,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void delete(Store store, AsyncCallback<Void> callback);
 
-	void getAllStores(Store store, AsyncCallback<Vector<Store>> callback);
+	void getAllStores(AsyncCallback<Vector<Store>> callback);
 
 	void getStoreByID(int id, AsyncCallback<Store> callback);
 
@@ -79,5 +79,9 @@ public interface EinkaufslistenverwaltungAsync {
 	void delete(ShoppingList shoppingList, AsyncCallback<Void> callback);
 
 	void save(User user, AsyncCallback<Void> callback);
+
+	void getAllUsers(AsyncCallback<Vector<User>> callback);
+
+	void getUserByID(int id, AsyncCallback<User> callback);
 
 }
