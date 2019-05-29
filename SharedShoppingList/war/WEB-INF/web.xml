@@ -23,14 +23,14 @@
   
   <servlet-mapping>
     <servlet-name>einkaufslistenVerwaltungServlet</servlet-name>
-    <url-pattern>/SharedShoppingList/einkaufslistenverwaltung</url-pattern>
+    <url-pattern>/sharedshoppinglist/einkaufslistenverwaltung</url-pattern>
   </servlet-mapping>
   
   <servlet>
 	<servlet-name>reportClientServlet</servlet-name>
 	<servlet-class>sharedShoppingList.server.report.ReportClientImpl</servlet-class>
   </servlet>
-  
+  <!--
   <servlet-mapping>
     <servlet-name>reportClientServlet</servlet-name>
     <url-pattern>/SharedShoppingList/reportClient</url-pattern>
@@ -46,10 +46,10 @@
     <servlet-name>loginService</servlet-name>
     <url-pattern>/SharedShoppingList/login</url-pattern>
   </servlet-mapping>
+  -->
   
-  <!-- Default page to serve 
   <welcome-file-list>
     <welcome-file>SharedShoppingList.html</welcome-file>
   </welcome-file-list>
-	-->
+
 </web-app>
