@@ -76,5 +76,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	public Vector<ListEntry>getAllListEntriesByUser(User user) throws IllegalArgumentException;
 
 	void delete(Group group)throws IllegalArgumentException;
+	
+	public void save(User user) throws IllegalArgumentException;
 
 }
