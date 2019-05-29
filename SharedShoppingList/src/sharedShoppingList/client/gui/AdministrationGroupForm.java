@@ -78,7 +78,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.delete(group, new RenameShoppingListCallback());
+			//elv.delete(group, new RenameShoppingListCallback());
 
 		}
 

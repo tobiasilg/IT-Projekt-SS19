@@ -14,6 +14,29 @@
 
 
   <!-- Servlets -->
+  
+  <servlet>
+    <servlet-name>einkaufslistenVerwaltungServlet</servlet-name>
+    <servlet-class>sharedShoppingList.server.EinkaufslistenverwaltungImpl</servlet-class>
+  </servlet>
+  
+  
+  <servlet-mapping>
+    <servlet-name>einkaufslistenVerwaltungServlet</servlet-name>
+    <url-pattern>/SharedShoppingList/einkaufslistenverwaltung</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>reportClientServlet</servlet-name>
+	<servlet-class>sharedShoppingList.server.report.ReportClientImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>reportClientServlet</servlet-name>
+    <url-pattern>/SharedShoppingList/reportClient</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>sharedShoppingList.server.LoginServiceImpl</servlet-class>
