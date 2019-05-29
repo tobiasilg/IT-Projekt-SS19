@@ -67,6 +67,26 @@ public class HTMLReportWriter extends ReportWriter {
 	  public String paragraphToHTML(SimpleParagraph sp) {
 		  return sp.toString();
 	  }
+	  
+	  
+	/*
+	 * Der für eine HTML Datei notwendige Header wird erstellt
+	 * Header von: https://www.w3schools.com/html/default.asp
+	 * 
+	 * @return Headerstring
+	 */
+	public String getHeader() {
+		
+		StringBuffer result = new StringBuffer();
+
+		result.append(
+				"<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"><title>SharedShoppingList REPORT GENERATOR</title></head><body>");
+		
+		return result.toString();
+	}
+
+	  
+	  
 
 	@Override
 	public void process(AllListEntries r) {
