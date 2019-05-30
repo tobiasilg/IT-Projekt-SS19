@@ -11,7 +11,7 @@ import com.google.gwt.i18n.shared.DateTimeFormat;
  * abgelegt und kann nach Aufruf der entsprechenden Prozessierungsmethode mit
  * <code>getReportText()</code> ausgelesen werden.
  * 
- * @author Nico Weiler
+ * @author Nico Weiler, Tobias Ilg
  */
 
 public class HTMLReportWriter extends ReportWriter {
@@ -162,13 +162,93 @@ public class HTMLReportWriter extends ReportWriter {
 
 	@Override
 	public void process(AllListEntriesByStore r) {
-		// TODO Auto-generated method stub
+		
+		StringBuffer result = new StringBuffer();
+		
+		  DateTimeFormat df = DateTimeFormat.getFormat("dd.MM.yyyy");
+
+			String HeadlineDate = df.format(r.getCreated());
+
+			result.append("<H2>" + r.getTitle() + "</H2>");
+			result.append("<H3>" + HeadlineDate + "</H3>");
+
+			ArrayList<Row> rows = r.getRows();
+			result.append("<table style=\"width:100vw\">");
+
+			for (int i = 0; i < rows.size(); i++) {
+				
+				Row row = rows.get(i);
+				result.append("<tr>");
+				
+				for (int k = 0; k < row.getColumnsSize(); k++) {
+					if (i == 0) {
+						result.append(
+								"<td style=\"background:darkgrey; color: white; font-weight:bold\">" + row.getColumnByIndex(k) + "</td>");
+					} else {
+						
+						if (i >= 1) {
+							result.append("<td style=\"border-top:1px solid black\">" + row.getColumnByIndex(k) + "</td>");
+						
+						} else {
+							result.append("<td valign=\"top\">" + row.getColumnByIndex(k) + "</td>");
+
+						}
+					}
+				}
+				result.append("</tr>");
+			}
+
+			result.append("</table>");
+
+			/**
+			 */
+			this.reportText = result.toString();
 		
 	}
 
 	@Override
 	public void process(AllListEntriesByPeriod r) {
-		// TODO Auto-generated method stub
+		
+		StringBuffer result = new StringBuffer();
+		
+		  DateTimeFormat df = DateTimeFormat.getFormat("dd.MM.yyyy");
+
+			String HeadlineDate = df.format(r.getCreated());
+
+			result.append("<H2>" + r.getTitle() + "</H2>");
+			result.append("<H3>" + HeadlineDate + "</H3>");
+
+			ArrayList<Row> rows = r.getRows();
+			result.append("<table style=\"width:100vw\">");
+
+			for (int i = 0; i < rows.size(); i++) {
+				
+				Row row = rows.get(i);
+				result.append("<tr>");
+				
+				for (int k = 0; k < row.getColumnsSize(); k++) {
+					if (i == 0) {
+						result.append(
+								"<td style=\"background:darkgrey; color: white; font-weight:bold\">" + row.getColumnByIndex(k) + "</td>");
+					} else {
+						
+						if (i >= 1) {
+							result.append("<td style=\"border-top:1px solid black\">" + row.getColumnByIndex(k) + "</td>");
+						
+						} else {
+							result.append("<td valign=\"top\">" + row.getColumnByIndex(k) + "</td>");
+
+						}
+					}
+				}
+				result.append("</tr>");
+			}
+
+			result.append("</table>");
+
+			/**
+			 */
+			this.reportText = result.toString();
 		
 	}
 	
