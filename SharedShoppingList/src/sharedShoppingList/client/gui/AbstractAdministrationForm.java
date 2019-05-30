@@ -25,7 +25,7 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	private Label nameLabel = new Label(nameForm());
 	protected FlexTable administrationFlexTable = (createTable());
 	protected Button cancelButton = new Button("abbrechen");
-	protected Button saveButton = new Button("speichern");
+	protected Button saveButton = new Button("Änderungen speichern");
 	protected Button addButton = new Button("hinzufuegen");
 	protected TextBox nameTextBox = new TextBox();
 	protected ListBox unitListBox = (createUnitListBox());
@@ -57,6 +57,8 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		this.add(hpCreate);
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
+
+//		this.setStylePrimaryName("details");
 
 		nameTextBox.addStyleName("TextBox");
 		addButton.addStyleName("Button");

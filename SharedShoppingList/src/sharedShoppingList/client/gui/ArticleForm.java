@@ -7,8 +7,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -71,6 +74,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 		saveButton.addClickHandler(new SaveArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
+		articleFlexTable.addClickHandler(new EditArticleClickHandler());
 
 	}
 
@@ -134,9 +138,54 @@ public class ArticleForm extends AbstractAdministrationForm {
 			});
 
 			articleFlexTable.setWidget(rowCount, 2, removeButton);
+
 			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedItemText(), new ArticleCreationCallback());
 		}
 
+	}
+
+	private class EditArticleClickHandler implements ClickHandler {
+
+//	FlexTable.addClickHandler(new ClickHandler() {
+
+		public void onClick(ClickEvent event) {
+			Cell cell = articleFlexTable.getCellForEvent(event);
+			final int row = cell.getRowIndex();
+			final int articleColumn = 0;
+			final int unitColumn = 1;
+			final TextBox editArticleTextBox = new TextBox();
+			final ListBox editUnitListBox = articleListBox;
+//			
+
+//			editUnitListBox.addItem("gramm");
+//			editUnitListBox.addItem("kg");
+//			editUnitListBox.addItem("Stueck");
+
+			// Get the text from the cell in some way. Maybe use flextTable.getHTML(row,
+			// column) or what ever you prefer
+
+			articleFlexTable.getHTML(1, 2);
+
+			editArticleTextBox.setText("Änderung vornehmen");
+			saveButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+//					int code = event.getNativeButton();
+//					if (KeyCodes.KEY_ENTER == code) {
+					articleFlexTable.setWidget(row, articleColumn, new Label(editArticleTextBox.getText()));
+					articleFlexTable.setWidget(row, unitColumn, new Label(editUnitListBox.getSelectedValue()));
+				}
+//				}
+
+			});
+			articleFlexTable.setWidget(row, articleColumn, editArticleTextBox);
+			articleFlexTable.setWidget(row, unitColumn, editUnitListBox);
+//	        
+
+			// You may also need something like this
+			editArticleTextBox.setFocus(true);
+			editUnitListBox.setFocus(true);
+		}
+//	
 	}
 
 	/**
@@ -166,5 +215,4 @@ public class ArticleForm extends AbstractAdministrationForm {
 			Notification.show("Der Artikel wurde erfolgreich erstellt");
 		}
 	}
-
 }
