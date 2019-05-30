@@ -1,5 +1,7 @@
 package sharedShoppingList.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -7,7 +9,23 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+
+/**
+ * Formular fÃ¼r das Anlegen eines neuen Artikels im Datenstamm
+ * 
+ * @author patricktreiber
+ *
+ */
+
 public class FavoriteArticleForm extends AbstractAdministrationForm {
+
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+
+	FlexTable favoriteArticleFlexTable;
+
+	ArrayList<String> favoriteArticles = new ArrayList<>();
 
 	@Override
 	protected String nameForm() {
@@ -41,15 +59,15 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
+			RootPanel.get("details").clear();
 
 		}
 
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorite nach dem
-	 * Klicken des Bestätigungsbutton erstellt.
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Favorite nach dem
+	 * Klicken des Bestï¿½tigungsbutton erstellt.
 	 */
 	private class CreateFavArticleClickHandler implements ClickHandler {
 
@@ -59,7 +77,7 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefüllt wurde, wird ein neuer Favorit nach dem Klicken
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Favorit nach dem Klicken
 	 * des addButton erstellt.
 	 */
 	private class AddFavArticleClickHandler implements ClickHandler {
@@ -70,7 +88,7 @@ public class FavoriteArticleForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Callback wird benötigt, um den Store zu erstellen
+	 * Callback wird benï¿½tigt, um den Store zu erstellen
 	 */
 	private class FavArticleCreationCallback implements AsyncCallback<Void> {
 

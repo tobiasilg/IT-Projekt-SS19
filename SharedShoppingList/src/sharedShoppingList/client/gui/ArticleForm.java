@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.Label;
@@ -20,7 +21,7 @@ import sharedShoppingList.shared.bo.Article;
 /**
  * Formular für das Anlegen eines neuen Artikels im Datenstamm
  * 
- * @author moritzhampe
+ * @author patricktreiber
  *
  */
 
@@ -62,6 +63,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 			articleFlexTable.setText(0, 0, "Artikel");
 			articleFlexTable.setText(0, 1, "Einheit");
+			articleFlexTable.setText(0, 2, "Favorit");
 
 		}
 
@@ -98,6 +100,12 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
+			for (String test : articles) {
+
+//				elv.save(article, new ArticleDeleteCallback());
+
+			}
+
 		}
 	}
 
@@ -121,6 +129,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 			int rowCount = articleFlexTable.getRowCount();
 
+			CheckBox checkBox = new CheckBox();
+
 			articleFlexTable.setText(rowCount, 0, article);
 			articleFlexTable.setText(rowCount, 1, unit);
 
@@ -137,7 +147,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 			});
 
-			articleFlexTable.setWidget(rowCount, 2, removeButton);
+			articleFlexTable.setWidget(rowCount, 3, removeButton);
+			articleFlexTable.setWidget(rowCount, 2, checkBox);
 
 			elv.createArticle(nameTextBox.getText(), unitListBox.getSelectedItemText(), new ArticleCreationCallback());
 		}
@@ -213,6 +224,23 @@ public class ArticleForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Article article) {
 			Notification.show("Der Artikel wurde erfolgreich erstellt");
+		}
+	}
+
+	/**
+	 * Callback wird ben�tigt, um den Artikel zu erstellen
+	 */
+	private class ArticleDeleteCallback implements AsyncCallback<Article> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Die Änderungen konnten nicht gespeichert werden");
+
+		}
+
+		@Override
+		public void onSuccess(Article article) {
+			Notification.show("speichern erfolgreich");
 		}
 	}
 }
