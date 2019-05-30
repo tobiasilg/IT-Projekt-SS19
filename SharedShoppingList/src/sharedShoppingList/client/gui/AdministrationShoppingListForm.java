@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -25,6 +26,10 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 	protected String nameDialogForm() {
 		return "Shoppingliste verwalten";
 	}
+		protected FlexTable createTable () {
+			return null;
+		}
+	
 
 	// Konstruktor
 	public AdministrationShoppingListForm() {
@@ -66,7 +71,7 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.renameShoppingList(insertNameTextBox, new RenameShoppingListCallback());
+			elv.save(insertNameTextBox, new RenameShoppingListCallback());
 		}
 	}
 
