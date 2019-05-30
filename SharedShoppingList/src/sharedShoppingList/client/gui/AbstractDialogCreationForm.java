@@ -4,8 +4,10 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -20,12 +22,20 @@ import sharedShoppingList.shared.FieldVerifier;
 */
 
 public abstract class AbstractDialogCreationForm extends VerticalPanel {
-	
+
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
 	protected Label nameLabel = new Label(nameDialogForm());
+	protected Label nameSecondLabel = new Label(nameSecondDialogForm());
+	protected Label nameThirdLabel = new Label(nameThirdDialogForm());
+	protected SuggestBox suggestUser = (suggestUser());
+
+	protected Button addButton = (addButton());
+	protected Button deleteButton = (deleteButton());
+	protected HorizontalPanel hpfirstButtonPanel = (createHpFirstButtonPanel());
+	protected FlexTable flexTable = (createTable());
+
 	protected DynamicTextbox insertNameTextBox = new DynamicTextbox();
-	// protected TextBox insertNameTextBox = new TextBox();
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("speichern");
 	protected HorizontalPanel hpButtonPanel = new HorizontalPanel();
@@ -35,27 +45,57 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 
 	protected abstract String nameDialogForm();
 
+	protected abstract String nameSecondDialogForm();
+
+	protected abstract String nameThirdDialogForm();
+
+	protected abstract FlexTable createTable();
+
+	protected abstract Button addButton();
+
+	protected abstract Button deleteButton();
+
+	protected abstract HorizontalPanel createHpFirstButtonPanel();
+	
+	protected abstract SuggestBox suggestUser();
+
 	// In dieser Methode werden die Widgets der Form hinzugefügt sowie das Styling
 	// durchgeführt
 	public void onLoad() {
+		hpfirstButtonPanel.add(addButton);
+		hpfirstButtonPanel.add(deleteButton);
 		hpButtonPanel.add(saveButton);
 		hpButtonPanel.add(cancelButton);
 
 		// Add them to VerticalPanel
 		this.add(nameLabel);
+		this.add(nameSecondLabel);
+		this.add(suggestUser);
+		this.add(flexTable);
+		this.add(hpfirstButtonPanel);
+		this.add(nameThirdLabel);
 		this.add(insertNameTextBox);
 		this.add(hpButtonPanel);
 
 		nameLabel.addStyleName("name_label");
+		nameSecondLabel.addStyleName("nameSecond_label");
+		nameThirdLabel.addStyleName("nameThird_labe");
+		suggestUser.addStyleName("suggestUser_suggestBox");
+		addButton.addStyleName("add_Button");
+		deleteButton.addStyleName("delte_button");
 		cancelButton.addStyleName("cancel_button");
 		saveButton.addStyleName("save_button");
+
+		hpfirstButtonPanel.setSpacing(20);
 		hpButtonPanel.setSpacing(20);
 		cancelButton.setPixelSize(130, 40);
 		saveButton.setPixelSize(130, 40);
-		
+		addButton.setPixelSize(130, 40);
+		deleteButton.setPixelSize(130, 40);
+
 //		hpButtonPanel.setCellHorizontalAlignment(saveButton, ALIGN_CENTER);
 //		hpButtonPanel.setCellHorizontalAlignment(cancelButton, ALIGN_CENTER);
-		
+
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
 		 * Zugleich wird das Eingabefeld geleert.
@@ -66,15 +106,14 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					saveButton.click();
+					addButton.click();
 					insertNameTextBox.setText("");
 				}
 
 			}
 		});
 
-}
-	
-	
+	}
 
 	/**
 	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische
