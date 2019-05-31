@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.client.gui.AdministrationShoppingListForm.RenameShoppingListCallback;
 import sharedShoppingList.shared.bo.Group;
@@ -36,6 +37,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	HorizontalPanel createHpFirstButtonPanel;
 	ArrayList<String> member = new ArrayList<>();
 	User u = CurrentUser.getUser();
+	Group g = CurrentGroup.getGroup();
 
 	protected Button deleteButton = new Button("Loeschen");
 
@@ -134,16 +136,19 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	 ***********************************************************************/
 
 	/**
-	 * Die Nested-Class <code>DeleteUserClickHandler</code> implementiert das
+	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
 	 * ClickHandler-Interface, welches eine Interaktion ermöglicht. Hier wird das
 	 * Erscheinen der DeleteUserDialogBox ermöglicht.
+	 * 
+	 * @ center Centers the popup in the browser window and shows it. If the popup
+	 * was already showing, then the popup is centered.
 	 */
 	private class DeleteGroupClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			DeleteGroupDialogBox deleteGroupDB = new DeleteGroupDialogBox();
-			deleteGroupDB.center();
+			DeleteGroupDialogBox deleteGroupDialogBox = new DeleteGroupDialogBox();
+			deleteGroupDialogBox.center();
 		}
 	}
 
@@ -154,18 +159,18 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	private class YesDeleteClickHandler implements ClickHandler {
 		private DeleteGroupDialogBox parentDUDB;
 
+		//Konstruktor 
 		public YesDeleteClickHandler(DeleteGroupDialogBox dudb) {
 			this.parentDUDB = dudb;
 		}
 
-		// Info: setGroupId Methode fehlt noch
+		// Info: setGroupId Methode fehlt noch.
 		@Override
 		public void onClick(ClickEvent event) {
 			this.parentDUDB.hide();
-			Group deletableGroup = new Group();
-			deletableGroup.setGroupId(Integer.parseInt(Cookies.getCookie("groupId")));
-
-			elv.delete(deletableGroup, new DeleteGroupCallback());
+			Group g = new Group();
+			
+			elv.delete(g, new DeleteGroupCallback());
 		}
 	}
 
@@ -209,28 +214,29 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	private class SaveRenameGroupClickhandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			Group group = new Group();
 
-			elv.save(insertNameTextBox.getText(), new SaveRenameGroupCallback());
+			g.setName(insertNameTextBox.getText());
+
+			elv.save(g, new SaveRenameGroupCallback());
 
 		}
 
 	}
 
 	/***********************************************************************
-	 * CALLBACK
+	 * 				CALLBACK
 	 ***********************************************************************/
 
 	/**
 	 * Callback wird benötigt, um die Gruppe umzubenennen
 	 */
-	class SaveRenameGroupCallback implements AsyncCallback<Group> {
+	class SaveRenameGroupCallback implements AsyncCallback<Void> {
 
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Gruppen konnte nicht umbenannt werden");
 		}
 
-		public void onSuccess(Group Group) {
+		public void onSuccess(Void Group) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
 		}
 	}
@@ -238,7 +244,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	/*
 	 * Callback wird benötigt, um die Gruppe zu löschen.
 	 */
-	private class DeleteGroupCallback implements AsyncCallback<Group> {
+	private class DeleteGroupCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -246,7 +252,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 		}
 
 		@Override
-		public void onSuccess(Group group) {
+		public void onSuccess(Void group) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 		}
 	}
@@ -254,7 +260,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	/*
 	 * Callback wird benötigt, um ein Gruppenmitglied der Gruppe zu löschen.
 	 */
-	private class AddMemberCallback implements AsyncCallback<Group> {
+	private class AddMemberCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -262,7 +268,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 		}
 
 		@Override
-		public void onSuccess(Group group) {
+		public void onSuccess(Void group) {
 			Notification.show("Ein neues Gruppenmitglied wurde erfolgreich hinzugefügt");
 		}
 	}
