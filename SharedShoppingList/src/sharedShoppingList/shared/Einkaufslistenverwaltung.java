@@ -86,5 +86,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public User getUserByID(int id) throws IllegalArgumentException;
 	
+	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
+	
 
 }

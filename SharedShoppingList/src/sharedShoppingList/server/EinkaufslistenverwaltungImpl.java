@@ -397,6 +397,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.userMapper.findAll();
 	}
 	
+	public Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException{
+		return this.userMapper.findByGroup(group);
+	}
+	
 	
 	
 	
