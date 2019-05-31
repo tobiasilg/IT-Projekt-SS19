@@ -5,7 +5,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -26,20 +28,44 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 	protected String nameDialogForm() {
 		return "Shoppingliste verwalten";
 	}
-		protected FlexTable createTable () {
-			return null;
-		}
-	
+
+	protected String nameSecondDialogForm() {
+		return null;
+	}
+
+	protected String nameThirdDialogForm() {
+		return null;
+	}
+
+	protected FlexTable createTable() {
+		return null;
+	}
+
+	protected Button addButton() {
+		return null;
+	}
+
+	protected Button deleteButton() {
+		return null;
+	}
+
+	protected HorizontalPanel createHpFirstButtonPanel() {
+		return null;
+	}
+
+	protected SuggestBox suggestUser() {
+		return null;
+	}
 
 	// Konstruktor
 	public AdministrationShoppingListForm() {
-		
+
 		hpButtonPanel.add(deleteButton);
 
 		deleteButton.addClickHandler(new DeleteShoppingListClickhandler());
 		saveButton.addClickHandler(new SaveAdministrationShoppingListClickhandler());
 		cancelButton.addClickHandler(new CancelAdministrationShoppingListClickHandler());
-		
+
 	}
 
 	/*
@@ -49,9 +75,9 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 	public void onLoad() {
 //		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: " + user.getUserName());
 	}
-	
+
 	/*
-	 * !!!!!!!!!!!!		CLICKHANDLER		!!!!!!!!!!!!
+	 * !!!!!!!!!!!! CLICKHANDLER !!!!!!!!!!!!
 	 */
 
 	/**
@@ -87,9 +113,9 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 		}
 
 	}
-	
+
 	/*
-	 * !!!!!!!!!!!!		CALLBACK		!!!!!!!!!!!!
+	 * !!!!!!!!!!!! CALLBACK !!!!!!!!!!!!
 	 */
 
 	/**

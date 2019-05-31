@@ -3,7 +3,11 @@ package sharedShoppingList.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -17,18 +21,46 @@ import sharedShoppingList.shared.bo.User;
  * 
  */
 
-public class ListCreationForm extends AbstractDialogCreationForm {
+public class ShoppingListCreationForm extends AbstractDialogCreationForm {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	User u= CurrentUser.getUser();
+	User u = CurrentUser.getUser();
 
 	@Override
 	protected String nameDialogForm() {
-		return "Neue Liste erstellen";
+		return "Neue Shoppingliste erstellen";
+	}
+
+	protected String nameSecondDialogForm() {
+		return null;
+	}
+
+	protected String nameThirdDialogForm() {
+		return null;
+	}
+
+	protected FlexTable createTable() {
+		return null;
+	}
+
+	protected Button addButton() {
+		return null;
+	}
+
+	protected Button deleteButton() {
+		return null;
+	}
+
+	protected HorizontalPanel createHpFirstButtonPanel() {
+		return null;
+	}
+
+	protected SuggestBox suggestUser() {
+		return null;
 	}
 
 	// Konstruktor
-	public ListCreationForm() {
+	public ShoppingListCreationForm() {
 
 		saveButton.addClickHandler(new SaveListCreationClickHandler());
 		cancelButton.addClickHandler(new CancelListCreationClickHandler());
