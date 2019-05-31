@@ -302,8 +302,8 @@ public class ProfilForm extends FlowPanel {
 				user.setName(nameNeu);
 			}
 			
-			//einkaufslistenverwaltung.saveUser(user, new UpdateUserCallback());
-
+			einkaufslistenverwaltung.save(user, new UpdateUserCallback());
+			
 			safeProfileBox.hide();
 
 		}
