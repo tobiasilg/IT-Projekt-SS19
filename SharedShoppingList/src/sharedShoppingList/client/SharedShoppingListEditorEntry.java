@@ -7,6 +7,7 @@ import com.google.gwt.view.client.TreeViewModel;
 
 import sharedShoppingList.client.gui.Header;
 import sharedShoppingList.client.gui.Navigator;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
 
@@ -132,6 +133,19 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 		public static void setUser(User u) {
 			CurrentUser.u = u;
+		}
+  	}
+  	
+public static class CurrentGroup {
+		
+		private static Group g = null;
+
+		public static Group getGroup() {
+			return g;
+		}
+
+		public static void setGroup(Group g) {
+			CurrentGroup.g = g;
 		}
   	}
 }
