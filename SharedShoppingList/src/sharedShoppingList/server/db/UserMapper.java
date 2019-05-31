@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
 /**
@@ -115,6 +116,50 @@ public class UserMapper {
 			}
 			return user;
 		}
+	
+	/**
+	 * Methode gibt alle User einer bestimmten Gruppe zuurück
+	 * @param id
+	 * @return
+	 * @author Nico Weiler
+	 */
+	
+	public Vector <User> findByGroup(Group group) {
+		
+		Connection con = DBConnection.connection();
+		String sql = "select * from user where groupid="+ group.getId();
+		
+		Vector<User> users= new Vector<User>();
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+
+				User user = new User();
+
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+                user.setUserName(rs.getString("username"));
+                user.setGmail(rs.getString("gmail"));
+                user.setGroupId(rs.getInt("groupid"));
+				user.setCreateDate(rs.getTimestamp("createDate"));
+				user.setModDate(rs.getTimestamp("modDate"));
+				
+				users.addElement(user);
+			}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return users;
+		}
+	
+	
+	
 	
 	
 /*UPDATE*/
