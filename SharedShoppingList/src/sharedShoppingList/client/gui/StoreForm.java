@@ -1,6 +1,7 @@
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -17,17 +19,26 @@ import sharedShoppingList.shared.bo.Store;
 /**
  * Formular für das Anlegen eines neuen Händlers im Datenstamm
  * 
- * @author moritzhampe
+ * @author patricktreiber
  *
  */
 
 public class StoreForm extends AbstractAdministrationForm {
 
-	FlexTable storeFlexTable;
-	
-	EinkaufslistenverwaltungAsync elv= ClientsideSettings.getEinkaufslistenverwaltung();
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
-	ArrayList<String> stores = new ArrayList<>();
+	FlexTable storeFlexTable;
+
+	ArrayList<Store> stores;
+
+	// Konstruktor
+	public StoreForm() {
+
+		saveButton.addClickHandler(new SaveStoreClickHandler());
+		cancelButton.addClickHandler(new CancelClickHandler());
+		addButton.addClickHandler(new AddStoreClickHandler());
+
+	}
 
 	@Override
 	protected String nameForm() {
@@ -42,22 +53,60 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	@Override
 	protected FlexTable createTable() {
-		// TODO Auto-generated method stub
+		elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
 		if (storeFlexTable == null) {
 			storeFlexTable = new FlexTable();
+
+			storeFlexTable.setText(0, 0, "Store");
 		}
-		storeFlexTable.setText(0, 0, "Store");
+
+		stores = new ArrayList<Store>();
+
+		// Lade alle Store aus der Datenbank
+		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show("failure");
+			}
+
+			@Override
+			public void onSuccess(Vector<Store> result) {
+				// Füge alle Elemente der Datenbank in die Liste hinzu
+				for (Store store : result) {
+					stores.add(store);
+					setContentOfStoreFlexTable(store);
+				}
+				Notification.show("success");
+
+			}
+		});
 
 		return storeFlexTable;
 	}
 
-	// Konstruktor
-	public StoreForm() {
+	private void setContentOfStoreFlexTable(Store store) {
+		// Hole Zeilennummer, die aktuell bearbeitet wird
+		int rowCount = storeFlexTable.getRowCount();
 
-		saveButton.addClickHandler(new SaveStoreClickHandler());
-		cancelButton.addClickHandler(new CancelClickHandler());
-		addButton.addClickHandler(new AddStoreClickHandler());
+		// Erstelle neue Textbox für eigetragenen Store und setze den Namen
+		TextBox storeTextBox = new TextBox();
+		storeTextBox.setText(store.getName());
+
+		// Erstelle x Button
+		Button removeButton = new Button("x");
+		removeButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+//			PROBLEM WEIL STORE NICHT FINAL IST 
+//				final int removedIndex = stores.indexOf(store);
+//				stores.remove(removedIndex);
+//				storeFlexTable.removeRow(removedIndex + 1);
+			}
+		});
+
+		storeFlexTable.setWidget(rowCount, 0, storeTextBox);
+		storeFlexTable.setWidget(rowCount, 3, removeButton);
 
 	}
 
@@ -80,13 +129,20 @@ public class StoreForm extends AbstractAdministrationForm {
 	private class SaveStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			for (int i = 1; i <= storeFlexTable.getRowCount(); i++) {
-				
-				/*
-				 * save und add( create) zu klären
-				 */
-				
-				elv.createStore(storeFlexTable.getText(i, 0), new StoreCreationCallback());
+			for (Store store : stores) {
+				elv.save(store, new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						Notification.show("successfilly saved");
+
+					}
+				});
 			}
 		}
 	}
@@ -99,31 +155,16 @@ public class StoreForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
-			final String store = nameTextBox.getValue();
+			// Erstelle neues Store Objekt
+			Store store = new Store();
+			store.setName(nameTextBox.getValue());
 
-			if (stores.contains(store)) {
-				return;
-			}
+			setContentOfStoreFlexTable(store);
 
-			stores.add(store);
-			int rowCount = storeFlexTable.getRowCount();
-			storeFlexTable.setText(rowCount, 0, store);
-
-			Button removeButton = new Button("x");
-
-			removeButton.addClickHandler(new ClickHandler() {
-
-				@Override
-				public void onClick(ClickEvent event) {
-					final int removedIndex = stores.indexOf(store);
-					stores.remove(removedIndex);
-					storeFlexTable.removeRow(removedIndex + 1);
-				}
-
-			});
-
-			storeFlexTable.setWidget(rowCount, 1, removeButton);
+			// Persistiere in die Datenbank
+			elv.createStore(store.getName(), new StoreCreationCallback());
 		}
+
 	}
 
 	/**

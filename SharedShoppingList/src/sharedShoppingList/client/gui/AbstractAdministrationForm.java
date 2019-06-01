@@ -18,6 +18,7 @@ import sharedShoppingList.shared.FieldVerifier;
  * ArticleForm, StoreForm und ListForm hiervon gemeinsam erben k�nnen. 
  * Erst wenn alle abstrakten Methoden der Superklasse implementiert worden sind, 
  * kann die Subklasse konkret werden (instanziiert werden).
+ * @author patrick
  */
 
 public abstract class AbstractAdministrationForm extends VerticalPanel {
@@ -44,6 +45,10 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 	// In dieser Methode werden die Widgets der Form hinzugef�gt.
 	public void onLoad() {
 
+		this.setWidth("100%");
+
+		nameTextBox.getElement().setPropertyString("placeholder", "Neu... ");
+
 		hpCreate.add(nameTextBox);
 		if (unitListBox != null) {
 			hpCreate.add(unitListBox);
@@ -63,9 +68,24 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		nameTextBox.addStyleName("TextBox");
 		addButton.addStyleName("Button");
 		cancelButton.addStyleName("Button");
-		saveButton.addStyleName("Button");
+		saveButton.addStyleName("speicherProfilButton.gwt-Button");
 		administrationFlexTable.addStyleName("FlexTable");
 		nameLabel.addStyleName("profilTitle");
+
+		nameLabel.setHorizontalAlignment(ALIGN_CENTER);
+		nameLabel.setWidth("100%");
+
+		hpCreate.setWidth("50%");
+		hpCreate.setCellHorizontalAlignment(nameTextBox, ALIGN_LEFT);
+		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_LEFT);
+		hpCreate.setCellHorizontalAlignment(unitListBox, ALIGN_LEFT);
+		hpCreate.setCellWidth(nameTextBox, "300");
+
+		administrationFlexTable.setWidth("70%");
+		administrationFlexTable.setBorderWidth(2);
+		administrationFlexTable.setSize("100%", "100%");
+
+		administrationFlexTable.setCellPadding(10);
 
 		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
