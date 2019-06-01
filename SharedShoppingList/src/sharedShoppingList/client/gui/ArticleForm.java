@@ -123,6 +123,9 @@ public class ArticleForm extends AbstractAdministrationForm {
 		removeButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+
+//				PROBLEM WEIL ARTICLE NICHT FINAL IST 
+
 //				final int removedIndex = articles.indexOf(article);
 //				articles.remove(removedIndex);
 //				articleFlexTable.removeRow(removedIndex + 1);
