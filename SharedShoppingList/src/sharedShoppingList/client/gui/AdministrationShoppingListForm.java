@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -53,7 +54,7 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 		return null;
 	}
 
-	protected SuggestBox suggestUser() {
+	protected TextBox addUsersTextBox() {
 		return null;
 	}
 
@@ -97,7 +98,7 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.save(insertNameTextBox, new RenameShoppingListCallback());
+			//elv.save(insertNameTextBox, new RenameShoppingListCallback());
 		}
 	}
 
@@ -108,7 +109,7 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.delete(group, new RenameShoppingListCallback());
+		//	elv.delete(group, new RenameShoppingListCallback());
 
 		}
 

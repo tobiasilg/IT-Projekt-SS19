@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -55,7 +56,7 @@ public class ShoppingListCreationForm extends AbstractDialogCreationForm {
 		return null;
 	}
 
-	protected SuggestBox suggestUser() {
+	protected TextBox addUsersTextBox() {
 		return null;
 	}
 
