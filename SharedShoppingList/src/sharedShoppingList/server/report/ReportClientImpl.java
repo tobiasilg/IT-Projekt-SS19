@@ -3,8 +3,10 @@ package sharedShoppingList.server.report;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 
 import sharedShoppingList.server.db.ListEntryMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
@@ -17,6 +19,10 @@ import sharedShoppingList.shared.report.AllListEntries;
 import sharedShoppingList.shared.report.AllListEntriesByPeriod;
 import sharedShoppingList.shared.report.AllListEntriesByStore;
 import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
+import sharedShoppingList.shared.report.Column;
+import sharedShoppingList.shared.report.CompositeParagraph;
+import sharedShoppingList.shared.report.Row;
+import sharedShoppingList.shared.report.SimpleParagraph;
 
 /**
  * Die Klasse <code>ReportClienImpl</code> implementiert das Interface
@@ -103,18 +109,66 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
+		
 		/**
-		 * folglich muss der Report noch zusammengebaut werden
+		 * Titel des Reports
 		 */
 		
 		result.setTitle("Report:");
 		
-		//result.setCreated(new Date());
+		/**
+		 * Erstellungsdatum wird gesetzt
+		 */
 		
+		result.setCreated(new Date());
 		
-		for(ListEntry l : listEntries) {
-			//result.addParagraph(l.getName());
-		}
+		   /*
+	     * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die oben
+	     * auf dem Report stehen) des Reports. Die Kopfdaten sind mehrzeilig, daher
+	     * die Verwendung von CompositeParagraph.
+	     */
+	    CompositeParagraph header = new CompositeParagraph();
+
+	    // Name des Händlers aufnehmen
+	    header.addSubParagraph(new SimpleParagraph(store.getName()));
+
+	    // StoreID aufnehmen
+	    header.addSubParagraph(new SimpleParagraph("Store-ID.: " + store.getId()));
+	    
+	    //Zeitraum anzeigen lassen
+	    header.addSubParagraph(new SimpleParagraph("Zeitraum: Von " + beginningDate.getDate() + "bis heute"));
+	    
+	    
+
+	    // Hinzufügen der zusammengestellten Kopfdaten zu dem Report
+	    result.setHeaderData(header);
+
+	   
+	    for (ListEntry le : listEntries) {
+	    	
+	      // Eine leere Zeile anlegen.
+	    	Row entryRow=new Row();
+
+	      // Erste Spalte: ListEntry ID
+	      entryRow.addColumn(new Column(String.valueOf(le.getId())));
+
+	      // Zweite Spalte: Artikel ID
+	      entryRow.addColumn(new Column(String.valueOf(le.getArticleId())));
+	      
+	   // Dritte Spalte: Menge
+	      entryRow.addColumn(new Column(String.valueOf(le.getAmount())));
+	      
+	   // Vierte Spalte: Käufer
+	      entryRow.addColumn(new Column(String.valueOf(le.getUserId())));
+	      
+	   // Fünfte Spalte: Händler
+	      entryRow.addColumn(new Column(String.valueOf(le.getStoreId())));
+	      
+	      
+
+	      // und schließlich die Zeile dem Report hinzufügen.
+	      result.addRow(entryRow);
+	    }
 		return result;
 	}
 
