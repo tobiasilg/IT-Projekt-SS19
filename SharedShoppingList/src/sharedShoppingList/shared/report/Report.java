@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+
+
 /**
  * <p>
  * Dies ist die Basisklasse aller Reports. Die als <code>Serializable</code>
@@ -41,6 +43,11 @@ public abstract class Report implements Serializable {
 	     * Hier wird das Erstellungsdatum des Berichts erstellt.
 	     */
 	    private Date creationDate;
+	    
+	    /**
+	     * Kopfdaten des Berichts.
+	     */
+	    private Paragraph headerData = null;
 	 
 	 /**
 	   * Auslesen des Berichtstitels.
@@ -78,6 +85,15 @@ public abstract class Report implements Serializable {
 	   */
 	  public void setCreated(Date date) {
 	    this.creationDate = date;
+	  }
+	  
+	  /**
+	   * Setzen der Kopfdaten.
+	   * 
+	   * @param headerData Text der Kopfdaten.
+	   */
+	  public void setHeaderData(Paragraph headerData) {
+	    this.headerData = headerData;
 	  }
 	  
 	  /**
