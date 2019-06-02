@@ -66,5 +66,29 @@ public class FavouriteMapper {
 		
 		return favourite;
 	}
+	public void deleteFavourite (Favourite favourite) {
+		Connection con = DBConnection.connection();
+		
+		String sql ="DELETE FROM favourite WHERE id ="+ favourite.getId();
+		
+		try {
+			
+	    	/*
+	    	 * Deactivate autoCommit for save insert in DATABASE
+	    	 */
+			
+			con.setAutoCommit(false);
+			
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			
+			con.commit();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }
