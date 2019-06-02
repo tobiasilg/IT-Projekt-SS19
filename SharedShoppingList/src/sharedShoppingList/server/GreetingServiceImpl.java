@@ -5,7 +5,7 @@ import sharedShoppingList.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * The server-side implementation of the RPC service.
+ * Umbennen oder löschen und sep. Meth.
  */
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
