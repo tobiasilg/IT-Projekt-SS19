@@ -49,10 +49,10 @@ public class FavouriteMapper {
 	 * 
 	 */
 	
-	public Favourite createFavourite(Group group, ListEntry listEntry) {
+	public Favourite createFavourite(Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
-		String sql="INSERT INTO favourite (groupsId, listEntryId) VALUES ("+ group.getId()+"," +listEntry.getId()+")";
+		String sql="INSERT INTO favourite (groupsId, listEntryId) VALUES ("+ favourite.getGroupsId()+"," +favourite.getListEntryId()+")";
 	
 		
 		try {
@@ -63,11 +63,8 @@ public class FavouriteMapper {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		/*
-		 * Noch Klärungsbedarf
-		 */
 		
-		return listEntry;
+		return favourite;
 	}
 
 }
