@@ -86,4 +86,6 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);
 
+	void getGroupByUser(User user, AsyncCallback<Group> callback);
+
 }
