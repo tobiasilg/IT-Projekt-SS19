@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
@@ -18,7 +17,7 @@ import sharedShoppingList.shared.bo.User;
 
 /**
  * Formular für das Anlegen einer neuen Gruppe im Datenstamm
- * 
+ * @author nicolaifischbach
  * 
  */
 
@@ -73,7 +72,7 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 	private class CancelGroupCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
+			RootPanel.get("details").clear();
 
 		}
 	}
@@ -107,10 +106,7 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 		}
 	}
 
-	@Override
-	protected SuggestBox suggestUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }
+
+
