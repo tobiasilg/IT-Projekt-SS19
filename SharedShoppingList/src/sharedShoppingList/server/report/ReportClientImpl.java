@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-
+import sharedShoppingList.server.EinkaufslistenverwaltungImpl;
 import sharedShoppingList.server.db.ListEntryMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.ReportClient;
@@ -72,7 +72,26 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	
 	public void init()throws IllegalArgumentException {
 		
+		  /*
+         * Ein ReportClientImpl-Objekt instantiiert für seinen Eigenbedarf eine
+         * EinkaufslistenverwaltungImpl-Instanz.
+         */
+    	 EinkaufslistenverwaltungImpl e = new EinkaufslistenverwaltungImpl();
+    	    e.init();
+    	    this.elv = e;
+		
 	}
+	
+	   /**
+     * Auslesen der zugehörigen Einkaufslistenverwaaltung (interner Gebrauch).
+     * 
+     * @return das elv Objekt
+     */
+    protected Einkaufslistenverwaltung getEinkaufslistenverwaltung() {
+    
+    	return this.elv;
+    }
+    
 	@Override
 	public void setArticle(Article a) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
@@ -106,6 +125,12 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 
 	@Override
 	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate) {
+		
+		  
+    	if(this.getEinkaufslistenverwaltung() == null) {
+    		return null;
+    		}
+		
 		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
