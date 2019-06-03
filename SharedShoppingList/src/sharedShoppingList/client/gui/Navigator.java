@@ -38,7 +38,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 
-	private ListCreationForm listCreationForm; // Klasse die das anlegen einer Liste ermöglicht
+	private ShoppingListCreationForm listCreationForm; // Klasse die das anlegen einer Liste ermöglicht
 	private AdministrationGroupForm groupForm; // Klasse die die Gruppe mit den Gruppenmitgliedern anzeigt
 	private ShoppingListForm shoppingListForm; // Klasse die die Einkaufsliste der jeweiligen Gruppe anzeigt
 	
