@@ -148,4 +148,10 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 			Notification.show("Die Shoppingliste wurde erfolgreich gelöscht");
 		}
 	}
+
+	@Override
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
