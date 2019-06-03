@@ -107,4 +107,10 @@ public class ShoppingListCreationForm extends AbstractDialogCreationForm {
 		}
 	}
 
+	@Override
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
