@@ -131,11 +131,6 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 
 	}
 
-	/*
-	 * Methode <code> onLoad </code> wird benötigt, sodass im Textfeld bereits der
-	 * Gruppenname stteht.
-	 */
-
 	/**
 	 * Die Nested-Class <code>DeleteUserDialogBox</code> erstellt eine DialogBox die
 	 * den User die Möglichkeit gibt, das Löschen der Gruppe nocheinmal zu
@@ -175,6 +170,11 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	 * CLICKHANDLER
 	 ***********************************************************************/
 
+	
+	/**
+	 * Auf Mehtode warten
+	 * 	 *
+	 */
 	private class deleteMembersClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
@@ -194,7 +194,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 			setContentOfviewMembersFlexTable(u);
 
 			// Persistiere in die Datenbank
-			// Info: AddUserToGroup
+			// auf Methode warten
 			//elv.save(addUsersTextBox.getName(), new AddMemberCallback());
 		}
 
@@ -351,10 +351,6 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 		}
 	}
 
-	@Override
-	protected SuggestBox suggestUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
