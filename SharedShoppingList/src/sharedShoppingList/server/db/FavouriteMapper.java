@@ -1,8 +1,10 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
@@ -65,6 +67,56 @@ public class FavouriteMapper {
 		}
 		
 		return favourite;
+	}
+	public void deleteFavourite (Favourite favourite) {
+		Connection con = DBConnection.connection();
+		
+		String sql ="DELETE FROM favourite WHERE id ="+ favourite.getId();
+		
+		try {
+			
+	    	/*
+	    	 * Deactivate autoCommit for save insert in DATABASE
+	    	 */
+			
+			con.setAutoCommit(false);
+			
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			
+			con.commit();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public Vector <Favourite> findAllFavourites () {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT * FROM favourite ORDER BY NAME";
+		
+		Vector <Favourite> result = new Vector <Favourite>();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while (rs.next()) {
+				Favourite favourite = new Favourite();
+				favourite.setId(rs.getInt("id"));
+				favourite.setGroupsId(rs.getInt("groupsId"));
+				favourite.setListEntryId(rs.getInt("listEntryId"));
+				
+				result.addElement(favourite);
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return result;
+		
 	}
 
 }
