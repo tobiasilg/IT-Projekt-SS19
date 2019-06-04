@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import sharedShoppingList.server.db.ArticleMapper;
+import sharedShoppingList.server.db.FavouriteMapper;
 import sharedShoppingList.server.db.GroupMapper;
 import sharedShoppingList.server.db.ListEntryMapper;
 import sharedShoppingList.server.db.ListMapper;
@@ -15,6 +16,7 @@ import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -39,6 +41,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * abgleicht.
 	 */
 	private ArticleMapper articleMapper = null;
+	
+	/**
+	 * Referenz auf den FavouriteMapper, welcher Favourite Objekte mit der Datenbank
+	 * abgleicht.
+	 */
+	private FavouriteMapper favouriteMapper = null;
 
 	/**
 	 * Referenz auf den GroupMapper, welcher Group Objekte mit der Datenbank
@@ -102,6 +110,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listMapper = ListMapper.listMapper();
 		this.storeMapper = StoreMapper.storeMapper();
 		this.userMapper = UserMapper.userMapper();
+		this.favouriteMapper = FavouriteMapper.favouriteMapper();	
 
 	}
 
@@ -524,6 +533,28 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listMapper.delete(shoppingList);
 		
 	}
+	
+	//* Favourite @author Leon Seiz *//
+	
+	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException{
+		
+		Favourite favourite = new Favourite ();
+		favourite.setGroupsId(group.getId());
+		favourite.setListEntryId(listentry.getId());
+		
+		
+		return this.favouriteMapper.createFavourite(favourite);
+	}
+	
+	public void deleteArticle (Favourite favourite) throws IllegalArgumentException{
+		this.favouriteMapper.deleteFavourite(favourite);
+	}
+	
+	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException{
+		return this.favouriteMapper.findAllFavourites();
+	}
+	
+	
 
 
 	
