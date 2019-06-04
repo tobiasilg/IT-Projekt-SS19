@@ -98,7 +98,9 @@ public class FavouriteMapper {
 	public Vector <Favourite> findAllFavourites () {
 		
 		Connection con = DBConnection.connection();
-		String sql = "select l.amount as Menge, a.name as Artikelname, a.unit as Einheit from favourite as f left join listentry as l on f.listentryid = l.id left join article as a on a.id = l.articleid";
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
+				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
+				+ " LEFT JOIN article AS a ON a.id = l.articleid";
 		
 		Vector <Favourite> result = new Vector <Favourite>();
 		try {
@@ -108,14 +110,20 @@ public class FavouriteMapper {
 			while (rs.next()) {
 				Favourite favourite = new Favourite();
 				favourite.setId(rs.getInt("id"));
-				favourite.setGroupsId(rs.getInt("groupsId"));
+				favourite.setGroupsId(rs.getInt("groupId"));
 				favourite.setListEntryId(rs.getInt("listEntryId"));
+				
 		
 				
 				Article article = new Article();
-				//article.setName(rs.getString("Artikelname"));
+				article.setName(rs.getString("Artikelname"));
+				article.setId(rs.getInt("articleid"));
 				
 				ListEntry listEntry = new ListEntry();
+				
+				listEntry.setAmount(rs.getInt("Menge"));
+				listEntry.setId(rs.getInt("listEntryId"));
+								
 				
 				listEntry.setArticle(article);
 				favourite.setListEntry(listEntry);
