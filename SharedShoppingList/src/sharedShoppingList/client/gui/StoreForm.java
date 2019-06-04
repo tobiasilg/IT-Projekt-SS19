@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -31,6 +32,8 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	ArrayList<Store> stores;
 
+	Store store = new Store();
+
 	// Konstruktor
 	public StoreForm() {
 
@@ -54,13 +57,12 @@ public class StoreForm extends AbstractAdministrationForm {
 	@Override
 	protected FlexTable createTable() {
 		elv = ClientsideSettings.getEinkaufslistenverwaltung();
-
 		if (storeFlexTable == null) {
 			storeFlexTable = new FlexTable();
 
-			storeFlexTable.setText(0, 0, "Store");
 		}
-
+		storeFlexTable.removeAllRows();
+		storeFlexTable.setText(0, 0, "Store");
 		stores = new ArrayList<Store>();
 
 		// Lade alle Store aus der Datenbank
@@ -74,6 +76,7 @@ public class StoreForm extends AbstractAdministrationForm {
 			public void onSuccess(Vector<Store> result) {
 				// Füge alle Elemente der Datenbank in die Liste hinzu
 				for (Store store : result) {
+
 					stores.add(store);
 					setContentOfStoreFlexTable(store);
 				}
@@ -94,24 +97,18 @@ public class StoreForm extends AbstractAdministrationForm {
 		storeTextBox.setText(store.getName());
 
 		// Erstelle x Button
-		Button removeButton = new Button("x");
-		removeButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-//			PROBLEM WEIL STORE NICHT FINAL IST 
-//				final int removedIndex = stores.indexOf(store);
-//				stores.remove(removedIndex);
-//				storeFlexTable.removeRow(removedIndex + 1);
-			}
-		});
+		CustomButton removeButton = new CustomButton();
+		removeButton.setStore(store);
+
+		removeButton.addClickHandler(new DeleteStoreClickHandler(removeButton));
 
 		storeFlexTable.setWidget(rowCount, 0, storeTextBox);
-		storeFlexTable.setWidget(rowCount, 3, removeButton);
+		storeFlexTable.setWidget(rowCount, 1, removeButton);
 
 	}
 
 	/**
-	 * Hiermit wird der Erstellvorgang einer neuen Store abbgebrochen.
+	 * Hiermit wird der Erstellvorgang eine neuen Stores abbgebrochen.
 	 */
 	private class CancelClickHandler implements ClickHandler {
 
@@ -123,13 +120,17 @@ public class StoreForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald das Textfeld ausgef�llt wurde, wird ein neuer Store nach dem Klicken
-	 * des Best�tigungsbutton erstellt.
+	 * Sobald Änderungen vorgenommen wurden, wird dei Änderung nach dem Klicken des
+	 * Best�tigungsbutton gespeicher.
 	 */
 	private class SaveStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
+
 			for (Store store : stores) {
+
+				Window.alert("name " + store.getName());
+				Window.alert("ID " + store.getId());
 				elv.save(store, new AsyncCallback<Void>() {
 
 					@Override
@@ -139,6 +140,7 @@ public class StoreForm extends AbstractAdministrationForm {
 
 					@Override
 					public void onSuccess(Void result) {
+
 						Notification.show("successfilly saved");
 
 					}
@@ -182,6 +184,54 @@ public class StoreForm extends AbstractAdministrationForm {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 		}
 
+	}
+
+	private class CustomButton extends Button {
+		Store store;
+
+		public Store getStore() {
+			return store;
+		}
+
+		public void setStore(Store store) {
+			this.store = store;
+		}
+	}
+
+	private class DeleteStoreClickHandler implements ClickHandler {
+
+		private CustomButton cB;
+
+		public DeleteStoreClickHandler(CustomButton cB) {
+
+			this.cB = cB;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			if (cB != null) {
+
+				elv.delete(cB.getStore(), new DeleteStoreCallback());
+
+			} else {
+				Notification.show("Der Store konnte nicht gelöscht werden");
+			}
+		}
+	}
+
+	private class DeleteStoreCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+
+			stores.clear();
+			createTable();
+		}
 	}
 
 }
