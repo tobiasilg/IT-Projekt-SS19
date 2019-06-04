@@ -148,4 +148,6 @@ public class AdministrationShoppingListForm extends AbstractDialogCreationForm {
 			Notification.show("Die Shoppingliste wurde erfolgreich gelöscht");
 		}
 	}
+
+	
 }

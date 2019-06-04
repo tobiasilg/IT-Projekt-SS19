@@ -397,6 +397,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.userMapper.findAll();
 	}
 	
+	/**
+	 * Alle User einer Gruppe zur Anzeigen in der Gruppenverwaltung
+	 * 
+	 */
+	
 	public Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException{
 		return this.userMapper.findByGroup(group);
 	}
@@ -453,6 +458,15 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public void delete(Group group) throws IllegalArgumentException {
 		this.groupMapper.delete(group);
 		
+	}
+	
+	/**
+	 * Gruppe pro User soll im Nav angezeigt werden
+	 * 
+	 */
+	
+	public Group getGroupByUser (User user) throws IllegalArgumentException{
+		return this.groupMapper.findByUser(user);
 	}
 	
 	
