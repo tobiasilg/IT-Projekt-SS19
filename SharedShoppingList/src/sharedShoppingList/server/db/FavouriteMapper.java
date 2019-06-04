@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -66,8 +67,9 @@ public class FavouriteMapper {
 			e.printStackTrace();
 		}
 		
-		return favourite;
+	return favourite;
 	}
+	
 	public void deleteFavourite (Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
@@ -96,7 +98,7 @@ public class FavouriteMapper {
 	public Vector <Favourite> findAllFavourites () {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM favourite ORDER BY NAME";
+		String sql = "select l.amount as Menge, a.name as Artikelname, a.unit as Einheit from favourite as f left join listentry as l on f.listentryid = l.id left join article as a on a.id = l.articleid";
 		
 		Vector <Favourite> result = new Vector <Favourite>();
 		try {
@@ -108,6 +110,16 @@ public class FavouriteMapper {
 				favourite.setId(rs.getInt("id"));
 				favourite.setGroupsId(rs.getInt("groupsId"));
 				favourite.setListEntryId(rs.getInt("listEntryId"));
+		
+				
+				Article article = new Article();
+				//article.setName(rs.getString("Artikelname"));
+				
+				ListEntry listEntry = new ListEntry();
+				
+				listEntry.setArticle(article);
+				favourite.setListEntry(listEntry);
+				
 				
 				result.addElement(favourite);
 			}
