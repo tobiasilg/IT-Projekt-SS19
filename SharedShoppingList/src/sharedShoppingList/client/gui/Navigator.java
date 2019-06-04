@@ -2,6 +2,7 @@ package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.cell.client.TextCell;
@@ -185,6 +186,67 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		// groupForm.setSelected(g);--> Methode muss noch in GroupForm erstellt werden !
 		RootPanel.get("details").add(groupForm);
 		selectedList = null;
+	}
+
+	/*
+	 * Die Methode addGroup ermöglicht das hinzufügen eines neuen Gruppenobjekts als
+	 * Knoten in den Tree
+	 */
+	void addGroup(Group g) {
+		List<Group> listofGroups = groupDataProvider.getList();
+		listofGroups.add(g);
+		this.getGroups().add(g);
+		selectionModel.setSelected(g, true);
+		groupDataProvider.refresh();
+
+	}
+
+	/*
+	 * Die Methode updateGroup dient dazu eine Gruppe mit der selben id zu refreshen
+	 */
+	void updateGroup(Group group) {
+		List<Group> groupList = groupDataProvider.getList();
+		int i = 0;
+		for (Group g : groupList) {
+			if (g.getId() == group.getId()) {
+				groupList.set(i, group);
+				break;
+			} else {
+				i++;
+			}
+		}
+		groupDataProvider.refresh();
+	}
+	
+	void removeGroup (Group group) {
+		groupDataProvider.getList().remove(group);
+		shoppingListDataProviders.remove(group);
+	}
+	/*
+	 * Die Methode addShoppingListOfGroup dient dem Hinzufügen einer ShoppingList 
+	 * der entsprechenden Gruppe
+	 */
+	void addShoppingListOfGroup(ShoppingList list, Group group) {
+		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
+		// Falls nicht, wird auch nichts geöffnet
+		if(!shoppingListDataProviders.containsKey(group)) {
+			return;
+		}
+		ListDataProvider<ShoppingList> listProvider = shoppingListDataProviders.get(group);
+		if (!listProvider.getList().contains(list)) {
+			listProvider.getList().add(list);
+		}
+		selectionModel.setSelected(list, true);
+	}
+	
+	void removeShoppingListOfGroup(ShoppingList list, Group group) {
+		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
+				// Falls nicht, wird auch nichts geöffnet
+		if(!shoppingListDataProviders.containsKey(group)) {
+			return;
+		}
+		shoppingListDataProviders.get(group).getList().remove(list);
+		selectionModel.setSelected(group, true);
 	}
 
 	public void onLoad() {
