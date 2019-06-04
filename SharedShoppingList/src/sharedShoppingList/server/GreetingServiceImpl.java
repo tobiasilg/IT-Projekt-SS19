@@ -1,6 +1,6 @@
 package sharedShoppingList.server;
 
-import sharedShoppingList.client.GreetingService;
+import sharedShoppingList.client.SharedShoppingListEditorEntry;
 import sharedShoppingList.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
