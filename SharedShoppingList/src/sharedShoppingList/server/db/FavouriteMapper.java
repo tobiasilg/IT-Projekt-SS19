@@ -1,9 +1,12 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -64,7 +67,76 @@ public class FavouriteMapper {
 			e.printStackTrace();
 		}
 		
-		return favourite;
+	return favourite;
+	}
+	
+	public void deleteFavourite (Favourite favourite) {
+		Connection con = DBConnection.connection();
+		
+		String sql ="DELETE FROM favourite WHERE id ="+ favourite.getId();
+		
+		try {
+			
+	    	/*
+	    	 * Deactivate autoCommit for save insert in DATABASE
+	    	 */
+			
+			con.setAutoCommit(false);
+			
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			
+			con.commit();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public Vector <Favourite> findAllFavourites () {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
+				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
+				+ " LEFT JOIN article AS a ON a.id = l.articleid";
+		
+		Vector <Favourite> result = new Vector <Favourite>();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while (rs.next()) {
+				Favourite favourite = new Favourite();
+				favourite.setId(rs.getInt("id"));
+				favourite.setGroupsId(rs.getInt("groupId"));
+				favourite.setListEntryId(rs.getInt("listEntryId"));
+				
+		
+				
+				Article article = new Article();
+				article.setName(rs.getString("Artikelname"));
+				article.setId(rs.getInt("articleid"));
+				
+				ListEntry listEntry = new ListEntry();
+				
+				listEntry.setAmount(rs.getInt("Menge"));
+				listEntry.setId(rs.getInt("listEntryId"));
+								
+				
+				listEntry.setArticle(article);
+				favourite.setListEntry(listEntry);
+				
+				
+				result.addElement(favourite);
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return result;
+		
 	}
 
 }

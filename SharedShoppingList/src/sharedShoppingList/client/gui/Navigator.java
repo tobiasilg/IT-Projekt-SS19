@@ -1,5 +1,8 @@
 package sharedShoppingList.client.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.cell.client.TextCell;
@@ -11,11 +14,18 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
+import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.BusinessObject;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.User;
 
 /*
  * Bildet die Navigationsleiste zum anzeigen und selektieren der Einkaufsliste, 
@@ -23,6 +33,9 @@ import sharedShoppingList.shared.bo.ShoppingList;
  */
 
 public class Navigator extends FlowPanel implements TreeViewModel {
+
+	private User user = CurrentUser.getUser();
+	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = null;
 
 	private FlowPanel navPanel = new FlowPanel();
 	private FlowPanel navImage = new FlowPanel();
@@ -35,29 +48,206 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	// Erstellen des Images für Favorite Article
 	Image star = new Image();
 
+	/*
+	 * Klassen auf die im Navigator verwiesen werden
+	 */
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 
-	private ListCreationForm listCreationForm; // Klasse die das anlegen einer Liste ermöglicht
+	private ShoppingListCreationForm listCreationForm; // Klasse die das anlegen einer Liste ermöglicht
 	private AdministrationGroupForm groupForm; // Klasse die die Gruppe mit den Gruppenmitgliedern anzeigt
 	private ShoppingListForm shoppingListForm; // Klasse die die Einkaufsliste der jeweiligen Gruppe anzeigt
-	
-	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = null; 
-	
+
+	private ArrayList<Group> groups = new ArrayList<Group>();
+
 	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
 	private ListDataProvider<Group> groupDataProvider = null;
-	
-	/*
-	 * in der Map werden die ListDataProviders für die Einkaufslisten der Gruppen 
-	 * gemerkt 
-	 */
-	private Map<Group, ListDataProvider<ShoppingList>> accountDataProviders = null;
 
-	//Konstruktor
+	/*
+	 * in der Map werden die ListDataProviders für die Einkaufslisten der Gruppen
+	 * gemerkt
+	 */
+	private Map<Group, ListDataProvider<ShoppingList>> shoppingListDataProviders = null;
+
+	/*
+	 * Die Nested Class dient zur Abbilding der BusinessObjects als einduetige
+	 * Zahlenobjekte. Die Zahlenobkjekte dienen als Schlüssen der Baumknoten
+	 */
+	private class BusinessObjectKeyProvider implements ProvidesKey<BusinessObject> {
+
+		@Override
+		public Object getKey(BusinessObject bo) {
+			if (bo == null) {
+				return null;
+			} else {
+				return bo.getId(); // id der Gruppe wird zurückgegeben
+			}
+
+		}
+
+	};
+
+	private BusinessObjectKeyProvider boKeyProvider = null;
+
+	// SelectionModel wird für die Auswahl innerhalb einer Liste benötigt
+	private SingleSelectionModel<BusinessObject> selectionModel = null;
+
+	/*
+	 * Die Nested Class dient dafür um auf die Auswahl eines Baumknotens zu
+	 * reagieren. Je nach Auswahl wird entweder "selectedGroup" oder "selectedList"
+	 * gesetzt.
+	 */
+	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
+
+		@Override
+		public void onSelectionChange(SelectionChangeEvent event) {
+			BusinessObject selection = selectionModel.getSelectedObject();
+			// Wenn die Auswahl instanz einer Gruppe ist, wird sie auf selectedGroup gesetzt
+			if (selection instanceof Group) {
+				setSelectedGroup((Group) selection);
+				// Ansonsten auf selectedList
+			} else if (selection instanceof ShoppingList) {
+				setSelectedList((ShoppingList) selection);
+
+			}
+
+		}
+	}
+
+	// Konstruktor dient zur Initialisierung der lokalen Variablen, sprich ein Wert
+	// wird den Variablen zugewiesen
 	public Navigator() {
-	 
-	 }
+		einkaufslistenVerwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
+		boKeyProvider = new BusinessObjectKeyProvider();
+		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		shoppingListDataProviders = new HashMap<Group, ListDataProvider<ShoppingList>>();
+
+	}
+
+	/*
+	 * Getter und Setter für Selection Model
+	 */
+	public SingleSelectionModel<BusinessObject> getSelectionModel() {
+		return selectionModel;
+	}
+
+	public void setSelectionModel(SingleSelectionModel<BusinessObject> selectionModel) {
+		this.selectionModel = selectionModel;
+	}
+	/*
+	 * Getter und Setter für Group ArrayList
+	 */
+
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
+
+	}
+	/*
+	 * Setter für die Forms
+	 */
+
+	void setGroupForm(AdministrationGroupForm groupForm) {
+		this.groupForm = groupForm;
+	}
+
+	void setShoppingListForm(ShoppingListForm shoppingListForm) {
+		this.shoppingListForm = shoppingListForm;
+	}
+
+	/*
+	 * Getter und Setter für SelectedList und SelectedGroup
+	 */
+	ShoppingList getSelectedList() {
+		return selectedList;
+	}
+
+	void setSelectedList(ShoppingList sl) {
+		RootPanel.get("details").clear();
+		selectedList = sl;
+		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
+		// erstellt werden !
+		RootPanel.get("details").add(shoppingListForm);
+
+	}
+
+	Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	void setSelectedGroup(Group g) {
+		RootPanel.get("derails").clear();
+		selectedGroup = g;
+		// groupForm.setSelected(g);--> Methode muss noch in GroupForm erstellt werden !
+		RootPanel.get("details").add(groupForm);
+		selectedList = null;
+	}
+
+	/*
+	 * Die Methode addGroup ermöglicht das hinzufügen eines neuen Gruppenobjekts als
+	 * Knoten in den Tree
+	 */
+	void addGroup(Group g) {
+		List<Group> listofGroups = groupDataProvider.getList();
+		listofGroups.add(g);
+		this.getGroups().add(g);
+		selectionModel.setSelected(g, true);
+		groupDataProvider.refresh();
+
+	}
+
+	/*
+	 * Die Methode updateGroup dient dazu eine Gruppe mit der selben id zu refreshen
+	 */
+	void updateGroup(Group group) {
+		List<Group> groupList = groupDataProvider.getList();
+		int i = 0;
+		for (Group g : groupList) {
+			if (g.getId() == group.getId()) {
+				groupList.set(i, group);
+				break;
+			} else {
+				i++;
+			}
+		}
+		groupDataProvider.refresh();
+	}
+	
+	void removeGroup (Group group) {
+		groupDataProvider.getList().remove(group);
+		shoppingListDataProviders.remove(group);
+	}
+	/*
+	 * Die Methode addShoppingListOfGroup dient dem Hinzufügen einer ShoppingList 
+	 * der entsprechenden Gruppe
+	 */
+	void addShoppingListOfGroup(ShoppingList list, Group group) {
+		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
+		// Falls nicht, wird auch nichts geöffnet
+		if(!shoppingListDataProviders.containsKey(group)) {
+			return;
+		}
+		ListDataProvider<ShoppingList> listProvider = shoppingListDataProviders.get(group);
+		if (!listProvider.getList().contains(list)) {
+			listProvider.getList().add(list);
+		}
+		selectionModel.setSelected(list, true);
+	}
+	
+	void removeShoppingListOfGroup(ShoppingList list, Group group) {
+		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
+				// Falls nicht, wird auch nichts geöffnet
+		if(!shoppingListDataProviders.containsKey(group)) {
+			return;
+		}
+		shoppingListDataProviders.get(group).getList().remove(list);
+		selectionModel.setSelected(group, true);
+	}
 
 	public void onLoad() {
 
@@ -122,7 +312,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		ListDataProvider<String> dataProvider = new ListDataProvider<String>();
-		for(int i = 0; i<2; i++) {
+		for (int i = 0; i < 2; i++) {
 			dataProvider.getList().add(value + " " + String.valueOf(i));
 		}
 		return new DefaultNodeInfo<String>(dataProvider, new TextCell());
@@ -131,7 +321,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	@Override
 	public boolean isLeaf(Object value) {
 		// The maximum length of a value is ten characters.
-	      return value.toString().length() > 10;
+		return value.toString().length() > 10;
 	}
 
 }
