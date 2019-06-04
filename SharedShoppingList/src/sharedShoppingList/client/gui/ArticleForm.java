@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -74,10 +73,10 @@ public class ArticleForm extends AbstractAdministrationForm {
 		if (articleFlexTable == null) {
 			articleFlexTable = new FlexTable();
 
-			articleFlexTable.setText(0, 0, "Artikel");
-			articleFlexTable.setText(0, 1, "Einheit");
-			articleFlexTable.setText(0, 2, "Favorit");
 		}
+		articleFlexTable.removeAllRows();
+		articleFlexTable.setText(0, 0, "Artikel");
+		articleFlexTable.setText(0, 1, "Einheit");
 
 		articles = new ArrayList<Article>();
 
@@ -92,6 +91,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 			public void onSuccess(Vector<Article> result) {
 				// Füge alle Elemente der Datenbank in die Liste hinzu
 				for (Article article : result) {
+
 					articles.add(article);
 					setContentOfArticleFlexTable(article);
 				}
@@ -119,27 +119,16 @@ public class ArticleForm extends AbstractAdministrationForm {
 		unitListBox.setSelectedIndex(Arrays.asList(units).indexOf(article.getUnit()));
 
 		// Erstelle x Button
-		Button removeButton = new Button("x");
-		removeButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
+		CustomButton removeButton = new CustomButton();
+		removeButton.setArticle(article);
 
-//				PROBLEM WEIL ARTICLE NICHT FINAL IST 
-
-//				final int removedIndex = articles.indexOf(article);
-//				articles.remove(removedIndex);
-//				articleFlexTable.removeRow(removedIndex + 1);
-			}
-		});
-
-		// Erstelle CheckBox für Favoriten
-		CheckBox checkBox = new CheckBox();
+		removeButton.addClickHandler(new DeleteArticleClickHandler(removeButton));
 
 		// Füge die TextBox und die ListBox in die FlexTable ein
 		articleFlexTable.setWidget(rowCount, 0, articleTextBox);
 		articleFlexTable.setWidget(rowCount, 1, unitListBox);
 		articleFlexTable.setWidget(rowCount, 3, removeButton);
-		articleFlexTable.setWidget(rowCount, 2, checkBox);
+
 	}
 
 	/**
@@ -214,6 +203,54 @@ public class ArticleForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Article article) {
 			Notification.show("Der Artikel wurde erfolgreich erstellt");
+		}
+	}
+
+	private class CustomButton extends Button {
+		Article article;
+
+		public Article getArticle() {
+			return article;
+		}
+
+		public void setArticle(Article article) {
+			this.article = article;
+		}
+	}
+
+	private class DeleteArticleClickHandler implements ClickHandler {
+
+		private CustomButton cB;
+
+		public DeleteArticleClickHandler(CustomButton cB) {
+
+			this.cB = cB;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			if (cB != null) {
+
+				elv.delete(cB.getArticle(), new DeleteArticleCallback());
+
+			} else {
+				Notification.show("Der Artikel konnte nicht gelöscht werden");
+			}
+		}
+	}
+
+	private class DeleteArticleCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+
+			articles.clear();
+			createTable();
 		}
 	}
 
