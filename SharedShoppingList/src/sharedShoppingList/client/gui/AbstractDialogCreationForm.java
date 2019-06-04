@@ -28,8 +28,8 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 	protected Label nameLabel = new Label(nameDialogForm());
 	protected Label nameSecondLabel = new Label(nameSecondDialogForm());
 	protected Label nameThirdLabel = new Label(nameThirdDialogForm());
-	protected SuggestBox suggestUser = (suggestUser());
-
+	protected TextBox addUsersTextBox = (addUsersTextBox());
+ 
 	protected Button addButton = (addButton());
 	protected Button deleteButton = (deleteButton());
 	protected HorizontalPanel hpfirstButtonPanel = (createHpFirstButtonPanel());
@@ -57,7 +57,7 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 
 	protected abstract HorizontalPanel createHpFirstButtonPanel();
 	
-	protected abstract SuggestBox suggestUser();
+	protected abstract TextBox addUsersTextBox();
 
 	// In dieser Methode werden die Widgets der Form hinzugefügt sowie das Styling
 	// durchgeführt
@@ -70,17 +70,21 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 		// Add them to VerticalPanel
 		this.add(nameLabel);
 		this.add(nameSecondLabel);
-		this.add(suggestUser);
 		this.add(flexTable);
+		
 		this.add(hpfirstButtonPanel);
 		this.add(nameThirdLabel);
 		this.add(insertNameTextBox);
 		this.add(hpButtonPanel);
+		
+		addUsersTextBox.getElement().setPropertyString("placeholder", "User eingeben ");
+		insertNameTextBox.getElement().setPropertyString("placeholder", "User eingeben ");
 
+		
 		nameLabel.addStyleName("name_label");
 		nameSecondLabel.addStyleName("nameSecond_label");
 		nameThirdLabel.addStyleName("nameThird_labe");
-		suggestUser.addStyleName("suggestUser_suggestBox");
+		addUsersTextBox.addStyleName("addUsersTextBox_textBox");
 		addButton.addStyleName("add_Button");
 		deleteButton.addStyleName("delte_button");
 		cancelButton.addStyleName("cancel_button");
@@ -106,6 +110,17 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					saveButton.click();
+					insertNameTextBox.setText("");
+				}
+
+			}
+		});
+		
+		addUsersTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					addButton.click();
 					insertNameTextBox.setText("");
 				}
@@ -114,6 +129,10 @@ public abstract class AbstractDialogCreationForm extends VerticalPanel {
 		});
 
 	}
+
+	
+	
+	
 
 	/**
 	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische

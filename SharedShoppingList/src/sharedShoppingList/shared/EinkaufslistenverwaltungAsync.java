@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -85,5 +86,13 @@ public interface EinkaufslistenverwaltungAsync {
 	void getUserByID(int id, AsyncCallback<User> callback);
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);
+
+	void getGroupByUser(User user, AsyncCallback<Group> callback);
+
+	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
+
+	void deleteArticle(Favourite favourite, AsyncCallback<Void> callback);
+
+	void getAllFavourites(AsyncCallback<Vector<Favourite>> callback);
 
 }

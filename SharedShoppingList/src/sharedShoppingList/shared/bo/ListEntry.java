@@ -10,6 +10,8 @@ package sharedShoppingList.shared.bo;
 
 public class ListEntry extends BusinessObject {
 	
+	
+	
 	public ListEntry() {
 		super();
 	}
@@ -33,9 +35,21 @@ public class ListEntry extends BusinessObject {
 	private int userId;
 	private int shoppinglistId;
 	
+	private Article article;
 	
 	
 	
+	
+	
+	
+	public Article getArticle() {
+		return article;
+	}
+
+	public void setArticle(Article article) {
+		this.article = article;
+	}
+
 	public int getShoppinglistId() {
 		return shoppinglistId;
 	}

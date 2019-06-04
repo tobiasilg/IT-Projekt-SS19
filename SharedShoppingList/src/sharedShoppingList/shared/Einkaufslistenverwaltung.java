@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
@@ -87,6 +88,18 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	public User getUserByID(int id) throws IllegalArgumentException;
 	
 	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
+	
+	public Group getGroupByUser (User user) throws IllegalArgumentException;
+	
+	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
+	
+	public void deleteArticle (Favourite favourite) throws IllegalArgumentException;
+	
+	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
+	
+	
+	
+	
 	
 
 }

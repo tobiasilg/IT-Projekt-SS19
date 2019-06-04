@@ -22,8 +22,20 @@ public class Favourite {
 	
 	private int groupsId;
 	private int listEntryId;
+	private ListEntry listEntry;
 	
 	
+	
+
+
+	public ListEntry getListEntry() {
+		return listEntry;
+	}
+
+	public void setListEntry(ListEntry listEntry) {
+		this.listEntry = listEntry;
+	}
+
 	public int getId() {
 		return id;
 	}

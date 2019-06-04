@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.User;
 
 /**
 * Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - verantwortlich.
@@ -115,6 +116,40 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 			}
 			return group;
 		}
+	
+	/**
+	 * Gruppe pro User 
+	 * @author Nico Weiler
+	 * @param user
+	 * @return group
+	 */
+	
+	public Group findByUser(User user) {
+		Connection con = DBConnection.connection();
+		
+		String sql="select * from einkaufsgruppe where id ="+ user.getGroupId();
+		Group group = new Group();
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+					group.setId(rs.getInt("id"));
+					group.setName(rs.getString("name"));
+					group.setCreateDate(rs.getTimestamp("createDate"));
+					group.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return group;
+		}
+	
 	
 	
 /*UPDATE*/
