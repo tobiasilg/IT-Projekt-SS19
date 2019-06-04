@@ -47,6 +47,9 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	// Erstellen des Images für Favorite Article
 	Image star = new Image();
 
+	/*
+	 * Klassen auf die im Navigator verwiesen werden
+	 */
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 
@@ -132,15 +135,56 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	public void setSelectionModel(SingleSelectionModel<BusinessObject> selectionModel) {
 		this.selectionModel = selectionModel;
 	}
+	/*
+	 * Getter und Setter für Group ArrayList
+	 */
 
-	private void setSelectedList(ShoppingList selection) {
-		// TODO Auto-generated method stub
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
+
+	}
+	/*
+	 * Setter für die Forms
+	 */
+
+	void setGroupForm(AdministrationGroupForm groupForm) {
+		this.groupForm = groupForm;
+	}
+
+	void setShoppingListForm(ShoppingListForm shoppingListForm) {
+		this.shoppingListForm = shoppingListForm;
+	}
+
+	/*
+	 * Getter und Setter für SelectedList und SelectedGroup
+	 */
+	ShoppingList getSelectedList() {
+		return selectedList;
+	}
+
+	void setSelectedList(ShoppingList sl) {
+		RootPanel.get("details").clear();
+		selectedList = sl;
+		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
+		// erstellt werden !
+		RootPanel.get("details").add(shoppingListForm);
 
 	}
 
-	private void setSelectedGroup(Group selection) {
-		// TODO Auto-generated method stub
+	Group getSelectedGroup() {
+		return selectedGroup;
+	}
 
+	void setSelectedGroup(Group g) {
+		RootPanel.get("derails").clear();
+		selectedGroup = g;
+		// groupForm.setSelected(g);--> Methode muss noch in GroupForm erstellt werden !
+		RootPanel.get("details").add(groupForm);
+		selectedList = null;
 	}
 
 	public void onLoad() {
