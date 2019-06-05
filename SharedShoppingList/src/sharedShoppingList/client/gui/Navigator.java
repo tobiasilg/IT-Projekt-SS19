@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -19,6 +20,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
+import de.hdm.thies.bankProjekt.shared.bo.Customer;
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -173,7 +175,19 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
 		// erstellt werden !
 		RootPanel.get("details").add(shoppingListForm);
+		
+		// Hier muss getShoppingListByGroup hin !!!
+		//einkaufslistenVerwaltung.getShoppingListByGroup(sl.getId(), new AsyncCallback<Group>() {
 
+		//	public void onFailure(Throwable caught) {
+		//		Notification.show("Der Callback um Gruppe zu finden funktioniert nicht");
+		//	}
+
+		//	public void onSuccess(Group group) {
+		//		selectedGroup = group;
+		//		 shoppingListForm.setSelectedGroup(selectedGroup);
+		//	}
+		//});
 	}
 
 	Group getSelectedGroup() {
@@ -217,19 +231,20 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		}
 		groupDataProvider.refresh();
 	}
-	
-	void removeGroup (Group group) {
+
+	void removeGroup(Group group) {
 		groupDataProvider.getList().remove(group);
 		shoppingListDataProviders.remove(group);
 	}
+
 	/*
-	 * Die Methode addShoppingListOfGroup dient dem Hinzufügen einer ShoppingList 
+	 * Die Methode addShoppingListOfGroup dient dem Hinzufügen einer ShoppingList
 	 * der entsprechenden Gruppe
 	 */
 	void addShoppingListOfGroup(ShoppingList list, Group group) {
 		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
 		// Falls nicht, wird auch nichts geöffnet
-		if(!shoppingListDataProviders.containsKey(group)) {
+		if (!shoppingListDataProviders.containsKey(group)) {
 			return;
 		}
 		ListDataProvider<ShoppingList> listProvider = shoppingListDataProviders.get(group);
@@ -238,17 +253,72 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		}
 		selectionModel.setSelected(list, true);
 	}
-	
+
 	void removeShoppingListOfGroup(ShoppingList list, Group group) {
 		// Prüfen, ob die Gruppe schon eine ShoppingList besitzt
-				// Falls nicht, wird auch nichts geöffnet
-		if(!shoppingListDataProviders.containsKey(group)) {
+		// Falls nicht, wird auch nichts geöffnet
+		if (!shoppingListDataProviders.containsKey(group)) {
 			return;
 		}
 		shoppingListDataProviders.get(group).getList().remove(list);
 		selectionModel.setSelected(group, true);
 	}
 
+	void updateShoppingList(ShoppingList sl) {
+		// Hier muss getGroupByID hin!!!
+	//	einkaufslistenVerwaltung.getGroupByUser(sl.getGroupId(), new UpdateShoppingListCallback(sl));
+		
+	}
+
+	private class UpdateShoppingListCallback implements AsyncCallback<Group> {
+
+		ShoppingList list = null;
+
+		UpdateShoppingListCallback(ShoppingList sl) {
+			list = sl;
+		}
+
+		@Override
+		public void onFailure(Throwable t) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onSuccess(Group group) {
+			List<ShoppingList> shoppingListList = shoppingListDataProviders.get(group).getList();
+
+			for (int i = 0; i < shoppingListList.size(); i++) {
+				if (list.getId() == shoppingListList.get(i).getId()) {
+					shoppingListList.set(i, list);
+					break;
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public <T> NodeInfo<?> getNodeInfo(T value) {
+		ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+		for (int i = 0; i < 2; i++) {
+			dataProvider.getList().add(value + " " + String.valueOf(i));
+		}
+		return new DefaultNodeInfo<String>(dataProvider, new TextCell());
+	}
+
+	@Override
+	public boolean isLeaf(Object value) {
+		// The maximum length of a value is ten characters.
+		return value.toString().length() > 10;
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
+	 * 
+	 * Die Klasse onLoad wird für die Buttons und das Nav Label benötigt,
+	 * da diese immer aufgerufen werden, der Tree aber nicht !
+	 */
 	public void onLoad() {
 
 		star.setUrl("/images/star.png");
@@ -307,21 +377,6 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 		}
 
-	}
-
-	@Override
-	public <T> NodeInfo<?> getNodeInfo(T value) {
-		ListDataProvider<String> dataProvider = new ListDataProvider<String>();
-		for (int i = 0; i < 2; i++) {
-			dataProvider.getList().add(value + " " + String.valueOf(i));
-		}
-		return new DefaultNodeInfo<String>(dataProvider, new TextCell());
-	}
-
-	@Override
-	public boolean isLeaf(Object value) {
-		// The maximum length of a value is ten characters.
-		return value.toString().length() > 10;
 	}
 
 }
