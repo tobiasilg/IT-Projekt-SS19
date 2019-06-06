@@ -95,4 +95,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getAllFavourites(AsyncCallback<Vector<Favourite>> callback);
 
+	void getGroupById(int id, AsyncCallback<Group> callback);
+
+
 }
