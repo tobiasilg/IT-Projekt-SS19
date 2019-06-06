@@ -553,6 +553,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException{
 		return this.favouriteMapper.findAllFavourites();
 	}
+
+	
+	public Group getGroupById(int id) throws IllegalArgumentException {
+		return this.groupMapper.findById(id);
+	}
 	
 	
 
