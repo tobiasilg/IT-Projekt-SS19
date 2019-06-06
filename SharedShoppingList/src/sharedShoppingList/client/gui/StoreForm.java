@@ -32,12 +32,22 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	ArrayList<Store> stores;
 
-	Store store = new Store();
+	ArrayList<CustomTextBox> textboxes;
+
+	Store newStore;
+
+	public Store getNewStore() {
+		return newStore;
+	}
+
+	public void setNewStore(Store newStore) {
+		this.newStore = newStore;
+	}
 
 	// Konstruktor
 	public StoreForm() {
 
-		saveButton.addClickHandler(new SaveStoreClickHandler());
+		saveButton.addClickHandler(new SaveStoreClickHandler(textboxes));
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddStoreClickHandler());
 
@@ -61,6 +71,8 @@ public class StoreForm extends AbstractAdministrationForm {
 			storeFlexTable = new FlexTable();
 
 		}
+		textboxes = new ArrayList<CustomTextBox>();
+		textboxes.clear();
 		storeFlexTable.removeAllRows();
 		storeFlexTable.setText(0, 0, "Store");
 		stores = new ArrayList<Store>();
@@ -93,8 +105,12 @@ public class StoreForm extends AbstractAdministrationForm {
 		int rowCount = storeFlexTable.getRowCount();
 
 		// Erstelle neue Textbox für eigetragenen Store und setze den Namen
-		TextBox storeTextBox = new TextBox();
-		storeTextBox.setText(store.getName());
+
+		CustomTextBox storeTextBox = new CustomTextBox();
+		storeTextBox.setValue(store.getName());
+		//
+		storeTextBox.setStore(store);
+		textboxes.add(storeTextBox);
 
 		// Erstelle x Button
 		CustomButton removeButton = new CustomButton();
@@ -120,36 +136,6 @@ public class StoreForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald Änderungen vorgenommen wurden, wird dei Änderung nach dem Klicken des
-	 * Best�tigungsbutton gespeicher.
-	 */
-	private class SaveStoreClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			for (Store store : stores) {
-
-				Window.alert("name " + store.getName());
-				Window.alert("ID " + store.getId());
-				elv.save(store, new AsyncCallback<Void>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-					}
-
-					@Override
-					public void onSuccess(Void result) {
-
-						Notification.show("successfilly saved");
-
-					}
-				});
-			}
-		}
-	}
-
-	/**
 	 * Sobald das Textfeld ausgef�llt wurde, wird ein neuer Store nach dem Klicken
 	 * des addButton erstellt.
 	 */
@@ -157,14 +143,13 @@ public class StoreForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
+			elv.createStore(nameTextBox.getValue(), new StoreCreationCallback());
 			// Erstelle neues Store Objekt
-			Store store = new Store();
-			store.setName(nameTextBox.getValue());
 
-			setContentOfStoreFlexTable(store);
+			setContentOfStoreFlexTable(newStore);
 
 			// Persistiere in die Datenbank
-			elv.createStore(store.getName(), new StoreCreationCallback());
+
 		}
 
 	}
@@ -182,6 +167,9 @@ public class StoreForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Store store) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
+
+			// Klappt noch nicht
+			setNewStore(store);
 		}
 
 	}
@@ -219,6 +207,41 @@ public class StoreForm extends AbstractAdministrationForm {
 		}
 	}
 
+	private class CustomTextBox extends TextBox {
+		Store store;
+
+		public Store getStore() {
+			return store;
+		}
+
+		public void setStore(Store store) {
+			this.store = store;
+		}
+	}
+
+	private class SaveStoreClickHandler implements ClickHandler {
+
+		private ArrayList<CustomTextBox> list;
+
+		public SaveStoreClickHandler(ArrayList<CustomTextBox> list) {
+
+			this.list = list;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+
+			for (CustomTextBox textbox : textboxes) {
+				Window.alert("TextBox Wert: " + textbox.getValue());
+				textbox.getStore().setName(textbox.getValue());
+				Window.alert("Store name: " + textbox.getStore().getName());
+				Window.alert("Store ID: " + textbox.getStore().getId());
+				elv.save(textbox.getStore(), new SaveStoreCallback());
+//				Notification.show("Der Store konnte nicht gespeichert werden");
+			}
+		}
+	}
+
 	private class DeleteStoreCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -232,6 +255,22 @@ public class StoreForm extends AbstractAdministrationForm {
 			stores.clear();
 			createTable();
 		}
+	}
+
+	private class SaveStoreCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
 }
