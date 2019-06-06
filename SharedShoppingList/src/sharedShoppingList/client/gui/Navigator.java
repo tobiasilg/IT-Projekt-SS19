@@ -175,19 +175,22 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
 		// erstellt werden !
 		RootPanel.get("details").add(shoppingListForm);
+		
+		// Funktioniert das so...? 
+		if (sl != null) {
+			
+		einkaufslistenVerwaltung.getGroupById(sl.getGroupId(), new AsyncCallback<Group>() {
+		
+		 public void onFailure(Throwable caught) {
+		 Notification.show("Der Callback um die Gruppe zu finden funktioniert nicht");
+		 }
 
-		//einkaufslistenVerwaltung.getAllByGroup(selectedList, new
-		//AsyncCallback<Group>() {
-
-		// public void onFailure(Throwable caught) {
-		// Notification.show("Der Callback um Gruppe zu finden funktioniert nicht");
-		// }
-
-		// public void onSuccess(Group group) {
-		// selectedGroup = group;
-		// shoppingListForm.setSelectedGroup(selectedGroup);
-		// }
-		// });
+		 public void onSuccess(Group group) {
+		 selectedGroup = group;
+	//	 shoppingListForm.setSelectedGroup(selectedGroup);
+		 }
+		 });
+	}
 	}
 
 	Group getSelectedGroup() {
@@ -266,9 +269,8 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	}
 
 	void updateShoppingList(ShoppingList sl) {
-		// Hier muss getGroupByID hin!!!
-		// einkaufslistenVerwaltung.getGroupByUser(sl.getId(), new
-		// UpdateShoppingListCallback(sl));
+		
+		einkaufslistenVerwaltung.getGroupById(sl.getId(), new UpdateShoppingListCallback(sl));
 
 	}
 
@@ -282,7 +284,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 		@Override
 		public void onFailure(Throwable t) {
-			// TODO Auto-generated method stub
+			Notification.show("Folgender Fehler: \n" + t.toString());
 
 		}
 
@@ -367,37 +369,39 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		}
 
 	}
-	 /* Die Methode getNodeInfo ermöglicht die Rückgabe des jeweiligen
+	/*
+	 * Die Methode getNodeInfo ermöglicht die Rückgabe des jeweiligen
 	 * untergeordneten Wertes.
 	 */
 
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
-		
+
 		if (value.equals("Root")) {
-	
-		einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<ArrayList<Group>>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
+			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
-			@Override
-			public void onSuccess(ArrayList<Group> result) {
-				for (Group g: result) {
-					Navigator.this.getGroups().add(g);
-					groupDataProvider.getList().add(g);
+				@Override
+				public void onFailure(Throwable t) {
+					Notification.show("Folgender Fehler: \n" + t.toString());
+
 				}
-				
-			}
-	
-		});
-		
-		return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
+
+				@Override
+				public void onSuccess(Group result) {
+					// TODO Auto-generated method stub
+					
+				}
+
+			});
+
+			return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
 		}
 		
+		if (value instanceof Group) {
+			
+		}
+
 		return null;
 	}
 
