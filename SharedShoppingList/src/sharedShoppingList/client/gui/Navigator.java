@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import java.util.Vector;
 
-import com.google.gwt.cell.client.TextCell;
+//import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,7 +21,6 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -175,19 +175,19 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
 		// erstellt werden !
 		RootPanel.get("details").add(shoppingListForm);
-		
-		// Hier muss getShoppingListByGroup hin !!!
-		//einkaufslistenVerwaltung.getShoppingListByGroup(sl.getId(), new AsyncCallback<Group>() {
 
-		//	public void onFailure(Throwable caught) {
-		//		Notification.show("Der Callback um Gruppe zu finden funktioniert nicht");
-		//	}
+		//einkaufslistenVerwaltung.getAllByGroup(selectedList, new
+		//AsyncCallback<Group>() {
 
-		//	public void onSuccess(Group group) {
-		//		selectedGroup = group;
-		//		 shoppingListForm.setSelectedGroup(selectedGroup);
-		//	}
-		//});
+		// public void onFailure(Throwable caught) {
+		// Notification.show("Der Callback um Gruppe zu finden funktioniert nicht");
+		// }
+
+		// public void onSuccess(Group group) {
+		// selectedGroup = group;
+		// shoppingListForm.setSelectedGroup(selectedGroup);
+		// }
+		// });
 	}
 
 	Group getSelectedGroup() {
@@ -195,9 +195,10 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	}
 
 	void setSelectedGroup(Group g) {
-		RootPanel.get("derails").clear();
+		RootPanel.get("details").clear();
 		selectedGroup = g;
-		// groupForm.setSelected(g);--> Methode muss noch in GroupForm erstellt werden !
+		// groupForm.setSelected(g);//--> Methode muss noch in GroupForm erstellt werden
+		// !
 		RootPanel.get("details").add(groupForm);
 		selectedList = null;
 	}
@@ -266,8 +267,9 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 	void updateShoppingList(ShoppingList sl) {
 		// Hier muss getGroupByID hin!!!
-	//	einkaufslistenVerwaltung.getGroupByUser(sl.getGroupId(), new UpdateShoppingListCallback(sl));
-		
+		// einkaufslistenVerwaltung.getGroupByUser(sl.getId(), new
+		// UpdateShoppingListCallback(sl));
+
 	}
 
 	private class UpdateShoppingListCallback implements AsyncCallback<Group> {
@@ -298,26 +300,13 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 	}
 
-	@Override
-	public <T> NodeInfo<?> getNodeInfo(T value) {
-		ListDataProvider<String> dataProvider = new ListDataProvider<String>();
-		for (int i = 0; i < 2; i++) {
-			dataProvider.getList().add(value + " " + String.valueOf(i));
-		}
-		return new DefaultNodeInfo<String>(dataProvider, new TextCell());
-	}
-
-	@Override
-	public boolean isLeaf(Object value) {
-		// The maximum length of a value is ten characters.
-		return value.toString().length() > 10;
-	}
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
 	 * 
-	 * Die Klasse onLoad wird für die Buttons und das Nav Label benötigt,
-	 * da diese immer aufgerufen werden, der Tree aber nicht !
+	 * Die Klasse onLoad wird für die Buttons und das Nav Label benötigt, da diese
+	 * immer aufgerufen werden, der Tree aber nicht !
 	 */
 	public void onLoad() {
 
@@ -377,6 +366,45 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 		}
 
+	}
+	 /* Die Methode getNodeInfo ermöglicht die Rückgabe des jeweiligen
+	 * untergeordneten Wertes.
+	 */
+
+	@Override
+	public <T> NodeInfo<?> getNodeInfo(T value) {
+		
+		if (value.equals("Root")) {
+	
+		einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<ArrayList<Group>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Group> result) {
+				for (Group g: result) {
+					Navigator.this.getGroups().add(g);
+					groupDataProvider.getList().add(g);
+				}
+				
+			}
+	
+		});
+		
+		return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public boolean isLeaf(Object value) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
