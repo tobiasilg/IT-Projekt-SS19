@@ -125,6 +125,50 @@ public class ListEntryMapper {
 			return result;
 		}
 		
+		/**
+		 * 
+		 * Methode zur Findung eines Listeneintrags innerhalb der jeweiligen Shoppingliste
+		 * Wird benötigt, um z.B. eine Löschweitergabe zu implementieren 
+		 * Wenn Shoppingliste gelöscht wird sollen auch alle zugehörigen ListEntries gelöscht werden
+		 * @author Nico Weiler
+		 * @param sl
+		 * @return result vektor der ListEntries
+		 */
+		
+		public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
+			Connection con = DBConnection.connection();
+			
+			String sql="select * from listentry where shoppinglistid=" + sl.getId();
+			
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+
+					ListEntry listEntry = new ListEntry();
+					listEntry.setId(rs.getInt("id"));
+					listEntry.setName(rs.getString("name"));
+					listEntry.setCreateDate(rs.getTimestamp("createDate"));
+					listEntry.setAmount(rs.getDouble("amount"));
+					listEntry.setChecked(rs.getBoolean("checked"));
+					listEntry.setArticleId(rs.getInt("articleid"));
+					listEntry.setUserId(rs.getInt("userid"));
+					listEntry.setStoreId(rs.getInt("storeid"));
+					listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
+					
+					result.addElement(listEntry);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			}
+			return result;
+		}
+		
 		/*
 		 * Methode zur Findung eines Listeneintrags anhand eines zugewiesenen Händlers
 		 * 

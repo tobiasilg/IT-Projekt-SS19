@@ -380,10 +380,22 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 	
 	/**
+	 * Methode wird benötigt um nach dem Löschen einer ShoppingListe, die zugehörigen
+	 * Listeneinträge zu löschen
+	 * @param sl 
+	 * @return alle Listeneinträge der shoppingliste
+	 * @author Nico Weiler
+	 */
+	
+	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException{
+		return this.listEntryMapper.findAllByShoppingList(sl);
+	}
+	
+	/**
 	 * Methode wird benötigt um nach dem Löschen eines Users, die zugehörigen
 	 * Listeneinträge zu löschen
 	 * @param user object
-	 * @return all Listeneinträge des jeweiligen Users
+	 * @return alle Listeneinträge des jeweiligen Users
 	 * @author Nico Weiler
 	 */
 	
@@ -527,9 +539,30 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.listMapper.update(shoppingList);
 	}
 
-	/** Löschen einer Shoppingliste */
+	/**
+	 * Löschen einer Shoppingliste inkl. zugehöriger  Listeneinträge
+	 * @author Nico Weiler
+	 * @param shoppingList
+	 * 
+	 */
 
 	public void delete(ShoppingList shoppingList) throws IllegalArgumentException {
+		
+		Vector<ListEntry> listEntries = this.getAllListEntriesByShoppingList(shoppingList);
+		/*
+		 * Prüfen ob Listeneinträge in  der jeweiligen Shoppinglist vorhanden sind.
+		 */
+		if(listEntries != null) {
+			for(ListEntry le:listEntries) {
+
+				this.listEntryMapper.delete(le);
+				
+			}
+		}
+		/*
+		 * Eigentliches Löschen der Shoppinglist
+		 */
+		
 		this.listMapper.delete(shoppingList);
 		
 	}

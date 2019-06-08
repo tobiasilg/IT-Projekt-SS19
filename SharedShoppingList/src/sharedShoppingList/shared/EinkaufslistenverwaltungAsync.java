@@ -97,5 +97,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getGroupById(int id, AsyncCallback<Group> callback);
 
+	void getAllListEntriesByShoppingList(ShoppingList sl, AsyncCallback<Vector<ListEntry>> callback);
+
 
 }
