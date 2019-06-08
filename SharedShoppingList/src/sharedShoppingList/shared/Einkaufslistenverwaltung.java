@@ -97,6 +97,8 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
 	
+	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException;
+	
 	
 	
 	
