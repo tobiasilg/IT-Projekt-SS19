@@ -378,7 +378,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 
 		if (value.equals("Root")) {
-
+ 
 			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
 				@Override
@@ -389,17 +389,41 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 				@Override
 				public void onSuccess(Group result) {
-					// TODO Auto-generated method stub
+					Navigator.this.getGroups();
+						groupDataProvider.getList();
+					
 					
 				}
 
 			});
-
+			// Zurückgeben des Knotenpunktes, wobei die Daten der Zelle gepaart werden
 			return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
 		}
 		
 		if (value instanceof Group) {
+			//Erzeugen eines ListDataProviders für die ShoppingList Daten
+			final ListDataProvider<ShoppingList> listProvider = new ListDataProvider<ShoppingList>();
+			shoppingListDataProviders.put((Group) value, listProvider);
+			// Methode getShoppinglistsByGroup muss noch erstellt werden
+			einkaufslistenVerwaltung.getShoppinglistsByGroup((Group) value, new AsyncCallback<Vector<ShoppingList>>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(Vector<ShoppingList> shoppingLists) {
+					for (ShoppingList s : shoppingLists ) {
+						listProvider.getList().add(s);
+						
+					}
+					
+				}	
 			
+		});
+			return new DefaultNodeInfo<ShoppingList>(listProvider, new ShoppingListCell(), selectionModel, null);
 		}
 
 		return null;
@@ -408,7 +432,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	@Override
 	public boolean isLeaf(Object value) {
 		// TODO Auto-generated method stub
-		return false;
+		return (value instanceof ShoppingList);
 	}
 
 }
