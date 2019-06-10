@@ -5,9 +5,13 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CustomButton;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -17,60 +21,182 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
-import sharedShoppingList.client.gui.AdministrationShoppingListForm.RenameShoppingListCallback;
+import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
 
 /**
- * Formular für das Anlegen einer neuen Gruppe im Datenstamm
+ * Formular für das Einsehen von Gruppenmitglieder, Hinzufügen von Usern, ändern
+ * des Gruppennamens, Gruppe löschen
  * 
  * @author nicolaifischbach
  * 
  */
 
-public class AdministrationGroupForm extends AbstractDialogCreationForm {
+public class AdministrationGroupForm extends VerticalPanel {
 
-	TextBox addUsersTextBox;
-	FlexTable viewMembersFlexTable;
-	Button deleteMembersButton = new Button("x");
-	Button addMembersButton = new Button("speichern");
-	HorizontalPanel createHpFirstButtonPanel;
-	ArrayList<User> groupMembers;
-
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User u = CurrentUser.getUser();
 	Group g = CurrentGroup.getGroup();
 
-	protected HorizontalPanel createHpFirstButtonPanel() {
-		return createHpFirstButtonPanel;
+	private Label firstNameLabel = new Label("Gruppenverwaltung");
+	private Label secondNameLabel = new Label("Mitgliederverwaltung");
+	private Label thirdNameLabel = new Label("Gruppenname ändern");
+
+	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
+	private DynamicTextbox renameTextBox = new DynamicTextbox();
+
+	private FlexTable viewMembersFlexTable;
+
+	private Button addMembersButton = new Button("hinzufügen");
+	private Button deleteGroupButton = new Button("loeschen");
+	private Button saveGroupNameButton = new Button("speichern");
+
+	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
+	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
+	private ArrayList<User> groupMembers;
+
+	// Prüfen des Eingabefelds auf richtige Zeichensetzung
+	private FieldVerifier verifier = new FieldVerifier();
+
+	/***********************************************************************
+	 * Konstruktor
+	 ***********************************************************************
+	 */
+	public AdministrationGroupForm() {
+
+			addMembersButton.addClickHandler(new AddMemberClickHandler());
+			deleteGroupButton.addClickHandler(new DeleteGroupClickHandler());
+			saveGroupNameButton.addClickHandler(new SaveRenameGroupClickhandler());
 	}
 
-	@Override
-	protected String nameDialogForm() {
-		return "Gruppenverwaltung";
+	/***********************************************************************
+	 * onLoad-Methode
+	 ***********************************************************************
+	 */
+
+	public void onLoad() {
+		hpButtonsPanelViewMembers.add(addUsersTextBox);
+		hpButtonsPanelViewMembers.add(addMembersButton);
+		hpButtonsPanelGroup.add(saveGroupNameButton);
+		hpButtonsPanelGroup.add(deleteGroupButton);
+
+		// Add them to VerticalPanel
+		this.setWidth("100%");
+		this.add(firstNameLabel);
+		this.add(secondNameLabel);
+		this.add(viewMembersFlexTable);
+		this.add(hpButtonsPanelViewMembers);
+		this.add(thirdNameLabel);
+		this.add(renameTextBox);
+		this.add(hpButtonsPanelGroup);
+
+		firstNameLabel.addStyleName("name_label");
+		secondNameLabel.addStyleName("name_label");
+		thirdNameLabel.addStyleName("name_label");
+
+		viewMembersFlexTable.setWidth("70%");
+		viewMembersFlexTable.setBorderWidth(2);
+		viewMembersFlexTable.setSize("100%", "100%");
+		viewMembersFlexTable.setCellPadding(10);
+
+		hpButtonsPanelViewMembers.setSpacing(20);
+		hpButtonsPanelGroup.setSpacing(20);
+
+		addMembersButton.setPixelSize(130, 40);
+		saveGroupNameButton.setPixelSize(130, 40);
+		deleteGroupButton.setPixelSize(130, 40);
+
+		// aktueller Name der Gruppe wird in der TextBox angezeigt
+		// textBox.getElement().setPropertyString(g.getShoppingListName());
+
+		/*
+		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
+		 * Zugleich wird das Eingabefeld geleert.
+		 */
+		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					saveGroupNameButton.click();
+					renameTextBox.setText("");
+				}
+
+			}
+		});
+
+		addUsersTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					addMembersButton.click();
+					addUsersTextBox.setText("");
+				}
+
+			}
+		});
+
 	}
 
-	protected String nameSecondDialogForm() {
-		return "Mitgliederverwaltung";
+	/***********************************************************************
+	 * Methoden
+	 ***********************************************************************
+	 */
+
+	/**
+	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische
+	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
+	 * FieldVerifyer benötigt werden.
+	 */
+	private boolean checkTextboxesSaveableRename() {
+
+		renameTextBox.setSaveable(verifier.checkValue(renameTextBox.getlabelText(), renameTextBox.getText()));
+		if (renameTextBox.saveable == false) {
+			return false;
+		}
+		return true;
 	}
 
-	protected TextBox addUsersTextBox() {
-		return addUsersTextBox;
+	private boolean checkTextboxesSaveableMember() {
+
+		addUsersTextBox.setSaveable(verifier.checkValue(addUsersTextBox.getlabelText(), addUsersTextBox.getText()));
+		if (addUsersTextBox.saveable == false) {
+			return false;
+		}
+		return true;
 	}
 
-	protected Button deleteButton() {
-		return deleteMembersButton;
-	}
+	/**
+	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
+	 * definiert.
+	 */
+	class DynamicTextbox extends TextBox {
+		boolean saveable = true;
+		String labelText;
 
-	protected Button addButton() {
-		return addMembersButton;
-	}
+		public boolean isSaveable() {
+			return saveable;
+		}
 
-	protected String nameThirdDialogForm() {
-		return "Gruppenname ändern";
+		public void setSaveable(boolean saveable) {
+			this.saveable = saveable;
+		}
+
+		public String getlabelText() {
+			return labelText;
+		}
+
+		public void setlabelText(String labelText) {
+			this.labelText = labelText;
+		}
 	}
 
 	// Erstellt eie Flextable, falls nicht existent
@@ -81,6 +207,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 			viewMembersFlexTable = new FlexTable();
 
 			viewMembersFlexTable.setText(0, 0, "Nickname");
+			viewMembersFlexTable.setText(0, 1, "");
 		}
 
 		groupMembers = new ArrayList<User>();
@@ -111,24 +238,19 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 		int rowCount = viewMembersFlexTable.getRowCount();
 
 		// Erstellt eine neue Textbox für eigetragene User und setze den Namen
-		// iF-Abfrage?
-		addUsersTextBox = new TextBox();
-		addUsersTextBox.setText(user.getName());
+		//
+		DynamicTextbox memberTextBox = new DynamicTextbox();
+		memberTextBox.setText(user.getName());
+
+		// Erstellt einen Lösch-Button (x)
+		CustomButton removeMemberButton = new CustomButton();
+		removeMemberButton.setUser(user);
+
+		removeMemberButton.addClickHandler(new RemoveMemberClickhandler(removeMemberButton));
 
 		// Füge die TextBox und die ListBox in die FlexTable ein
-		viewMembersFlexTable.setWidget(rowCount, 0, addUsersTextBox);
-		viewMembersFlexTable.setWidget(rowCount, 1, deleteMembersButton);
-	}
-
-	// Konstruktor
-	public AdministrationGroupForm() {
-
-		deleteMembersButton.addClickHandler(new deleteMembersClickHandler());
-		addMembersButton.addClickHandler(new AddMemberClickHandler());
-		deleteButton.addClickHandler(new DeleteGroupClickHandler());
-		saveButton.addClickHandler(new SaveRenameGroupClickhandler());
-		cancelButton.addClickHandler(new CancelRenameGroupClickHandler());
-
+		viewMembersFlexTable.setWidget(rowCount, 0, memberTextBox);
+		viewMembersFlexTable.setWidget(rowCount, 1, removeMemberButton);
 	}
 
 	/**
@@ -136,6 +258,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	 * den User die Möglichkeit gibt, das Löschen der Gruppe nocheinmal zu
 	 * überdenken.
 	 */
+
 	private class DeleteGroupDialogBox extends DialogBox {
 		private VerticalPanel vPanel = new VerticalPanel();
 		private HorizontalPanel buttonPanel = new HorizontalPanel();
@@ -170,32 +293,57 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	 * CLICKHANDLER
 	 ***********************************************************************/
 
-	
 	/**
-	 * Auf Mehtode warten
-	 * 	 *
+	 * Auf Mehtode warten *
 	 */
-	private class deleteMembersClickHandler implements ClickHandler {
 
+	private class CustomButton extends Button {
+		User user;
+
+		public User getUser() {
+			return user;
+		}
+
+		public void setUser(User user) {
+			this.user = user;
+		}
+	}
+
+	private class RemoveMemberClickhandler implements ClickHandler {
+
+		private CustomButton cB;
+
+		public RemoveMemberClickhandler(CustomButton cB) {
+
+			this.cB = cB;
+		}
+
+		@Override
 		public void onClick(ClickEvent event) {
+			if (cB != null) {
 
+				elv.delete(cB.getUser(), new DeleteMemberCallback());
+
+			} else {
+				Notification.show("Das Gruppenmitglied konnte nicht gelöscht werden");
+			}
 		}
 	}
 
 	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des addButton erstellt.
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer User nach dem Klicken
+	 * des addButton der Gruppe hinzugefügt.
 	 */
 	private class AddMemberClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
+			User user = new User();
 
-			u.setName(addUsersTextBox.getValue());
-			setContentOfviewMembersFlexTable(u);
+			user.setName(addUsersTextBox.getValue());
+			setContentOfviewMembersFlexTable(user);
 
 			// Persistiere in die Datenbank
-			// auf Methode warten
-			//elv.save(addUsersTextBox.getName(), new AddMemberCallback());
+			// elv.save(user.getName(), new AddMemberCallback());
 		}
 
 	}
@@ -260,14 +408,14 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	 * AsyncCallback und ermöglicht das Löschen des Users in der DB.
 	 */
 
-	/**
-	 * Hiermit wird der Vorgang, die Gruppe umzubenennen, abgebrochen.
-	 */
-	class CancelRenameGroupClickHandler implements ClickHandler {
-		public void onClick(ClickEvent event) {
-			RootPanel.get("details").clear();
-		}
-	}
+//	/**
+//	 * Hiermit wird der Vorgang, die Gruppe umzubenennen, abgebrochen.
+//	 */
+//	class CancelRenameGroupClickHandler implements ClickHandler {
+//		public void onClick(ClickEvent event) {
+//			RootPanel.get("details").clear();
+//		}
+//	}
 
 	/**
 	 * Info: getGroupMethode fehlt noch Sobald das Textfeld ausgef�llt wurde, wird
@@ -277,7 +425,7 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			g.setName(insertNameTextBox.getText());
+			g.setName(renameTextBox.getText());
 
 			elv.save(g, new SaveRenameGroupCallback());
 
@@ -304,8 +452,24 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 	}
 
 	/*
-	 * Callback wird benötigt, um ein User der Gruppe hinzuzufügen
+	 * Callback wird benötigt, um ein Mitglieder aus der Gruppe zu entfernen.
 	 */
+
+	private class DeleteMemberCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+
+			groupMembers.clear();
+			createTable();
+		}
+	}
+
 	private class AddMemberCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -334,23 +498,5 @@ public class AdministrationGroupForm extends AbstractDialogCreationForm {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 		}
 	}
-
-	/*
-	 * Callback wird benötigt, um ein Gruppenmitglied aus der Gruppe zu entfernen.
-	 */
-	private class DeleteMemberCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show("Das Gruppenmitglied konnte nicht gelöscht werden");
-		}
-
-		@Override
-		public void onSuccess(Void user) {
-			Notification.show("Das Gruppenmitglied wurde erfolgreich gelöscht");
-		}
-	}
-
-	
 
 }

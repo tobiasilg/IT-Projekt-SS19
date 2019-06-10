@@ -2,13 +2,18 @@ package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -17,7 +22,10 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -49,13 +57,13 @@ public class ShoppingListForm extends VerticalPanel {
 
 	// +"Gruppenname"
 	private Label infoTitleLabel = new Label("Einkaufsliste" + "");
-	private SuggestBox addArticleSuggestBox = new SuggestBox();
+	private SuggestBox suggestBox;
 	private Button addArticleToShoppingListButton = new Button("hinzufuegen");
 	private HorizontalPanel hpSuggestBox = new HorizontalPanel();
 
 	private FlexTable shoppingListFlexTable;
-	private ListBox whoListBox;
-	private ListBox whereListBox;
+	private ListBox usersListBox;
+	private ListBox storesListBox;
 
 	private Button deleteRowButton;
 	private ArrayList<Article> articles;
@@ -68,7 +76,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 		deleteRowButton.addClickHandler(new DeleteRowClickHandler());
 
-		hpSuggestBox.add(addArticleSuggestBox);
+		hpSuggestBox.add(suggestBox);
 		hpSuggestBox.add(addArticleToShoppingListButton);
 
 	}
@@ -80,27 +88,36 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 	public void onLoad() {
 
-		hpSuggestBox.add(addArticleSuggestBox);
+		hpSuggestBox.add(suggestBox);
 		hpSuggestBox.add(addArticleToShoppingListButton);
 
 		this.add(infoTitleLabel);
 		this.add(hpSuggestBox);
 		this.add(shoppingListFlexTable);
 
+		infoTitleLabel.setHorizontalAlignment(ALIGN_CENTER);
+		infoTitleLabel.setWidth("100%");
+
+		hpSuggestBox.setCellHorizontalAlignment(suggestBox, ALIGN_LEFT);
+		hpSuggestBox.setCellHorizontalAlignment(addArticleToShoppingListButton, ALIGN_LEFT);
+		hpSuggestBox.setWidth("50%");
+
+		suggestBox.setWidth("200");
+
+		addArticleToShoppingListButton.setPixelSize(130, 40);
 		shoppingListFlexTable.setWidth("%");
 		shoppingListFlexTable.setBorderWidth(0);
 		shoppingListFlexTable.setSize("%", "%");
-
 		shoppingListFlexTable.setCellPadding(0);
 
-		addArticleSuggestBox.addKeyPressHandler(new KeyPressHandler() {
+		suggestBox.addKeyPressHandler(new KeyPressHandler() {
 
 			public void onKeyPress(KeyPressEvent event) {
 
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 
 					addArticleToShoppingListButton.click();
-					addArticleSuggestBox.setText("");
+					suggestBox.setText("");
 				}
 
 			}
@@ -159,6 +176,26 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
+	// SuggestBox
+
+	/*
+	 * Default SuggestOracle of SuggestBox is MultiWordSuggestOracle which displays
+	 * sorted drop dwon list of matches. List of names comes from
+	 * elv.getAllArticles, which returns names of articles
+	 */
+
+	private void setNames() {
+	//	List<String> list = elv.getAllArticles(new suggestBoxCallback<Vector<Article>>());
+		//((MultiWordSuggestOracle) suggestBox.getSuggestOracle()).addAll(list);
+
+	}
+
+	@UiHandler("suggestBox")
+	public void handleSelection(SelectionEvent<SuggestOracle.Suggestion> s) {
+	//	log.fine("Selection : " + suggestBox.getText());
+		suggestBox.setText("");
+	}
+
 	/***********************************************************************
 	 * Who & Where - ListBoxen
 	 ***********************************************************************
@@ -166,10 +203,6 @@ public class ShoppingListForm extends VerticalPanel {
 
 	// WhoListBox
 	private ListBox createWhoListBox() {
-
-		/**
-		 * String[] users = new String [] { };
-		 */
 
 		// Lade alle User aus der Gruppe
 		elv.getUsersByGroup(g, new AsyncCallback<Vector<User>>() {
@@ -182,13 +215,13 @@ public class ShoppingListForm extends VerticalPanel {
 				for (User user : result) {
 
 					users.add(user);
-					//setContentOfShoppingListFlexTable(user);
+					// setContentOfShoppingListFlexTable(user);
 				}
 				Notification.show("success");
 			}
 		});
 
-		return whoListBox;
+		return usersListBox;
 	}
 
 	// WhereListBox
@@ -205,12 +238,12 @@ public class ShoppingListForm extends VerticalPanel {
 				for (Store store : result) {
 
 					stores.add(store);
-					//setContentOfShoppingListFlexTable(store);
+					// setContentOfShoppingListFlexTable(store);
 				}
 			}
 		});
 
-		return whereListBox;
+		return storesListBox;
 	}
 
 	/***********************************************************************
@@ -224,19 +257,19 @@ public class ShoppingListForm extends VerticalPanel {
 
 		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
 		TextBox articleTextBox = new TextBox();
-		//articleTextBox.setText(favourite.getName());
+		// articleTextBox.setText(favourite.getName());
 
 		// Parameter ???
 		TextBox amountTextBox = new TextBox();
 		// amountTextBox.setText(favourite.getName());
 
-		ListBox userListBox = new ListBox();
-		for (User who : users) {
+		usersListBox = new ListBox();
+		for (User user : users) {
 			// whoListBox.addItem(who);
 		}
-		whoListBox.setSelectedIndex(Arrays.asList(users).indexOf(u.getUserName()));
+		usersListBox.setSelectedIndex(Arrays.asList(users).indexOf(u.getUserName()));
 
-		ListBox storeListBox = new ListBox();
+		storesListBox = new ListBox();
 		for (Store where : stores) {
 			// whereListBox.addItem(where);
 		}
@@ -253,12 +286,12 @@ public class ShoppingListForm extends VerticalPanel {
 		checkbox.setValue(true);
 
 		checkbox.addClickHandler(new checkBoxClickHandler());
-		
+
 		shoppingListFlexTable.setWidget(rowCount, 0, checkbox);
 		shoppingListFlexTable.setWidget(rowCount, 1, articleTextBox);
 		shoppingListFlexTable.setWidget(rowCount, 2, amountTextBox);
-		shoppingListFlexTable.setWidget(rowCount, 3, whoListBox);
-		shoppingListFlexTable.setWidget(rowCount, 4, whereListBox);
+		shoppingListFlexTable.setWidget(rowCount, 3, usersListBox);
+		shoppingListFlexTable.setWidget(rowCount, 4, storesListBox);
 
 	}
 
@@ -299,6 +332,22 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CALLBACKS
 	 ***********************************************************************
 	 */
+
+	/**
+	 * Callback wird für die SuggestBox benötigt
+	 */
+	private class suggestBoxCallback implements AsyncCallback<Vector<Article>> {
+
+		public void onFailure(Throwable caught) {
+			Notification.show("");
+		} 
+
+		@Override
+		public void onSuccess(Vector<Article> result) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 
 	/**
 	 * Callback wird benötigt, um die Gruppe umzubenennen
