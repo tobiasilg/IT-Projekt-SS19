@@ -186,7 +186,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					// shoppingListForm.setSelectedGroup(selectedGroup);
+				//	 shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
@@ -199,8 +199,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	void setSelectedGroup(Group g) {
 		RootPanel.get("details").clear();
 		selectedGroup = g;
-		// groupForm.setSelected(g);//--> Methode muss noch in GroupForm erstellt werden
-		// !
+		groupForm.setSelected(g);
 		RootPanel.get("details").add(groupForm);
 		selectedList = null;
 	}

@@ -8,16 +8,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CustomButton;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -26,16 +23,14 @@ import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
-import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
-import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
 
 /**
  * Formular für das Einsehen von Gruppenmitglieder, Hinzufügen von Usern, ändern
  * des Gruppennamens, Gruppe löschen
  * 
- * @author nicolaifischbach
+ * @author nicolaifischbach und moritzhampe
  * 
  */
 
@@ -44,6 +39,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User u = CurrentUser.getUser();
 	Group g = CurrentGroup.getGroup();
+
+	Group selectedGroup = null;
+	private Navigator nav = new Navigator();
 
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
@@ -71,9 +69,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 */
 	public AdministrationGroupForm() {
 
-			addMembersButton.addClickHandler(new AddMemberClickHandler());
-			deleteGroupButton.addClickHandler(new DeleteGroupClickHandler());
-			saveGroupNameButton.addClickHandler(new SaveRenameGroupClickhandler());
+		addMembersButton.addClickHandler(new AddMemberClickHandler());
+		deleteGroupButton.addClickHandler(new DeleteGroupClickHandler());
+		saveGroupNameButton.addClickHandler(new SaveRenameGroupClickhandler());
 	}
 
 	/***********************************************************************
@@ -143,6 +141,15 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			}
 		});
+
+	}
+
+	public Group getSelected() {
+		return selectedGroup;
+	}
+
+	public void setSelected(Group group) {
+		selectedGroup = group;
 
 	}
 
@@ -425,9 +432,15 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 
-			g.setName(renameTextBox.getText());
+			if (g != null) {
 
-			elv.save(g, new SaveRenameGroupCallback());
+				g.setName(renameTextBox.getText());
+
+				elv.save(g, new SaveRenameGroupCallback());
+
+			} else {
+				Window.alert("Es wurde keine Gruppe ausgewhält");
+			}
 
 		}
 
@@ -448,6 +461,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		public void onSuccess(Void Group) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
+
+			nav.updateGroup(g);
+
 		}
 	}
 

@@ -3,9 +3,11 @@ package sharedShoppingList.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -15,45 +17,68 @@ import sharedShoppingList.shared.bo.User;
 
 /**
  * Formular für das Anlegen einer neuen Gruppe im Datenstamm
+ * 
  * @author nicolaifischbach
  * 
  */
 
-public class GroupCreationForm extends AbstractAdministrationForm {
+public class GroupCreationForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	User u = CurrentUser.getUser();
-	
-	private Navigator n = null; 
+	User user = CurrentUser.getUser();
+
+	private Navigator nav = null;
 	private AdministrationGroupForm showGroupForm = null;
-	private Group groupToDisplay = null;
-	
+	private Group newGroup = null;
+
+	private FlowPanel groupBox = new FlowPanel();
+	private FlowPanel buttonPanel = new FlowPanel();
+
+	private Label groupLabel = new Label("Neue Gruppe");
+	private Label insertLabel = new Label("Gruppenname eingeben: ");
+
+	private TextBox groupNameTextBox = new TextBox();
+
+	private Button saveButton = new Button("Speichern");
+	private Button cancelButton = new Button("Abbrechen");
 
 	// Konstruktor
 	public GroupCreationForm() {
 
 		saveButton.addClickHandler(new SaveGroupCreationClickHandler());
 		cancelButton.addClickHandler(new CancelGroupCreationClickHandler());
-		
+
 	}
 
+	public void onLoad() {
 
-	@Override
-	protected String nameForm() {
-		// TODO Auto-generated method stub
-		return "Meine Gruppe erstellen";
+		groupBox.addStyleName("profilBox");
+		groupLabel.addStyleName("profilTitle");
+		insertLabel.addStyleName("profilLabel");
+		groupNameTextBox.addStyleName("profilTextBox");
+
+		buttonPanel.addStyleName("profilLabel");
+
+		groupNameTextBox.getElement().setPropertyString("placeholder", "Gruppenname...");
+
+		buttonPanel.add(cancelButton);
+		buttonPanel.add(saveButton);
+
+		groupBox.add(groupLabel);
+		groupBox.add(insertLabel);
+		groupBox.add(groupNameTextBox);
+		groupBox.add(buttonPanel);
+
+		this.add(groupBox);
+
 	}
 
-	@Override
-	protected ListBox createUnitListBox() {
-		// TODO Auto-generated method stub
-		return null;
+	public Navigator getNav() {
+		return nav;
 	}
 
-	@Override
-	protected FlexTable createTable() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setNav(Navigator nav) {
+		this.nav = nav;
 	}
 
 	/**
@@ -75,7 +100,10 @@ public class GroupCreationForm extends AbstractAdministrationForm {
 
 		public void onClick(ClickEvent event) {
 
-		//	elv.createGroup(insertNameTextBox.getText(), new GroupCreationCallback());
+			String groupName = groupNameTextBox.getText();
+
+			showGroupForm = new AdministrationGroupForm();
+			elv.createGroup(groupName, new GroupCreationCallback());
 
 		}
 
@@ -91,11 +119,21 @@ public class GroupCreationForm extends AbstractAdministrationForm {
 		}
 
 		@Override
-		public void onSuccess(Group event) {
+		public void onSuccess(Group group) {
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
+
+			if (group != null) {
+
+				RootPanel.get("details").clear();
+				newGroup = group;
+				showGroupForm.setSelected(newGroup);
+				RootPanel.get("details").add(showGroupForm);
+
+				nav.addGroup(group);
+
+			}
+
 		}
 	}
-	
+
 }
-
-
