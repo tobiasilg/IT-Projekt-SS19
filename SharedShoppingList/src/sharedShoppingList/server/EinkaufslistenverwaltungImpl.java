@@ -477,6 +477,49 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	/** Löschen einer Gruppe */
 
 	public void delete(Group group) throws IllegalArgumentException {
+		
+		Vector<ShoppingList> shoppingLists = this.getAllByGroup(group);
+		
+				
+		
+		/*
+		 * Prüfen ob Shoppinglisten der jeweiligen Gruppe vorhanden sind.
+		 */
+		
+		if(shoppingLists != null) {
+			for(ShoppingList sl:shoppingLists) {
+				
+				
+				Vector<ListEntry> listEntries = this.getAllListEntriesByShoppingList(sl);
+				
+				/*
+				 * Prüfen ob die Shoppingliste auch Listeneinträge enthält
+				 */
+				
+				if(listEntries != null) {
+					
+					for(ListEntry le: listEntries) {
+						
+						/*
+						 * Zuerst werden die Listeneinträge gelöscht
+						 */
+						this.listEntryMapper.delete(le);
+					}
+					
+				}
+				/*
+				 * Anschließend werden die Shoppinglisten gelöscht
+				 */
+				
+				this.listMapper.delete(sl);
+				
+			}
+		}
+		/*
+		 * Zum Schluss wird die gewünschte Gruppe gelöscht
+		 */
+
+		
 		this.groupMapper.delete(group);
 		
 	}
