@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//import java.util.Vector;
+import java.util.Vector;
 
-//import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -175,22 +174,22 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
 		// erstellt werden !
 		RootPanel.get("details").add(shoppingListForm);
-		
-		// Funktioniert das so...? 
-		if (sl != null) {
-			
-		einkaufslistenVerwaltung.getGroupById(sl.getGroupId(), new AsyncCallback<Group>() {
-		
-		 public void onFailure(Throwable caught) {
-		 Notification.show("Der Callback um die Gruppe zu finden funktioniert nicht");
-		 }
 
-		 public void onSuccess(Group group) {
-		 selectedGroup = group;
-	//	 shoppingListForm.setSelectedGroup(selectedGroup);
-		 }
-		 });
-	}
+		// Funktioniert das so...?
+		if (sl != null) {
+
+			einkaufslistenVerwaltung.getGroupById(sl.getGroupId(), new AsyncCallback<Group>() {
+
+				public void onFailure(Throwable caught) {
+					Notification.show("Der Callback um die Gruppe zu finden funktioniert nicht");
+				}
+
+				public void onSuccess(Group group) {
+					selectedGroup = group;
+					// shoppingListForm.setSelectedGroup(selectedGroup);
+				}
+			});
+		}
 	}
 
 	Group getSelectedGroup() {
@@ -269,7 +268,7 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	}
 
 	void updateShoppingList(ShoppingList sl) {
-		
+
 		einkaufslistenVerwaltung.getGroupById(sl.getId(), new UpdateShoppingListCallback(sl));
 
 	}
@@ -303,6 +302,71 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 	}
 
 	/*
+	 * Die Methode getNodeInfo ermöglicht die Rückgabe des jeweiligen
+	 * untergeordneten Wertes.
+	 */
+
+	@Override
+	public <T> NodeInfo<?> getNodeInfo(T value) {
+
+		if (value.equals("Root")) {
+
+			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+
+				@Override
+				public void onFailure(Throwable t) {
+					Notification.show("Folgender Fehler: \n" + t.toString());
+
+				}
+
+				@Override
+				public void onSuccess(Group result) {
+					Navigator.this.getGroups();
+					groupDataProvider.getList();
+
+				}
+
+			});
+			// Zurückgeben des Knotenpunktes, wobei die Daten der Zelle gepaart werden
+			return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
+		}
+
+		if (value instanceof Group) {
+			// Erzeugen eines ListDataProviders für die ShoppingList Daten
+			final ListDataProvider<ShoppingList> listProvider = new ListDataProvider<ShoppingList>();
+			shoppingListDataProviders.put((Group) value, listProvider);
+			// Methode getShoppinglistsByGroup muss noch erstellt werden
+			einkaufslistenVerwaltung.getAllByGroup((Group) value, new AsyncCallback<Vector<ShoppingList>>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onSuccess(Vector<ShoppingList> shoppingLists) {
+					for (ShoppingList s : shoppingLists) {
+						listProvider.getList().add(s);
+
+					}
+
+				}
+
+			});
+			return new DefaultNodeInfo<ShoppingList>(listProvider, new ShoppingListCell(), selectionModel, null);
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean isLeaf(Object value) {
+		// TODO Auto-generated method stub
+		return (value instanceof ShoppingList);
+	}
+
+	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
@@ -333,11 +397,14 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 		this.add(navPanel);
 		this.add(navTitle);
 
+
 		// Hinzufügen der ClickHandler
 		neuButton.addClickHandler(new ShowGroupCreationForm());
 		star.addClickHandler(new ShowFavoriteArticleForm());
+	
 	}
-
+	
+	
 	/*
 	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung zur
 	 * GroupCreationForm
@@ -346,10 +413,10 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			gcf = new GroupCreationForm();
 			RootPanel.get("details").add(gcf);
+
 		}
 
 	}
@@ -368,71 +435,6 @@ public class Navigator extends FlowPanel implements TreeViewModel {
 
 		}
 
-	}
-	/*
-	 * Die Methode getNodeInfo ermöglicht die Rückgabe des jeweiligen
-	 * untergeordneten Wertes.
-	 */
-
-	@Override
-	public <T> NodeInfo<?> getNodeInfo(T value) {
-
-		if (value.equals("Root")) {
- 
-			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
-
-				@Override
-				public void onFailure(Throwable t) {
-					Notification.show("Folgender Fehler: \n" + t.toString());
-
-				}
-
-				@Override
-				public void onSuccess(Group result) {
-					Navigator.this.getGroups();
-						groupDataProvider.getList();
-					
-					
-				}
-
-			});
-			// Zurückgeben des Knotenpunktes, wobei die Daten der Zelle gepaart werden
-			return new DefaultNodeInfo<Group>(groupDataProvider, new GroupCell(), selectionModel, null);
-		}
-		
-		if (value instanceof Group) {
-			//Erzeugen eines ListDataProviders für die ShoppingList Daten
-			final ListDataProvider<ShoppingList> listProvider = new ListDataProvider<ShoppingList>();
-			shoppingListDataProviders.put((Group) value, listProvider);
-			// Methode getShoppinglistsByGroup muss noch erstellt werden
-			einkaufslistenVerwaltung.getShoppinglistsByGroup((Group) value, new AsyncCallback<Vector<ShoppingList>>() {
-
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onSuccess(Vector<ShoppingList> shoppingLists) {
-					for (ShoppingList s : shoppingLists ) {
-						listProvider.getList().add(s);
-						
-					}
-					
-				}	
-			
-		});
-			return new DefaultNodeInfo<ShoppingList>(listProvider, new ShoppingListCell(), selectionModel, null);
-		}
-
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf(Object value) {
-		// TODO Auto-generated method stub
-		return (value instanceof ShoppingList);
 	}
 
 }

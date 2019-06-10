@@ -3,11 +3,9 @@ package sharedShoppingList.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -21,49 +19,41 @@ import sharedShoppingList.shared.bo.User;
  * 
  */
 
-public class GroupCreationForm extends AbstractDialogCreationForm {
+public class GroupCreationForm extends AbstractAdministrationForm {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User u = CurrentUser.getUser();
-
-	@Override
-	protected String nameDialogForm() {
-		return "Neue Gruppe erstellen";
-	}
-
-	protected String nameSecondDialogForm() {
-		return null;
-	}
-
-	protected String nameThirdDialogForm() {
-		return null;
-	}
-
-	protected FlexTable createTable() {
-		return null;
-	}
-
-	protected Button addButton() {
-		return null;
-	}
-
-	protected Button deleteButton() {
-		return null;
-	}
-
-	protected HorizontalPanel createHpFirstButtonPanel() {
-		return null;
-	}
-
-	protected TextBox addUsersTextBox() {
-		return null;
-	}
+	
+	private Navigator n = null; 
+	private AdministrationGroupForm showGroupForm = null;
+	private Group groupToDisplay = null;
+	
 
 	// Konstruktor
 	public GroupCreationForm() {
 
 		saveButton.addClickHandler(new SaveGroupCreationClickHandler());
 		cancelButton.addClickHandler(new CancelGroupCreationClickHandler());
+		
+	}
+
+
+	@Override
+	protected String nameForm() {
+		// TODO Auto-generated method stub
+		return "Meine Gruppe erstellen";
+	}
+
+	@Override
+	protected ListBox createUnitListBox() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected FlexTable createTable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -85,7 +75,7 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 
 		public void onClick(ClickEvent event) {
 
-			elv.createGroup(insertNameTextBox.getText(), new GroupCreationCallback());
+		//	elv.createGroup(insertNameTextBox.getText(), new GroupCreationCallback());
 
 		}
 
@@ -105,7 +95,6 @@ public class GroupCreationForm extends AbstractDialogCreationForm {
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
 		}
 	}
-
 	
 }
 
