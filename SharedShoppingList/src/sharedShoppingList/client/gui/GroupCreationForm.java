@@ -2,6 +2,9 @@ package sharedShoppingList.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -29,7 +32,7 @@ public class GroupCreationForm extends FlowPanel {
 
 	GroupShoppingListTreeViewModel gsltvm = null;
 	AdministrationGroupForm groupForm = null;
-	Group newGroup = null;
+	Group customerToDisplay = null;
 
 	private FlowPanel groupBox = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -71,6 +74,23 @@ public class GroupCreationForm extends FlowPanel {
 
 		this.add(groupBox);
 
+		groupNameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					saveButton.click();
+					groupNameTextBox.setText("");
+				}
+
+			}
+
+		});
+
+	}
+
+	public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
 	}
 
 	public GroupShoppingListTreeViewModel getGroupShoppingListTreeViewModel() {
@@ -92,12 +112,12 @@ public class GroupCreationForm extends FlowPanel {
 	 * Sobald das Textfeld ausgef�llt wurde, wird ein neue Gruppe nach dem Klicken
 	 * des saveButtons erstellt.
 	 */
-	 class SaveGroupCreationClickHandler implements ClickHandler {
+	class SaveGroupCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
 			String groupName = groupNameTextBox.getText();
-					
+
 			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupName, new GroupCreationCallback());
 
@@ -108,7 +128,7 @@ public class GroupCreationForm extends FlowPanel {
 	/**
 	 * Callback wird benötigt, um die Gruppe zu erstellen
 	 */
-	 class GroupCreationCallback implements AsyncCallback<Group> {
+	class GroupCreationCallback implements AsyncCallback<Group> {
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Gruppen konnte nicht erstellt werden");
@@ -116,27 +136,20 @@ public class GroupCreationForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Group group) {
-			
+
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
-			
+
 			if (group != null) {
 
-				RootPanel.get("details").clear();
-				newGroup = group;
-				groupForm.setSelected(newGroup);
-				RootPanel.get("details").add(groupForm);
-				
+				// RootPanel.get("details").clear();
+				// newGroup = group;
+				// groupForm.setSelected(newGroup);
+				// RootPanel.get("details").add(groupForm);
+
 				gsltvm.addGroup(group);
-		
-				
 
 			}
 		}
 	}
-		public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
-			this.gsltvm = gsltvm;
-		}
-		
-	
 
 }

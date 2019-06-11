@@ -36,6 +36,7 @@ import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
@@ -53,7 +54,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private User u = CurrentUser.getUser();
-	Group g = CurrentGroup.getGroup();
+	Group selectedGroup = CurrentGroup.getGroup();
+	ShoppingList selectedList;
 	
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
@@ -134,6 +136,24 @@ public class ShoppingListForm extends VerticalPanel {
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
 	}
+	
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+	
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+	
+	public ShoppingList getSelectedList() {
+		return selectedList;
+	}
+	
+	public void setSelected(ShoppingList sl) {
+		selectedList = sl; 
+	}
+	
+	
 	/***********************************************************************
 	 * Abschnitt der METHODEN
 	 ***********************************************************************
@@ -215,7 +235,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private ListBox createWhoListBox() {
 
 		// Lade alle User aus der Gruppe
-		elv.getUsersByGroup(g, new AsyncCallback<Vector<User>>() {
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
 				Notification.show("failure");
