@@ -39,7 +39,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	Vector<Group> getAllGroups() throws IllegalArgumentException;
 
-//	Group findGroupById(int id) throws IllegalArgumentException;
+	Group getGroupById(int id) throws IllegalArgumentException;
 
 	void save(Group group) throws IllegalArgumentException;
 
@@ -96,6 +96,8 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	public void deleteArticle (Favourite favourite) throws IllegalArgumentException;
 	
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
+	
+	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException;
 	
 	
 	

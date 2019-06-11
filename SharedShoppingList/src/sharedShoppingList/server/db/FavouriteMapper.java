@@ -138,5 +138,50 @@ public class FavouriteMapper {
 		return result;
 		
 	}
+	
+	public Vector <Favourite> findFavouritesByGroupId (Favourite fav) {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT * FROM favourite WHERE groupid =" + fav.getGroupsId();
+		
+		Vector <Favourite> result = new Vector <Favourite> ();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while (rs.next()) {
+				Favourite favourite = new Favourite();
+				favourite.setId(rs.getInt("id"));
+				favourite.setGroupsId(rs.getInt("groupsId"));
+				favourite.setListEntryId(rs.getInt("listEntryId"));
+				
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("Artikelname"));
+				article.setUnit(rs.getString("unit"));
+				
+				ListEntry listentry = new ListEntry ();
+				listentry.setAmount(rs.getDouble("Menge"));
+				listentry.setUserId(rs.getInt("userId"));
+				
+				/*
+				 * Hier eventuell im SQL Statement alias setzen für "name"?
+				 */
+				listentry.setName(rs.getString("name"));
+				listentry.setStoreId(rs.getInt("storeid"));
+				
+				listentry.setArticle(article);
+				favourite.setListEntry(listentry);
+				
+				result.addElement(favourite);
+				}
+				
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+				
+			}
+			return result;
+		
+	}
 
 }
