@@ -224,7 +224,6 @@ public class AdministrationShoppingListForm extends VerticalPanel {
 	}
 
 /** MERGECONFLICT gelöst */
-	@Override
 	protected SuggestBox suggestUser() {
 		// TODO Auto-generated method stub
 		return null;
