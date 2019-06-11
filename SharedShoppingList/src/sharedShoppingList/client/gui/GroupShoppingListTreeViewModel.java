@@ -1,6 +1,6 @@
 package sharedShoppingList.client.gui;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +31,11 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	private AdministrationGroupForm groupForm; // Klasse die die Gruppe mit den Gruppenmitgliedern anzeigt
 	private ShoppingListForm shoppingListForm; // Klasse die die Einkaufsliste der jeweiligen Gruppe anzeigt
 
-	private ArrayList<Group> groups = new ArrayList<Group>();
+//	private ArrayList<Group> groups = new ArrayList<Group>();
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
+	
 	private ListDataProvider<Group> groupDataProvider = null;
 
 	/*
@@ -50,11 +51,14 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	private class BusinessObjectKeyProvider implements ProvidesKey<BusinessObject> {
 
 		@Override
-		public Object getKey(BusinessObject bo) {
+		public Integer getKey(BusinessObject bo) {
 			if (bo == null) {
 				return null;
+				
+			} if (bo instanceof Group) {
+				return new Integer(bo.getId());
 			} else {
-				return bo.getId(); // id der Gruppe wird zurückgegeben
+				return new Integer(-bo.getId());
 			}
 
 		}
@@ -113,14 +117,14 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	 * Getter und Setter für Group ArrayList
 	 */
 
-	public ArrayList<Group> getGroups() {
-		return groups;
-	}
+//	public ArrayList<Group> getGroups() {
+//		return groups;
+//	}
 
-	public void setGroups(ArrayList<Group> groups) {
-		this.groups = groups;
+//	public void setGroups(ArrayList<Group> groups) {
+//		this.groups = groups;
 
-	}
+//	}
 	/*
 	 * Setter für die Forms
 	 */
@@ -131,6 +135,18 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 	void setShoppingListForm(ShoppingListForm shoppingListForm) {
 		this.shoppingListForm = shoppingListForm;
+	}
+	
+	Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	void setSelectedGroup(Group g) {
+		RootPanel.get("details").clear();
+		selectedGroup = g;
+		groupForm.setSelected(g);
+		selectedList = null;
+		RootPanel.get("details").add(groupForm);
 	}
 
 	/*
@@ -158,37 +174,26 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-				//	 shoppingListForm.setSelectedGroup(selectedGroup);
+					//shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
 	}
 
-	Group getSelectedGroup() {
-		return selectedGroup;
-	}
-
-	void setSelectedGroup(Group g) {
-		RootPanel.get("details").clear();
-		selectedGroup = g;
-		groupForm.setSelected(g);
-		selectedList = null;
-		RootPanel.get("details").add(groupForm);
-	}
 
 	/*
 	 * Die Methode addGroup ermöglicht das hinzufügen eines neuen Gruppenobjekts als
 	 * Knoten in den Tree
 	 */
-	void addGroup(Group g) {
+	void addGroup(Group group) {
 		//List<Group> listofGroups = groupDataProvider.getList();
 		//listofGroups.add(g);
 		//this.getGroups().add(g);
 		//selectionModel.setSelected(g, true);
 		//groupDataProvider.refresh();
 		
-		groupDataProvider.getList().add(g);
-		selectionModel.setSelected(g, true);
+		groupDataProvider.getList().add(group);
+		selectionModel.setSelected(group, true);
 
 	}
 
@@ -296,10 +301,10 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 				}
 
 				@Override
-				public void onSuccess(Group result) {
-					GroupShoppingListTreeViewModel.this.getGroups().add(result);
-					groupDataProvider.getList().add(result);
-
+				public void onSuccess(Group group) {
+					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
+					groupDataProvider.getList().add(group);
+			
 				}
 
 			});
@@ -315,8 +320,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			einkaufslistenVerwaltung.getAllByGroup((Group) value, new AsyncCallback<Vector<ShoppingList>>() {
 
 				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
+				public void onFailure(Throwable t) {
+					Notification.show("Folgender Fehler: \n" + t.toString());
 
 				}
 

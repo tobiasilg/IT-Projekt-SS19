@@ -54,6 +54,8 @@ public class ShoppingListForm extends VerticalPanel {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private User u = CurrentUser.getUser();
 	Group g = CurrentGroup.getGroup();
+	
+	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	// +"Gruppenname"
 	private Label infoTitleLabel = new Label("Einkaufsliste" + "");
@@ -124,6 +126,14 @@ public class ShoppingListForm extends VerticalPanel {
 		});
 	}
 
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+		
+	}
+	
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
 	/***********************************************************************
 	 * Abschnitt der METHODEN
 	 ***********************************************************************

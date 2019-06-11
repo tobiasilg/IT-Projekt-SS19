@@ -119,18 +119,18 @@ public class GroupCreationForm extends FlowPanel {
 			
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
 			
-		//	if (group != null) {
+			if (group != null) {
 
 				RootPanel.get("details").clear();
 				newGroup = group;
 				groupForm.setSelected(newGroup);
 				RootPanel.get("details").add(groupForm);
 				
-				gsltvm.addGroup(newGroup);
+				gsltvm.addGroup(group);
 		
 				
 
-		//	}
+			}
 		}
 	}
 		public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
