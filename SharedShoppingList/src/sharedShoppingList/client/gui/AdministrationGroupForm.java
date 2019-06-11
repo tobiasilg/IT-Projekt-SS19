@@ -41,7 +41,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	Group g = CurrentGroup.getGroup();
 
 	Group selectedGroup = null;
-	private Navigator nav = new Navigator();
+	private GroupShoppingListTreeViewModel gcltvm = new GroupShoppingListTreeViewModel();
 
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
@@ -462,7 +462,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void Group) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
 
-			nav.updateGroup(g);
+			gcltvm.updateGroup(g);
 
 		}
 	}
