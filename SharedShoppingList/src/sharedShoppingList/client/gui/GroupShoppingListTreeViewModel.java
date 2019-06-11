@@ -159,8 +159,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	void setSelectedList(ShoppingList sl) {
 		RootPanel.get("details").clear();
 		selectedList = sl;
-		// shoppingListForm.setSelected(sl); --> Methode muss noch in ShoppingListForm
-		// erstellt werden !
+		shoppingListForm.setSelected(sl); 
 		RootPanel.get("details").add(shoppingListForm);
 
 		// Funktioniert das so...?
@@ -174,7 +173,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					//shoppingListForm.setSelectedGroup(selectedGroup);
+					shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
@@ -316,7 +315,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			// Erzeugen eines ListDataProviders für die ShoppingList Daten
 			final ListDataProvider<ShoppingList> listProvider = new ListDataProvider<ShoppingList>();
 			shoppingListDataProviders.put((Group) value, listProvider);
-			// Methode getShoppinglistsByGroup muss noch erstellt werden
+			
 			einkaufslistenVerwaltung.getAllByGroup((Group) value, new AsyncCallback<Vector<ShoppingList>>() {
 
 				@Override

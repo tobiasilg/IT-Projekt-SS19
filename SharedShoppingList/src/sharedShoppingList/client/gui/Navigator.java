@@ -40,7 +40,7 @@ public class Navigator extends FlowPanel {
 	Image star = new Image();
 
 	/*
-	 * Klassen  die im Navigator verwiesen werden
+	 * Klassen auf die im Navigator verwiesen werden
 	 */
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt

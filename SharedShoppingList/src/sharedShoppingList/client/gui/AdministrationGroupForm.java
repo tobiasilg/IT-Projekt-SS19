@@ -112,7 +112,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		deleteGroupButton.setPixelSize(130, 40);
 
 		// aktueller Name der Gruppe wird in der TextBox angezeigt
-		// textBox.getElement().setPropertyString(g.getShoppingListName());
+		
+		//renameTextBox.getElement().setPropertyString(g.getName());
 
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
