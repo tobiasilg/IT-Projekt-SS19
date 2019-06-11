@@ -3,16 +3,18 @@ package sharedShoppingList.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
 /*
@@ -24,7 +26,7 @@ public class Navigator extends FlowPanel {
 	
 
 	private User user = CurrentUser.getUser();
-	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = null;
+	private EinkaufslistenverwaltungAsync einkaufslistenVerwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
 	private FlowPanel navPanel = new FlowPanel();
 	private FlowPanel navImage = new FlowPanel();
@@ -42,9 +44,17 @@ public class Navigator extends FlowPanel {
 	 */
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
-
 	
+	private AdministrationGroupForm agf = new AdministrationGroupForm();
+	//private ShoppingListForm sf = new ShoppingListForm();
 
+	private Group selectedGroup = null;
+	
+	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
+	
+	private CellTree tree = new CellTree(gsltvm, "Root");
+	
+	private Label refreshLabel = new Label();
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -54,6 +64,28 @@ public class Navigator extends FlowPanel {
 	 * immer aufgerufen werden, der Tree aber nicht !
 	 */
 	public void onLoad() {
+		
+//		final Timer timer = new Timer() {
+
+//			@Override
+//			public void run() {
+//				Navigator.this.refreshInfo();
+//				schedule(10000);
+				
+//			}
+			
+//		};
+		// solange soll abgewartet werden, bis der Timer abläuft
+//		timer.schedule(10000);
+		
+		// Zusammenführen der Forms für den Tree
+		gsltvm.setGroupForm(agf);
+		agf.setGsltvm(gsltvm);
+		
+//		gsltvm.setShoppingListForm(sf);
+//		sf.setGsltvm(gsltvm);
+		
+		tree.setAnimationEnabled(true);
 
 		star.setUrl("/images/star.png");
 
@@ -75,7 +107,7 @@ public class Navigator extends FlowPanel {
 
 		this.add(navPanel);
 		this.add(navTitle);
-
+		this.add(tree);
 
 		// Hinzufügen der ClickHandler
 		neuButton.addClickHandler(new ShowGroupCreationForm());
@@ -83,7 +115,30 @@ public class Navigator extends FlowPanel {
 
 	}
 	
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
 	
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+		
+	}
+	
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+	
+	public Group getSelectedGroup() {
+		return selectedGroup;
+		
+	}
+	
+	protected void refreshInfo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	/*
 	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung zur
 	 * GroupCreationForm

@@ -41,7 +41,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	Group g = CurrentGroup.getGroup();
 
 	Group selectedGroup = null;
-	private GroupShoppingListTreeViewModel gcltvm = new GroupShoppingListTreeViewModel();
+	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
@@ -151,6 +151,15 @@ public class AdministrationGroupForm extends VerticalPanel {
 	public void setSelected(Group group) {
 		selectedGroup = group;
 
+	}
+	
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+		
+	}
+	
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
 	}
 
 	/***********************************************************************
@@ -462,7 +471,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void Group) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
 
-			gcltvm.updateGroup(g);
+			gsltvm.updateGroup(g);
 
 		}
 	}
