@@ -27,9 +27,9 @@ public class GroupCreationForm extends FlowPanel {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User user = CurrentUser.getUser();
 
-	private Navigator nav = null;
-	private AdministrationGroupForm showGroupForm = null;
-	private Group newGroup = null;
+	GroupShoppingListTreeViewModel gsltvm = null;
+	AdministrationGroupForm groupForm = null;
+	Group newGroup = null;
 
 	private FlowPanel groupBox = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -73,12 +73,8 @@ public class GroupCreationForm extends FlowPanel {
 
 	}
 
-	public Navigator getNav() {
-		return nav;
-	}
-
-	public void setNav(Navigator nav) {
-		this.nav = nav;
+	public GroupShoppingListTreeViewModel getGroupShoppingListTreeViewModel() {
+		return gsltvm;
 	}
 
 	/**
@@ -94,15 +90,15 @@ public class GroupCreationForm extends FlowPanel {
 
 	/**
 	 * Sobald das Textfeld ausgef�llt wurde, wird ein neue Gruppe nach dem Klicken
-	 * des addButton erstellt.
+	 * des saveButtons erstellt.
 	 */
-	private class SaveGroupCreationClickHandler implements ClickHandler {
+	 class SaveGroupCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
 			String groupName = groupNameTextBox.getText();
-
-			showGroupForm = new AdministrationGroupForm();
+					
+			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupName, new GroupCreationCallback());
 
 		}
@@ -112,7 +108,7 @@ public class GroupCreationForm extends FlowPanel {
 	/**
 	 * Callback wird benötigt, um die Gruppe zu erstellen
 	 */
-	private class GroupCreationCallback implements AsyncCallback<Group> {
+	 class GroupCreationCallback implements AsyncCallback<Group> {
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Gruppen konnte nicht erstellt werden");
@@ -120,20 +116,27 @@ public class GroupCreationForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Group group) {
+			
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
-
-			if (group != null) {
+			
+		//	if (group != null) {
 
 				RootPanel.get("details").clear();
 				newGroup = group;
-				showGroupForm.setSelected(newGroup);
-				RootPanel.get("details").add(showGroupForm);
+				groupForm.setSelected(newGroup);
+				RootPanel.get("details").add(groupForm);
+				
+				gsltvm.addGroup(newGroup);
+		
+				
 
-				nav.addGroup(group);
-
-			}
-
+		//	}
 		}
 	}
+		public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
+			this.gsltvm = gsltvm;
+		}
+		
+	
 
 }
