@@ -33,7 +33,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 //	private ArrayList<Group> groups = new ArrayList<Group>();
 
-	private Group selectedGroup = null;
+	private Group selectedGroup = new Group();
 	private ShoppingList selectedList = null;
 	
 	private ListDataProvider<Group> groupDataProvider = null;
@@ -173,7 +173,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					shoppingListForm.setSelectedGroup(selectedGroup);
+					groupForm.setSelected(group);
+					//shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
@@ -290,8 +291,11 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 		if (value.equals("Root")) {
 			
 			groupDataProvider = new ListDataProvider<Group>();
-
-			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+			
+			einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
+			//einkaufslistenVerwaltung.getGroupById(selectedGroup.getId(), new AsyncCallback<Group>() {
+		//	einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
+		//	einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
 				@Override
 				public void onFailure(Throwable t) {
@@ -302,7 +306,10 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 				@Override
 				public void onSuccess(Group group) {
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
-					groupDataProvider.getList().add(group);
+					//groupDataProvider.getList().add(group);
+					//for(Group g : group) {
+						groupDataProvider.getList().add(group);
+					//}
 			
 				}
 

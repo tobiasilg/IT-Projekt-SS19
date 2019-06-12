@@ -82,8 +82,8 @@ public class Navigator extends FlowPanel {
 		gsltvm.setGroupForm(agf);
 		agf.setGsltvm(gsltvm);
 		
-//		gsltvm.setShoppingListForm(sf);
-//		sf.setGsltvm(gsltvm);
+	//	gsltvm.setShoppingListForm(sf);
+	//	sf.setGsltvm(gsltvm);
 		
 		tree.setAnimationEnabled(true);
 
@@ -107,6 +107,7 @@ public class Navigator extends FlowPanel {
 
 		this.add(navPanel);
 		this.add(navTitle);
+		
 		this.add(tree);
 
 		// Hinzufügen der ClickHandler
