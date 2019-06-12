@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
+//import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
@@ -54,7 +54,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private User u = CurrentUser.getUser();
-	Group selectedGroup = CurrentGroup.getGroup();
+	//Group selectedGroup = CurrentGroup.getGroup();
+	Group selectedGroup;
 	ShoppingList selectedList;
 	
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
