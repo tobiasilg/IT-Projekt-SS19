@@ -28,6 +28,7 @@ import sharedShoppingList.shared.bo.User;
 /**
  * Formular für das Löschen und Umbenennen einer ShoppingListe im Datenstamm
  * 
+ * @author nicolaifischbach
  * 
  */
 
@@ -35,7 +36,7 @@ public class AdministrationShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User u = CurrentUser.getUser();
-	ShoppingList l = new ShoppingList();
+	ShoppingList shoppingList;
 
 	private Label nameLabel = new Label("Shoppingliste verwalten");
 	private DynamicTextbox textBox = new DynamicTextbox();
@@ -170,8 +171,9 @@ public class AdministrationShoppingListForm extends VerticalPanel {
 	private class SaveClickhandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
+			shoppingList = new ShoppingList();
 
-			elv.save(l, new RenameShoppingListCallback());
+			elv.save(shoppingList, new RenameShoppingListCallback());
 		}
 	}
 
@@ -182,7 +184,7 @@ public class AdministrationShoppingListForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 
-			elv.delete(l, new DeleteShoppingListCallback());
+			elv.delete(shoppingList, new DeleteShoppingListCallback());
 
 		}
 
