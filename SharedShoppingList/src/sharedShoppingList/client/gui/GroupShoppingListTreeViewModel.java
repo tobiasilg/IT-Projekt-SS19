@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -309,6 +310,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 					//groupDataProvider.getList().add(group);
 					//for(Group g : group) {
 						groupDataProvider.getList().add(group);
+						
+						Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
 					//}
 			
 				}

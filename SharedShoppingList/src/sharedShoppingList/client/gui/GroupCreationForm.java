@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -124,6 +125,8 @@ public class GroupCreationForm extends FlowPanel {
 
 			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
+			
+			Window.alert("TextBox Wert: " + groupNameTextBox.getValue());
 			//elv.createGroup(groupName, new GroupCreationCallback());
 
 		}
@@ -143,15 +146,17 @@ public class GroupCreationForm extends FlowPanel {
 		public void onSuccess(Group result) {
 
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
+			
 
 			if (result != null) {
-
+				
 				 RootPanel.get("details").clear();
 				 group = result;
 				 groupForm.setSelected(group);
 				 RootPanel.get("details").add(groupForm);
-
-				gsltvm.addGroup(group);
+				 
+				 gsltvm.addGroup(group);
+				 
 
 			}
 		}
