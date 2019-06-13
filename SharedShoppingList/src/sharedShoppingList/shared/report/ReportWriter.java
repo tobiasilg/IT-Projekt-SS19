@@ -6,17 +6,14 @@ import java.io.Serializable;
  * <p>
  * Mit Hilfe dieser Klasse, ist es möglich auf dem Client vom Server 
  * zur Verfügung gestellte <code>Report</code>-Objekte in einer für Menschen entsprechendes
- * Format zu lesen. 
- * </p>
- * <p>
- * Die Formate können hier beliebig sein. Methoden, die dafür Zuständig sind die Informationen
+ * Format zu lesen. Die Formate können hier beliebig sein. Methoden, die dafür Zuständig sind die Informationen
  * in das Zielformat zu überführen, werden in den Subklassen implementiert. Mit dieser Klasse 
  * werden nur die Signaturen für die Methoden deklariert, um die Quellinformationen prozessieren zu
  * können. 
  * </p>
  * 
- * @author Nico Weiler
- * @version 1.0
+ * @author Nico Weiler, Tobias Ilg
+ * @version 1.1
  * @see Report
  */
 
@@ -57,5 +54,13 @@ public abstract class ReportWriter implements Serializable {
 	 * @param r Der zu übersetzende Report wird übergeben.
 	 */
 	public abstract void process(AllListEntriesByPeriod r);
+	
+	/**
+	 * Übersetzen eines <code>AllArticlesByStoreAndPeriod</code>-Reports in das
+	 * Zielformat.
+	 * 
+	 * @param r Der zu übersetzende Report wird übergeben.
+	 */
+	public abstract void process(AllListEntriesByStoreAndPeriod r);
 
 }
