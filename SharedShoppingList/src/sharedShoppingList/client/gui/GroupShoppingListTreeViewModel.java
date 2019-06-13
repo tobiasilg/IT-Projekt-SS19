@@ -34,7 +34,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 //	private ArrayList<Group> groups = new ArrayList<Group>();
 
-	private Group selectedGroup = new Group();
+	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
 	
 	private ListDataProvider<Group> groupDataProvider = null;
@@ -269,6 +269,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 		@Override
 		public void onSuccess(Group group) {
+			Notification.show("1. sucess");
 			List<ShoppingList> shoppingListList = shoppingListDataProviders.get(group).getList();
 
 			for (int i = 0; i < shoppingListList.size(); i++) {
@@ -306,9 +307,12 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				@Override
 				public void onSuccess(Group group) {
+					Notification.show("2. sucess: " + group.getName());
+					//Notification.show(group.getName());
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
 					//groupDataProvider.getList().add(group);
 					//for(Group g : group) {
+						
 						groupDataProvider.getList().add(group);
 						
 						Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
