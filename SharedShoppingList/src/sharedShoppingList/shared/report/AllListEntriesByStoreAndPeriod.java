@@ -35,4 +35,4 @@ public class AllListEntriesByStoreAndPeriod extends SimpleReport {
 			ArrayList<Row> rows = r.getRows();
 			result.append("<table style=\"width:100vw\">");
 			/*?..*/
-}
+}}
