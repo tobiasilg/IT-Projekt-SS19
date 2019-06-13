@@ -94,7 +94,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findById(int id) {
 		Connection con = DBConnection.connection();
 		Group group = new Group();
-		String sql="select * from group where id=" + id;
+		String sql="select * from einkaufsgruppe where id=" + id;
 			
 		try {
 

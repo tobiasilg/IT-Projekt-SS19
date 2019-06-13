@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -33,7 +34,7 @@ public class GroupCreationForm extends FlowPanel {
 
 	GroupShoppingListTreeViewModel gsltvm = null;
 	AdministrationGroupForm groupForm = null;
-	Group customerToDisplay = null;
+	Group group = null;
 
 	private FlowPanel groupBox = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -61,8 +62,11 @@ public class GroupCreationForm extends FlowPanel {
 		insertLabel.addStyleName("profilLabel");
 		groupNameTextBox.addStyleName("profilTextBox");
 
-		buttonPanel.addStyleName("profilLabel");
-
+		buttonPanel.addStyleName("profilPanel");
+		
+		saveButton.addStyleName("saveNewGroupButton");
+		cancelButton.addStyleName("cancelNewGroupButton");
+		
 		groupNameTextBox.getElement().setPropertyString("placeholder", "Gruppenname...");
 
 		buttonPanel.add(cancelButton);
@@ -74,6 +78,7 @@ public class GroupCreationForm extends FlowPanel {
 		groupBox.add(buttonPanel);
 
 		this.add(groupBox);
+	
 
 		groupNameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -93,7 +98,7 @@ public class GroupCreationForm extends FlowPanel {
 	public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
 	}
-
+	
 	public GroupShoppingListTreeViewModel getGroupShoppingListTreeViewModel() {
 		return gsltvm;
 	}
@@ -117,10 +122,13 @@ public class GroupCreationForm extends FlowPanel {
 
 		public void onClick(ClickEvent event) {
 
-			String groupName = groupNameTextBox.getText();
+			//String groupName = groupNameTextBox.getText();
 
 			groupForm = new AdministrationGroupForm();
-			elv.createGroup(groupName, new GroupCreationCallback());
+			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
+			
+			Window.alert("TextBox Wert: " + groupNameTextBox.getValue());
+			//elv.createGroup(groupName, new GroupCreationCallback());
 
 		}
 
@@ -136,27 +144,24 @@ public class GroupCreationForm extends FlowPanel {
 		}
 
 		@Override
-		public void onSuccess(Group group) {
+		public void onSuccess(Group result) {
 
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
+			
 
-			if (group != null) {
-
-				// RootPanel.get("details").clear();
-				// newGroup = group;
-				// groupForm.setSelected(newGroup);
-				// RootPanel.get("details").add(groupForm);
-
-				gsltvm.addGroup(group);
+			if (result != null) {
+				
+				 RootPanel.get("details").clear();
+				 group = result;
+				 groupForm.setSelected(group);
+				 RootPanel.get("details").add(groupForm);
+				 
+				 gsltvm.addGroup(group);
+				 
 
 			}
 		}
 	}
-
-/** MERGECONFLICT gelöst: */
-	protected SuggestBox suggestUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
+
+

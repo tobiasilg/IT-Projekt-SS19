@@ -67,6 +67,7 @@ public class StoreForm extends AbstractAdministrationForm {
 	@Override
 	protected FlexTable createTable() {
 		elv = ClientsideSettings.getEinkaufslistenverwaltung();
+
 		if (storeFlexTable == null) {
 			storeFlexTable = new FlexTable();
 
@@ -75,6 +76,7 @@ public class StoreForm extends AbstractAdministrationForm {
 		textboxes.clear();
 		storeFlexTable.removeAllRows();
 		storeFlexTable.setText(0, 0, "Store");
+
 		stores = new ArrayList<Store>();
 
 		// Lade alle Store aus der Datenbank
@@ -136,26 +138,25 @@ public class StoreForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Sobald das Textfeld ausgef�llt wurde, wird ein neuer Store nach dem Klicken
+	 * Sobald das Textfeld ausgef?llt wurde, wird ein neuer Store nach dem Klicken
 	 * des addButton erstellt.
 	 */
 	private class AddStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			elv.createStore(nameTextBox.getValue(), new StoreCreationCallback());
-			// Erstelle neues Store Objekt
-
-			setContentOfStoreFlexTable(newStore);
-
 			// Persistiere in die Datenbank
+			elv.createStore(nameTextBox.getValue(), new StoreCreationCallback());
+
+			// Erstelle neues Store Objekt
+			setContentOfStoreFlexTable(newStore);
 
 		}
 
 	}
 
 	/**
-	 * Callback wird ben�tigt, um den Store zu erstellen
+	 * Callback wird ben?tigt, um den Store zu erstellen
 	 */
 	private class StoreCreationCallback implements AsyncCallback<Store> {
 
@@ -167,6 +168,8 @@ public class StoreForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Store store) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
+
+			createTable();
 
 			// Klappt noch nicht
 			setNewStore(store);
@@ -232,12 +235,14 @@ public class StoreForm extends AbstractAdministrationForm {
 		public void onClick(ClickEvent event) {
 
 			for (CustomTextBox textbox : textboxes) {
-				Window.alert("TextBox Wert: " + textbox.getValue());
+
 				textbox.getStore().setName(textbox.getValue());
+				Window.alert("TextBox Wert: " + textbox.getValue());
 				Window.alert("Store name: " + textbox.getStore().getName());
 				Window.alert("Store ID: " + textbox.getStore().getId());
 				elv.save(textbox.getStore(), new SaveStoreCallback());
 //				Notification.show("Der Store konnte nicht gespeichert werden");
+
 			}
 		}
 	}
@@ -267,7 +272,7 @@ public class StoreForm extends AbstractAdministrationForm {
 
 		@Override
 		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
+//			Window.alert();
 
 		}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -173,7 +174,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					shoppingListForm.setSelectedGroup(selectedGroup);
+					groupForm.setSelected(group);
+					//shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
@@ -267,6 +269,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 		@Override
 		public void onSuccess(Group group) {
+			Notification.show("1. sucess");
 			List<ShoppingList> shoppingListList = shoppingListDataProviders.get(group).getList();
 
 			for (int i = 0; i < shoppingListList.size(); i++) {
@@ -290,8 +293,11 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 		if (value.equals("Root")) {
 			
 			groupDataProvider = new ListDataProvider<Group>();
-
-			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+			
+			einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
+			//einkaufslistenVerwaltung.getGroupById(selectedGroup.getId(), new AsyncCallback<Group>() {
+		//	einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
+		//	einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
 				@Override
 				public void onFailure(Throwable t) {
@@ -301,8 +307,16 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				@Override
 				public void onSuccess(Group group) {
+					Notification.show("2. sucess: " + group.getName());
+					//Notification.show(group.getName());
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
-					groupDataProvider.getList().add(group);
+					//groupDataProvider.getList().add(group);
+					//for(Group g : group) {
+						
+						groupDataProvider.getList().add(group);
+						
+						Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
+					//}
 			
 				}
 

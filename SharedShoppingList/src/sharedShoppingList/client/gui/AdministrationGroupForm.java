@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -20,7 +21,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
+//import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
@@ -31,7 +32,7 @@ import sharedShoppingList.shared.bo.User;
  * Formular für das Einsehen von Gruppenmitglieder, Hinzufügen von Usern, ändern
  * des Gruppennamens, Gruppe löschen
  * 
- * @author nicolaifischbach und moritzhampe
+ * @author nicolaifischbach 
  * 
  */
 
@@ -39,7 +40,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User u = CurrentUser.getUser();
-	Group g = CurrentGroup.getGroup();
+	//Group g = CurrentGroup.getGroup();
 
 	Group selectedGroup = null;
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
@@ -47,6 +48,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
 	private Label thirdNameLabel = new Label("Gruppenname ändern");
+
 
 	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
@@ -56,7 +58,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
-
+	
+	private FlowPanel labelPanel = new FlowPanel();
+	
 	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
 	private ArrayList<User> groupMembers;
@@ -86,10 +90,17 @@ public class AdministrationGroupForm extends VerticalPanel {
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
 
+		labelPanel.add(firstNameLabel);
+		labelPanel.add(secondNameLabel);
+		labelPanel.add(thirdNameLabel);
+		labelPanel.add(viewMembersFlexTable);
 		// Add them to VerticalPanel
 		this.setWidth("100%");
 		this.add(firstNameLabel);
 		this.add(secondNameLabel);
+		
+		this.add(labelPanel);
+		
 		this.add(viewMembersFlexTable);
 		this.add(hpButtonsPanelViewMembers);
 		this.add(thirdNameLabel);
@@ -231,7 +242,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		groupMembers = new ArrayList<User>();
 
 		// Lädt alle Gruppenmitglieder aus der Datenbank
-		elv.getUsersByGroup(g, new AsyncCallback<Vector<User>>() {
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
 				Notification.show("failure");
@@ -398,7 +409,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			this.parentDUDB.hide();
-			elv.delete(g, new DeleteGroupCallback());
+			elv.delete(selectedGroup, new DeleteGroupCallback());
 		}
 	}
 
@@ -443,11 +454,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 
-			if (g != null) {
+			if (selectedGroup != null) {
 
-				g.setName(renameTextBox.getText());
+				selectedGroup.setName(renameTextBox.getText());
 
-				elv.save(g, new SaveRenameGroupCallback());
+				elv.save(selectedGroup, new SaveRenameGroupCallback());
 
 			} else {
 				Window.alert("Es wurde keine Gruppe ausgewhält");
@@ -473,7 +484,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void Group) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
 
-			gsltvm.updateGroup(g);
+			gsltvm.updateGroup(selectedGroup);
 
 		}
 	}
