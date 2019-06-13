@@ -46,13 +46,13 @@ public class Navigator extends FlowPanel {
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 	
 	private AdministrationGroupForm agf = new AdministrationGroupForm();
-	//private ShoppingListForm sf = new ShoppingListForm();
+//	private ShoppingListForm sf = new ShoppingListForm();
 
 	private Group selectedGroup = null;
 	
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	
-	private CellTree tree = new CellTree(gsltvm, "Root");
+	private CellTree tree;
 	
 	private Label refreshLabel = new Label();
 	/*
@@ -78,11 +78,13 @@ public class Navigator extends FlowPanel {
 		// solange soll abgewartet werden, bis der Timer abläuft
 //		timer.schedule(10000);
 		
+		tree = new CellTree(gsltvm, "Root");
+		
 		// Zusammenführen der Forms für den Tree
 		gsltvm.setGroupForm(agf);
 		agf.setGsltvm(gsltvm);
 		
-	//	gsltvm.setShoppingListForm(sf);
+		//gsltvm.setShoppingListForm(sf);
 	//	sf.setGsltvm(gsltvm);
 		
 		tree.setAnimationEnabled(true);

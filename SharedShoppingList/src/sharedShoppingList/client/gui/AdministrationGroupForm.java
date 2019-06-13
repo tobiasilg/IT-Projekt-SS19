@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -47,6 +48,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
 	private Label thirdNameLabel = new Label("Gruppenname ändern");
 
+
 	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
 
@@ -55,7 +57,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
-
+	
+	private FlowPanel labelPanel = new FlowPanel();
+	
 	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
 	private ArrayList<User> groupMembers;
@@ -85,10 +89,17 @@ public class AdministrationGroupForm extends VerticalPanel {
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
 
+		labelPanel.add(firstNameLabel);
+		labelPanel.add(secondNameLabel);
+		labelPanel.add(thirdNameLabel);
+		labelPanel.add(viewMembersFlexTable);
 		// Add them to VerticalPanel
 		this.setWidth("100%");
 		this.add(firstNameLabel);
 		this.add(secondNameLabel);
+		
+		this.add(labelPanel);
+		
 		this.add(viewMembersFlexTable);
 		this.add(hpButtonsPanelViewMembers);
 		this.add(thirdNameLabel);
