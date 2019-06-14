@@ -28,8 +28,8 @@ import sharedShoppingList.shared.bo.User;
 
 public class GroupCreationForm extends FlowPanel {
 
-	private EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	private User user = CurrentUser.getUser();
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+	User user = CurrentUser.getUser();
 
 	GroupShoppingListTreeViewModel gsltvm = null;
 	AdministrationGroupForm groupForm = null;
@@ -46,22 +46,13 @@ public class GroupCreationForm extends FlowPanel {
 	private Button saveButton = new Button("Speichern");
 	private Button cancelButton = new Button("Abbrechen");
 
-	/***********************************************************************
-	 * Konstruktor
-	 ***********************************************************************
-	 */
+	// Konstruktor
 	public GroupCreationForm() {
 
 		saveButton.addClickHandler(new SaveGroupCreationClickHandler());
 		cancelButton.addClickHandler(new CancelGroupCreationClickHandler());
 
 	}
-	
-	
-	/***********************************************************************
-	 * onLoad-Methode
-	 ***********************************************************************
-	 */
 
 	public void onLoad() {
 
@@ -86,7 +77,8 @@ public class GroupCreationForm extends FlowPanel {
 		groupBox.add(buttonPanel);
 
 		this.add(groupBox);
-		
+	
+
 		groupNameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
@@ -130,8 +122,6 @@ public class GroupCreationForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 
 			//String groupName = groupNameTextBox.getText();
-			
-			//Info: User Objekt übergeben???
 
 			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());

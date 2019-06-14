@@ -54,10 +54,10 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private User u = CurrentUser.getUser();
-	// Group selectedGroup = CurrentGroup.getGroup();
+	//Group selectedGroup = CurrentGroup.getGroup();
 	Group selectedGroup;
 	ShoppingList selectedList;
-
+	
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	// +"Gruppenname"
@@ -131,29 +131,30 @@ public class ShoppingListForm extends VerticalPanel {
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
-
+		
 	}
-
+	
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
 	}
-
+	
 	public Group getSelectedGroup() {
 		return selectedGroup;
 	}
-
+	
 	public void setSelectedGroup(Group selectedGroup) {
 		this.selectedGroup = selectedGroup;
 	}
-
+	
 	public ShoppingList getSelectedList() {
 		return selectedList;
 	}
-
+	
 	public void setSelected(ShoppingList sl) {
-		selectedList = sl;
+		selectedList = sl; 
 	}
-
+	
+	
 	/***********************************************************************
 	 * Abschnitt der METHODEN
 	 ***********************************************************************
@@ -215,15 +216,14 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	private void setNames() {
-		// List<String> list = elv.getAllArticles(new
-		// suggestBoxCallback<Vector<Article>>());
-		// ((MultiWordSuggestOracle) suggestBox.getSuggestOracle()).addAll(list);
+	//	List<String> list = elv.getAllArticles(new suggestBoxCallback<Vector<Article>>());
+		//((MultiWordSuggestOracle) suggestBox.getSuggestOracle()).addAll(list);
 
 	}
 
 	@UiHandler("suggestBox")
 	public void handleSelection(SelectionEvent<SuggestOracle.Suggestion> s) {
-		// log.fine("Selection : " + suggestBox.getText());
+	//	log.fine("Selection : " + suggestBox.getText());
 		suggestBox.setText("");
 	}
 
@@ -371,12 +371,12 @@ public class ShoppingListForm extends VerticalPanel {
 
 		public void onFailure(Throwable caught) {
 			Notification.show("");
-		}
+		} 
 
 		@Override
 		public void onSuccess(Vector<Article> result) {
 			// TODO Auto-generated method stub
-
+			
 		}
 	}
 

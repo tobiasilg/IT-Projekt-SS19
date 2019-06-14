@@ -13,10 +13,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -32,18 +30,18 @@ import sharedShoppingList.shared.bo.User;
  * Formular für das Einsehen von Gruppenmitglieder, Hinzufügen von Usern, ändern
  * des Gruppennamens, Gruppe löschen
  * 
- * @author nicolaifischbach
+ * @author nicolaifischbach 
  * 
  */
 
 public class AdministrationGroupForm extends VerticalPanel {
 
-	private EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	private User u = CurrentUser.getUser();
-	private Group selectedGroup = null;
-	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
+	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+	User u = CurrentUser.getUser();
+	//Group g = CurrentGroup.getGroup();
 
-	ShoppingListCreationForm shoppingListCreationForm;
+	Group selectedGroup = null;
+	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
@@ -57,9 +55,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
-	private Button createShoppingListButton = new Button("Shoppingliste erstellen");
 
-	private FlowPanel boxPanel = new FlowPanel ();
 	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
 	private ArrayList<User> groupMembers;
@@ -86,21 +82,18 @@ public class AdministrationGroupForm extends VerticalPanel {
 	public void onLoad() {
 		hpButtonsPanelViewMembers.add(addUsersTextBox);
 		hpButtonsPanelViewMembers.add(addMembersButton);
-		hpButtonsPanelViewMembers.add(createShoppingListButton);
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
 
 		// Add them to VerticalPanel
 		this.setWidth("100%");
-		boxPanel.add(firstNameLabel);
-		boxPanel.add(secondNameLabel);
-		boxPanel.add(viewMembersFlexTable);
-		boxPanel.add(hpButtonsPanelViewMembers);
-		boxPanel.add(thirdNameLabel);
-		boxPanel.add(renameTextBox);
-		boxPanel.add(hpButtonsPanelGroup);
-		
-		this.add(boxPanel);
+		this.add(firstNameLabel);
+		this.add(secondNameLabel);
+		this.add(viewMembersFlexTable);
+		this.add(hpButtonsPanelViewMembers);
+		this.add(thirdNameLabel);
+		this.add(renameTextBox);
+		this.add(hpButtonsPanelGroup);
 
 		firstNameLabel.addStyleName("name_label");
 		secondNameLabel.addStyleName("name_label");
@@ -119,8 +112,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		deleteGroupButton.setPixelSize(130, 40);
 
 		// aktueller Name der Gruppe wird in der TextBox angezeigt
-
-		// renameTextBox.getElement().setPropertyString(g.getName());
+		
+		//renameTextBox.getElement().setPropertyString(g.getName());
 
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
@@ -160,12 +153,12 @@ public class AdministrationGroupForm extends VerticalPanel {
 		selectedGroup = group;
 
 	}
-
+	
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
-
+		
 	}
-
+	
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
 	}
@@ -317,17 +310,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * CLICKHANDLER
 	 ***********************************************************************/
 
-	private class createShoppingListClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			RootPanel.get("details").clear();
-			shoppingListCreationForm = new ShoppingListCreationForm();
-			RootPanel.get("details").add(shoppingListCreationForm);
-
-		}
-
-	}
+	/**
+	 * Auf Mehtode warten *
+	 */
 
 	private class CustomButton extends Button {
 		User user;
