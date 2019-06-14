@@ -469,7 +469,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 //	}
 
 	/**
-	 * Info: getGroupMethode fehlt noch Sobald das Textfeld ausgef�llt wurde, wird
+	 * Info: getGroupMethode fehlt noch Sobald das Textfeld ausgef?llt wurde, wird
 	 * ein neue Gruppe nach dem Klicken des addButton erstellt.
 	 */
 	private class SaveRenameGroupClickhandler implements ClickHandler {
