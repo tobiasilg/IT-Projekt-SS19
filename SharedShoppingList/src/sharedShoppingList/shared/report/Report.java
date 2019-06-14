@@ -19,7 +19,7 @@ import java.util.Date;
  * </p>
  * 
  * @see Report
- * @author Nico Weiler
+ * @author Nico Weiler, Tobias Ilg
  * @version 1.0
  */
 

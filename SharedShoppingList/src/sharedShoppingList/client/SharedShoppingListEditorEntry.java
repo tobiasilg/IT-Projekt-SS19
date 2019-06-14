@@ -22,6 +22,11 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	RootPanel rootPanelHeader = RootPanel.get("header");
 	
 	TreeViewModel nav = new Navigator();
+	
+	/**
+	 * @TODO Navigator nav = new Navigator(); -> CellTree Methode hinzufügen
+	 * */
+	
 	CellTree tree = new CellTree(nav,"Item 1");
 
 	Navigator navigator = new Navigator();

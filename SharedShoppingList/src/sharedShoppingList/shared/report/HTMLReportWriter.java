@@ -251,6 +251,12 @@ public class HTMLReportWriter extends ReportWriter {
 			this.reportText = result.toString();
 		
 	}
+
+	@Override
+	public void process(AllListEntriesByStoreAndPeriod r) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

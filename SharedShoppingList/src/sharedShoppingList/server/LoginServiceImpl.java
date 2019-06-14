@@ -6,8 +6,11 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import sharedShoppingList.client.LoginService;
 import sharedShoppingList.shared.LoginInfo;
+import sharedShoppingList.shared.bo.User;
 
-/*Info (muss noch hinzugefügt werden)
+
+/*Info: Der Loginservice ist für die Anmeldeverwaltung des Nutzers zuständig.
+ * 	@TODO:
  * 	import com.google.appengine.api.users.User;
  *	import com.google.appengine.api.users.UserService;
  *	import com.google.appengine.api.users.UserServiceFactory;
