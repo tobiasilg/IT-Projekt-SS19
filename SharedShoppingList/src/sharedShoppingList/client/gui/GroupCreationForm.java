@@ -123,6 +123,12 @@ public class GroupCreationForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 
 			//String groupName = groupNameTextBox.getText();
+			
+			if (groupNameTextBox.getValue() == "") {
+				
+				Window.alert("Die Gruppe muss einen Namen besitzen !");
+			}else {
+				
 
 			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
@@ -130,6 +136,7 @@ public class GroupCreationForm extends FlowPanel {
 			Window.alert("TextBox Wert: " + groupNameTextBox.getValue());
 			//elv.createGroup(groupName, new GroupCreationCallback());
 
+		}
 		}
 
 	}
@@ -148,8 +155,6 @@ public class GroupCreationForm extends FlowPanel {
 
 			Notification.show("Die Gruppe wurde erfolgreich erstellt");
 			
-
-			if (result != null) {
 				
 				 RootPanel.get("details").clear();
 				 group = result;
@@ -158,8 +163,6 @@ public class GroupCreationForm extends FlowPanel {
 				 
 				 gsltvm.addGroup(group);
 				 
-
-			}
 		}
 	}
 }

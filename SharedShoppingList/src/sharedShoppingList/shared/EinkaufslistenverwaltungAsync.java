@@ -99,5 +99,15 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getAllListEntriesByShoppingList(ShoppingList sl, AsyncCallback<Vector<ListEntry>> callback);
 
+	void changed(Vector<ListEntry> listEntry, ShoppingList shoppingList, AsyncCallback<Boolean> callback);
+
+	void changed(ShoppingList shoppingList, AsyncCallback<Boolean> callback);
+
+	void changed(Group group, User user, AsyncCallback<Boolean> callback);
+
+	void filterByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
+
+	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
+
 
 }

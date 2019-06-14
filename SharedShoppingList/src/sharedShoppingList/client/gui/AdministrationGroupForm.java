@@ -48,8 +48,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
 	private Label thirdNameLabel = new Label("Gruppenname ändern");
-
-
+	
+	private Label test = new Label("TEST");
+	
 	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
 
@@ -85,6 +86,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
+		
+		this.add(test);
+		
 		hpButtonsPanelViewMembers.add(addUsersTextBox);
 		hpButtonsPanelViewMembers.add(addMembersButton);
 		hpButtonsPanelGroup.add(saveGroupNameButton);
