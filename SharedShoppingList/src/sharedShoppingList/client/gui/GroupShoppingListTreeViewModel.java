@@ -301,24 +301,23 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				@Override
 				public void onFailure(Throwable t) {
-					
-					// Hier Stockt es !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
 					Notification.show("Folgender Fehler 2: \n" + t.toString());
 
 				}
 
 				@Override
 				public void onSuccess(Vector <Group> group) {
-					Notification.show(" sucess: ");
+					Notification.show(" sucess! " );
 					//Notification.show(group.getName());
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
 					//groupDataProvider.getList().add(group);
 					
 					for(Group g : group) {
-						Window.alert("g: " + g.getName());
+						Window.alert("g hat den Wert: " + g.getName());
 						
 						groupDataProvider.getList().add(g);
-						GroupShoppingListTreeViewModel.this.addGroup(g);
+						//GroupShoppingListTreeViewModel.this.addGroup(g);
 					//	Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
 					}
 			

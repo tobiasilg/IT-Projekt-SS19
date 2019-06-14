@@ -15,6 +15,7 @@ import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
 
 /*
@@ -45,12 +46,13 @@ public class Navigator extends FlowPanel {
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 	
-	private AdministrationGroupForm agf = new AdministrationGroupForm();
-//	private ShoppingListForm sf = new ShoppingListForm();
+	private AdministrationGroupForm agf;
+//	private ShoppingListForm sf;
 
 	private Group selectedGroup = null;
+	private ShoppingList selectedList = null;
 	
-	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
+	private GroupShoppingListTreeViewModel gsltvm;
 	
 	private CellTree tree;
 	
@@ -65,18 +67,23 @@ public class Navigator extends FlowPanel {
 	 */
 	public void onLoad() {
 		
-//		final Timer timer = new Timer() {
+		final Timer timer = new Timer() {
 
-//			@Override
-//			public void run() {
-//				Navigator.this.refreshInfo();
-//				schedule(10000);
+			@Override
+			public void run() {
+				Navigator.this.refreshInfo();
+				schedule(10000);
 				
-//			}
+			}
 			
-//		};
+		};
 		// solange soll abgewartet werden, bis der Timer abläuft
-//		timer.schedule(10000);
+		timer.schedule(10000);
+		
+		agf = new AdministrationGroupForm();
+//		sf = new ShoppingListForm();
+		
+		gsltvm = new GroupShoppingListTreeViewModel();
 		
 		tree = new CellTree(gsltvm, "Root");
 		
@@ -84,7 +91,7 @@ public class Navigator extends FlowPanel {
 		gsltvm.setGroupForm(agf);
 		agf.setGsltvm(gsltvm);
 		
-		//gsltvm.setShoppingListForm(sf);
+	//	gsltvm.setShoppingListForm(sf);
 	//	sf.setGsltvm(gsltvm);
 		
 		tree.setAnimationEnabled(true);
@@ -136,8 +143,17 @@ public class Navigator extends FlowPanel {
 		
 	}
 	
+	public void setSelectedList(ShoppingList selectedList) {
+		this.selectedList = selectedList;
+	}
+	
+	public ShoppingList getSelectedList() {
+		return selectedList;
+	}
 	protected void refreshInfo() {
-		// TODO Auto-generated method stub
+		
+		// Damit RefreshInfo funktioniert wird noch ein Mapper benötigt
+	//	einkaufslistenVerwaltung.
 		
 	}
 
