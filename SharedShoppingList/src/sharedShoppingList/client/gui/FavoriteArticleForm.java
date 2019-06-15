@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -81,7 +82,7 @@ public class FavoriteArticleForm extends VerticalPanel {
 //		textboxes = new ArrayList<CustomTextBox>();
 //		textboxes.clear();
 		favoriteArticleFlexTable.removeAllRows();
-		favoriteArticleFlexTable.setText(0, 0, "Artikel");
+		favoriteArticleFlexTable.setText(0, 0, "Favoriten");
 
 		favoriteArticles = new ArrayList<Favourite>();
 
@@ -120,6 +121,8 @@ public class FavoriteArticleForm extends VerticalPanel {
 		removeButton.addClickHandler(new DeleteFavouriteClickHandler(removeButton));
 
 		// Füge die TextBox und die ListBox in die FlexTable ein
+
+		Window.alert(String.valueOf(favourite.getId()));
 
 		favoriteArticleFlexTable.setText(rowCount, 0, String.valueOf(favourite.getId()));
 //		HIER BENÖTIGE ICH NOCH GETTER UM DIE WERTE SAUBER IN DIE SPALTEN DER TABELLE EINZUSETZEN

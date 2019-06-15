@@ -118,7 +118,9 @@ public class StoreMapper {
 	public Store update(Store store) {
 		Connection con = DBConnection.connection();
 
-		String sql = "UPDATE store " + "SET name=\"  ' " + store.getName() + "   ' \", " + "WHERE id=" + store.getId();
+		//String sql = "UPDATE store " + "SET name=\"  ' " + store.getName() + "   ' \", " + "WHERE id=" + store.getId();
+		
+		String sql= "UPDATE store SET name= '"+ store.getName()+"' WHERE id= "+ store.getId();
 
 
 		try {
