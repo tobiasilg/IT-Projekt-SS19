@@ -199,8 +199,14 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 
 	public Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException {
-		return this.articleMapper.findAllByCurrentUser(user);
 		
+		if (user != null) {
+			
+			return this.articleMapper.findAllByCurrentUser(user);
+		}else {
+			
+			return null;
+		}
 	}
 	
 	/**
@@ -419,7 +425,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 	
 	/**
-	 * Alle User einer Gruppe zur Anzeigen in der Gruppenverwaltung
+	 * Alle User einer Gruppe zum Anzeigen in der Gruppenverwaltung
 	 * 
 	 */
 	
@@ -474,7 +480,13 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.groupMapper.update(group);
 	}
 
-	/** Löschen einer Gruppe */
+	/** Löschen einer Gruppe mit zugehöriger Löschweitergabe
+	 * Nachdem Listeneintrgäge und Shoppinglisten gelöscht wurden, 
+	 * kann die Gruppe gelöscht werden.
+	 * @param group
+	 * @author Nico Weiler
+	 * 
+	 **/
 
 	public void delete(Group group) throws IllegalArgumentException {
 		
@@ -633,6 +645,112 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	public Group getGroupById(int id) throws IllegalArgumentException {
 		return this.groupMapper.findById(id);
+	}
+	
+	/**
+	 * Beginn Abschnitt sonstige Methoden 
+	 * @author Nico Weiler
+	 */
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung in einer Gruppe
+	 * @param group eines bestimmten users
+	 * @param user 
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(Group group, User user) throws IllegalArgumentException {
+
+		Group g = this.getGroupByUser(user);
+
+		if (g != null && group != null) {
+
+			if (!g.equals(group)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung in einer Shoppinglist
+	 * @param shoppingList
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(ShoppingList shoppingList) throws IllegalArgumentException {
+
+		ShoppingList sl = this.findShoppingListById(shoppingList.getId());
+
+		if (sl != null) {
+
+			if (!sl.equals(shoppingList)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung eines Listeneintrags
+	 * @param group eines bestimmten users
+	 * @param user 
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(Vector<ListEntry> listEntry, ShoppingList shoppingList) throws IllegalArgumentException {
+
+		Vector<ListEntry> le = this.getAllListEntriesByShoppingList(shoppingList);
+
+		if (le != null) {
+
+			if (!le.equals(listEntry)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Filtert Listeneinträge innerhalb von Shoppinglisten nach Händler
+	 * @param store
+	 * @return le
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<ListEntry> filterByStore(Store store)throws IllegalArgumentException{
+		Vector<ListEntry> le= this.getAllListEntriesByStore(store);
+		
+
+		if(le != null) {
+			return le;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Filtert Listeneinträge innerhalb von Shoppinglisten nach Einkäufer
+	 * @param user
+	 * @return le
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException{
+		Vector<ListEntry> le= this.getAllListEntriesByUser(user);
+		
+
+		if(le != null) {
+			return le;
+		}
+		
+		return null;
 	}
 	
 	

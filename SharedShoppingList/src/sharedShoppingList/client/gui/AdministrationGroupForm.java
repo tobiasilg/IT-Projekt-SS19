@@ -13,8 +13,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -46,7 +48,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Label firstNameLabel = new Label("Gruppenverwaltung");
 	private Label secondNameLabel = new Label("Mitgliederverwaltung");
 	private Label thirdNameLabel = new Label("Gruppenname ändern");
-
+	
+	private Label test = new Label("TEST");
+	
 	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
 
@@ -55,7 +59,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
-
+	
+	private FlowPanel labelPanel = new FlowPanel();
+	
 	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
 	private ArrayList<User> groupMembers;
@@ -80,15 +86,25 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
+		
+		this.add(test);
+		
 		hpButtonsPanelViewMembers.add(addUsersTextBox);
 		hpButtonsPanelViewMembers.add(addMembersButton);
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
 
+		labelPanel.add(firstNameLabel);
+		labelPanel.add(secondNameLabel);
+		labelPanel.add(thirdNameLabel);
+		labelPanel.add(viewMembersFlexTable);
 		// Add them to VerticalPanel
 		this.setWidth("100%");
 		this.add(firstNameLabel);
 		this.add(secondNameLabel);
+		
+		this.add(labelPanel);
+		
 		this.add(viewMembersFlexTable);
 		this.add(hpButtonsPanelViewMembers);
 		this.add(thirdNameLabel);
@@ -523,6 +539,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void group) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 		}
+	}
+
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
