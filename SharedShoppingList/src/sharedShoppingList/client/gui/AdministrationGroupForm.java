@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -538,6 +539,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void group) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 		}
+	}
+
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -99,7 +99,15 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException;
 	
+	public Boolean changed(Vector<ListEntry> listEntry, ShoppingList shoppingList) throws IllegalArgumentException;
 	
+	public Boolean changed(ShoppingList shoppingList) throws IllegalArgumentException;
+	
+	public Boolean changed(Group group, User user) throws IllegalArgumentException;
+	
+	public Vector<ListEntry> filterByStore(Store store)throws IllegalArgumentException;
+	
+	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException;
 	
 	
 	
