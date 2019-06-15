@@ -63,6 +63,7 @@ public class ShoppingListForm extends VerticalPanel {
 	// +"Gruppenname"
 	private Label infoTitleLabel = new Label("Einkaufsliste" + "");
 	private SuggestBox suggestBox;
+	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private Button addArticleToShoppingListButton = new Button("hinzufuegen");
 	private HorizontalPanel hpSuggestBox = new HorizontalPanel();
 
@@ -71,10 +72,10 @@ public class ShoppingListForm extends VerticalPanel {
 	private ListBox storesListBox;
 
 	private Button deleteRowButton;
-	private ArrayList<Article> articles;
+	private Vector<Article> articles;
 	private ArrayList<Favourite> favourites;
-	private ArrayList<User> users;
-	private ArrayList<Store> stores;
+	private ArrayList<User> usersArray;
+	private ArrayList<Store> storesArray;
 
 	// Konstruktor
 	public ShoppingListForm() {
@@ -92,6 +93,25 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Klasse <code>ShoppingListForm</code> instanziert wird.
 	 */
 	public void onLoad() {
+		
+		/*
+		 * Lade alle Artikel aus der Datenbank in die SuggestBox
+		 */
+		
+		elv.getAllArticles(new AsyncCallback <Vector<Article>>(){
+			
+			public void onFailure (Throwable caught) {
+				Notification.show("failure");
+			}
+				
+			public void onSuccess(Vector<Article> result) {
+						for (Article article : result) {
+							articles.addElement(article);
+							articleOracle.add(article.getName());
+						}
+						
+		}
+	});
 
 		hpSuggestBox.add(suggestBox);
 		hpSuggestBox.add(addArticleToShoppingListButton);
@@ -181,7 +201,7 @@ public class ShoppingListForm extends VerticalPanel {
 		shoppingListFlexTable.setText(0, 4, "Wo?");
 		shoppingListFlexTable.setText(0, 5, "");
 
-		articles = new ArrayList<Article>();
+		articles = new Vector<Article>();
 
 		/*
 		 * Lade alle Favoritenartikel aus der Datenbank in die Shoppingliste
@@ -208,24 +228,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	// SuggestBox
-
-	/*
-	 * Default SuggestOracle of SuggestBox is MultiWordSuggestOracle which displays
-	 * sorted drop dwon list of matches. List of names comes from
-	 * elv.getAllArticles, which returns names of articles
-	 */
-
-	private void setNames() {
-	//	List<String> list = elv.getAllArticles(new suggestBoxCallback<Vector<Article>>());
-		//((MultiWordSuggestOracle) suggestBox.getSuggestOracle()).addAll(list);
-
-	}
-
-	@UiHandler("suggestBox")
-	public void handleSelection(SelectionEvent<SuggestOracle.Suggestion> s) {
-	//	log.fine("Selection : " + suggestBox.getText());
-		suggestBox.setText("");
-	}
+	suggestBox = new SuggestBox (artliceOracle);
 
 	/***********************************************************************
 	 * Who & Where - ListBoxen
@@ -243,9 +246,10 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 			public void onSuccess(Vector<User> result) {
+				usersListBox.clear();
 				for (User user : result) {
 
-					users.add(user);
+					usersArray.add(user);
 					// setContentOfShoppingListFlexTable(user);
 				}
 				Notification.show("success");
@@ -268,7 +272,7 @@ public class ShoppingListForm extends VerticalPanel {
 			public void onSuccess(Vector<Store> result) {
 				for (Store store : result) {
 
-					stores.add(store);
+					storesArray.add(store);
 					// setContentOfShoppingListFlexTable(store);
 				}
 			}
@@ -290,7 +294,6 @@ public class ShoppingListForm extends VerticalPanel {
 		TextBox articleTextBox = new TextBox();
 		// articleTextBox.setText(favourite.getName());
 
-		// Parameter ???
 		TextBox amountTextBox = new TextBox();
 		// amountTextBox.setText(favourite.getName());
 
