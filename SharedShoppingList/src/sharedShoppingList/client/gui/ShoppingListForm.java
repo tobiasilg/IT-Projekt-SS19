@@ -228,7 +228,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	// SuggestBox
-	suggestBox = new SuggestBox (artliceOracle);
+	//suggestBox = new SuggestBox (artliceOracle);
 
 	/***********************************************************************
 	 * Who & Where - ListBoxen
@@ -298,13 +298,13 @@ public class ShoppingListForm extends VerticalPanel {
 		// amountTextBox.setText(favourite.getName());
 
 		usersListBox = new ListBox();
-		for (User user : users) {
+		for (User user : usersArray) {
 			// whoListBox.addItem(who);
 		}
-		usersListBox.setSelectedIndex(Arrays.asList(users).indexOf(u.getUserName()));
+		usersListBox.setSelectedIndex(Arrays.asList(usersArray).indexOf(u.getUserName()));
 
 		storesListBox = new ListBox();
-		for (Store where : stores) {
+		for (Store where : storesArray) {
 			// whereListBox.addItem(where);
 		}
 
