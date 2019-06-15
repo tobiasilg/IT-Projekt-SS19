@@ -7,10 +7,6 @@
 
 
 
-	<welcome-file-list>
-	<welcome-file>SharedShoppingList.html</welcome-file>
-	
-	</welcome-file-list>
 
 
   <!-- Servlets -->
@@ -30,13 +26,13 @@
 	<servlet-name>reportClientServlet</servlet-name>
 	<servlet-class>sharedShoppingList.server.report.ReportClientImpl</servlet-class>
   </servlet>
-  <!--
+ 
   <servlet-mapping>
     <servlet-name>reportClientServlet</servlet-name>
-    <url-pattern>/SharedShoppingList/reportClient</url-pattern>
+    <url-pattern>/reportgenerator/reportClient</url-pattern>
   </servlet-mapping>
   
-  
+  <!-- 
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>sharedShoppingList.server.LoginServiceImpl</servlet-class>
@@ -50,6 +46,9 @@
   
   <welcome-file-list>
     <welcome-file>SharedShoppingList.html</welcome-file>
+    <welcome-file>ReportGenerator.html</welcome-file>
   </welcome-file-list>
+
+
 
 </web-app>
