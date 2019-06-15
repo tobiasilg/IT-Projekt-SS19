@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.thies.bankProjekt.shared.bo.Customer;
 import sharedShoppingList.client.ClientsideSettings;
 //import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -100,7 +101,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		// Add them to VerticalPanel
 		boxPanel.add(membersLabel);
-		boxPanel.add(viewMembersFlexTable);
+		//boxPanel.add(viewMembersFlexTable);
 		boxPanel.add(hpButtonsPanelViewMembers);
 		boxPanel.add(groupLabel);
 		boxPanel.add(renameTextBox);
@@ -133,7 +134,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		hpButtonsPanelGroup.setSpacing(20);
 
 		// aktueller Name der Gruppe wird in der TextBox angezeigt
-		// renameTextBox.getElement().setPropertyString(selectedGroup.getName());
+		// renameTextBox.get.setPropertyString("Gruppenname: " + selectedGroup.getName());
 
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
@@ -180,8 +181,14 @@ public class AdministrationGroupForm extends VerticalPanel {
 		return selectedGroup;
 	}
 
-	public void setSelected(Group group) {
-		selectedGroup = group;
+	public void setSelected(Group g) {
+		if (g != null) {
+			
+			selectedGroup = g;
+			renameTextBox.setText(selectedGroup.getName());
+		} else {
+			renameTextBox.setText("");
+		}
 
 	}
 
@@ -444,7 +451,13 @@ public class AdministrationGroupForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			this.parentDUDB.hide();
-			elv.delete(selectedGroup, new DeleteGroupCallback());
+		//	elv.delete(selectedGroup, new DeleteGroupCallback());
+			if (selectedGroup == null) {
+				Window.alert("Es wurde keine Gruppe ausgwählt");
+			} else {
+				elv.delete(selectedGroup, new DeleteGroupCallback());
+			}
+		
 		}
 	}
 
@@ -595,6 +608,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * Callback wird benötigt, um die Gruppe zu löschen.
 	 */
 	private class DeleteGroupCallback implements AsyncCallback<Void> {
+	
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -602,9 +616,13 @@ public class AdministrationGroupForm extends VerticalPanel {
 		}
 
 		@Override
-		public void onSuccess(Void group) {
+		public void onSuccess(Void result) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
-		}
+			
+			gsltvm.removeGroup(selectedGroup);
+			
+			
 	}
 
+}
 }
