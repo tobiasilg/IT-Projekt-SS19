@@ -1,15 +1,16 @@
 package sharedShoppingList.client.reportgui;
 
-
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class HeaderRepo extends VerticalPanel {
 
-	// EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
+//	 EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
 	private Label label = new Label("KEKWAY-REPORT"); // Label der den Namen im Header anzeigt
+	private HorizontalPanel hp = new HorizontalPanel();
 
 	public HeaderRepo() {
 		super();
@@ -30,8 +31,9 @@ public class HeaderRepo extends VerticalPanel {
 		 */
 
 		// Gesamtes Header Div
-		 this.addStyleName("header");
-		 this.add(label);
+		this.addStyleName("header");
+		hp.add(label);
+		this.add(hp);
 
 	}
 }

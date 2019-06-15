@@ -238,7 +238,7 @@ public class StoreForm extends AbstractAdministrationForm {
 
 				textbox.getStore().setName(textbox.getValue());
 
-				Window.alert("TextBox Wert: " + textbox.getValue());
+				Window.alert("TextBox Objekt: " + textbox.getStore());
 				Window.alert("Store name: " + textbox.getStore().getName());
 				Window.alert("Store ID: " + textbox.getStore().getId());
 				elv.save(textbox.getStore(), new SaveStoreCallback());
