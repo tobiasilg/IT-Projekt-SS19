@@ -237,6 +237,7 @@ public class StoreForm extends AbstractAdministrationForm {
 			for (CustomTextBox textbox : textboxes) {
 
 				textbox.getStore().setName(textbox.getValue());
+
 				Window.alert("TextBox Wert: " + textbox.getValue());
 				Window.alert("Store name: " + textbox.getStore().getName());
 				Window.alert("Store ID: " + textbox.getStore().getId());
