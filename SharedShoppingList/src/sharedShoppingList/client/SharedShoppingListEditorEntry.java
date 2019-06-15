@@ -1,13 +1,9 @@
 package sharedShoppingList.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.view.client.TreeViewModel;
-
 import sharedShoppingList.client.gui.Header;
 import sharedShoppingList.client.gui.Navigator;
-import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
 
@@ -20,14 +16,6 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 	Header header = new Header();
 	RootPanel rootPanelHeader = RootPanel.get("header");
-	
-	TreeViewModel nav = new Navigator();
-	
-	/**
-	 * @TODO Navigator nav = new Navigator(); -> CellTree Methode hinzufügen
-	 * */
-	
-	CellTree tree = new CellTree(nav,"Item 1");
 
 	Navigator navigator = new Navigator();
 	RootPanel rootPanelNavigator = RootPanel.get("navigator");
@@ -59,7 +47,8 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 		rootPanelHeader.add(header);
 		rootPanelNavigator.add(navigator);
-		rootPanelNavigator.add(tree);
+	
+		
 
 	}
 	
@@ -140,17 +129,17 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 			CurrentUser.u = u;
 		}
   	}
-  	
-public static class CurrentGroup {
-		
-		private static Group g = null;
-
-		public static Group getGroup() {
-			return g;
-		}
-
-		public static void setGroup(Group g) {
-			CurrentGroup.g = g;
-		}
-  	}
 }
+  	
+//public static class CurrentGroup {
+		
+//	private static Group g = null;
+
+//		public static Group getGroup() {
+//			return g;		}
+
+	//	public static void setGroup(Group g) {
+	//		CurrentGroup.g = g;
+	//	}
+	
+//}
