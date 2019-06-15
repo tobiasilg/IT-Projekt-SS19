@@ -24,6 +24,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 		/**
 		 * Default Konstruktor.
 		 */
+	 
 	    public CompositeParagraph() {
 	    	
 	    }

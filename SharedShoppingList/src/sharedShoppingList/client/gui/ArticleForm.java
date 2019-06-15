@@ -264,8 +264,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 				textbox.getArticle().setName(textbox.getValue());
 
 				Window.alert("TextBox Wert: " + textbox.getValue());
-				Window.alert("Store name: " + textbox.getArticle().getName());
-				Window.alert("Store ID: " + textbox.getArticle().getId());
+				Window.alert("Artikel name: " + textbox.getArticle().getName());
+				Window.alert("Artikel ID: " + textbox.getArticle().getId());
 
 				elv.save(textbox.getArticle(), new SaveArticleCallback());
 
