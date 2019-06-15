@@ -196,28 +196,22 @@ public class ArticleMapper {
 	
 	public Article update(Article article) {
 		Connection con = DBConnection.connection();
-		//String sql="UPDATE article " + "SET name=\"" + article.getName() + "\", " + "unit=\""
-				//+ article.getUnit() + "\" " + "WHERE id=" + article.getId();
+
+		
+		String sql= "UPDATE store SET name= '"+ article.getName()+"' WHERE id= "+ article.getId();
+
 
 		try {
-			//Statement stmt = con.createStatement();
-			//stmt.executeUpdate(sql);
-			PreparedStatement stmt = con.prepareStatement("UPDATE article SET name= ?, unit= ? WHERE article.id = ?");
-
-			stmt.setTimestamp(1, article.getModDate());
-			stmt.setString(2, article.getUnit());
-			stmt.setInt(3, article.getId());
-			stmt.executeUpdate();
-
-			
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		
 		return article;
 	}
+
 	
 
 
