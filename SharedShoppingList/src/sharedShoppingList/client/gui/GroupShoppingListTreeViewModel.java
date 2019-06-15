@@ -34,7 +34,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 //	private ArrayList<Group> groups = new ArrayList<Group>();
 
-	private Group selectedGroup = new Group();
+	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
 	
 	private ListDataProvider<Group> groupDataProvider = null;
@@ -263,12 +263,13 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 		@Override
 		public void onFailure(Throwable t) {
-			Notification.show("Folgender Fehler: \n" + t.toString());
+			Notification.show("Folgender Fehler 1: \n" + t.toString());
 
 		}
 
 		@Override
 		public void onSuccess(Group group) {
+
 			List<ShoppingList> shoppingListList = shoppingListDataProviders.get(group).getList();
 
 			for (int i = 0; i < shoppingListList.size(); i++) {
@@ -293,26 +294,32 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			
 			groupDataProvider = new ListDataProvider<Group>();
 			
-			einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
+			//einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
 			//einkaufslistenVerwaltung.getGroupById(selectedGroup.getId(), new AsyncCallback<Group>() {
-		//	einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
-		//	einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+			einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
+			//einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
 				@Override
 				public void onFailure(Throwable t) {
-					Notification.show("Folgender Fehler: \n" + t.toString());
+				
+					Notification.show("Folgender Fehler 2: \n" + t.toString());
 
 				}
 
 				@Override
-				public void onSuccess(Group group) {
+				public void onSuccess(Vector <Group> group) {
+					Notification.show(" sucess! " );
+					//Notification.show(group.getName());
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
 					//groupDataProvider.getList().add(group);
-					//for(Group g : group) {
-						groupDataProvider.getList().add(group);
+					
+					for(Group g : group) {
+						Window.alert("g hat den Wert: " + g.getName());
 						
-						Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
-					//}
+						groupDataProvider.getList().add(g);
+						//GroupShoppingListTreeViewModel.this.addGroup(g);
+					//	Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
+					}
 			
 				}
 

@@ -16,7 +16,11 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+
 import com.google.gwt.user.client.ui.RootPanel;
+
+import com.google.gwt.user.client.ui.SuggestBox;
+
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -44,12 +48,22 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Group selectedGroup = null;
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
+
 	private ShoppingListCreationForm shoppingListCreationForm;
 
 	private Label membersLabel = new Label("Mitgliederverwaltung");
 	private Label groupLabel = new Label("Gruppenverwaltung");
 
 	private DynamicTextbox addUserTextBox = new DynamicTextbox();
+
+	private Label firstNameLabel = new Label("Gruppenverwaltung");
+	private Label secondNameLabel = new Label("Mitgliederverwaltung");
+	private Label thirdNameLabel = new Label("Gruppenname ändern");
+	
+	private Label test = new Label("TEST");
+	
+	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
+
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
 
 	private FlexTable viewMembersFlexTable;
@@ -57,9 +71,15 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
+
 	private Button createShoppingListButton = new Button("Shoppingliste erstellen");
 
 	private FlowPanel boxPanel = new FlowPanel();
+
+	
+	private FlowPanel labelPanel = new FlowPanel();
+	
+
 	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
 	private ArrayList<User> groupMembersArray;
@@ -85,11 +105,20 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
+
+    
 		hpButtonsPanelViewMembers.add(addUserTextBox);
+
+		
+		this.add(test);
+		
+		hpButtonsPanelViewMembers.add(addUsersTextBox);
+
 		hpButtonsPanelViewMembers.add(addMembersButton);
 
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
+
 		hpButtonsPanelGroup.add(createShoppingListButton);
 		
 		// Add them to VerticalPanel
@@ -106,6 +135,29 @@ public class AdministrationGroupForm extends VerticalPanel {
 		// Styling
 		membersLabel.addStyleName("name_label");
 		groupLabel.addStyleName("name_label");
+
+
+		labelPanel.add(firstNameLabel);
+		labelPanel.add(secondNameLabel);
+		labelPanel.add(thirdNameLabel);
+		labelPanel.add(viewMembersFlexTable);
+		// Add them to VerticalPanel
+		this.setWidth("100%");
+		this.add(firstNameLabel);
+		this.add(secondNameLabel);
+		
+		this.add(labelPanel);
+		
+		this.add(viewMembersFlexTable);
+		this.add(hpButtonsPanelViewMembers);
+		this.add(thirdNameLabel);
+		this.add(renameTextBox);
+		this.add(hpButtonsPanelGroup);
+
+		firstNameLabel.addStyleName("name_label");
+		secondNameLabel.addStyleName("name_label");
+		thirdNameLabel.addStyleName("name_label");
+
 
 		viewMembersFlexTable.setWidth("70%");
 		viewMembersFlexTable.setBorderWidth(2);
@@ -557,6 +609,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void group) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 		}
+	}
+
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

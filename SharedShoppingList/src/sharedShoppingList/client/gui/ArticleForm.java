@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -34,12 +35,24 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	ArrayList<Article> articles;
 
+	ArrayList<ArticleCustomTextBox> textboxes;
+
 	String[] units;
+
+	Article newArticle;
+
+	public Article getNewArticle() {
+		return newArticle;
+	}
+
+	public void setNewArticle(Article newArticle) {
+		this.newArticle = newArticle;
+	}
 
 	// Konstruktor
 	public ArticleForm() {
 
-		saveButton.addClickHandler(new SaveArticleClickHandler());
+		saveButton.addClickHandler(new SaveArticleClickHandler(textboxes));
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
 
@@ -53,7 +66,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	@Override
 	protected ListBox createUnitListBox() {
-		units = new String[] { "kg", "Gramm", "Stück", "Pack" };
+		units = new String[] { "kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter" };
 
 		if (articleListBox == null) {
 			articleListBox = new ListBox();
@@ -74,6 +87,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 			articleFlexTable = new FlexTable();
 
 		}
+		textboxes = new ArrayList<ArticleCustomTextBox>();
+		textboxes.clear();
 		articleFlexTable.removeAllRows();
 		articleFlexTable.setText(0, 0, "Artikel");
 		articleFlexTable.setText(0, 1, "Einheit");
@@ -108,8 +123,11 @@ public class ArticleForm extends AbstractAdministrationForm {
 		int rowCount = articleFlexTable.getRowCount();
 
 		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
-		TextBox articleTextBox = new TextBox();
-		articleTextBox.setText(article.getName());
+		ArticleCustomTextBox articleTextBox = new ArticleCustomTextBox();
+		articleTextBox.setValue(article.getName());
+
+		articleTextBox.setArticle(article);
+		textboxes.add(articleTextBox);
 
 		// Erstelle neue ListBox für die Einheit und setze die selektierte Einheit
 		ListBox unitListBox = new ListBox();
@@ -119,7 +137,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 		unitListBox.setSelectedIndex(Arrays.asList(units).indexOf(article.getUnit()));
 
 		// Erstelle x Button
-		CustomButton removeButton = new CustomButton();
+		ArticleCustomButton removeButton = new ArticleCustomButton();
 		removeButton.setArticle(article);
 
 		removeButton.addClickHandler(new DeleteArticleClickHandler(removeButton));
@@ -144,47 +162,17 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	/**
 	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des Bestï¿½tigungsbutton erstellt.
-	 */
-	private class SaveArticleClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-			for (Article article : articles) {
-				elv.save(article, new AsyncCallback<Void>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onSuccess(Void result) {
-						Notification.show("successfilly saved");
-					}
-				});
-			}
-		}
-
-	}
-
-	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
 	 * Klicken des addButton erstellt.
 	 */
 	private class AddArticleClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			// Erstelle neues Article Objekt
-			Article article = new Article();
-			article.setName(nameTextBox.getValue());
-			article.setUnit(unitListBox.getSelectedItemText());
+			// Persistiere in die Datenbank
+			elv.createArticle(nameTextBox.getValue(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
 
-			setContentOfArticleFlexTable(article);
+			setContentOfArticleFlexTable(newArticle);
 
-//			// Persistiere in die Datenbank
-			elv.createArticle(article.getName(), article.getUnit(), new ArticleCreationCallback());
 		}
 
 	}
@@ -203,10 +191,16 @@ public class ArticleForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Article article) {
 			Notification.show("Der Artikel wurde erfolgreich erstellt");
+
+			createTable();
+
+			// Klappt noch nicht
+			setNewArticle(article);
+
 		}
 	}
 
-	private class CustomButton extends Button {
+	private class ArticleCustomButton extends Button {
 		Article article;
 
 		public Article getArticle() {
@@ -220,9 +214,9 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	private class DeleteArticleClickHandler implements ClickHandler {
 
-		private CustomButton cB;
+		private ArticleCustomButton cB;
 
-		public DeleteArticleClickHandler(CustomButton cB) {
+		public DeleteArticleClickHandler(ArticleCustomButton cB) {
 
 			this.cB = cB;
 		}
@@ -239,6 +233,47 @@ public class ArticleForm extends AbstractAdministrationForm {
 		}
 	}
 
+	private class ArticleCustomTextBox extends TextBox {
+		Article article;
+
+		public Article getArticle() {
+			return article;
+		}
+
+		public void setArticle(Article article) {
+			this.article = article;
+		}
+	}
+
+	/**
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
+	 * Klicken des Bestï¿½tigungsbutton erstellt.
+	 */
+	private class SaveArticleClickHandler implements ClickHandler {
+
+		private ArrayList<ArticleCustomTextBox> list;
+
+		public SaveArticleClickHandler(ArrayList<ArticleCustomTextBox> list) {
+
+			this.list = list;
+		}
+
+		public void onClick(ClickEvent event) {
+			for (ArticleCustomTextBox textbox : textboxes) {
+
+				textbox.getArticle().setName(textbox.getValue());
+
+				Window.alert("TextBox Wert: " + textbox.getValue());
+				Window.alert("Artikel name: " + textbox.getArticle().getName());
+				Window.alert("Artikel ID: " + textbox.getArticle().getId());
+
+				elv.save(textbox.getArticle(), new SaveArticleCallback());
+
+			}
+		}
+
+	}
+
 	private class DeleteArticleCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -252,6 +287,22 @@ public class ArticleForm extends AbstractAdministrationForm {
 			articles.clear();
 			createTable();
 		}
+	}
+
+	private class SaveArticleCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+//			Window.alert();
+
+		}
+
 	}
 
 }
