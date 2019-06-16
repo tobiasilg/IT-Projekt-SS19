@@ -1,32 +1,15 @@
 package sharedShoppingList.client.gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -38,7 +21,6 @@ import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
-import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
 /**
@@ -57,12 +39,13 @@ public class ShoppingListForm extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private User u = CurrentUser.getUser();
-	Group selectedGroup;
-	ShoppingList selectedList;
+	Group selectedGroup = null;
+	ShoppingList selectedShoppingList = null;
 	ListEntry listEntry = new ListEntry();
 
 	// +"Gruppenname"
-	private Label infoTitleLabel = new Label("Einkaufsliste" + selectedGroup.getName());
+	//private Label infoTitleLabel = new Label("Einkaufsliste:" + selectedGroup.getName());
+	private Label infoTitleLabel = new Label();
 
 	private FlexTable shoppingListFlexTable;
 
@@ -78,7 +61,7 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 	public ShoppingListForm() {
 
-		deleteRowButton.addClickHandler(new DeleteRowClickHandler());
+	//	deleteRowButton.addClickHandler(new DeleteRowClickHandler());
 
 	}
 
@@ -117,20 +100,27 @@ public class ShoppingListForm extends VerticalPanel {
 		this.gsltvm = gsltvm;
 	}
 
-	public Group getSelectedGroup() {
+	public Group getSelected() {
 		return selectedGroup;
 	}
 
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
+	public void setSelected(Group g) {
+		if (g != null) {
+			
+			selectedGroup = g;
+			infoTitleLabel.setText(selectedGroup.getName());
+		} else {
+			this.clear();
+		}
+
 	}
 
 	public ShoppingList getSelectedList() {
-		return selectedList;
+		return selectedShoppingList;
 	}
 
 	public void setSelected(ShoppingList sl) {
-		selectedList = sl;
+		selectedShoppingList = sl;
 	}
 
 	/*
