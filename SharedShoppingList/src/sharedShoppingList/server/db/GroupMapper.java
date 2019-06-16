@@ -156,7 +156,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	
 	public Group update(Group group) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE einkaufsgruppe " + "SET name=\"" + group.getName() + "\", " + "WHERE id=" + group.getId();
+		String sql= "UPDATE einkaufsgruppe SET name= '"+ group.getName()+"' WHERE id= "+ group.getId();
 
 		try {
 			Statement stmt = con.createStatement();
