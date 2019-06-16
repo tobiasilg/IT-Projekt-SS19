@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -32,8 +34,8 @@ public class NewListEntryForm extends DialogBox {
 	Article selectedArticle;
 	Article newArticle;
 
-//	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
+	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
 
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
@@ -176,6 +178,15 @@ public class NewListEntryForm extends DialogBox {
 	 * METHODEN
 	 ***********************************************************************
 	 */
+	public void onKeyPress(KeyPressEvent event) {
+		if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+			saveButton.click();
+			articleSuggestBox.setText("");
+		}
+
+	}
+	
+	
 	
 	public Article getNewArticle() {
 		return newArticle;
@@ -222,6 +233,7 @@ public class NewListEntryForm extends DialogBox {
 
 			RootPanel.get("details").clear();
 			ShoppingListForm shoppingListForm = new ShoppingListForm();
+			shoppingListForm.setSelected(selectedList);
 			RootPanel.get("details").add(shoppingListForm);
 
 		}
