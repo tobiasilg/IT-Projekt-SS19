@@ -176,7 +176,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public void delete (Group group) {
 	Connection con = DBConnection.connection();
 		
-		String sql=("delete from einkaufsgruppe where id = " + group.getId());
+		String sql="delete from einkaufsgruppe where id = " + group.getId();
 		
 	    try {
 	    	
