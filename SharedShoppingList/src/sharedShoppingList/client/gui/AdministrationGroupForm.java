@@ -20,14 +20,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
 import sharedShoppingList.client.ClientsideSettings;
-//import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Group;
-import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
 /**
@@ -106,7 +103,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		boxPanel.add(groupLabel);
 		boxPanel.add(renameTextBox);
 		boxPanel.add(hpButtonsPanelGroup);
-
+	
 		this.setWidth("100%");
 		this.add(boxPanel);
 
@@ -322,7 +319,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		 * DialogBox
 		 */
 		public DeleteGroupDialogBox() {
-			abfrage.addStyleName("label has-text-primary content_margin");
+			abfrage.addStyleName("Abfrage");
 			jaButton.addStyleName("button is-danger");
 			neinButton.addStyleName("button bg-primary has-text-white");
 

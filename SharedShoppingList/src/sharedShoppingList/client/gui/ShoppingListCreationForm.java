@@ -8,18 +8,13 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
-import sharedShoppingList.client.gui.AbstractDialogCreationForm.DynamicTextbox;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Group;
@@ -40,7 +35,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User user = CurrentUser.getUser();
 	// Group selectedGroup = null;
-	ShoppingList shoppingList = null;
 	
 	GroupShoppingListTreeViewModel gsltvm = null;
 	private Group selectedGroup = null;
@@ -89,6 +83,8 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 		saveButton.addStyleName("saveNewGrouButton");
 		cancelButton.addStyleName("cancelNewGroupButton");
+		
+		shoppingListNameTextBox.getElement().setPropertyString("placeholder", "Shoppingliste... ");
 
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
@@ -100,7 +96,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 		this.add(shoppingListPanel);
 
-		shoppingListNameTextBox.getElement().setPropertyString("placeholder", "Shoppingliste... ");
 
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
@@ -133,6 +128,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 		this.selectedGroup = selectedGroup;
 
 	}
+	
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
@@ -235,11 +231,11 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 			if (result != null) {
 				RootPanel.get("details").clear();
-				shoppingList = result;
-				showForm.setSelected(shoppingList);
+				selectedShoppingList = result;
+				showForm.setSelected(selectedShoppingList);
 				RootPanel.get("details").add(showForm);
 
-				gsltvm.addShoppingListOfGroup(shoppingList, selectedGroup);
+				gsltvm.addShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
 			}
 

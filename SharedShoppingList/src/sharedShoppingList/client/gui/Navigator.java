@@ -50,7 +50,7 @@ public class Navigator extends FlowPanel {
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 	
 	private AdministrationGroupForm agf;
-//	private ShoppingListForm sf;
+	private ShoppingListForm sf;
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
@@ -84,7 +84,7 @@ public class Navigator extends FlowPanel {
 		timer.schedule(10000);
 		
 		agf = new AdministrationGroupForm();
-//		sf = new ShoppingListForm();
+		sf = new ShoppingListForm();
 		
 		gsltvm = new GroupShoppingListTreeViewModel();
 		
@@ -94,8 +94,8 @@ public class Navigator extends FlowPanel {
 		gsltvm.setGroupForm(agf);
 		agf.setGsltvm(gsltvm);
 		
-	//	gsltvm.setShoppingListForm(sf);
-	//	sf.setGsltvm(gsltvm);
+		gsltvm.setShoppingListForm(sf);
+		sf.setGsltvm(gsltvm);
 		
 		tree.setAnimationEnabled(true);
 
