@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
@@ -65,6 +66,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private FlexTable shoppingListFlexTable;
 
+	private Button createShoppingListButton;
 	private Button deleteRowButton;
 
 	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
@@ -88,6 +90,7 @@ public class ShoppingListForm extends VerticalPanel {
 	public void onLoad() {
 
 		// Add them to verticalPanel
+		this.add(createShoppingListButton);
 		this.add(infoTitleLabel);
 		this.add(shoppingListFlexTable);
 
@@ -191,6 +194,18 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+	
+	private class CreateShoppingListClickHandler implements ClickHandler {
+
+		public void onClick(ClickEvent event) {
+
+			RootPanel.get("details").clear();
+			NewListEntryForm nlef = new NewListEntryForm();
+			RootPanel.get("details").add(nlef);
+
+		}
+
+	}
 
 	private class AddArticleToShoppingListClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
