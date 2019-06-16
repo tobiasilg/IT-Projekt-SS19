@@ -504,8 +504,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			if (selectedGroup != null) {
 
-				selectedGroup.setName(renameTextBox.getText());
+				selectedGroup.setName(renameTextBox.getValue());
 
+				//elv.save(selectedGroup, new SaveRenameGroupCallback());
 				elv.save(selectedGroup, new SaveRenameGroupCallback());
 
 			} else {
@@ -564,9 +565,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 			Notification.show("Die Gruppen konnte nicht umbenannt werden");
 		}
 
-		public void onSuccess(Void Group) {
+		public void onSuccess(Void result) {
 			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
-
+			
 			gsltvm.updateGroup(selectedGroup);
 
 		}
