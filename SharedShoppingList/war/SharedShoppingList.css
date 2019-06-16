@@ -194,6 +194,7 @@ body {
 
 .navPanel {
 	display: flex;
+
 }
 
 .navImage {
@@ -228,6 +229,9 @@ body {
 	margin-block-end: 1em;
 	margin-inline-start: 0px;
 	margin-inline-end: 0px;
+}
+.refreshPanel {
+	font-size: 1px;
 }
 
 .loginButton {
