@@ -165,7 +165,7 @@ public class ListMapper {
 	public void insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into shoppinglist (id, name, createDate, modDate, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ "," + shoppinglist.getCreateDate()+ ","+ shoppinglist.getModDate()+","+shoppinglist.getGroupId()+ ")";
+		String sql= "insert into shoppinglist (id, name, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ ","+shoppinglist.getGroupId()+ ")";
 		
 	    try {
 	    	
