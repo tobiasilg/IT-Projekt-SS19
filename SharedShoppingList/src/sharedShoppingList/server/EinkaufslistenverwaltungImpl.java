@@ -551,9 +551,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	/** Create einer neuen Shoppingliste */
 
-	public ShoppingList createShoppingList(String name) throws IllegalArgumentException {
+	public ShoppingList createShoppingList(String name, Group group) throws IllegalArgumentException {
+		
 		ShoppingList shoppingList = new ShoppingList();
 		shoppingList.setName(name);
+		shoppingList.setGroupId(group.getId());
 
         /** ACHTUNG! NUR VORLÄUFIG!
         * Die ID muss später in aufsteigender Reihenfolge vergeben werden
