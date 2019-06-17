@@ -1,9 +1,14 @@
 package sharedShoppingList.client.reportgui;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 
 public class HeaderRepo extends VerticalPanel {
 
@@ -14,6 +19,8 @@ public class HeaderRepo extends VerticalPanel {
 	private Label headerSubtitle = new Label("share it - buy it");
 	private HorizontalPanel hp = new HorizontalPanel();
 	private Button testButton = new Button("drück mich");
+	private Button linkToMainBtn = new Button("Zur Startseite");
+	private Anchor linkToMain = new Anchor("main");
 
 	public HeaderRepo() {
 		super();
@@ -25,6 +32,7 @@ public class HeaderRepo extends VerticalPanel {
 	 * 
 	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
 	 */
+	
 	public void onLoad() {
 
 		// einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
@@ -40,6 +48,21 @@ public class HeaderRepo extends VerticalPanel {
 		hp.add(label);
 		hp.add(headerSubtitle);
 		hp.add(testButton);
+		
+		linkToMainBtn.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+
+				/**
+				 * @TODO GWT.getHostPageBaseURL muss noch eingefügt werden!
+				 **/
+				
+				linkToMain.setHref(GWT.getHostPageBaseURL() + "");
+				Window.open(linkToMain.getHref(), "_blank", "");
+				}
+			});
+
+		hp.add(linkToMainBtn);
+		
 		this.add(hp);
 
 	}
