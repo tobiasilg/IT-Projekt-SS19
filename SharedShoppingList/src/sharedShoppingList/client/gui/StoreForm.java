@@ -148,9 +148,6 @@ public class StoreForm extends AbstractAdministrationForm {
 			// Persistiere in die Datenbank
 			elv.createStore(nameTextBox.getValue(), new StoreCreationCallback());
 
-			// Erstelle neues Store Objekt
-			setContentOfStoreFlexTable(newStore);
-
 		}
 
 	}
@@ -170,6 +167,9 @@ public class StoreForm extends AbstractAdministrationForm {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 
 			createTable();
+
+			// Erstelle neues Store Objekt
+//			setContentOfStoreFlexTable(newStore);
 
 			// Klappt noch nicht
 			setNewStore(store);
