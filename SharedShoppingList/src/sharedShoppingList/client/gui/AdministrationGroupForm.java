@@ -50,7 +50,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private DynamicTextbox addUserTextBox = new DynamicTextbox();
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
 
-	private FlexTable viewMembersFlexTable;
+	private FlexTable viewMembersFlexTable = new FlexTable();
 
 	private Button addMembersButton = new Button("hinzufügen");
 	private Button saveMembersButton = new Button("speicher");

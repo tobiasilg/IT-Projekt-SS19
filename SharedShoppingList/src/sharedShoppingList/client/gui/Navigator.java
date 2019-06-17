@@ -195,6 +195,7 @@ public class Navigator extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			gcf = new GroupCreationForm();
+			gcf.setGroupShoppingListTreeViewModel(gsltvm);
 			RootPanel.get("details").add(gcf);
 
 		}

@@ -133,7 +133,6 @@ public class GroupCreationForm extends FlowPanel {
 			groupForm = new AdministrationGroupForm();
 			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
 			
-			Window.alert("TextBox Wert: " + groupNameTextBox.getValue());
 			//elv.createGroup(groupName, new GroupCreationCallback());
 
 		}
@@ -153,7 +152,7 @@ public class GroupCreationForm extends FlowPanel {
 		@Override
 		public void onSuccess(Group result) {
 
-			Notification.show("Die Gruppe wurde erfolgreich erstellt");
+			Notification.show(String.valueOf(result.getId()));
 			
 				
 				 RootPanel.get("details").clear();
