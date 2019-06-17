@@ -166,7 +166,7 @@ public class UserMapper {
 	
 	public User update(User user) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE user " + "SET name=\"" + user.getName() + "\", " + "SET username=\"" + user.getUserName() + "\", " + "SET gmail=\"" + user.getGmail() + "\", " + "SET groupid=\"" + user.getGroupId() + "\", " + "WHERE id=" + user.getId();
+		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUserName()+"', groupid="+user.getGroupId()+" WHERE id= "+ user.getId();
 
 		try {
 			Statement stmt = con.createStatement();
