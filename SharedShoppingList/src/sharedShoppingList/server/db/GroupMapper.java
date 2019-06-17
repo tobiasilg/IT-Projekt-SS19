@@ -42,8 +42,10 @@ public class GroupMapper {
 	
 	public Group insert (Group group) {
 		Connection con = DBConnection.connection();
-		
+
+    
 		String sql= "INSERT INTO einkaufsgruppe (name) VALUES ('"+ group.getName()+ "')";  
+
 		
 	    try {
 	    	/*

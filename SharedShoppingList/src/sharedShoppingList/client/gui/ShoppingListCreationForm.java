@@ -34,7 +34,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User user = CurrentUser.getUser();
-	// Group selectedGroup = null;
 	
 	GroupShoppingListTreeViewModel gsltvm = null;
 	private Group selectedGroup = null;
@@ -202,11 +201,15 @@ public class ShoppingListCreationForm extends FlowPanel {
 	private class SaveListCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-
-			elv.createShoppingList(shoppingListNameTextBox.getValue(), new ListCreationCallback());
+			
+		//	if(selectedGroup == null ) {
+		//		Window.alert("Gruppe muss ausgewählt werden");
+		//	}else {
+			//elv.createShoppingList(shoppingListNameTextBox.getValue(), new ListCreationCallback());
+			elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup, new ListCreationCallback());
 
 			Window.alert("TextBox Wert; " + shoppingListNameTextBox.getValue());
-
+		//	}
 		}
 
 	}
@@ -220,26 +223,27 @@ public class ShoppingListCreationForm extends FlowPanel {
 	 * Callback wird benötigt, um eine Liste zu erstellen
 	 */
 	private class ListCreationCallback implements AsyncCallback<ShoppingList> {
+		
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Shoppingliste konnte nicht erstellt werden");
+			
 		}
 
 		@Override
 		public void onSuccess(ShoppingList result) {
 			Notification.show("Die Shoppingliste wurde erfolgreich erstellt");
 
-			if (result != null) {
 				RootPanel.get("details").clear();
 				selectedShoppingList = result;
 				showForm.setSelected(selectedShoppingList);
 				RootPanel.get("details").add(showForm);
 
 				gsltvm.addShoppingListOfGroup(selectedShoppingList, selectedGroup);
-
+		
 			}
 
 		}
 
 	}
-}
+
