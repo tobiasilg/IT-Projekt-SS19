@@ -446,12 +446,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Group group = new Group();
 		group.setName(name);
 
-        /** ACHTUNG! NUR VORLÄUFIG!
-        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
-        * @TODO ID-Verabe anpassen.
-        */
-		group.setId(1);
-
 		this.groupMapper.insert(group);
 		
 		return group;
