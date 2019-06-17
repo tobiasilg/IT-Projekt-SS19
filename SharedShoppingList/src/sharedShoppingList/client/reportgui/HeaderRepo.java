@@ -9,7 +9,7 @@ public class HeaderRepo extends VerticalPanel {
 //	 EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
-	private Label label = new Label("KEKWAY-REPORT"); // Label der den Namen im Header anzeigt
+	private Label label = new Label("KEKBuy-REPORT"); // Label der den Namen im Header anzeigt
 	private HorizontalPanel hp = new HorizontalPanel();
 
 	public HeaderRepo() {
@@ -22,13 +22,11 @@ public class HeaderRepo extends VerticalPanel {
 	 * 
 	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
 	 */
+	
 	public void onLoad() {
 
 		// einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
-		/*
-		 * Vergeben von Stylenamen, um die Divs über CSS ansprechen zu können
-		 */
 
 		// Gesamtes Header Div
 		this.addStyleName("header");
