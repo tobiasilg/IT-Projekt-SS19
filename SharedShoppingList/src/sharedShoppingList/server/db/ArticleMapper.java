@@ -198,7 +198,7 @@ public class ArticleMapper {
 		Connection con = DBConnection.connection();
 
 		
-		String sql= "UPDATE store SET name= '"+ article.getName()+"' WHERE id= "+ article.getId();
+		String sql= "UPDATE article SET name= '"+ article.getName()+"', unit='"+article.getUnit()+"' WHERE id= "+ article.getId();
 
 
 		try {
