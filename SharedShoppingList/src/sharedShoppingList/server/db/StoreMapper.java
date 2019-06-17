@@ -42,8 +42,7 @@ public class StoreMapper {
 	public Store insert(Store store) {
 		Connection con = DBConnection.connection();
 
-		String sql = "insert into store (name, createDate, modDate) values ('" + store.getName() + "',"
-				+ store.getCreateDate() + "," + store.getModDate() + ")";
+		String sql = "insert into store (name) values ('" + store.getName() + "')";
 
 		try {
 
@@ -118,10 +117,10 @@ public class StoreMapper {
 	public Store update(Store store) {
 		Connection con = DBConnection.connection();
 
-		//String sql = "UPDATE store " + "SET name=\"  ' " + store.getName() + "   ' \", " + "WHERE id=" + store.getId();
-		
-		String sql= "UPDATE store SET name= '"+ store.getName()+"' WHERE id= "+ store.getId();
+		// String sql = "UPDATE store " + "SET name=\" ' " + store.getName() + " ' \", "
+		// + "WHERE id=" + store.getId();
 
+		String sql = "UPDATE store SET name= '" + store.getName() + "' WHERE id= " + store.getId();
 
 		try {
 			Statement stmt = con.createStatement();
