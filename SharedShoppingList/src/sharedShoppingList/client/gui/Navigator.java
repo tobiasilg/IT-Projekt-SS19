@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -32,6 +34,7 @@ public class Navigator extends FlowPanel {
 	private FlowPanel navPanel = new FlowPanel();
 	private FlowPanel navImage = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
+	private FlowPanel refreshPanel = new FlowPanel();
 
 	private Button neuButton = new Button("NEU");
 
@@ -47,7 +50,7 @@ public class Navigator extends FlowPanel {
 	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 	
 	private AdministrationGroupForm agf;
-//	private ShoppingListForm sf;
+	private ShoppingListForm sf;
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
@@ -56,7 +59,7 @@ public class Navigator extends FlowPanel {
 	
 	private CellTree tree;
 	
-	private Label refreshLabel = new Label();
+	private Label refreshLabel = new Label("test");
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -81,7 +84,7 @@ public class Navigator extends FlowPanel {
 		timer.schedule(10000);
 		
 		agf = new AdministrationGroupForm();
-//		sf = new ShoppingListForm();
+		sf = new ShoppingListForm();
 		
 		gsltvm = new GroupShoppingListTreeViewModel();
 		
@@ -91,8 +94,8 @@ public class Navigator extends FlowPanel {
 		gsltvm.setGroupForm(agf);
 		agf.setGsltvm(gsltvm);
 		
-	//	gsltvm.setShoppingListForm(sf);
-	//	sf.setGsltvm(gsltvm);
+		gsltvm.setShoppingListForm(sf);
+		sf.setGsltvm(gsltvm);
 		
 		tree.setAnimationEnabled(true);
 
@@ -107,14 +110,19 @@ public class Navigator extends FlowPanel {
 		navPanel.addStyleName("navPanel");
 		navImage.addStyleName("navImage");
 		buttonPanel.addStyleName("buttonPanel");
+		refreshLabel.addStyleName("refreshLabel");
+		refreshPanel.addStyleName("refreshPanel");
+		tree.addStyleName("navTree");
 
 		navImage.add(star);
 		buttonPanel.add(neuButton);
+		refreshPanel.add(refreshLabel);
 
 		navPanel.add(buttonPanel);
 		navPanel.add(navImage);
 
 		this.add(navPanel);
+		this.add(refreshPanel);
 		this.add(navTitle);
 		
 		this.add(tree);
@@ -152,12 +160,31 @@ public class Navigator extends FlowPanel {
 	}
 	protected void refreshInfo() {
 		
-		// Damit RefreshInfo funktioniert wird noch ein Mapper benötigt
-	//	einkaufslistenVerwaltung.
+		// Funktioniert erst wenn Login funktioniert
+	//	einkaufslistenVerwaltung.changed(this.getGsltvm().getSelectedGroup(), user, new RefreshGroupCallback());
 		
 	}
 
+	private class RefreshGroupCallback implements AsyncCallback<Boolean>{
 
+		@Override
+		public void onFailure(Throwable caught) {
+			//Window.alert("Refresh Methode greift noch nicht");
+			
+		}
+
+		@Override
+		public void onSuccess(Boolean result) {
+			// TODO Auto-generated method stub
+			if (result == true ) {
+				refreshLabel.setText("Es gibt Änderungen zum aktualisieren");
+			}
+			else {
+				refreshLabel.setText("Es gibt zurzeit keine Änderungen");
+			}
+		}
+		
+	}
 	/*
 	 * Die Klasse ShowGroupCreationForm ermöglicht die Weiterletung zur
 	 * GroupCreationForm

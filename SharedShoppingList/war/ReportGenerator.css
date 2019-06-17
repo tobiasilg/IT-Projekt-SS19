@@ -1,7 +1,81 @@
+html {
+	background-color: #fff;
+	font-size: 16px;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	min-width: 300px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	text-rendering: optimizeLegibility;
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	color: #4a4a4a;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+.container {
+	height: 100vh;
+	display: grid;
+	grid-template-rows: auto 1fr 30px;
+	grid-template-columns: 25% 25% 25% 25%;
+}
+
 #header {
-	background: lightgrey;
+	background-color: #d5dee0;
 	grid-column-start: 1;
 	grid-column-end: 5;
 	grid-row-start: 1;
 	grid-row-end: 2;
+}
+
+#details {
+	background: white;
+	grid-column-start: 2;
+	grid-column-end: 5;
+	grid-row-start: 2;
+	grid-row-end: 3;
+}
+
+#footer {
+	background-color: #d5dee0;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 3;
+	grid-row-end: 4;
+}
+
+/*
+	Stylen der Header Elemente
+*/
+.header {
+	min-height: 3.25rem;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
+}
+
+.header_title {
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	font-weight: bold;
+}
+
+.header_subtitle {
+	color: #4a4a4a;
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.25;
 }
