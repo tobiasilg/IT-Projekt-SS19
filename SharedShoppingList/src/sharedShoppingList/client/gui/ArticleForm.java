@@ -36,6 +36,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 	ArrayList<Article> articles;
 
 	ArrayList<ArticleCustomTextBox> textboxes;
+	ArrayList<CustomListBox> listboxes;
+	ArrayList<CustomRow> rows;
 
 	String[] units;
 
@@ -52,7 +54,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 	// Konstruktor
 	public ArticleForm() {
 
-		saveButton.addClickHandler(new SaveArticleClickHandler(textboxes));
+		saveButton.addClickHandler(new SaveArticleClickHandler(textboxes, listboxes, rows));
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
 
@@ -106,7 +108,8 @@ public class ArticleForm extends AbstractAdministrationForm {
 			public void onSuccess(Vector<Article> result) {
 				// Füge alle Elemente der Datenbank in die Liste hinzu
 				for (Article article : result) {
-
+					// Frage: Schreibt Daten aus der DB rein obwohl diese leer ist
+					Window.alert("Artikel aus DB:" + article.getName());
 					articles.add(article);
 					setContentOfArticleFlexTable(article);
 				}
@@ -122,17 +125,28 @@ public class ArticleForm extends AbstractAdministrationForm {
 		// Hole Zeilennummer, die aktuell bearbeitet wird
 		int rowCount = articleFlexTable.getRowCount();
 
+		Window.alert(article.getName());
+
+		CustomRow row = new CustomRow();
+
 		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
 		ArticleCustomTextBox articleTextBox = new ArticleCustomTextBox();
 		articleTextBox.setValue(article.getName());
 
-		articleTextBox.setArticle(article);
-		textboxes.add(articleTextBox);
+		row.setTextBox(articleTextBox);
+		row.setListBoxValue(article.getUnit());
+		row.setArticle(article);
+
+		// textboxes.add(articleTextBox);
+
+		// TODO create rows and add textbox and select
 
 		// Erstelle neue ListBox für die Einheit und setze die selektierte Einheit
 		ListBox unitListBox = new ListBox();
 		for (String unit : units) {
 			unitListBox.addItem(unit);
+//			CustomListBox cListbox = new CustomListBox();
+
 		}
 		unitListBox.setSelectedIndex(Arrays.asList(units).indexOf(article.getUnit()));
 
@@ -252,24 +266,92 @@ public class ArticleForm extends AbstractAdministrationForm {
 	private class SaveArticleClickHandler implements ClickHandler {
 
 		private ArrayList<ArticleCustomTextBox> list;
+		private ArrayList<CustomListBox> listbox;
 
-		public SaveArticleClickHandler(ArrayList<ArticleCustomTextBox> list) {
+		private ArrayList<CustomRow> rows;
+
+		public SaveArticleClickHandler(ArrayList<ArticleCustomTextBox> list, ArrayList<CustomListBox> listbox,
+				ArrayList<CustomRow> rows) {
 
 			this.list = list;
+			this.listbox = listbox;
+			this.rows = rows;
 		}
 
 		public void onClick(ClickEvent event) {
-			for (ArticleCustomTextBox textbox : textboxes) {
 
-				textbox.getArticle().setName(textbox.getValue());
+			for (CustomRow row : rows) {
 
-				Window.alert("TextBox Wert: " + textbox.getValue());
-				Window.alert("Artikel name: " + textbox.getArticle().getName());
-				Window.alert("Artikel ID: " + textbox.getArticle().getId());
+				Article article = row.getArticle();
 
-				elv.save(textbox.getArticle(), new SaveArticleCallback());
+				article.setName(row.getTextBox().getName());
+				article.setUnit(row.getListBoxValue());
+				// textbox.getArticle().setUnit(this.listbox.get(index).getSelectedItemText());
+
+				elv.save(article, new SaveArticleCallback());
 
 			}
+//			int index = 0;
+//			for (ArticleCustomTextBox textbox : textboxes) {
+//
+//				textbox.getArticle().setName(textbox.getValue());
+//				textbox.getArticle().setUnit(this.listbox.get(index).getSelectedItemText());
+//
+//				Window.alert("TextBox Objekt: " + textbox.getArticle());
+//				Window.alert("TextBox Unit: " + this.listbox.get(index).getSelectedItemText());
+//				Window.alert("Artikel name: " + textbox.getArticle().getName());
+//				Window.alert("Artikel ID: " + textbox.getArticle().getId());
+//
+//				elv.save(textbox.getArticle(), new SaveArticleCallback());
+//
+//			}
+		}
+
+	}
+
+	private class CustomListBox extends ListBox {
+		Article article;
+
+		public Article getArticle() {
+			return article;
+		}
+
+		public void setArticle(Article article) {
+			this.article = article;
+		}
+	}
+
+	/**
+	 * @author treib
+	 *
+	 */
+	private class CustomRow {
+		String listBoxValue;
+		ArticleCustomTextBox textBox;
+		Article article;
+
+		public String getListBoxValue() {
+			return listBoxValue;
+		}
+
+		public void setListBoxValue(String listBoxValue) {
+			this.listBoxValue = listBoxValue;
+		}
+
+		public ArticleCustomTextBox getTextBox() {
+			return textBox;
+		}
+
+		public void setTextBox(ArticleCustomTextBox textBox) {
+			this.textBox = textBox;
+		}
+
+		public Article getArticle() {
+			return article;
+		}
+
+		public void setArticle(Article article) {
+			this.article = article;
 		}
 
 	}
