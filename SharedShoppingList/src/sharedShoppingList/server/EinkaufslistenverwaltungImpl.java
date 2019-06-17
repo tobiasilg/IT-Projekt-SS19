@@ -281,11 +281,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 **/
 	public Store createStore(String name) throws IllegalArgumentException {
 		Store store = new Store();
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 */
-		store.setId(1);
+		
+		
+		
 		store.setName(name);
 
 		return this.storeMapper.insert(store);
