@@ -42,7 +42,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void delete(Group group, AsyncCallback<Void> callback);
 	
-	void createShoppingList(String name, AsyncCallback<ShoppingList> callback);
+	void createShoppingList(String name, Group group, AsyncCallback<ShoppingList> callback);
 	
     void getAll(AsyncCallback<Vector<ShoppingList>> callback);
     
