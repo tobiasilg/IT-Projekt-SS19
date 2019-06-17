@@ -139,16 +139,13 @@ public class FavouriteMapper {
 		
 	}
 	
-	/*
-	 * Klärung bei Übergabeparameter
-	 */
 	
-	public Vector <Favourite> findFavouritesByGroupId (Group group) {
+	public Vector <Favourite> findFavouritesByGroupId (int groupId) {
 		
 		Connection con = DBConnection.connection();
 		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
 				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
-				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE groupid =" + group.getId();
+				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE f.groupid =" + groupId;
 		
 		Vector <Favourite> result = new Vector <Favourite> ();
 		try {
