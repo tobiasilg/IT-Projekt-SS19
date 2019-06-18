@@ -64,8 +64,6 @@ public class ShoppingListForm extends VerticalPanel {
 	// +"Gruppenname"
 	private Label infoTitleLabel = new Label("Einkaufsliste" + selectedGroup.getName());
 
-	private FlexTable shoppingListFlexTable;
-
 	private Button createShoppingListButton;
 	private Button deleteRowButton;
 
@@ -89,18 +87,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		// Add them to verticalPanel
-		this.add(createShoppingListButton);
-		this.add(infoTitleLabel);
-		this.add(shoppingListFlexTable);
-
-		infoTitleLabel.setHorizontalAlignment(ALIGN_CENTER);
-		infoTitleLabel.setWidth("100%");
-
-		shoppingListFlexTable.setWidth("%");
-		shoppingListFlexTable.setBorderWidth(0);
-		shoppingListFlexTable.setSize("%", "%");
-		shoppingListFlexTable.setCellPadding(0);
+	
 
 	}
 
@@ -137,58 +124,8 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Zusammenbau der shoppingListFlexTable
 	 */
 
-	private FlexTable createTable() {
 
-		// Erstelle eine FlexTable, falls nicht existent
-
-		if (shoppingListFlexTable == null) { 
-			shoppingListFlexTable = new FlexTable();
-
-		}
-
-		shoppingListFlexTable.removeAllRows();
-
-		shoppingListFlexTable.setText(0, 0, "Artikel");
-		shoppingListFlexTable.setText(0, 1, "Anzahl");
-		shoppingListFlexTable.setText(0, 2, "Einheit");
-		shoppingListFlexTable.setText(0, 3, "Wer?");
-		shoppingListFlexTable.setText(0, 4, "Wo?");
-		shoppingListFlexTable.setText(0, 5, "Favorit");
-
-		return shoppingListFlexTable;
-
-	}
-
-	/***********************************************************************
-	 * Zusammenbau der ShoppingListFlexTable
-	 ***********************************************************************
-	 */
-
-	private void setContentOfShoppingListFlexTable(Article article) {
-		// Hole Zeilennummer, die aktuell bearbeitet wird
-		int rowCount = shoppingListFlexTable.getRowCount();
-
-		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
-		TextBox articleTextBox = new TextBox();
-
-		TextBox amountTextBox = new TextBox();
-
-		// Erstelle x Button
-
-		deleteRowButton = new Button("x");
-		// deleteRowButton.setArticle (article);
-
-		deleteRowButton.addClickHandler(new DeleteRowClickHandler());
-
-		// Füge die TextBox und ListBoxen in die Flextable ein
-		CheckBox checkbox = new CheckBox();
-		checkbox.setValue(true);
-		checkbox.addClickHandler(new checkBoxClickHandler());
-
-		shoppingListFlexTable.setWidget(rowCount, 0, checkbox);
-		shoppingListFlexTable.setWidget(rowCount, 1, articleTextBox);
 		
-	}
 
 	/***********************************************************************
 	 * Abschnitt der CLICKHANDLER
