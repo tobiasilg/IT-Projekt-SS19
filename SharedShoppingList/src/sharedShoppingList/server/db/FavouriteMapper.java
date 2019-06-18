@@ -69,7 +69,7 @@ public class FavouriteMapper {
 			int affectedRows = stmt.executeUpdate();
 			
 			if (affectedRows == 0) {
-	            throw new SQLException("Creating user failed, no rows affected.");
+	            throw new SQLException("Creating favourite failed, no rows affected.");
 	        }
 	        
 	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -77,7 +77,7 @@ public class FavouriteMapper {
 	                favourite.setId(generatedKeys.getInt(1)); //index 1 = id column
 	            }
 	            else {
-	                throw new SQLException("Creating user failed, no ID obtained.");
+	                throw new SQLException("Creating favourite failed, no ID obtained.");
 	            }
 	        }
 			

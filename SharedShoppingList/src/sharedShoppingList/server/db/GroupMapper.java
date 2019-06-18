@@ -56,7 +56,7 @@ public class GroupMapper {
 	    	int affectedRows = stmt.executeUpdate();
 
 	        if (affectedRows == 0) {
-	            throw new SQLException("Creating user failed, no rows affected.");
+	            throw new SQLException("Creating group failed, no rows affected.");
 	        }
 	        
 	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -64,7 +64,7 @@ public class GroupMapper {
 	                group.setId(generatedKeys.getInt(1)); //index 1 = id column
 	            }
 	            else {
-	                throw new SQLException("Creating user failed, no ID obtained.");
+	                throw new SQLException("Creating group failed, no ID obtained.");
 	            }
 	        }
 	      
