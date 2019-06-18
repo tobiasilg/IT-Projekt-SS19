@@ -2,6 +2,7 @@ package sharedShoppingList.shared;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -47,6 +48,8 @@ public interface ReportClient extends RemoteService {
 	   * @throws IllegalArgumentException
 	   */
 	  public void setArticle(Article a) throws IllegalArgumentException;
+	  
+	  public Vector<Store> getStores() throws IllegalArgumentException;
 	  
 	  /**
 	   * Erstellen eines <code>AllListEntries</code>-Reports. Dieser
