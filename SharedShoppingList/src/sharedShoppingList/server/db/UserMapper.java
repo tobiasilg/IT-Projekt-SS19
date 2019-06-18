@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Group;
@@ -40,12 +41,30 @@ public class UserMapper {
 	public void insert (User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into user (name, username, gmail, groupid, createDate, modDate) values ('" + user.getName() + "','" + user.getUserName() + "','" + user.getGmail()+ "'," + user.getGroupId()+ "," + user.getCreateDate()+ ","+ user.getModDate() +")";  
+		String sql= "INSERT INTO user (name, username, gmail, groupid) VALUES ('" + user.getName() + "','" + user.getUserName() + "','" + user.getGmail()+ "'," + user.getGroupId()+")";
 		
 	    try {
 	    	
-	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
+	    	
+	    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+	    	int affectedRows = stmt.executeUpdate();
+
+	        if (affectedRows == 0) {
+	            throw new SQLException("Creating user failed, no rows affected.");
+	        }
+	        
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                user.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating user failed, no ID obtained.");
+	            }
+	        }	 
 	      
 	    }
 	    catch (SQLException e) {
