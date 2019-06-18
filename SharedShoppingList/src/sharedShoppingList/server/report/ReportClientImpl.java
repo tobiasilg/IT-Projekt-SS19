@@ -3,6 +3,7 @@ package sharedShoppingList.server.report;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -89,6 +90,8 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 
 		return this.elv;
 	}
+	
+	
 
 	@Override
 	public void setArticle(Article a) throws IllegalArgumentException {
@@ -188,6 +191,11 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 			result.addRow(entryRow);
 		}
 		return result;
+	}
+
+	@Override
+	public Vector<Store> getStores() throws IllegalArgumentException {
+		return this.elv.getAllStores();
 	}
 
 }
