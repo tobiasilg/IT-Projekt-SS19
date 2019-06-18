@@ -54,7 +54,7 @@ public class ArticleMapper {
 	public Article findByID(int id) {
 		Connection con = DBConnection.connection();
 		
-		String sql="select * from article where id=" + id;
+		String sql="SELECT * FROM article WHERE id=" + id;
 		try {
 
 			Statement stmt = con.createStatement();
@@ -87,7 +87,7 @@ public class ArticleMapper {
 	
 	public Vector<Article>findAllArticles(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from article order by name";
+		String sql = "SELECT * FROM article ORDER BY name";
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
@@ -118,7 +118,7 @@ public class ArticleMapper {
 	
 	public Vector<Article> findAllByCurrentUser(User user){
 		Connection con = DBConnection.connection();
-		String sql = "select * from article where id=" + user.getId();
+		String sql = "SELECT * FROM article WHERE id=" + user.getId();
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
@@ -176,7 +176,7 @@ public class ArticleMapper {
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article (name, unit) values ('"+ article.getName()+ "','"+article.getUnit() + "')";
+		String sql= "INSERT INTO article (name, unit) VALUES ('"+ article.getName()+ "','"+article.getUnit() + "')";
 		
 		try {
 	    	/*

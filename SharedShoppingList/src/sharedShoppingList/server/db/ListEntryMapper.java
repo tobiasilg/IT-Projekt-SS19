@@ -60,7 +60,7 @@ public class ListEntryMapper {
 		public ListEntry findByID(int id) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where id=" + id;
+			String sql="SELECT * FROM listentry WHERE id=" + id;
 			try {
 
 				Statement stmt = con.createStatement();
@@ -95,7 +95,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findByArticle(Article article) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where articleid=" + article.getId();
+			String sql="SELECT * FROM listentry WHERE articleid=" + article.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -139,7 +139,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where shoppinglistid=" + sl.getId();
+			String sql="SELECT * FROM listentry WHERE shoppinglistid=" + sl.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -178,7 +178,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findByStore(Store store) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where storeid=" + store.getId();
+			String sql="SELECT * FROM listentry WHERE storeid=" + store.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -217,7 +217,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry>findAllListEntries(){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listentry order by name";
+			String sql = "SELECT * FROM listentry ORDER BY name";
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -252,7 +252,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry> findAllByCurrentUser(User user){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listentry where userid=" + user.getId();
+			String sql = "SELECT * FROM listentry WHERE userid=" + user.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -287,7 +287,7 @@ public class ListEntryMapper {
 		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "delete from listentry where id=" + listEntry.getId() +")";
+			String sql= "DELETE FROM listentry WHERE id=" + listEntry.getId() +")";
 			
 		    try {
 		    	
@@ -308,7 +308,7 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "insert into listentry (name, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
+			String sql= "INSERT INTO listentry (name, amount, checked, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
 			try {
 		    	/*

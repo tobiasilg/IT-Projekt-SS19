@@ -78,7 +78,7 @@ public class UserMapper {
 	/* find all */
 	public Vector<User> findAll(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from user order by name";
+		String sql = "SELECT * FROM user ORDER BY name";
 		
 		Vector<User> users= new Vector<User>();
 		try {
@@ -110,7 +110,7 @@ public class UserMapper {
 	public User findById(int id) {
 		Connection con = DBConnection.connection();
 		User user = new User();
-		String sql="select * from user where id=" + id;
+		String sql="SELECT * FROM user WHERE id=" + id;
 			
 		try {
 
@@ -146,7 +146,7 @@ public class UserMapper {
 	public Vector <User> findByGroup(Group group) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "select * from user where groupid="+ group.getId();
+		String sql = "SELECT * FROM user WHERE groupid="+ group.getId();
 		
 		Vector<User> users= new Vector<User>();
 		
@@ -204,7 +204,7 @@ public class UserMapper {
 	public void delete (User user) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from user where id=" + user.getId()+")";
+		String sql= "DELETE FROM user WHERE id=" + user.getId()+")";
 		
 	    try {
 	    	

@@ -84,7 +84,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	/* find all */
 	public Vector<Group> findAll(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from einkaufsgruppe";
+		String sql = "SELECT * FROM einkaufsgruppe";
 		
 		Vector<Group> groups= new Vector<Group>();
 		try {
@@ -113,7 +113,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findById(int id) {
 		Connection con = DBConnection.connection();
 		Group group = new Group();
-		String sql="select * from einkaufsgruppe where id=" + id;
+		String sql="SELECT * FROM einkaufsgruppe WHERE id=" + id;
 			
 		try {
 
@@ -146,7 +146,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findByUser(User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql="select * from einkaufsgruppe where id ="+ user.getGroupId();
+		String sql="SELECT * FROM einkaufsgruppe WHERE id ="+ user.getGroupId();
 		Group group = new Group();
 		try {
 
@@ -195,7 +195,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public void delete (Group group) {
 	Connection con = DBConnection.connection();
 		
-		String sql="delete from einkaufsgruppe where id = " + group.getId();
+		String sql="DELETE FROM einkaufsgruppe WHERE id = " + group.getId();
 		
 	    try {
 	    	
