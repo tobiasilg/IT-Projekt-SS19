@@ -374,10 +374,10 @@ public class ListEntryMapper {
 			 */
 			String sql = "SELECT * FROM listentry";
 			if(store != null && beginningDate != null) {
-				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getDate();
+				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getTime();
 			}
 			if(store == null && beginningDate != null) {
-				sql += " WHERE buydate >= " + beginningDate.getDate();
+				sql += " WHERE buydate >= " + beginningDate.getTime();
 			} 
 			if(store != null && beginningDate == null) {
 				sql += " WHERE storeid = " + store.getId();
