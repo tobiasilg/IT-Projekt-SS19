@@ -209,6 +209,10 @@ public class HTMLReportWriter extends ReportWriter {
 	@Override
 	public void process(AllListEntriesByPeriod r) {
 		
+	}
+
+	@Override
+	public void process(AllListEntriesByStoreAndPeriod r) {
 		StringBuffer result = new StringBuffer();
 		
 		  DateTimeFormat df = DateTimeFormat.getFormat("dd.MM.yyyy");
@@ -249,12 +253,6 @@ public class HTMLReportWriter extends ReportWriter {
 			/**
 			 */
 			this.reportText = result.toString();
-		
-	}
-
-	@Override
-	public void process(AllListEntriesByStoreAndPeriod r) {
-		// TODO Auto-generated method stub
 		
 	}
 	
