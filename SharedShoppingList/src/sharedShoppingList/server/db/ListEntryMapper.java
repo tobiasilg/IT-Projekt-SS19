@@ -1,6 +1,7 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -309,12 +310,31 @@ public class ListEntryMapper {
 			
 			String sql= "insert into listentry (name, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
-		    try {
+			try {
+		    	/*
+		    	 * Einstellung dass automatisch generierte  ID's aus der DB
+		    	 * zureuckgeliefert werden.
+		    	 * Somit kann ohne einen Refresh der Listeneintrag sofort angezeigt werden
+		    	 */
 		    	
-		    	Statement stmt = con.createStatement();
-		    	stmt.executeUpdate(sql);	 
-		      
-		    }
+		    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); //ID wird aus der DB geholt
+		    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
+
+		        if (affectedRows == 0) { //Kein neuer Eintrag in DB
+		            throw new SQLException("Creating ListEntry failed, no rows affected.");
+		        }
+		        
+		        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+		        	
+		            if (generatedKeys.next()) {
+		                listEntry.setId(generatedKeys.getInt(1)); //index 1 = id column
+		            }
+		            else {
+		                throw new SQLException("Creating ListEntry failed, no ID obtained.");
+		            }
+		        }
+			}
+		        
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
