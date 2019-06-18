@@ -77,7 +77,7 @@ public class StoreMapper {
 	/* find all */
 	public Vector<Store> findAll() {
 		Connection con = DBConnection.connection();
-		String sql = "select * from store order by name";
+		String sql = "SELECT * FROM store ORDER BY name";
 
 		Vector<Store> stores = new Vector<Store>();
 		try {
@@ -106,7 +106,7 @@ public class StoreMapper {
 	public Store findById(int id) {
 		Connection con = DBConnection.connection();
 		Store store = new Store();
-		String sql = "select * from store where id=" + id;
+		String sql = "SELECT * FROM store WHERE id=" + id;
 
 		try {
 

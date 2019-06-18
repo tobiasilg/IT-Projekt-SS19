@@ -54,7 +54,7 @@ public class ListMapper {
 	public ShoppingList findById(int id) {
 	Connection con = DBConnection.connection();
 		
-		String sql="select * from shoppinglist where id=" + id;
+		String sql="SELECT * FROM shoppinglist WHERE id=" + id;
 		try {
 
 			Statement stmt = con.createStatement();
@@ -115,7 +115,7 @@ public class ListMapper {
 	
 	public Vector<ShoppingList> findAllByGroup(Group group){
 		Connection con = DBConnection.connection();
-		String sql = "select * from shoppinglist where groupid=" + group.getId();
+		String sql = "SELECT * FROM shoppinglist WHERE groupid=" + group.getId();
 		
 		Vector<ShoppingList> result= new Vector<ShoppingList>();
 		try {
@@ -145,7 +145,7 @@ public class ListMapper {
 	public void delete (ShoppingList shoppingList ) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from shoppinglist where id=" + shoppingList.getId() +")";
+		String sql= "DELETE FROM shoppinglist WHERE id=" + shoppingList.getId() +")";
 		
 	    try {
 	    	
@@ -166,7 +166,7 @@ public class ListMapper {
 	public void insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into shoppinglist (id, name, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ ","+shoppinglist.getGroupId()+ ")";
+		String sql= "INSERT INTO shoppinglist (id, name, groupid) VALUES ("+shoppinglist.getId() + "," + shoppinglist.getName()+ ","+shoppinglist.getGroupId()+ ")";
 		
 		try {
 	    	/*
