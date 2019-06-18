@@ -1,6 +1,7 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,6 +53,8 @@ public class FavouriteMapper {
 	 * 
 	 */
 	
+	
+	
 	public Favourite createFavourite(Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
@@ -59,8 +62,24 @@ public class FavouriteMapper {
 	
 		
 		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
+			/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
+			PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);	
+			int affectedRows = stmt.executeUpdate();
+			
+			if (affectedRows == 0) {
+	            throw new SQLException("Creating user failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                favourite.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating user failed, no ID obtained.");
+	            }
+	        }
 			
 		}
 		catch (SQLException e) {
@@ -139,16 +158,13 @@ public class FavouriteMapper {
 		
 	}
 	
-	/*
-	 * Klärung bei Übergabeparameter
-	 */
 	
-	public Vector <Favourite> findFavouritesByGroupId (Group group) {
+	public Vector <Favourite> findFavouritesByGroupId (int groupId) {
 		
 		Connection con = DBConnection.connection();
 		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
 				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
-				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE groupid =" + group.getId();
+				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE f.groupid =" + groupId;
 		
 		Vector <Favourite> result = new Vector <Favourite> ();
 		try {
