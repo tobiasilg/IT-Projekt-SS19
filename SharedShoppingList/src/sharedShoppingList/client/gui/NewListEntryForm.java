@@ -25,6 +25,13 @@ import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
+/**
+ * Klasse zum Anzeigen einer DialogBox, das einen neuen Listeneintrag generiert.
+ * 
+ * @author nicolaifischbach
+ *
+ */
+
 public class NewListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
@@ -40,6 +47,7 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
+	String[] units;
 	// Vector<Unit> units = new Vector<Unit>();
 
 	private Grid grid = new Grid(5, 5);
@@ -106,7 +114,6 @@ public class NewListEntryForm extends DialogBox {
 				for (User user : result) {
 					users.addElement(user);
 					usersListBox.addItem(user.getName());
-					// evtl mit (user.getName() + ", " + user.getLocation());
 				}
 
 			}
@@ -130,10 +137,10 @@ public class NewListEntryForm extends DialogBox {
 			}
 		});
 
-//		// UnitListBox
-//		// Lade alle Einheit aus der Datenbank
-//		//elv.getUnit(new AsyncCallback<Vector<Store>>() {
-//
+		// UnitListBox
+		// Lade alle Einheit aus der Datenbank
+		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
+
 //			public void onFailure(Throwable caught) {
 //				Notification.show("failure");
 //			}
@@ -153,7 +160,7 @@ public class NewListEntryForm extends DialogBox {
 		 ***********************************************************************
 		 */
 		grid.setText(0, 0, "Artikel: ");
-	//	grid.setWidget(0, 1, articleSuggestBox);
+		grid.setWidget(0, 1, articleSuggestBox);
 
 		grid.setText(1, 0, "Menge: ");
 		grid.setWidget(1, 1, amountTextBox);
@@ -178,6 +185,22 @@ public class NewListEntryForm extends DialogBox {
 	 * METHODEN
 	 ***********************************************************************
 	 */
+
+	// UnitListBox
+	// Lade alle Einheit aus der Datenbank
+	private ListBox createUnitListBox() {
+		units = new String[] { "Kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter" };
+
+		if (unitsListBox == null) {
+			unitsListBox = new ListBox();
+		}
+		for (String unit : units) {
+			unitsListBox.addItem(unit);
+		}
+
+		return unitsListBox;
+	}
+
 	public void onKeyPress(KeyPressEvent event) {
 		if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 			saveButton.click();
@@ -185,9 +208,7 @@ public class NewListEntryForm extends DialogBox {
 		}
 
 	}
-	
-	
-	
+
 	public Article getNewArticle() {
 		return newArticle;
 	}
@@ -220,7 +241,7 @@ public class NewListEntryForm extends DialogBox {
 	public void setSelected(ShoppingList sl) {
 		selectedList = sl;
 	}
-	
+
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************
@@ -243,14 +264,14 @@ public class NewListEntryForm extends DialogBox {
 	private class SaveClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			
+
 			ListEntry listEntry = new ListEntry();
-			 
-				}
-			}
-			
+
+		}
+	}
+
 	public void hideDialog() {
-	this.hide();
-	
-}
+		this.hide();
+
+	}
 }
