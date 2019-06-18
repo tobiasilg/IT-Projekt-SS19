@@ -56,6 +56,7 @@ public class UserMapper {
 	            throw new SQLException("Creating user failed, no rows affected.");
 	        }
 	        
+	        
 	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
 	            if (generatedKeys.next()) {
 	                user.setId(generatedKeys.getInt(1)); //index 1 = id column
