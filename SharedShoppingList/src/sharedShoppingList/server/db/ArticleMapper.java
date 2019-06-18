@@ -178,10 +178,33 @@ public class ArticleMapper {
 		
 		String sql= "insert into article (name, unit) values ('"+ article.getName()+ "','"+article.getUnit() + "')";
 		
-	    try {
+		try {
+	    	/*
+	    	 * Einstellung dass automatisch generierte  ID's aus der DB
+	    	 * zureuckgeliefert werden.
+	    	 * Somit kann ohne einen Refresh der Artikel sofort angezeigt werden
+	    	 */
 	    	
-	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); //ID wird aus der DB geholt
+	    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
+
+	        if (affectedRows == 0) { //Kein neuer Eintrag in DB
+	            throw new SQLException("Creating article failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	        	
+	            if (generatedKeys.next()) {
+	                article.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating article failed, no ID obtained.");
+	            }
+	            
+	        }catch(SQLException e) {
+	        	e.printStackTrace();
+	        }
+	      
 	      
 	    }
 	    catch (SQLException e2) {
