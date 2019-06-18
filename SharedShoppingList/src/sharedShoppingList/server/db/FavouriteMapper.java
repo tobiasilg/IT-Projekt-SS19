@@ -1,6 +1,7 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,6 +53,8 @@ public class FavouriteMapper {
 	 * 
 	 */
 	
+	
+	
 	public Favourite createFavourite(Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
@@ -59,8 +62,24 @@ public class FavouriteMapper {
 	
 		
 		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
+			/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
+			PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);	
+			int affectedRows = stmt.executeUpdate();
+			
+			if (affectedRows == 0) {
+	            throw new SQLException("Creating user failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                favourite.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating user failed, no ID obtained.");
+	            }
+	        }
 			
 		}
 		catch (SQLException e) {
