@@ -321,7 +321,7 @@ public class ListEntryMapper {
 		    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
 
 		        if (affectedRows == 0) { //Kein neuer Eintrag in DB
-		            throw new SQLException("Creating article failed, no rows affected.");
+		            throw new SQLException("Creating ListEntry failed, no rows affected.");
 		        }
 		        
 		        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -330,7 +330,7 @@ public class ListEntryMapper {
 		                listEntry.setId(generatedKeys.getInt(1)); //index 1 = id column
 		            }
 		            else {
-		                throw new SQLException("Creating article failed, no ID obtained.");
+		                throw new SQLException("Creating ListEntry failed, no ID obtained.");
 		            }
 		        }
 			}
