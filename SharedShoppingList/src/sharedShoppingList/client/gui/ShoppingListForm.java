@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -39,16 +40,22 @@ public class ShoppingListForm extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private User u = CurrentUser.getUser();
+	
 	Group selectedGroup = null;
 	ShoppingList selectedShoppingList = null;
+	
 	ListEntry listEntry = new ListEntry();
 
-	// +"Gruppenname"
-	//private Label infoTitleLabel = new Label("Einkaufsliste:" + selectedGroup.getName());
 	private Label infoTitleLabel = new Label();
-
+	
+	private Button saveSlButton = new Button("Änderungen speichern");
+	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton;
 	private Button deleteRowButton;
+	
+	private FlowPanel buttonPanel = new FlowPanel();
+	
+	private TextBox renameTextBox = new TextBox();
 
 	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
 	private Vector<Favourite> favourites = new Vector<Favourite>();
@@ -58,6 +65,9 @@ public class ShoppingListForm extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	public ShoppingListForm() {
+		
+		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
+		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 
 	//	deleteRowButton.addClickHandler(new DeleteRowClickHandler());
 
@@ -69,8 +79,18 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-
+		
+	renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
+	renameTextBox.setWidth("15rem");
 	
+	buttonPanel.add(renameTextBox);
+	buttonPanel.add(saveSlButton);
+	buttonPanel.add(deleteSlButton);
+		
+	infoTitleLabel.addStyleName("profilTitle");
+
+	this.add(infoTitleLabel);
+	this.add(buttonPanel);
 
 	}
 
@@ -87,27 +107,32 @@ public class ShoppingListForm extends VerticalPanel {
 		this.gsltvm = gsltvm;
 	}
 
-	public Group getSelected() {
-		return selectedGroup;
-	}
+//	public Group getSelected() {
+//		return selectedGroup;
+//	}
+//
+//	public void setSelected(Group g) {
+//			
+//			selectedGroup = g;
+//		
 
-	public void setSelected(Group g) {
-		if (g != null) {
-			
-			selectedGroup = g;
-			infoTitleLabel.setText(selectedGroup.getName());
-		} else {
-			this.clear();
-		}
-
-	}
+//	}
 
 	public ShoppingList getSelectedList() {
 		return selectedShoppingList;
 	}
 
 	public void setSelected(ShoppingList sl) {
-		selectedShoppingList = sl;
+		
+		if(sl != null) {
+			
+			selectedShoppingList = sl;
+			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
+		} else {
+			infoTitleLabel.setText("Einkaufsliste: ");
+		}
+	
+		
 	}
 
 	/*
@@ -121,6 +146,26 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+	
+	private class RenameShoppingListClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	private class DeleteShoppingListClickHanlder implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	
 	private class CreateShoppingListClickHandler implements ClickHandler {
 

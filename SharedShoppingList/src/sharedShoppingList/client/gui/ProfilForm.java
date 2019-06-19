@@ -180,9 +180,8 @@ public class ProfilForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			this.deleteProfileBox.hide();
 
-			// user.setLogoutUrl(user.getLogoutUrl());
-
 			einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
+			
 		}
 
 	}
