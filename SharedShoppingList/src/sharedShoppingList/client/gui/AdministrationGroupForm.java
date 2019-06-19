@@ -359,6 +359,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			RootPanel.get("details").clear();
 			shoppingListCreationForm = new ShoppingListCreationForm();
+			shoppingListCreationForm.setGsltvm(gsltvm);
 			RootPanel.get("details").add(shoppingListCreationForm);
 
 		}
