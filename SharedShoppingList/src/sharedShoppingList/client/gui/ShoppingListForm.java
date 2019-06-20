@@ -44,7 +44,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
-
+	private ShoppingListCreationForm slcf;
 	private User u = CurrentUser.getUser();
 	
 	Group selectedGroup = null;
@@ -239,7 +239,13 @@ public class ShoppingListForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			this.deleteShoppingListDialogBox.hide();
 			
+			RootPanel.get("details").clear();
+			slcf = new ShoppingListCreationForm();
+			slcf.setGsltvm(gsltvm);
+			RootPanel.get("details").add(slcf);
+			
 			elv.delete(selectedShoppingList, new FinalDeleteListCallback());
+			
 			
 		}
 		
@@ -328,7 +334,8 @@ private DeleteShoppingListDialogBox deleteShoppingListDialogBox;
 
 		@Override
 		public void onSuccess(Void result) {
-			Notification.show("Die Einkaufsliste wurde erfolgreich gelöscht");
+			Notification.show("Die Einkaufsliste wurde erfolgreich gelöscht!");
+			
 			
 			gsltvm.removeShoppingListOfGroup(selectedShoppingList, selectedGroup);
 			
