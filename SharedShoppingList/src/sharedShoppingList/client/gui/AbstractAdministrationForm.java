@@ -1,8 +1,5 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -63,7 +60,7 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
 
-//		this.setStylePrimaryName("details");
+		this.setStylePrimaryName("details");
 
 		nameTextBox.addStyleName("TextBox");
 		addButton.addStyleName("Button");
@@ -71,33 +68,33 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		saveButton.addStyleName("speicherProfilButton.gwt-Button");
 		administrationFlexTable.addStyleName("FlexTable");
 		nameLabel.addStyleName("profilTitle");
-
+//
 		nameLabel.setHorizontalAlignment(ALIGN_CENTER);
-		nameLabel.setWidth("100%");
+//		nameLabel.setWidth("100%");
+//
+//		hpCreate.setWidth("50%");
+//		hpCreate.setCellHorizontalAlignment(nameTextBox, ALIGN_LEFT);
+//		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_LEFT);
+//		hpCreate.setCellHorizontalAlignment(unitListBox, ALIGN_LEFT);
+//		hpCreate.setCellWidth(nameTextBox, "300");
 
-		hpCreate.setWidth("50%");
-		hpCreate.setCellHorizontalAlignment(nameTextBox, ALIGN_LEFT);
-		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_LEFT);
-		hpCreate.setCellHorizontalAlignment(unitListBox, ALIGN_LEFT);
-		hpCreate.setCellWidth(nameTextBox, "300");
-
-		administrationFlexTable.setWidth("70%");
-		administrationFlexTable.setBorderWidth(2);
-		administrationFlexTable.setSize("100%", "100%");
-
-		administrationFlexTable.setCellPadding(10);
-
-		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
-
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-					addButton.click();
-					nameTextBox.setText("");
-				}
-
-			}
-		});
+//		administrationFlexTable.setWidth("70%");
+//		administrationFlexTable.setBorderWidth(1);
+//		administrationFlexTable.setSize("100%", "100%");
+//
+//		administrationFlexTable.setCellPadding(10);
+//
+//		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
+//
+//			@Override
+//			public void onKeyPress(KeyPressEvent event) {
+//				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+//					addButton.click();
+//					nameTextBox.setText("");
+//				}
+//
+//			}
+//		});
 	}
 
 }
