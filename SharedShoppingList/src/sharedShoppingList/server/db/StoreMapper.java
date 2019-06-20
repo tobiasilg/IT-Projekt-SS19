@@ -2,6 +2,7 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -42,13 +43,28 @@ public class StoreMapper {
 	public Store insert(Store store) {
 		Connection con = DBConnection.connection();
 
-		String sql = "insert into store (name, createDate, modDate) values ('" + store.getName() + "',"
-				+ store.getCreateDate() + "," + store.getModDate() + ")";
+		String sql = "INSERT INTO store (name) VALUES ('" + store.getName() + "')";
 
 		try {
+			/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
+			
+			PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+	    	int affectedRows = stmt.executeUpdate();
 
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(sql);
+	        if (affectedRows == 0) {
+	            throw new SQLException("Creating store failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                store.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating store failed, no ID obtained.");
+	            }
+	        }
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -118,10 +134,10 @@ public class StoreMapper {
 	public Store update(Store store) {
 		Connection con = DBConnection.connection();
 
-		//String sql = "UPDATE store " + "SET name=\"  ' " + store.getName() + "   ' \", " + "WHERE id=" + store.getId();
-		
-		String sql= "UPDATE store SET name= '"+ store.getName()+"' WHERE id= "+ store.getId();
+		// String sql = "UPDATE store " + "SET name=\" ' " + store.getName() + " ' \", "
+		// + "WHERE id=" + store.getId();
 
+		String sql = "UPDATE store SET name= '" + store.getName() + "' WHERE id= " + store.getId();
 
 		try {
 			Statement stmt = con.createStatement();

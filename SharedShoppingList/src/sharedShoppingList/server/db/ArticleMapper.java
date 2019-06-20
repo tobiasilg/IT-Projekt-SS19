@@ -176,7 +176,7 @@ public class ArticleMapper {
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article (name, createDate, modDate, unit) values ('"+ article.getName()+ "'," + article.getCreateDate()+ ","+ article.getModDate() +",'"+article.getUnit() + "')";
+		String sql= "insert into article (name, unit) values ('"+ article.getName()+ "','"+article.getUnit() + "')";
 		
 	    try {
 	    	
@@ -198,7 +198,7 @@ public class ArticleMapper {
 		Connection con = DBConnection.connection();
 
 		
-		String sql= "UPDATE store SET name= '"+ article.getName()+"' WHERE id= "+ article.getId();
+		String sql= "UPDATE article SET name= '"+ article.getName()+"', unit='"+article.getUnit()+"' WHERE id= "+ article.getId();
 
 
 		try {

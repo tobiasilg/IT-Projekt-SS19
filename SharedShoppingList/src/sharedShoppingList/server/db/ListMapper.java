@@ -53,7 +53,7 @@ public class ListMapper {
 	public ShoppingList findById(int id) {
 	Connection con = DBConnection.connection();
 		
-		String sql="select * from shoppingList where id=" + id;
+		String sql="select * from shoppinglist where id=" + id;
 		try {
 
 			Statement stmt = con.createStatement();
@@ -85,7 +85,7 @@ public class ListMapper {
 	
 	public Vector<ShoppingList> findAll(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from shoppingList order by name";
+		String sql = "select * from shoppinglist order by name";
 		
 		Vector<ShoppingList> result= new Vector<ShoppingList>();
 		try {
@@ -114,7 +114,7 @@ public class ListMapper {
 	
 	public Vector<ShoppingList> findAllByGroup(Group group){
 		Connection con = DBConnection.connection();
-		String sql = "select * from shoppingList where groupid=" + group.getId();
+		String sql = "select * from shoppinglist where groupid=" + group.getId();
 		
 		Vector<ShoppingList> result= new Vector<ShoppingList>();
 		try {
@@ -144,7 +144,7 @@ public class ListMapper {
 	public void delete (ShoppingList shoppingList ) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from shoppingList where id=" + shoppingList.getId() +")";
+		String sql= "delete from shoppinglist where id=" + shoppingList.getId() +")";
 		
 	    try {
 	    	
@@ -165,7 +165,7 @@ public class ListMapper {
 	public void insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into shoppingList (id, name, createDate, modDate, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ "," + shoppinglist.getCreateDate()+ ","+ shoppinglist.getModDate()+","+shoppinglist.getGroupId()+ ")";
+		String sql= "insert into shoppinglist (id, name, groupid) values ("+shoppinglist.getId() + "," + shoppinglist.getName()+ ","+shoppinglist.getGroupId()+ ")";
 		
 	    try {
 	    	
@@ -184,7 +184,7 @@ public class ListMapper {
 	
 	public ShoppingList update(ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE shoppinglist " + "SET name=\"" + shoppinglist.getName() + "\", " + "WHERE id=" + shoppinglist.getId();
+		String sql= "UPDATE shoppinglist SET name= '"+ shoppinglist.getName()+"' WHERE id= "+ shoppinglist.getId();
 
 		try {
 			Statement stmt = con.createStatement();

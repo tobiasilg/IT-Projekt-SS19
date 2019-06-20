@@ -281,11 +281,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 **/
 	public Store createStore(String name) throws IllegalArgumentException {
 		Store store = new Store();
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 */
-		store.setId(1);
+		
+		
+		
 		store.setName(name);
 
 		return this.storeMapper.insert(store);
@@ -446,12 +444,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Group group = new Group();
 		group.setName(name);
 
-        /** ACHTUNG! NUR VORLÄUFIG!
-        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
-        * @TODO ID-Verabe anpassen.
-        */
-		group.setId(1);
-
 		this.groupMapper.insert(group);
 		
 		return group;
@@ -551,9 +543,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	/** Create einer neuen Shoppingliste */
 
-	public ShoppingList createShoppingList(String name) throws IllegalArgumentException {
+	public ShoppingList createShoppingList(String name, Group group) throws IllegalArgumentException {
+		
 		ShoppingList shoppingList = new ShoppingList();
 		shoppingList.setName(name);
+		shoppingList.setGroupId(group.getId());
 
         /** ACHTUNG! NUR VORLÄUFIG!
         * Die ID muss später in aufsteigender Reihenfolge vergeben werden

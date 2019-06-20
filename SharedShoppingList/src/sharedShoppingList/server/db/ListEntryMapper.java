@@ -307,7 +307,7 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "insert into listentry (name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
+			String sql= "insert into listentry (name, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
 		    try {
 		    	
@@ -327,8 +327,9 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-			String sql="UPDATE listentry " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
-					+ listentry.getAmount() + "\" " + "WHERE id=" + listentry.getId();
+		
+			
+			String sql= "UPDATE listentry SET articleid= "+ listentry.getArticleId()+", amount='"+listentry.getAmount()+"', storeid="+listentry.getStoreId()+", userid="+listentry.getUserId()+", checked="+listentry.isChecked()+" WHERE id= "+ listentry.getId();
 
 			try {
 				Statement stmt = con.createStatement();
