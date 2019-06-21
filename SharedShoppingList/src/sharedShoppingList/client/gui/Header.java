@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+//import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -34,6 +35,8 @@ public class Header extends FlowPanel {
 	private Anchor report = new Anchor("Report");
 	private Anchor article = new Anchor("Artikel");
 	private Anchor store = new Anchor("Store");
+	
+//	private Button test = new Button("test");
 
 	// Erstellen des Logout Icons
 	Image logout = new Image();
@@ -41,6 +44,8 @@ public class Header extends FlowPanel {
 	private ProfilForm pf;
 	private ArticleForm af;
 	private StoreForm sf;
+	
+//	private RegistrationForm rf;
 
 	public Header() {
 		super();
@@ -97,6 +102,8 @@ public class Header extends FlowPanel {
 
 		this.add(headerLeft);
 		this.add(headerRight);
+		
+//		this.add(test);
 
 		/*
 		 * Hinzufügen der Click-Handler an Anchors, Logo und Icon
@@ -107,8 +114,22 @@ public class Header extends FlowPanel {
 		store.addClickHandler(new ShowStoreClickHandler());
 		headerTitle.addClickHandler(new ShowSartPageClickHandler());
 		logout.addClickHandler(new ShowProfileClickHandler());
+		
+//		test.addClickHandler(new TestClickHandler());
 
 	}
+	
+//	private class TestClickHandler implements ClickHandler {
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//			RootPanel.get("details").clear();
+//			rf = new RegistrationForm();
+//			RootPanel.get("details").add(rf);
+//			
+//		}
+//		
+//	}
 
 	/*
 	 * Die Klasse ShowReportClickHadler ermöglicht die Weiterletung zum Report

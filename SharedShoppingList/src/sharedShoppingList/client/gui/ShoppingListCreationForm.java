@@ -211,6 +211,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 			//elv.createShoppingList(shoppingListNameTextBox.getValue(), new ListCreationCallback());
 			
 			showForm = new ShoppingListForm();
+			showForm.setGsltvm(gsltvm);
 			elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup, new ListCreationCallback(selectedGroup));
 
 			}
@@ -243,7 +244,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 		@Override
 		public void onSuccess(ShoppingList result) {
 			
-			Notification.show(String.valueOf(result.getId()));
+			Notification.show("Die Shoppingliste wurde erfolgreich erstellt!");
 			
 				RootPanel.get("details").clear();
 				selectedShoppingList = result;
