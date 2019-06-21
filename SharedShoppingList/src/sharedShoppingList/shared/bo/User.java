@@ -13,6 +13,9 @@ public class User extends BusinessObject{
 	private String username;
 	private String gmail;
 	
+	private boolean isLoggedIn=false;
+	private String loginUrl;
+	
 	public User() {
 		super();	
 	}
@@ -37,5 +40,44 @@ public class User extends BusinessObject{
 	public void setGmail(String gmail) {
 		this.gmail = gmail;
 	}
+
+	public int getGroupid() {
+		return groupid;
+	}
+
+	public void setGroupid(int groupid) {
+		this.groupid = groupid;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	
+	/**
+	 * Login Information
+	 * 
+	 */
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
+
+	public String getLoginUrl() {
+		return loginUrl;
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
+	
+	
 
 }
