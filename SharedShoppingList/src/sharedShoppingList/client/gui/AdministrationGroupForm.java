@@ -359,6 +359,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			RootPanel.get("details").clear();
 			shoppingListCreationForm = new ShoppingListCreationForm();
+			shoppingListCreationForm.setGsltvm(gsltvm);
 			RootPanel.get("details").add(shoppingListCreationForm);
 
 		}
@@ -452,6 +453,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			if (selectedGroup == null) {
 				Window.alert("Es wurde keine Gruppe ausgwählt");
 			} else {
+				RootPanel.get("details").clear();
 				elv.delete(selectedGroup, new DeleteGroupCallback());
 			}
 		

@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
@@ -36,9 +35,9 @@ public class ShoppingListCreationForm extends FlowPanel {
 	User user = CurrentUser.getUser();
 	
 	GroupShoppingListTreeViewModel gsltvm = null;
-	private Group selectedGroup = null;
+	private Group selectedGroup;
 	private ShoppingList selectedShoppingList = null;
-	ShoppingListForm showForm = new ShoppingListForm();
+	ShoppingListForm showForm = null;
 
 	private FlowPanel shoppingListPanel = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -46,8 +45,9 @@ public class ShoppingListCreationForm extends FlowPanel {
 	private Label shoppingListLabel = new Label("Neue Shoppingliste");
 	private Label insertLabel = new Label("ShoppingList-Name eingeben:");
 
-	private DynamicTextbox shoppingListNameTextBox = new DynamicTextbox();
-
+	//private DynamicTextbox shoppingListNameTextBox = new DynamicTextbox();
+	private TextBox shoppingListNameTextBox = new TextBox();
+	
 	private Button saveButton = new Button("Speichern");
 	private Button cancelButton = new Button("Abbrechen");
 
@@ -56,7 +56,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 	/*
 	 * 
 	 */
-	private FieldVerifier verifier = new FieldVerifier();
+//	private FieldVerifier verifier = new FieldVerifier();
 
 	/***********************************************************************
 	 * Konstruktor
@@ -143,40 +143,40 @@ public class ShoppingListCreationForm extends FlowPanel {
 	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
 	 * FieldVerifyer benötigt werden.
 	 */
-	private boolean checkTextboxesSaveable() {
-
-		shoppingListNameTextBox.setSaveable(
-				verifier.checkValue(shoppingListNameTextBox.getlabelText(), shoppingListNameTextBox.getText()));
-		if (shoppingListNameTextBox.saveable == false) {
-			return false;
-		}
-		return true;
-	}
+//	private boolean checkTextboxesSaveable() {
+//
+//		shoppingListNameTextBox.setSaveable(
+//				verifier.checkValue(shoppingListNameTextBox.getlabelText(), shoppingListNameTextBox.getText()));
+//		if (shoppingListNameTextBox.saveable == false) {
+//			return false;
+//		}
+//		return true;
+//	}
 
 	/**
 	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
 	 * definiert.
 	 */
-	class DynamicTextbox extends TextBox {
-		boolean saveable = true;
-		String labelText;
-
-		public boolean isSaveable() {
-			return saveable;
-		}
-
-		public void setSaveable(boolean saveable) {
-			this.saveable = saveable;
-		}
-
-		public String getlabelText() {
-			return labelText;
-		}
-
-		public void setlabelText(String labelText) {
-			this.labelText = labelText;
-		}
-	}
+//	class DynamicTextbox extends TextBox {
+//		boolean saveable = true;
+//		String labelText;
+//
+//		public boolean isSaveable() {
+//			return saveable;
+//		}
+//
+//		public void setSaveable(boolean saveable) {
+//			this.saveable = saveable;
+//		}
+//
+//		public String getlabelText() {
+//			return labelText;
+//		}
+//
+//		public void setlabelText(String labelText) {
+//			this.labelText = labelText;
+//		}
+//	}
 
 	/***********************************************************************
 	 * ClickHandler
@@ -201,18 +201,23 @@ public class ShoppingListCreationForm extends FlowPanel {
 	private class SaveListCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
+
+			selectedGroup = gsltvm.getSelectedGroup();
+		
+			if(shoppingListNameTextBox.getValue() == "") {
+			Window.alert("Einkaufsliste muss einen Namen besitzen !");
 			
-		//	if(selectedGroup == null ) {
-		//		Window.alert("Gruppe muss ausgewählt werden");
-		//	}else {
+			}else {
 			//elv.createShoppingList(shoppingListNameTextBox.getValue(), new ListCreationCallback());
-			elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup, new ListCreationCallback());
+			
+			showForm = new ShoppingListForm();
+			showForm.setGsltvm(gsltvm);
+			elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup, new ListCreationCallback(selectedGroup));
 
-			Window.alert("TextBox Wert; " + shoppingListNameTextBox.getValue());
-		//	}
+			}
 		}
-
 	}
+	
 
 	/***********************************************************************
 	 * AsyncCallbacks
@@ -224,6 +229,12 @@ public class ShoppingListCreationForm extends FlowPanel {
 	 */
 	private class ListCreationCallback implements AsyncCallback<ShoppingList> {
 		
+		Group group = null; 
+	
+		public ListCreationCallback(Group selectedGroup) {
+			group = selectedGroup;
+		}
+
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Shoppingliste konnte nicht erstellt werden");
@@ -232,18 +243,24 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ShoppingList result) {
-			Notification.show("Die Shoppingliste wurde erfolgreich erstellt");
-
+			
+			Notification.show("Die Shoppingliste wurde erfolgreich erstellt!");
+			
 				RootPanel.get("details").clear();
 				selectedShoppingList = result;
 				showForm.setSelected(selectedShoppingList);
 				RootPanel.get("details").add(showForm);
+				
+				gsltvm.setSelectedList(selectedShoppingList);
+				gsltvm.getSelectionModel().setSelected(selectedShoppingList, true);
 
-				gsltvm.addShoppingListOfGroup(selectedShoppingList, selectedGroup);
+				gsltvm.addShoppingListOfGroup(selectedShoppingList, group);
+				
+				
 		
 			}
 
 		}
-
-	}
+}
+	
 

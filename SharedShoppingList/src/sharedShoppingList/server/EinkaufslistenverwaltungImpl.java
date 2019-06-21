@@ -132,12 +132,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Article article = new Article();
 		article.setName(name);
 		article.setUnit(unit);
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 * autoincrement=1
-		 */
-		article.setId(1);
+		
+	
 
 		return this.articleMapper.insert(article);
 	}
@@ -352,12 +348,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public ListEntry createListentry(String name) throws IllegalArgumentException {
 		ListEntry listentry = new ListEntry();
 
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 */
-
-		listentry.setId(1);
+	
 		listentry.setName(name);
 		/*
 		 * 
@@ -549,11 +540,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		shoppingList.setName(name);
 		shoppingList.setGroupId(group.getId());
 
-        /** ACHTUNG! NUR VORLÄUFIG!
-        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
-        * @TODO ID-Verabe anpassen.
-        */
-		shoppingList.setId(1);
 
 		this.listMapper.insert(shoppingList);
 		

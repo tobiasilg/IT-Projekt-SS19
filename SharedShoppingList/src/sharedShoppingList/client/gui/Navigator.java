@@ -38,7 +38,7 @@ public class Navigator extends FlowPanel {
 
 	private Button neuButton = new Button("NEU");
 
-	private Label navTitle = new Label("Meine Gruppen");
+	private Label navTitle = new Label("Meine Gruppe");
 
 	// Erstellen des Images für Favorite Article
 	Image star = new Image();
