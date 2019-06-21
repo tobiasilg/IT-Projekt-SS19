@@ -15,6 +15,7 @@ public class User extends BusinessObject{
 	
 	private boolean isLoggedIn=false;
 	private String loginUrl;
+	private String logoutUrl;
 	
 	public User() {
 		super();	
@@ -77,6 +78,16 @@ public class User extends BusinessObject{
 	public void setLoginUrl(String loginUrl) {
 		this.loginUrl = loginUrl;
 	}
+
+	public String getLogoutUrl() {
+		return logoutUrl;
+	}
+
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
+	}
+	
+	
 	
 	
 
