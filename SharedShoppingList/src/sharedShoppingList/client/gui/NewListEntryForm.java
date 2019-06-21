@@ -38,8 +38,6 @@ public class NewListEntryForm extends DialogBox {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	Group selectedGroup;
 	ShoppingList selectedList;
-	Article selectedArticle;
-	Article newArticle;
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -50,15 +48,15 @@ public class NewListEntryForm extends DialogBox {
 	String[] units;
 	// Vector<Unit> units = new Vector<Unit>();
 
-	private Grid grid = new Grid(5, 5);
+	private Grid grid = new Grid(5, 3);
 
 	private TextBox amountTextBox = new TextBox();
 	private ListBox unitsListBox = new ListBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
 
-	private Button cancelButton = new Button("abbrechen");
-	private Button saveButton = new Button("hinzufügen");
+	private Button cancelButton = new Button("Abrechen");
+	private Button saveButton = new Button("Neu");
 
 	/***********************************************************************
 	 * Konstruktor
@@ -75,7 +73,7 @@ public class NewListEntryForm extends DialogBox {
 	 * onLoad METHODEN
 	 ***********************************************************************
 	 */
-	public void onLOad() {
+	public void onLoad() {
 
 		/*
 		 * Lade alle Artikel aus der Datenbank in die SuggestBox
@@ -177,6 +175,9 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(5, 2, saveButton);
 		grid.setWidget(5, 3, cancelButton);
 
+		saveButton.addStyleName("buttonAbfrage");
+		cancelButton.addStyleName("buttonAbfrage");
+
 		this.add(grid);
 
 	}
@@ -207,14 +208,6 @@ public class NewListEntryForm extends DialogBox {
 			articleSuggestBox.setText("");
 		}
 
-	}
-
-	public Article getNewArticle() {
-		return newArticle;
-	}
-
-	public void setNewArticle(Article newArticle) {
-		this.newArticle = newArticle;
 	}
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
@@ -274,4 +267,5 @@ public class NewListEntryForm extends DialogBox {
 		this.hide();
 
 	}
+	
 }
