@@ -49,7 +49,7 @@ public class NewListEntryForm extends DialogBox {
 	String[] units;
 	// Vector<Unit> units = new Vector<Unit>();
 
-	private Grid grid = new Grid(5, 3);
+	private Grid grid = new Grid(6, 6);
 
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
@@ -67,6 +67,7 @@ public class NewListEntryForm extends DialogBox {
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
 
+		
 	}
 
 	/***********************************************************************
@@ -167,14 +168,6 @@ public class NewListEntryForm extends DialogBox {
 		// setting itemcount value to 1 turns listbox into a drop-down list
 		listBoxUnits.setVisibleItemCount(1);
 
-//			units = new String[] { "Kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter" };
-//
-//			if (unitsListBox == null) {
-//				unitsListBox = new ListBox();
-//			}
-//			for (String unit : units) {
-//				unitsListBox.addItem(unit);
-//			}
 
 		/***********************************************************************
 		 * Building the grid
@@ -200,8 +193,8 @@ public class NewListEntryForm extends DialogBox {
 
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
-
-		this.add(grid);
+		
+		
 
 	}
 
@@ -257,6 +250,7 @@ public class NewListEntryForm extends DialogBox {
 			NewListEntryForm nlef = new NewListEntryForm();
 			nlef.setSelected(selectedList);
 			nlef.setSelectedGroup(selectedGroup);
+			slf = new ShoppingListForm();
 			RootPanel.get("details").add(slf);
 
 		}
