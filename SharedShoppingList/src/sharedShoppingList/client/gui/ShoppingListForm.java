@@ -71,6 +71,10 @@ public class ShoppingListForm extends VerticalPanel {
 	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
 	private Vector<Vector<Object>> datas = new Vector<Vector<Object>>();
 
+	ListEntry listEntry = new ListEntry();
+	private CellTable<Vector<Object>> table = new Vector<Vector<Object>>();
+
+
 	private Label infoTitleLabel = new Label();
 
 	private Button saveSlButton = new Button("Änderungen speichern");
