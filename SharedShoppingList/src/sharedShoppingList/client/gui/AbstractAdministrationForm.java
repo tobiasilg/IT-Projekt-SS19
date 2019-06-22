@@ -24,12 +24,13 @@ import sharedShoppingList.shared.FieldVerifier;
 public abstract class AbstractAdministrationForm extends VerticalPanel {
 
 	private Label nameLabel = new Label(nameForm());
-	protected FlexTable administrationFlexTable = (createTable());
+	protected TextBox nameTextBox = new TextBox();
+	protected ListBox unitListBox = createUnitListBox();
+	protected FlexTable administrationFlexTable = createTable();
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("Änderungen speichern");
 	protected Button addButton = new Button("hinzufuegen");
-	protected TextBox nameTextBox = new TextBox();
-	protected ListBox unitListBox = (createUnitListBox());
+
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
 	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
