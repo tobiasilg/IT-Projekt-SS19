@@ -532,52 +532,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 /** SHOPPINGLISTE @author Tobi **/
 
 	
-	/** Create einer neuen Shoppingliste
-	 * 
-	 *@author Nico Weiler  
-	 **/
+	/** Create einer neuen Shoppingliste */
 
 	public ShoppingList createShoppingList(String name, Group group) throws IllegalArgumentException {
 		
-		/*
-		 * als erstes wird ein neues Shoppinglist Object erstellt
-		 */
 		ShoppingList shoppingList = new ShoppingList();
 		shoppingList.setName(name);
-		/*
-		 * GruppenId und somit die Zuordnung zu einer bestimmten Gruppe wird gesetzt
-		 */
 		shoppingList.setGroupId(group.getId());
-		
-		/*
-		 * Um die auto generierte ID aus der DB zu erhalten wird zuerst due insert Methode aufgerufen
-		 */
+
+
 		this.listMapper.insert(shoppingList);
-		
-		
-		/*
-		 * alle ListEntries in einem Vector abspeichern
-		 */
-		Vector<ListEntry> listentries = ListEntryMapper.listEntryMapper().findAllListEntries();
-		
-		for(ListEntry le: listentries) {
-			
-			le= ListEntryMapper.listEntryMapper().checkIfFav(le, group);
-			
-			/*
-			 * Prüfen ob Listeneintrag ein Favorit ist
-			 */
-			if(le.isChecked()) {
-				ListEntry l = new ListEntry();
-				l.setArticle(le.getArticle());
-				l.setShoppinglistId(le.getShoppinglistId());
-				l.setAmount(le.getAmount());
-				l.setStoreId(le.getStoreId());
-				l.setUserId(le.getUserId());
-				
-				ListEntryMapper.listEntryMapper().insert(l);
-			}
-		}
 		
 		return shoppingList;
 	}

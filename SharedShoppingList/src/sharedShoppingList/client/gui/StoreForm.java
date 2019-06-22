@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -56,26 +57,17 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	}
 
-	/*
-	 * Methode, die den Namen der Form zurückgibt
-	 */
 	@Override
 	protected String nameForm() {
 
 		return "Storeverwaltung";
 	}
 
-	/*
-	 * Methode, die eine UnitListBox mit null zurückgibt
-	 */
 	@Override
 	protected ListBox createUnitListBox() {
 		return null;
 	}
 
-	/*
-	 * Methode, die eine FlexTable erstellt
-	 */
 	@Override
 	protected FlexTable createTable() {
 		elv = ClientsideSettings.getEinkaufslistenverwaltung();
@@ -190,9 +182,6 @@ public class StoreForm extends AbstractAdministrationForm {
 
 	}
 
-	/*
-	 * CustomButton wurde erstellt um Objekte in ihm zu speichern
-	 */
 	private class CustomButton extends Button {
 		Store store;
 
@@ -227,9 +216,6 @@ public class StoreForm extends AbstractAdministrationForm {
 		}
 	}
 
-	/*
-	 * CustomTextBox wurde erstellt um Objekte in ihr zu speichern
-	 */
 	private class CustomTextBox extends TextBox {
 		Store store;
 
@@ -258,10 +244,11 @@ public class StoreForm extends AbstractAdministrationForm {
 
 				textbox.getStore().setName(textbox.getValue());
 
-//				Window.alert("TextBox Objekt: " + textbox.getStore());
-//				Window.alert("Store name: " + textbox.getStore().getName());
-//				Window.alert("Store ID: " + textbox.getStore().getId());
+				Window.alert("TextBox Objekt: " + textbox.getStore());
+				Window.alert("Store name: " + textbox.getStore().getName());
+				Window.alert("Store ID: " + textbox.getStore().getId());
 				elv.save(textbox.getStore(), new SaveStoreCallback());
+//				Notification.show("Der Store konnte nicht gespeichert werden");
 
 			}
 		}
@@ -292,6 +279,7 @@ public class StoreForm extends AbstractAdministrationForm {
 
 		@Override
 		public void onSuccess(Void result) {
+//			Window.alert();
 
 		}
 

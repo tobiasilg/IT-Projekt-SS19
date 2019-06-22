@@ -68,10 +68,6 @@ public class ProfilForm extends FlowPanel {
 		usernameTextBox.addStyleName("profilTextBox");
 		nameTextBox.addStyleName("profilTextBox");
 		mailTextBox.addStyleName("profilTextBox");
-		
-		usernameTextBox.setWidth("20em");
-		nameTextBox.setWidth("20em");
-		mailTextBox.setWidth("20em");
 
 		topPanel.addStyleName("topPanel");
 		speicherButtonPanel.addStyleName("profilLabel");
@@ -99,31 +95,16 @@ public class ProfilForm extends FlowPanel {
 		speicherButtonPanel.add(speicherProfilButton);
 		profilBox.add(speicherButtonPanel);
 
-//		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: " + user.getUserName());
-//		nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: " + user.getName());
-//		mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse:" + user.getGmail());
-		
-		if (user == null) {
-			usernameTextBox.setText("Es gibt noch keinen Username");
-		} else {
-		usernameTextBox.setText(user.getUsername());
-		}
-		
-		if (user == null) {
-			nameTextBox.setText("Es gibt noch keinen Namen");
-		} else {
-			nameTextBox.setText(user.getUsername());
-		}
-		
-		if (user == null) {
-			mailTextBox.setText("Es gibt noch keine Mailadresse");
-		} else {
-			mailTextBox.setText(user.getUsername());
-		}
+		// usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username:
+		// " + user.getUserName());
+		// nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: " +
+		// user.getName());
+		// mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse:
+		// " + user.getGmail());
 
-//		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: ");
-//		nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: ");
-//		mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse: ");
+		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: ");
+		nameTextBox.getElement().setPropertyString("placeholder", "Dein Name: ");
+		mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse: ");
 
 		/*
 		 * Hinzufügen der Click-Handler an Anchors, Logo und Icon
@@ -200,7 +181,7 @@ public class ProfilForm extends FlowPanel {
 			this.deleteProfileBox.hide();
 
 			einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
-
+			
 		}
 
 	}
@@ -319,9 +300,9 @@ public class ProfilForm extends FlowPanel {
 			} else {
 				user.setName(nameNeu);
 			}
-
+			
 			einkaufslistenverwaltung.save(user, new UpdateUserCallback());
-
+			
 			safeProfileBox.hide();
 
 		}
@@ -340,7 +321,7 @@ public class ProfilForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(User result) {
-			user = result;
+			user = result; 
 		}
 
 	}
