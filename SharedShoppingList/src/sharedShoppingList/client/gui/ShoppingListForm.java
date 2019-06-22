@@ -67,7 +67,7 @@ public class ShoppingListForm extends VerticalPanel {
 	ListEntry listEntry = new ListEntry();
 	private CellTable<ArrayList<Object>> table = new CellTable<ArrayList<Object>>();
 
-	private Label infoTitleLabel = new Label(selectedShoppingList.getName());
+	private Label infoTitleLabel = new Label();
 
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
