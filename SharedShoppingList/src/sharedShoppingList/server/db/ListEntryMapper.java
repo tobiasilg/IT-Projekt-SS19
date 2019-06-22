@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
-import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
@@ -364,39 +363,6 @@ public class ListEntryMapper {
 
 			
 			return listentry;
-		}
-		
-		public ListEntry checkIfFav (ListEntry listEntry, Group group) {
-						
-			ListEntry result = new ListEntry();
-			
-			
-			Connection con= DBConnection.connection();
-			
-			String sql = "SELECT * FROM favourite where groupid=" + group.getId() + "AND listentryid=" + listEntry.getId();
-			ListEntry result1= new ListEntry();
-			
-			try {
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(sql);
-				
-				if(rs.next()) {
-					result1.setId(rs.getInt("id"));
-					result1 = this.findByID(result1.getId());
-					
-					result1.setChecked(true);
-					
-				}
-
-				
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			return result1;
-			
-			
 		}
 
 
