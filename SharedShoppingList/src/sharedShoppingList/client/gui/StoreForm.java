@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -34,6 +35,9 @@ public class StoreForm extends AbstractAdministrationForm {
 	ArrayList<CustomTextBox> textboxes;
 
 	Store newStore;
+
+	// Erstellen des Logout Icons
+	Image delete = new Image();
 
 	public Store getNewStore() {
 		return newStore;
@@ -125,6 +129,7 @@ public class StoreForm extends AbstractAdministrationForm {
 		// Erstelle x Button
 		CustomButton removeButton = new CustomButton();
 		removeButton.setStore(store);
+		removeButton.setStylePrimaryName("deleteStoreAndArticleButton");
 
 		removeButton.addClickHandler(new DeleteStoreClickHandler(removeButton));
 
@@ -198,6 +203,7 @@ public class StoreForm extends AbstractAdministrationForm {
 		public void setStore(Store store) {
 			this.store = store;
 		}
+
 	}
 
 	private class DeleteStoreClickHandler implements ClickHandler {

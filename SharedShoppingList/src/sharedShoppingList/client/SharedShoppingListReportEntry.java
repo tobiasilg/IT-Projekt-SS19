@@ -12,7 +12,7 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 	RootPanel rootPanelHeaderReport = RootPanel.get("header");
 
 	MainPanelReport mainPanelReport = new MainPanelReport();
-	RootPanel rootPanelMainPanelReport = RootPanel.get("details");
+	RootPanel rootPanelMainPanelReport = RootPanel.get("navigation");
 
 	public void onModuleLoad() {
 
