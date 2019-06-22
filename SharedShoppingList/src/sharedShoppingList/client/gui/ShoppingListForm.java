@@ -56,7 +56,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private final MultiSelectionModel<ArrayList<Object>> multiSelectionModel = new MultiSelectionModel<ArrayList<Object>>();
 
 	private ShoppingListCreationForm slcf;
- master
+
 	private User u = CurrentUser.getUser();
 
 	Group selectedGroup = null;
