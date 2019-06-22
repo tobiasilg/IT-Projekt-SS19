@@ -20,7 +20,7 @@ import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
-import sharedShoppingList.shared.bo.ListEntry;
+//import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -66,6 +66,7 @@ public class NewListEntryForm extends DialogBox {
 
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
+		
 
 		
 	}
@@ -83,7 +84,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("1. failure");
 			}
 
 			public void onSuccess(Vector<Article> result) {
@@ -105,7 +106,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("2. failure");
 			}
 
 			public void onSuccess(Vector<User> result) {
@@ -123,7 +124,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("3. failure");
 			}
 
 			public void onSuccess(Vector<Store> result) {
@@ -194,7 +195,7 @@ public class NewListEntryForm extends DialogBox {
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
 		
-		
+		this.add(grid);
 
 	}
 
