@@ -6,8 +6,6 @@ import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.ClickableTextCell;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,13 +14,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -31,16 +26,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
-import sharedShoppingList.shared.bo.Favourite;
+
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -69,6 +61,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private ListEntry listEntry = null;
 	private NewListEntryForm nlef = null;
 
+
 	private CellTable<Vector<Object>> cellTable = new CellTable<Vector<Object>>();
 	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
 	private Vector<Vector<Object>> datas = new Vector<Vector<Object>>();
@@ -79,7 +72,6 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button deleteRowButton;
 	
 	private ButtonCell removeButton = new ButtonCell();
 
@@ -167,7 +159,7 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public String getValue(Vector<Object> object) {
 
-				return object.get(0).toString();
+				return object.get(1).toString();
 
 			}
 		};
@@ -180,7 +172,7 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public String getValue(Vector<Object> object) {
 
-				return object.get(1).toString();
+				return object.get(2).toString();
 
 			}
 		};
@@ -193,7 +185,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 			public String getValue(Vector<Object> object) {
 
-				return object.get(2).toString();
+				return object.get(3).toString();
 
 			}
 		};
@@ -206,7 +198,7 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public String getValue(Vector<Object> object) {
 
-				return object.get(3).toString();
+				return object.get(4).toString();
 
 			}
 		};
@@ -219,7 +211,7 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public String getValue(Vector<Object> object) {
 
-				return object.get(4).toString();
+				return object.get(5).toString();
 
 			}
 		};
@@ -267,6 +259,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	public void onLoad() {
 
+
 		// Füge alle ListenEinträge aus der Datenbank hinzu
 //
 //		elv.getAllListEntriesByShoppingList(this.getSelectedList(),
@@ -288,11 +281,11 @@ public class ShoppingListForm extends VerticalPanel {
 //								Vector<Object> listEntries = new Vector<>();
 //
 //								listEntries.add(k);
-//								listEntries.add(result.get(k).get(0));
 //								listEntries.add(result.get(k).get(1));
 //								listEntries.add(result.get(k).get(2));
 //								listEntries.add(result.get(k).get(3));
 //								listEntries.add(result.get(k).get(4));
+//								listEntries.add(result.get(k).get(5));
 //
 //								datas.add(listEntries);
 //							}
@@ -323,7 +316,6 @@ public class ShoppingListForm extends VerticalPanel {
 //          }
 //       }
 //    });
-
 	}
 
 	/***********************************************************************
