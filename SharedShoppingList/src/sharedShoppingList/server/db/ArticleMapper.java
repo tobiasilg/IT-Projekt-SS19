@@ -101,7 +101,7 @@ public class ArticleMapper {
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				article.setFavourite(rs.getBoolean("favourite"));
+				
 				
 				result.addElement(article);
 			}
@@ -132,7 +132,7 @@ public class ArticleMapper {
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				article.setFavourite(rs.getBoolean("favourite"));
+				
 				
 				result.addElement(article);
 			}

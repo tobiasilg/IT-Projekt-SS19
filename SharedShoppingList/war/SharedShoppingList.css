@@ -292,10 +292,17 @@ body {
 .profilTextBox.gwt-TextBox {
 	box-sizing: border-box;
 	clear: both;
-	font-size: 1rem;
+	font-size: 3px;
 	position: relative;
 	text-align: left;
+	padding: 5px 4px;
+    border: 1px solid #ccc;
+    border-top: 1px solid #999;
+    font-size: small;
+    font-family: Arial Unicode MS, Arial, sans-serif;
+	
 }
+
 
 .speicherProfilButton.gwt-Button {
 	background: #00d1b2;
@@ -398,4 +405,7 @@ body {
 }
 .speicherGruppeButton {
 	color: white;
+}
+.registrationButtonPanel {
+	justify-content: center;
 }

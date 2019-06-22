@@ -1,12 +1,18 @@
 package sharedShoppingList.client.gui;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.ClickableTextCell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -19,6 +25,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.MultiSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
@@ -36,7 +44,7 @@ import sharedShoppingList.shared.bo.User;
  * einer Shoppingliste mit Artikel, Artikelanzahl, Unit, wer und wo der Artikel
  * gekauft wird etc..
  * 
- * @author nicolaifischbach
+ * @author nicolaifischbach & Moritz Hampe
  *
  */
 
@@ -44,41 +52,47 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
+
+	private final MultiSelectionModel<ArrayList<Object>> multiSelectionModel = new MultiSelectionModel<ArrayList<Object>>();
+
 	private ShoppingListCreationForm slcf;
+
 	private User u = CurrentUser.getUser();
-	
+
 	Group selectedGroup = null;
 	ShoppingList selectedShoppingList = null;
-	
-	private ShoppingListForm sf;
-	
-	ListEntry listEntry = new ListEntry();
 
-	private Label infoTitleLabel = new Label();
-	
+	private ShoppingListForm sf;
+
+	ListEntry listEntry = new ListEntry();
+	private CellTable<ArrayList<Object>> table = new CellTable<ArrayList<Object>>();
+
+	private Label infoTitleLabel = new Label(selectedShoppingList.getName());
+
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
-	
-	private Button createShoppingListButton;
-	private Button deleteRowButton;
-	
-	private FlowPanel buttonPanel = new FlowPanel();
-	
-	private TextBox renameTextBox = new TextBox();
 
-	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
-	private Vector<Favourite> favourites = new Vector<Favourite>();
+	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
+	private Button deleteRowButton;
+
+	private HorizontalPanel createButtonPanel = new HorizontalPanel();
+	private FlowPanel buttonPanel = new FlowPanel();
+	private FlowPanel cellTableFlowPanel = new FlowPanel();
+	
+
+	private TextBox renameTextBox = new TextBox();
 
 	/***********************************************************************
 	 * Konstruktor
 	 ***********************************************************************
 	 */
 	public ShoppingListForm() {
-		
+
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
+		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
 
-	//	deleteRowButton.addClickHandler(new DeleteRowClickHandler());
+		// deleteRowButton.addClickHandler(new DeleteRowClickHandler());
 
 	}
 
@@ -88,34 +102,145 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-		
-	renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
-	renameTextBox.setWidth("15rem");
-	
-	buttonPanel.add(renameTextBox);
-	buttonPanel.add(saveSlButton);
-	buttonPanel.add(deleteSlButton);
-		
-	infoTitleLabel.addStyleName("profilTitle");
 
-	this.add(infoTitleLabel);
-	this.add(buttonPanel);
+		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
+		renameTextBox.setWidth("15rem");
+
+		createButtonPanel.add(createShoppingListButton);
+		buttonPanel.add(renameTextBox);
+		buttonPanel.add(saveSlButton);
+		buttonPanel.add(deleteSlButton);
+		
+		cellTableFlowPanel.add(table);		
+
+		infoTitleLabel.addStyleName("profilTitle");
+		createButtonPanel.setCellHorizontalAlignment(createButtonPanel, ALIGN_LEFT);
+
+		this.add(infoTitleLabel);
+		this.add(createButtonPanel);
+		this.add(table);
+		this.add(buttonPanel);
+
+		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					saveSlButton.click();
+					renameTextBox.setText("");
+				}
+
+			}
+
+		});
+		
+	/***********************************************************************
+	 * Erstellung Celltable
+	 ***********************************************************************
+	 */
+		
+	/*
+	 * Spalte der CheckBox
+	 */
+
+	Column<ArrayList<Object>, Boolean> checkBoxColumn = new Column<ArrayList<Object>, Boolean>(
+			new CheckboxCell(true,false)){
+		
+		public Boolean getValue (ArrayList<Object> object) {
+			return multiSelectionModel.isSelected(object);
+		}
+	};
 	
-	renameTextBox.addKeyPressHandler(new KeyPressHandler() {
+	/*
+	 * Spalte des Artikelnamens
+	 */
+	
+	Column<ArrayList<Object>, String> articleNameColumn = new Column<ArrayList<Object>, String>(new TextCell()) {
 
 		@Override
-		public void onKeyPress(KeyPressEvent event) {
-			if(event.getCharCode() == KeyCodes.KEY_ENTER) {
-				saveSlButton.click();
-				renameTextBox.setText("");
-			}
-			
+		public String getValue(ArrayList<Object> object) {
+
+			return object.get(1).toString();
+
 		}
+	};
+	
+	/* 
+	 * Spalte der Mengenanzahl
+	 */
+	
+	Column<ArrayList<Object>, String> amountColumn = new Column<ArrayList<Object>, String>(new TextCell()) {
+		@Override
+		public String getValue(ArrayList<Object> object) {
+
+			return object.get(1).toString();
+
+		}
+	};
+	
+	/*
+	 * Spalte der Einheit
+	 */
+	
+	Column<ArrayList<Object>, String> unitColumn = new Column<ArrayList<Object>, String>(new TextCell()) {
 		
-	});
+		public String getValue(ArrayList<Object> object) {
 
+			return object.get(1).toString();
+
+		}
+	};
+	
+	/*
+	 * Spalte der Einzehlhändler
+	 */
+	
+	Column<ArrayList<Object>, String> storeColumn = new Column<ArrayList<Object>, String>(
+			new TextCell()) {
+		@Override
+		public String getValue(ArrayList<Object> object) {
+
+			return object.get(1).toString();
+
+		}
+	};
+	
+	/*
+	 * Spalte des zugewiesenen Users
+	 */
+	
+	Column<ArrayList<Object>, String> userColumn = new Column<ArrayList<Object>, String>(
+			new TextCell()) {
+		@Override
+		public String getValue(ArrayList<Object> object) {
+
+			return object.get(1).toString();
+
+		}
+	};
+	
+	table.addColumn(checkBoxColumn,"");
+	table.addColumn(articleNameColumn,"Artikel");
+	table.addColumn(amountColumn,"Menge");
+	table.addColumn(unitColumn,"Einheit");
+	table.addColumn(userColumn, "Wer?");
+	table.addColumn(storeColumn, "Wo?");
+		
+	/*
+	 * SelectionModel dient zum Markieren der Zellen
+	 */
+	
+	table.setSelectionModel(multiSelectionModel,
+			DefaultSelectionEventManager.<ArrayList<Object>>createCheckboxManager());
+	
 	}
-
+	
+	/*
+	 * Zusammenfügen der Spalten zu einer CellTable
+	 * 
+	 */
+	
+	
 	/***********************************************************************
 	 * Abschnitt der METHODEN
 	 ***********************************************************************
