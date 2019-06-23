@@ -62,7 +62,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private CellTable<Vector<Object>> cellTable = new CellTable<Vector<Object>>();
 	private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
- 
+
 	private Label infoTitleLabel = new Label();
 
 	private Button saveSlButton = new Button("Änderungen speichern");
@@ -237,7 +237,7 @@ public class ShoppingListForm extends VerticalPanel {
 	public void onLoad() {
 
 		// Füge alle ListenEinträge aus der Datenbank hinzu
-//
+
 //		elv.getAllListEntriesByShoppingList(this.getSelectedList(),
 //				new AsyncCallback<Map<ListEntry, Vector<String>>>() {
 //
@@ -256,26 +256,26 @@ public class ShoppingListForm extends VerticalPanel {
 //							for (ListEntry le : result.keySet()) {
 //								Vector<Object> listEntries = new Vector<>();
 //
-//								listEntries.add(k);
+//								listEntries.add(le);
 //								listEntries.add(result.get(le).get(1));
 //								listEntries.add(result.get(le).get(2));
 //								listEntries.add(result.get(le).get(3));
 //								listEntries.add(result.get(le).get(4));
 //								listEntries.add(result.get(le).get(5));
 //
-//								datas.add(listEntries);
+//								entries.add(listEntries);
 //							}
 //
 //							// setze den RowCount
 //							cellTable.setRowCount(result.size(), true);
 //
-//							cellTable.setRowData(0, datas);
+//							cellTable.setRowData(0, entries);
 //
 //						}
 //					}
 //				});
-//
-//		this.add(cellTable);
+
+		this.add(cellTable);
 
 		/*
 		 * SelectionModel dient zum Markieren der Zellen
@@ -400,12 +400,12 @@ public class ShoppingListForm extends VerticalPanel {
 		// Konstruktor
 		public YesDeleteClickHandler(DeleteListEntryDialogBox dudb) {
 			this.parentDUDB = dudb;
-		} 
+		}
 
 		@Override
 		public void onClick(ClickEvent event) {
 			this.parentDUDB.hide();
-		
+
 			if (selectedListEntry == null) {
 				Window.alert("Es wurde kein Listeneintrag ausgewählt");
 			} else {
