@@ -34,7 +34,7 @@ public interface ReportClientAsync {
 
 	void createAllListEntriesByStoreReport(Store store, AsyncCallback<AllListEntriesByStore> callback);
 
-	void createAllListEntriesByPeriodReport(Article article, AsyncCallback<AllListEntriesByPeriod> callback);
+	void createAllListEntriesByPeriodReport(Timestamp beginningDate, AsyncCallback<AllListEntriesByPeriod> callback);
 
 	void createListByPeriodAndStore(Store store, Timestamp beginningDate,
 			AsyncCallback<AllListEntriesByStoreAndPeriod> callback);

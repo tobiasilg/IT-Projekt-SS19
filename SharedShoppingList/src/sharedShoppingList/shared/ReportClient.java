@@ -89,7 +89,7 @@ public interface ReportClient extends RemoteService {
 	   * @see AllArticle
 	   */
 	  
-	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) 
+	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Timestamp beginningDate) 
 			  throws IllegalArgumentException;
 	  
 	  public abstract AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate);

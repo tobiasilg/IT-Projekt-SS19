@@ -9,6 +9,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import sharedShoppingList.server.EinkaufslistenverwaltungImpl;
 import sharedShoppingList.server.db.ListEntryMapper;
+import sharedShoppingList.server.db.UserMapper;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.ReportClient;
 import sharedShoppingList.shared.bo.Article;
@@ -23,13 +24,22 @@ import sharedShoppingList.shared.report.Column;
 import sharedShoppingList.shared.report.CompositeParagraph;
 import sharedShoppingList.shared.report.Row;
 import sharedShoppingList.shared.report.SimpleParagraph;
+import sharedShoppingList.server.db.ArticleMapper;
+import sharedShoppingList.server.db.FavouriteMapper;
+import sharedShoppingList.server.db.GroupMapper;
+import sharedShoppingList.server.db.ListMapper;
+import sharedShoppingList.server.db.StoreMapper;
+import sharedShoppingList.shared.bo.Favourite;
+import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ShoppingList;
+
 
 /**
  * Die Klasse <code>ReportClienImpl</code> implementiert das Interface
  * ReportClient. In der Klasse ist neben EinkaufslistenverwaltungImpls sämtliche
  * Applikationslogik vorhanden.
  * 
- * @author Nico Weiler
+ * @author Nico Weiler, Tobias Ilg
  * @version 1.0
  */
 
@@ -40,7 +50,7 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 * die Koexistenz von Datenobjekten enthalten sind.
 	 */
 
-	private Einkaufslistenverwaltung elv;
+	private Einkaufslistenverwaltung elv = null;
 
 	/**
 	 * OriginalKommentar
@@ -77,6 +87,8 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		 */
 		EinkaufslistenverwaltungImpl e = new EinkaufslistenverwaltungImpl();
 		e.init();
+		
+		// Rückgabe des ELVerwaltungsobjekts
 		this.elv = e;
 
 	}
@@ -87,35 +99,136 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 * @return das elv Objekt
 	 */
 	protected Einkaufslistenverwaltung getEinkaufslistenverwaltung() {
-
 		return this.elv;
 	}
 	
 	
-
-	@Override
-	public void setArticle(Article a) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-
+	/**
+	* Nutzer-Identifikation (auch zu Testzwecken)
+	*/
+	public User getUser(int id) throws IllegalArgumentException {
+	return elv.getUserByID(id);
 	}
+
 
 	@Override
 	public AllListEntries createAllListEntriesByUserReport(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (this.getEinkaufslistenverwaltung() == null) {
+				return null;
+			}
+
+			List<ListEntry> listEntries = elv.getAllListEntriesByUser(user);
+			AllListEntries result = new AllListEntries();
+
+			/**
+			 * Titel des Reports
+			 */
+
+			result.setTitle("Report aller Listeneinträge des Nutzers:");
+
+			/**
+			 * Erstellungsdatum wird gesetzt
+			 */
+
+			result.setCreated(new Date());
+
+			for (ListEntry le : listEntries) {
+
+				// Eine leere Zeile anlegen.
+				Row entryRow = new Row();
+
+				// Erste Spalte: ListEntry ID
+				entryRow.addColumn(new Column(String.valueOf(le.getId())));
+
+				// Zweite Spalte: Artikel ID
+				entryRow.addColumn(new Column(String.valueOf(le.getArticleId())));
+
+				// Dritte Spalte: Menge
+				entryRow.addColumn(new Column(String.valueOf(le.getAmount())));
+
+				// Vierte Spalte: Käufer
+				entryRow.addColumn(new Column(String.valueOf(le.getUserId())));
+
+				// Fünfte Spalte: Händler
+				entryRow.addColumn(new Column(String.valueOf(le.getStoreId())));
+
+				// und schließlich die Zeile dem Report hinzufügen.
+				result.addRow(entryRow);
+			}
+			return result;
+	
 	}
 
-	@Override
-	public AllListEntriesByStore createAllListEntriesByStoreReport(Store store) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * Dieser Report gibt alle Listeneinträge eines spez. Stores aus
+	 */
 
 	@Override
-	public AllListEntriesByPeriod createAllListEntriesByPeriodReport(Article article) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	public AllListEntriesByStore createAllListEntriesByStoreReport(Store store) {
+
+		if (this.getEinkaufslistenverwaltung() == null) {
+			return null;
+		}
+
+		List<ListEntry> listEntries = elv.getAllListEntriesByStore(store);
+		AllListEntriesByStore result = new AllListEntriesByStore();
+
+		/**
+		 * Titel des Reports
+		 */
+
+		result.setTitle("Report:");
+
+		/**
+		 * Erstellungsdatum wird gesetzt
+		 */
+
+		result.setCreated(new Date());
+
+		/*
+		 * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die oben auf
+		 * dem Report stehen) des Reports. Die Kopfdaten sind mehrzeilig, daher die
+		 * Verwendung von CompositeParagraph.
+		 */
+		CompositeParagraph header = new CompositeParagraph();
+
+		// Name des Händlers aufnehmen
+		header.addSubParagraph(new SimpleParagraph(store.getName()));
+
+		// StoreID aufnehmen
+		header.addSubParagraph(new SimpleParagraph("Store-ID.: " + store.getId()));
+
+		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
+		result.setHeaderData(header);
+
+		for (ListEntry le : listEntries) {
+
+			// Eine leere Zeile anlegen.
+			Row entryRow = new Row();
+
+			// Erste Spalte: ListEntry ID
+			entryRow.addColumn(new Column(String.valueOf(le.getId())));
+
+			// Zweite Spalte: Artikel ID
+			entryRow.addColumn(new Column(String.valueOf(le.getArticleId())));
+
+			// Dritte Spalte: Menge
+			entryRow.addColumn(new Column(String.valueOf(le.getAmount())));
+
+			// Vierte Spalte: Käufer
+			entryRow.addColumn(new Column(String.valueOf(le.getUserId())));
+
+			// Fünfte Spalte: Händler
+			entryRow.addColumn(new Column(String.valueOf(le.getStoreId())));
+
+			// und schließlich die Zeile dem Report hinzufügen.
+			result.addRow(entryRow);
+		}
+		return result;
 	}
+
+
 
 	/**
 	 * Report, der alle Listeneinträge ausgibt, je nachdem, was Selektiert wird.
@@ -193,9 +306,79 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		return result;
 	}
 
+	
+	
+	@Override
+	public AllListEntriesByPeriod createAllListEntriesByPeriodReport(Timestamp beginningDate)  {
+
+		if (this.getEinkaufslistenverwaltung() == null) {
+			return null;
+		}
+
+		List<ListEntry> listEntries = elv.getEntriesByDate(beginningDate);
+		AllListEntriesByPeriod result = new AllListEntriesByPeriod();
+
+		/**
+		 * Titel des Reports
+		 */
+
+		result.setTitle("Report:");
+
+		/**
+		 * Erstellungsdatum wird gesetzt
+		 */
+
+		result.setCreated(new Date());
+
+		/*
+		 * Zu den Kopfdaten wird der Zeitraum der Reportdaten hinzugefügt:
+		 */
+		CompositeParagraph header = new CompositeParagraph();
+
+		// Zeitraum anzeigen lassen
+		header.addSubParagraph(new SimpleParagraph("Zeitraum: Von " + beginningDate.getDate() + "bis heute"));
+
+		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
+		result.setHeaderData(header);
+
+		for (ListEntry le : listEntries) {
+
+			// Eine leere Zeile anlegen.
+			Row entryRow = new Row();
+
+			// Erste Spalte: ListEntry ID
+			entryRow.addColumn(new Column(String.valueOf(le.getId())));
+
+			// Zweite Spalte: Artikel ID
+			entryRow.addColumn(new Column(String.valueOf(le.getArticleId())));
+
+			// Dritte Spalte: Menge
+			entryRow.addColumn(new Column(String.valueOf(le.getAmount())));
+
+			// Vierte Spalte: Käufer
+			entryRow.addColumn(new Column(String.valueOf(le.getUserId())));
+
+			// Fünfte Spalte: Händler
+			entryRow.addColumn(new Column(String.valueOf(le.getStoreId())));
+
+			// und schließlich die Zeile dem Report hinzufügen.
+			result.addRow(entryRow);
+		}
+		return result;
+	}
+
+	
+	/** Muss implementiert werden, aber faktisch nicht benötigt*/
+	@Override
+	public void setArticle(Article a) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public Vector<Store> getStores() throws IllegalArgumentException {
-		return this.elv.getAllStores();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

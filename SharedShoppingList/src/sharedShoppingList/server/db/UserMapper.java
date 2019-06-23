@@ -14,7 +14,7 @@ import sharedShoppingList.shared.bo.User;
 /**
 * Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - des BOs User verantwortlich.
 * Er ermöglicht die Durchführung aller "CRUD-Vorgänge". Dazu bietet er verschiedene Methoden.
-* Author dieser Klasse: @author Tobias Ilg
+* @author Tobias Ilg
 */
 
 
@@ -111,6 +111,40 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 		User user = new User();
 		String sql="SELECT * FROM user WHERE id=" + id;
+			
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+                user.setUserName(rs.getString("username"));
+                user.setGmail(rs.getString("gmail"));
+                user.setGroupId(rs.getInt("groupid"));
+				user.setCreateDate(rs.getTimestamp("createDate"));
+				user.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return user;
+		}
+	
+	/* find by name */
+	public User findByName(String name) {
+		
+		Connection con = DBConnection.connection();
+		User user = new User();
+		
+		// DISTINCT sorg hier dafür, dass nur ein Nutzer-Objekt zurückgegeben wird
+		
+		String sql="SELECT DISTINCT * FROM user WHERE name=" + name;
 			
 		try {
 
