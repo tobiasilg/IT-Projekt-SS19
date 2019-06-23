@@ -129,6 +129,10 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 			CurrentUser.u = u;
 		}
   	}
+  	
+  	public static class Unit {
+  		
+  	}
 }
 
 //public static class CurrentGroup {
