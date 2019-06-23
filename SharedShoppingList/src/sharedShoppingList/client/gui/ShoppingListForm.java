@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
-import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,7 +30,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.bo.Article;
 
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -58,9 +56,9 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
-	private ListEntry listEntry = null;
+	private ListEntry selectedListEntry = null;
 	private NewListEntryForm nlef = null;
-
+	private ShoppingListForm slf = null;
 
 	private CellTable<Vector<Object>> cellTable = new CellTable<Vector<Object>>();
 	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
@@ -70,10 +68,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
-
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	
-	private ButtonCell removeButton = new ButtonCell();
+	private Button deleteListEntryButton = new Button("Listeneintrag löschen");
 
 	private HorizontalPanel createButtonPanel = new HorizontalPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -91,14 +87,14 @@ public class ShoppingListForm extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		
+		deleteListEntryButton.addClickHandler(new DeleteListEntryClickHandler());
+
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
 		// Panel mit Button zum erzeugen eines neuen Listeneintrags
-		
+
 		createButtonPanel.add(createShoppingListButton);
-		
 
 		// Panel der Buttons
 		buttonPanel.add(renameTextBox);
@@ -109,8 +105,6 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTableVP.add(cellTable);
 		cellTableVP.setBorderWidth(1);
 		cellTableVP.setWidth("400");
-		
-		
 
 		infoTitleLabel.addStyleName("profilTitle");
 		createButtonPanel.setCellHorizontalAlignment(createButtonPanel, ALIGN_LEFT);
@@ -118,7 +112,8 @@ public class ShoppingListForm extends VerticalPanel {
 		this.add(infoTitleLabel);
 		this.add(buttonPanel);
 		this.add(createButtonPanel);
-		
+		this.add(cellTable);
+		this.add(deleteListEntryButton);
 
 		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -215,23 +210,10 @@ public class ShoppingListForm extends VerticalPanel {
 
 			}
 		};
-		
-//		ButtonCell removeButton = new ButtonCell();
-		
-		Column<Vector<Object>, String> deleteColumn = new Column<Vector<Object>, String>(removeButton) {
-			
-			@Override
-			public String getValue(Vector<Object> object) {
 
-				return "x";
-	//			return object.get(6).toString();
-				
-			}
+//	
 
-		};
-
-		
-	//	cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		// cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
@@ -239,16 +221,12 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
-		cellTable.addColumn(deleteColumn, "Löschen");
-	
-		
+
 		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 		// Add selection to table
 		cellTable.setSelectionModel(multiSelectionModel,
 				DefaultSelectionEventManager.<Vector<Object>>createCheckboxManager());
-		
-		this.add(cellTable);
 
 	}
 
@@ -258,7 +236,6 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-
 
 		// Füge alle ListenEinträge aus der Datenbank hinzu
 //
@@ -301,7 +278,6 @@ public class ShoppingListForm extends VerticalPanel {
 //
 //		this.add(cellTable);
 
-		
 		/*
 		 * SelectionModel dient zum Markieren der Zellen
 		 */
@@ -322,6 +298,42 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der METHODEN
 	 ***********************************************************************
 	 */
+
+	/***********************************************************************
+	 * Delete DialogBox
+	 ***********************************************************************
+	 */
+
+	private class DeleteListEntryDialogBox extends DialogBox {
+		private VerticalPanel vPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Bist du dir Sicher, dass du diesen Eintrag löschen möchtest?");
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		/**
+		 * Der Konstruktor setzt die Stylings und die Gesamtzusammensetzung der
+		 * DialogBox
+		 */
+		public DeleteListEntryDialogBox() {
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("button is-danger");
+			neinButton.addStyleName("button bg-primary has-text-white");
+
+			jaButton.addClickHandler(new YesDeleteClickHandler(this));
+			neinButton.addClickHandler(new NoDeleteClickHandler(this));
+
+			vPanel.add(abfrage);
+			vPanel.add(buttonPanel);
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+
+			this.add(vPanel);
+			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
+		}
+	}
+
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
 
@@ -360,6 +372,69 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+
+	/**
+	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
+	 * ClickHandler-Interface, welches eine Interaktion ermöglicht. Hier wird das
+	 * Erscheinen der DeleteUserDialogBox ermöglicht.
+	 * 
+	 * @ center Centers the popup in the browser window and shows it. If the popup
+	 * was already showing, then the popup is centered.
+	 */
+
+	private class DeleteListEntryClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
+			deleteListEntryDialogBox.center();
+		}
+	}
+
+	/**
+	 * Die Nested-Class <code>YesDeleteClickHandler</code> implementiert das
+	 * ClickHandler-Interface und startet so die Lösch-Kaskade der Gruppe.
+	 */
+	private class YesDeleteClickHandler implements ClickHandler {
+		private DeleteListEntryDialogBox parentDUDB;
+
+		// Konstruktor
+		public YesDeleteClickHandler(DeleteListEntryDialogBox dudb) {
+			this.parentDUDB = dudb;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			this.parentDUDB.hide();
+			// elv.delete(selectedGroup, new DeleteGroupCallback());
+			if (selectedListEntry == null) {
+				Window.alert("Es wurde keine Gruppe ausgwählt");
+			} else {
+				elv.delete(selectedListEntry, new DeleteListEntryCallback());
+
+			}
+
+		}
+	}
+
+	/**
+	 * Die Nested-Class <code>NoClickHandler</code> implementiert das
+	 * ClickHandler-Interface, welches den Abbruchvorgang einleitet.
+	 * 
+	 */
+	private class NoDeleteClickHandler implements ClickHandler {
+		private DeleteListEntryDialogBox parentDUDB;
+
+		public NoDeleteClickHandler(DeleteListEntryDialogBox dudb) {
+			this.parentDUDB = dudb;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			this.parentDUDB.hide();
+		}
+
+	}
 
 	private class RenameShoppingListClickHandler implements ClickHandler {
 
@@ -467,11 +542,32 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
-
 	/***********************************************************************
 	 * Abschnitt der CALLBACKS
 	 ***********************************************************************
 	 */
+
+	/*
+	 * Callback wird benötigt, um den Listeneintrag zu löschen.
+	 */
+	private class DeleteListEntryCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Der Listeneintrag konnte nicht gelöscht werden");
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
+
+			slf.setSelected(selectedShoppingList);
+			slf.setSelected(selectedGroup);
+			RootPanel.get("details").add(slf);
+
+		}
+
+	}
 
 	private class RenameShoppingListCallback implements AsyncCallback<Void> {
 
