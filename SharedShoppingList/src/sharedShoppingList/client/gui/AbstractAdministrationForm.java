@@ -1,5 +1,8 @@
 package sharedShoppingList.client.gui;
 
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -21,12 +24,13 @@ import sharedShoppingList.shared.FieldVerifier;
 public abstract class AbstractAdministrationForm extends VerticalPanel {
 
 	private Label nameLabel = new Label(nameForm());
-	protected FlexTable administrationFlexTable = (createTable());
+	protected TextBox nameTextBox = new TextBox();
+	protected ListBox unitListBox = createUnitListBox();
+	protected FlexTable administrationFlexTable = createTable();
 	protected Button cancelButton = new Button("abbrechen");
 	protected Button saveButton = new Button("Änderungen speichern");
 	protected Button addButton = new Button("hinzufuegen");
-	protected TextBox nameTextBox = new TextBox();
-	protected ListBox unitListBox = (createUnitListBox());
+
 	protected HorizontalPanel hpCreate = new HorizontalPanel();
 	protected HorizontalPanel hpCancelandSafe = new HorizontalPanel();
 
@@ -60,7 +64,7 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		this.add(administrationFlexTable);
 		this.add(hpCancelandSafe);
 
-		this.setStylePrimaryName("details");
+//		this.setStylePrimaryName("details");
 
 		nameTextBox.addStyleName("TextBox");
 		addButton.addStyleName("Button");
@@ -68,33 +72,33 @@ public abstract class AbstractAdministrationForm extends VerticalPanel {
 		saveButton.addStyleName("speicherProfilButton.gwt-Button");
 		administrationFlexTable.addStyleName("FlexTable");
 		nameLabel.addStyleName("profilTitle");
-//
-		nameLabel.setHorizontalAlignment(ALIGN_CENTER);
-//		nameLabel.setWidth("100%");
-//
-//		hpCreate.setWidth("50%");
-//		hpCreate.setCellHorizontalAlignment(nameTextBox, ALIGN_LEFT);
-//		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_LEFT);
-//		hpCreate.setCellHorizontalAlignment(unitListBox, ALIGN_LEFT);
-//		hpCreate.setCellWidth(nameTextBox, "300");
 
-//		administrationFlexTable.setWidth("70%");
-//		administrationFlexTable.setBorderWidth(1);
-//		administrationFlexTable.setSize("100%", "100%");
-//
-//		administrationFlexTable.setCellPadding(10);
-//
-//		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
-//
-//			@Override
-//			public void onKeyPress(KeyPressEvent event) {
-//				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-//					addButton.click();
-//					nameTextBox.setText("");
-//				}
-//
-//			}
-//		});
+		nameLabel.setHorizontalAlignment(ALIGN_CENTER);
+		nameLabel.setWidth("100%");
+
+		hpCreate.setWidth("50%");
+		hpCreate.setCellHorizontalAlignment(nameTextBox, ALIGN_LEFT);
+		hpCreate.setCellHorizontalAlignment(addButton, ALIGN_LEFT);
+		hpCreate.setCellHorizontalAlignment(unitListBox, ALIGN_LEFT);
+		hpCreate.setCellWidth(nameTextBox, "300");
+
+		administrationFlexTable.setWidth("70%");
+		administrationFlexTable.setBorderWidth(2);
+		administrationFlexTable.setSize("100%", "100%");
+
+		administrationFlexTable.setCellPadding(10);
+
+		nameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					addButton.click();
+					nameTextBox.setText("");
+				}
+
+			}
+		});
 	}
 
 }

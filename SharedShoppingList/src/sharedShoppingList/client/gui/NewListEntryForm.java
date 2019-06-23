@@ -20,7 +20,7 @@ import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
-import sharedShoppingList.shared.bo.ListEntry;
+//import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -38,6 +38,7 @@ public class NewListEntryForm extends DialogBox {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	Group selectedGroup;
 	ShoppingList selectedList;
+	ShoppingListForm slf;
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -48,10 +49,9 @@ public class NewListEntryForm extends DialogBox {
 	String[] units;
 	// Vector<Unit> units = new Vector<Unit>();
 
-	private Grid grid = new Grid(5, 3);
+	private Grid grid = new Grid(6, 6);
 
 	private TextBox amountTextBox = new TextBox();
-	private ListBox unitsListBox = new ListBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
 
@@ -66,7 +66,9 @@ public class NewListEntryForm extends DialogBox {
 
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
+		
 
+		
 	}
 
 	/***********************************************************************
@@ -82,7 +84,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("1. failure");
 			}
 
 			public void onSuccess(Vector<Article> result) {
@@ -104,7 +106,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("2. failure");
 			}
 
 			public void onSuccess(Vector<User> result) {
@@ -122,7 +124,7 @@ public class NewListEntryForm extends DialogBox {
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				Notification.show("3. failure");
 			}
 
 			public void onSuccess(Vector<Store> result) {
@@ -153,6 +155,21 @@ public class NewListEntryForm extends DialogBox {
 //			}
 //		});
 
+		// UnitListBox
+		// Lade alle Einheit aus der Datenbank
+
+		ListBox listBoxUnits = new ListBox();
+		listBoxUnits.addItem("Kg");
+		listBoxUnits.addItem("Gramm");
+		listBoxUnits.addItem("Stück");
+		listBoxUnits.addItem("Pack");
+		listBoxUnits.addItem("Liter");
+		listBoxUnits.addItem("Milliliter");
+
+		// setting itemcount value to 1 turns listbox into a drop-down list
+		listBoxUnits.setVisibleItemCount(1);
+
+
 		/***********************************************************************
 		 * Building the grid
 		 ***********************************************************************
@@ -164,7 +181,7 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(1, 1, amountTextBox);
 
 		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, unitsListBox);
+		grid.setWidget(2, 1, listBoxUnits);
 
 		grid.setText(3, 0, "Wer?: ");
 		grid.setWidget(3, 1, usersListBox);
@@ -177,7 +194,7 @@ public class NewListEntryForm extends DialogBox {
 
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
-
+		
 		this.add(grid);
 
 	}
@@ -186,21 +203,6 @@ public class NewListEntryForm extends DialogBox {
 	 * METHODEN
 	 ***********************************************************************
 	 */
-
-	// UnitListBox
-	// Lade alle Einheit aus der Datenbank
-	private ListBox createUnitListBox() {
-		units = new String[] { "Kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter" };
-
-		if (unitsListBox == null) {
-			unitsListBox = new ListBox();
-		}
-		for (String unit : units) {
-			unitsListBox.addItem(unit);
-		}
-
-		return unitsListBox;
-	}
 
 	public void onKeyPress(KeyPressEvent event) {
 		if (event.getCharCode() == KeyCodes.KEY_ENTER) {
@@ -246,9 +248,11 @@ public class NewListEntryForm extends DialogBox {
 		public void onClick(ClickEvent event) {
 
 			RootPanel.get("details").clear();
-			ShoppingListForm shoppingListForm = new ShoppingListForm();
-			shoppingListForm.setSelected(selectedList);
-			RootPanel.get("details").add(shoppingListForm);
+			NewListEntryForm nlef = new NewListEntryForm();
+			nlef.setSelected(selectedList);
+			nlef.setSelectedGroup(selectedGroup);
+			slf = new ShoppingListForm();
+			RootPanel.get("details").add(slf);
 
 		}
 
@@ -257,8 +261,9 @@ public class NewListEntryForm extends DialogBox {
 	private class SaveClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
+			RootPanel.get("details").clear();
 
-			ListEntry listEntry = new ListEntry();
+			
 
 		}
 	}
@@ -267,5 +272,5 @@ public class NewListEntryForm extends DialogBox {
 		this.hide();
 
 	}
-	
+
 }

@@ -35,11 +35,9 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	ArrayList<Article> articles;
 
-	ArrayList<ArticleCustomTextBox> textboxes;
-	ArrayList<CustomListBox> listboxes;
-	ArrayList<CustomRow> rows;
+	ArrayList<String> units;
 
-	String[] units;
+	ArrayList<CustomRow> rows;
 
 	Article newArticle;
 
@@ -54,7 +52,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 	// Konstruktor
 	public ArticleForm() {
 
-		saveButton.addClickHandler(new SaveArticleClickHandler(textboxes, listboxes, rows));
+		saveButton.addClickHandler(new SaveArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
 
@@ -68,8 +66,10 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	@Override
 	protected ListBox createUnitListBox() {
-		units = new String[] { "kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter" };
-
+		if (units == null) {
+			units = new ArrayList<String>();
+			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+		}
 		if (articleListBox == null) {
 			articleListBox = new ListBox();
 		}
@@ -89,8 +89,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 			articleFlexTable = new FlexTable();
 
 		}
-		textboxes = new ArrayList<ArticleCustomTextBox>();
-		textboxes.clear();
+
 		articleFlexTable.removeAllRows();
 		articleFlexTable.setText(0, 0, "Artikel");
 		articleFlexTable.setText(0, 1, "Einheit");
@@ -101,15 +100,17 @@ public class ArticleForm extends AbstractAdministrationForm {
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 			@Override
 			public void onFailure(Throwable caught) {
+
 				Notification.show("failure");
 			}
 
 			@Override
 			public void onSuccess(Vector<Article> result) {
 				// Füge alle Elemente der Datenbank in die Liste hinzu
+
 				for (Article article : result) {
 					// Frage: Schreibt Daten aus der DB rein obwohl diese leer ist
-					Window.alert("Artikel aus DB:" + article.getName());
+
 					articles.add(article);
 					setContentOfArticleFlexTable(article);
 				}
@@ -122,33 +123,31 @@ public class ArticleForm extends AbstractAdministrationForm {
 	}
 
 	private void setContentOfArticleFlexTable(Article article) {
+
+		if (rows == null) {
+			rows = new ArrayList<CustomRow>();
+		}
+
 		// Hole Zeilennummer, die aktuell bearbeitet wird
 		int rowCount = articleFlexTable.getRowCount();
 
-		Window.alert(article.getName());
-
 		CustomRow row = new CustomRow();
+		row.setArticle(article);
 
 		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
 		ArticleCustomTextBox articleTextBox = new ArticleCustomTextBox();
 		articleTextBox.setValue(article.getName());
-
 		row.setTextBox(articleTextBox);
-		row.setListBoxValue(article.getUnit());
-		row.setArticle(article);
 
-		// textboxes.add(articleTextBox);
-
-		// TODO create rows and add textbox and select
-
-		// Erstelle neue ListBox für die Einheit und setze die selektierte Einheit
-		ListBox unitListBox = new ListBox();
+		// Erstelle neue Listbox für die ausgewählte Einheit
+		CustomListBox customArticleListBox = new CustomListBox();
 		for (String unit : units) {
-			unitListBox.addItem(unit);
-//			CustomListBox cListbox = new CustomListBox();
-
+			customArticleListBox.addItem(unit);
 		}
-		unitListBox.setSelectedIndex(Arrays.asList(units).indexOf(article.getUnit()));
+		customArticleListBox.setSelectedIndex(units.indexOf(article.getUnit()));
+		row.setListBox(customArticleListBox);
+
+		rows.add(row);
 
 		// Erstelle x Button
 		ArticleCustomButton removeButton = new ArticleCustomButton();
@@ -158,7 +157,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 		// Füge die TextBox und die ListBox in die FlexTable ein
 		articleFlexTable.setWidget(rowCount, 0, articleTextBox);
-		articleFlexTable.setWidget(rowCount, 1, unitListBox);
+		articleFlexTable.setWidget(rowCount, 1, customArticleListBox);
 		articleFlexTable.setWidget(rowCount, 3, removeButton);
 
 	}
@@ -185,7 +184,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 			// Persistiere in die Datenbank
 			elv.createArticle(nameTextBox.getValue(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
 
-			setContentOfArticleFlexTable(newArticle);
+//			setContentOfArticleFlexTable(newArticle);
 
 		}
 
@@ -205,11 +204,11 @@ public class ArticleForm extends AbstractAdministrationForm {
 		@Override
 		public void onSuccess(Article article) {
 			Notification.show("Der Artikel wurde erfolgreich erstellt");
-
+//			newArticle = null;
 			createTable();
 
 			// Klappt noch nicht
-			setNewArticle(article);
+//			setNewArticle(article);
 
 		}
 	}
@@ -265,17 +264,11 @@ public class ArticleForm extends AbstractAdministrationForm {
 	 */
 	private class SaveArticleClickHandler implements ClickHandler {
 
-		private ArrayList<ArticleCustomTextBox> list;
-		private ArrayList<CustomListBox> listbox;
+//		private ArrayList<CustomRow> rows;
 
-		private ArrayList<CustomRow> rows;
+		public SaveArticleClickHandler() {
 
-		public SaveArticleClickHandler(ArrayList<ArticleCustomTextBox> list, ArrayList<CustomListBox> listbox,
-				ArrayList<CustomRow> rows) {
-
-			this.list = list;
-			this.listbox = listbox;
-			this.rows = rows;
+//			this.rows = rows;
 		}
 
 		public void onClick(ClickEvent event) {
@@ -284,8 +277,9 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 				Article article = row.getArticle();
 
-				article.setName(row.getTextBox().getName());
-				article.setUnit(row.getListBoxValue());
+				article.setName(row.getTextBox().getText());
+				article.setUnit(row.getListBox().getSelectedValue());
+
 				// textbox.getArticle().setUnit(this.listbox.get(index).getSelectedItemText());
 
 				elv.save(article, new SaveArticleCallback());
@@ -326,16 +320,16 @@ public class ArticleForm extends AbstractAdministrationForm {
 	 *
 	 */
 	private class CustomRow {
-		String listBoxValue;
+		CustomListBox listBox;
 		ArticleCustomTextBox textBox;
 		Article article;
 
-		public String getListBoxValue() {
-			return listBoxValue;
+		public CustomListBox getListBox() {
+			return listBox;
 		}
 
-		public void setListBoxValue(String listBoxValue) {
-			this.listBoxValue = listBoxValue;
+		public void setListBox(CustomListBox listBox) {
+			this.listBox = listBox;
 		}
 
 		public ArticleCustomTextBox getTextBox() {
@@ -365,7 +359,7 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 		@Override
 		public void onSuccess(Void result) {
-
+			rows.clear();
 			articles.clear();
 			createTable();
 		}
@@ -376,12 +370,13 @@ public class ArticleForm extends AbstractAdministrationForm {
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show(caught.toString());
+			Window.alert("speichern fehlgeschlagen");
 
 		}
 
 		@Override
 		public void onSuccess(Void result) {
-//			Window.alert();
+			Window.alert("speichern erfolgreich");
 
 		}
 

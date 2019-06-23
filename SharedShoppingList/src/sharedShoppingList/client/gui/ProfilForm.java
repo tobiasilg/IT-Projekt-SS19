@@ -106,19 +106,19 @@ public class ProfilForm extends FlowPanel {
 		if (user == null) {
 			usernameTextBox.setText("Es gibt noch keinen Username");
 		} else {
-		usernameTextBox.setText(user.getUsername());
+		usernameTextBox.setText(user.getUserName());
 		}
 		
 		if (user == null) {
 			nameTextBox.setText("Es gibt noch keinen Namen");
 		} else {
-			nameTextBox.setText(user.getUsername());
+			nameTextBox.setText(user.getName());
 		}
 		
 		if (user == null) {
 			mailTextBox.setText("Es gibt noch keine Mailadresse");
 		} else {
-			mailTextBox.setText(user.getUsername());
+			mailTextBox.setText(user.getGmail());
 		}
 
 //		usernameTextBox.getElement().setPropertyString("placeholder", "Dein Username: ");

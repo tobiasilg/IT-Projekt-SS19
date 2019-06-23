@@ -292,17 +292,10 @@ body {
 .profilTextBox.gwt-TextBox {
 	box-sizing: border-box;
 	clear: both;
-	font-size: 3px;
+	font-size: 1rem;
 	position: relative;
 	text-align: left;
-	padding: 5px 4px;
-    border: 1px solid #ccc;
-    border-top: 1px solid #999;
-    font-size: small;
-    font-family: Arial Unicode MS, Arial, sans-serif;
-	
 }
-
 
 .speicherProfilButton.gwt-Button {
 	background: #00d1b2;
@@ -405,7 +398,41 @@ body {
 }
 .speicherGruppeButton {
 	color: white;
+
 }
 .registrationButtonPanel {
 	justify-content: center;
 }
+
+.deleteStoreAndArticleButton{
+	background: #FF0000 ;
+	border-color: transparent;
+	color: #fff;
+	border-width: 3px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: 0.3 em;
+	padding-left: 0.3 em;
+	padding-right: 0.3 em;
+	padding-top: 0.3 em;
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 1.7em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	user-select: none;
+	margin-right: 1px;
+ 	background-image: url("images/deleteBin.png");
+	background-position: center center;
+}
+
+
+
