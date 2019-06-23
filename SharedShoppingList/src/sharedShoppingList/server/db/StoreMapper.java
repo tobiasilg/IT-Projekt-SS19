@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Store;
@@ -166,6 +167,41 @@ public class StoreMapper {
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	/* Neue Methode für Pawel */
+	@SuppressWarnings("null")
+	public ArrayList<Store> getAllStores() {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT * FROM store ORDER BY name";
+
+		ArrayList<Store> stores = new ArrayList<Store>();
+		
+		
+		try {
+			
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				//Wie gehabt
+				Store store = new Store();
+
+				store.setId(rs.getInt("id"));
+				store.setName(rs.getString("name"));
+				store.setCreateDate(rs.getTimestamp("createDate"));
+				store.setModDate(rs.getTimestamp("modDate"));
+
+				stores.add(store);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return stores;
 	}
 
 }

@@ -374,6 +374,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 	}
 	
+	public Vector<ListEntry> getAllListEntries() throws IllegalArgumentException {
+		return this.listEntryMapper.findAllListEntries();
+		
+	}
+	
 	/**
 	 * Methode wird benötigt um nach dem Löschen einer ShoppingListe, die zugehörigen
 	 * Listeneinträge zu löschen
@@ -730,6 +735,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			return le;
 		}
 		
+		return null;
+	}
+
+	@Override
+	public List<ListEntry> getEntriesByDate(Timestamp beginningDate) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
