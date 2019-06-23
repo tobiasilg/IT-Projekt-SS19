@@ -36,12 +36,39 @@ public class ListEntry extends BusinessObject {
 	private int shoppinglistId;
 	
 	private Article article;
+	private ShoppingList shoppinglist;
+	private User user;
+	private Store store;
 	
 	
 	
 	
 	
 	
+	public ShoppingList getShoppinglist() {
+		return shoppinglist;
+	}
+
+	public void setShoppinglist(ShoppingList shoppinglist) {
+		this.shoppinglist = shoppinglist;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
 	public Article getArticle() {
 		return article;
 	}

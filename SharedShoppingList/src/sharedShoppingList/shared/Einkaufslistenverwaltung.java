@@ -15,7 +15,7 @@ import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.bo.Group;
 
-/*
+/**
  * @author: Leon Seiz, Nico Weiler, Tobias Ilg
  * 
  */
@@ -24,6 +24,8 @@ import sharedShoppingList.shared.bo.Group;
 public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate);
+	
+	public List<ListEntry> getEntriesByDate(Timestamp beginningDate);
 
 	Article createArticle(String name, String unit) throws IllegalArgumentException;
 

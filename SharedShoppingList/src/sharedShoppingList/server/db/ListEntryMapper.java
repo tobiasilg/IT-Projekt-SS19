@@ -398,6 +398,37 @@ public class ListEntryMapper {
 			return result;
 		}
 		
+		// Methode um Listeneinträge eines Zeitraums ausgeben zu lassen
+		
+		public List<ListEntry> findByDate(Timestamp beginningDate) {
+			Connection con = DBConnection.connection();
+			/**
+			 * TODO: buydate anlegen in db
+			 * check .getDate Methode
+			 */
+			String sql = "SELECT * FROM listentry";
+			if(beginningDate != null) {
+				sql += " WHERE buydate >= " + beginningDate.getTime();
+			}
+			if(beginningDate != null) {
+				sql += " WHERE buydate >= " + beginningDate.getTime();
+			} 
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					ListEntry listEntry = createEntry(rs);
+					
+					result.addElement(listEntry);
+				}
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}
+			return result;
+		}
+		
 		/**
 		 * Erstellt aus einem ResultSet Eintrag einen ListEntry
 		 * Methode ausgelagert

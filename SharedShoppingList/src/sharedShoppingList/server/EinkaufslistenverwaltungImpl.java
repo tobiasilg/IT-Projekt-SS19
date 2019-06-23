@@ -345,14 +345,28 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * 
 	 * @author Leon
 	 */
-	public ListEntry createListentry(String name) throws IllegalArgumentException {
+	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException {
 		ListEntry listentry = new ListEntry();
 
 	
 		listentry.setName(name);
+		
+		listentry.setUserId(user.getId());
+		
+		listentry.setArticle(article);
+		
+		listentry.setAmount(amount);
+		
+		listentry.setStoreId(store.getId());
+		
+		listentry.setShoppinglistId(sl.getId());
+		
+		
+		
 		/*
 		 * 
 		 */
+		
 		return this.listEntryMapper.insert(listentry);
 	}
 
@@ -371,6 +385,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	public Vector<ListEntry> getAllListEntriesByStore(Store store) throws IllegalArgumentException {
 		return this.listEntryMapper.findByStore(store);
+		
+	}
+	
+	public Vector<ListEntry> getAllListEntries() throws IllegalArgumentException {
+		return this.listEntryMapper.findAllListEntries();
 		
 	}
 	
@@ -730,6 +749,18 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			return le;
 		}
 		
+		return null;
+	}
+
+	@Override
+	public List<ListEntry> getEntriesByDate(Timestamp beginningDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ListEntry createListentry(String name) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

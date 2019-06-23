@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,13 +13,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -29,16 +25,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.bo.Article;
-import sharedShoppingList.shared.bo.Favourite;
+
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -64,24 +56,19 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
-	private ListEntry listEntry = null;
+	private ListEntry selectedListEntry = null;
 	private NewListEntryForm nlef = null;
+	private ShoppingListForm slf = null;
 
 	private CellTable<Vector<Object>> cellTable = new CellTable<Vector<Object>>();
-	private Vector<ListEntry> listEntries = new Vector<ListEntry>();
-	private Vector<Vector<Object>> datas = new Vector<Vector<Object>>();
-
-	ListEntry listEntry = new ListEntry();
-	private CellTable<Vector<Object>> table = new Vector<Vector<Object>>();
-
+	private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
 	private Label infoTitleLabel = new Label();
 
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
-
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button deleteRowButton;
+	private Button deleteListEntryButton = new Button("Markierten Listeneintrag löschen");
 
 	private HorizontalPanel createButtonPanel = new HorizontalPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -99,63 +86,13 @@ public class ShoppingListForm extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-
-		// deleteRowButton.addClickHandler(new DeleteRowClickHandler());
-
-	}
-
-	/***********************************************************************
-	 * onLoad Methode
-	 ***********************************************************************
-	 */
-
-	public void onLoad() {
-
-		// Füge alle ListenEinträge aus der Datenbank hinzu
-
-//		elv.getAllListEntriesByShoppingList(nlef.getSelectedList(),
-//				new AsyncCallback<Map<ListEntry, Vector<String>>>() {
-//
-//					@Override
-//					public void onFailure(Throwable caught) {
-//						// TODO Auto-generated method stub
-//
-//					}
-//
-//					@Override
-//					public void onSuccess(Map<ListEntry, Vector<String>> result) {
-//
-//						datas.clear();
-//						if (datas.size() == 0) {
-//
-//							for (ListEntry k : result.keySet()) {
-//								Vector<Object> listEntries = new Vector<>();
-//
-//								listEntries.add(k);
-//								listEntries.add(result.get(k).get(1));
-//								listEntries.add(result.get(k).get(2));
-//								listEntries.add(result.get(k).get(3));
-//								listEntries.add(result.get(k).get(4));
-//								listEntries.add(result.get(k).get(5));
-//
-//								datas.add(listEntries);
-//							}
-//
-//							// setze den RowCount
-//							cellTable.setRowCount(result.size(), true);
-//
-//							cellTable.setRowData(0, datas);
-//
-//						}
-//					}
-//				});
-//
-//		this.add(cellTable);
+		deleteListEntryButton.addClickHandler(new DeleteListEntryClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
 		// Panel mit Button zum erzeugen eines neuen Listeneintrags
+
 		createButtonPanel.add(createShoppingListButton);
 
 		// Panel der Buttons
@@ -172,9 +109,10 @@ public class ShoppingListForm extends VerticalPanel {
 		createButtonPanel.setCellHorizontalAlignment(createButtonPanel, ALIGN_LEFT);
 
 		this.add(infoTitleLabel);
+		this.add(buttonPanel);
 		this.add(createButtonPanel);
 		this.add(cellTable);
-		this.add(buttonPanel);
+		this.add(deleteListEntryButton);
 
 		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -272,9 +210,11 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+//	
+
+		// cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Die Spalten werden hier der CellTable hinzugefügt
-		cellTable.addColumn(checkBoxColumn, "");
+		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
 		cellTable.addColumn(unitColumn, "Einheit");
@@ -286,6 +226,56 @@ public class ShoppingListForm extends VerticalPanel {
 		// Add selection to table
 		cellTable.setSelectionModel(multiSelectionModel,
 				DefaultSelectionEventManager.<Vector<Object>>createCheckboxManager());
+
+	}
+
+	/***********************************************************************
+	 * onLoad Methode
+	 ***********************************************************************
+	 */
+
+	public void onLoad() {
+
+		// Füge alle ListenEinträge aus der Datenbank hinzu
+
+//		elv.getAllListEntriesByShoppingList(this.getSelectedList(),
+//				new AsyncCallback<Map<ListEntry, Vector<String>>>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(Map<ListEntry, Vector<String>> result) {
+//
+//						entries.clear();
+//						if (entries.size() == 0) {
+//
+//							for (ListEntry le : result.keySet()) {
+//								Vector<Object> listEntries = new Vector<>();
+//
+//								listEntries.add(le);
+//								listEntries.add(result.get(le).get(1));
+//								listEntries.add(result.get(le).get(2));
+//								listEntries.add(result.get(le).get(3));
+//								listEntries.add(result.get(le).get(4));
+//								listEntries.add(result.get(le).get(5));
+//
+//								entries.add(listEntries);
+//							}
+//
+//							// setze den RowCount
+//							cellTable.setRowCount(result.size(), true);
+//
+//							cellTable.setRowData(0, entries);
+//
+//						}
+//					}
+//				});
+
+		this.add(cellTable);
 
 		/*
 		 * SelectionModel dient zum Markieren der Zellen
@@ -301,13 +291,48 @@ public class ShoppingListForm extends VerticalPanel {
 //          }
 //       }
 //    });
-
 	}
 
 	/***********************************************************************
 	 * Abschnitt der METHODEN
 	 ***********************************************************************
 	 */
+
+	/***********************************************************************
+	 * Delete DialogBox
+	 ***********************************************************************
+	 */
+
+	private class DeleteListEntryDialogBox extends DialogBox {
+		private VerticalPanel vPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Bist du dir Sicher, dass du diesen Eintrag löschen möchtest?");
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		/**
+		 * Der Konstruktor setzt die Stylings und die Gesamtzusammensetzung der
+		 * DialogBox
+		 */
+		public DeleteListEntryDialogBox() {
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("button is-danger");
+			neinButton.addStyleName("button bg-primary has-text-white");
+
+			jaButton.addClickHandler(new YesDeleteClickHandler(this));
+			neinButton.addClickHandler(new NoDeleteClickHandler(this));
+
+			vPanel.add(abfrage);
+			vPanel.add(buttonPanel);
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+
+			this.add(vPanel);
+			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
+		}
+	}
+
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
 
@@ -346,6 +371,69 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+
+	/**
+	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
+	 * ClickHandler-Interface, welches eine Interaktion ermöglicht. Hier wird das
+	 * Erscheinen der DeleteListEntryDialogBox ermöglicht.
+	 * 
+	 * @ center Centers the popup in the browser window and shows it. If the popup
+	 * was already showing, then the popup is centered.
+	 */
+
+	private class DeleteListEntryClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
+			deleteListEntryDialogBox.center();
+		}
+	}
+
+	/**
+	 * Die Nested-Class <code>YesDeleteClickHandler</code> implementiert das
+	 * ClickHandler-Interface und startet so die Lösch-Kaskade des Listeneintrags.
+	 */
+	private class YesDeleteClickHandler implements ClickHandler {
+		private DeleteListEntryDialogBox parentDUDB;
+
+		// Konstruktor
+		public YesDeleteClickHandler(DeleteListEntryDialogBox dudb) {
+			this.parentDUDB = dudb;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			this.parentDUDB.hide();
+
+			if (selectedListEntry == null) {
+				Window.alert("Es wurde kein Listeneintrag ausgewählt");
+			} else {
+				elv.delete(selectedListEntry, new DeleteListEntryCallback());
+
+			}
+
+		}
+	}
+
+	/**
+	 * Die Nested-Class <code>NoClickHandler</code> implementiert das
+	 * ClickHandler-Interface, welches den Abbruchvorgang einleitet.
+	 * 
+	 */
+	private class NoDeleteClickHandler implements ClickHandler {
+		private DeleteListEntryDialogBox parentDUDB;
+
+		public NoDeleteClickHandler(DeleteListEntryDialogBox dudb) {
+			this.parentDUDB = dudb;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			this.parentDUDB.hide();
+		}
+
+	}
 
 	private class RenameShoppingListClickHandler implements ClickHandler {
 
@@ -453,24 +541,32 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
-	private class AddArticleToShoppingListClickHandler implements ClickHandler {
-		public void onClick(ClickEvent event) {
-
-		}
-	}
-
-	private class DeleteRowClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			// elv.delete(u, new DeleteRowCallback());
-		}
-	}
-
 	/***********************************************************************
 	 * Abschnitt der CALLBACKS
 	 ***********************************************************************
 	 */
+
+	/*
+	 * Callback wird benötigt, um den Listeneintrag zu löschen.
+	 */
+	private class DeleteListEntryCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Der Listeneintrag konnte nicht gelöscht werden");
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
+
+			slf.setSelected(selectedShoppingList);
+			slf.setSelected(selectedGroup);
+			RootPanel.get("details").add(slf);
+
+		}
+
+	}
 
 	private class RenameShoppingListCallback implements AsyncCallback<Void> {
 
