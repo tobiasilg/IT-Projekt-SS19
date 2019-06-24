@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -43,6 +44,7 @@ public class NewListEntryForm extends DialogBox {
 	Group selectedGroup = null;
 	ShoppingList selectedList = null;
 	ShoppingListForm slf = null;
+	Article a = new Article();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -50,14 +52,15 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	//Vector<Unit> units = new Vector<Unit>();
+	String unit = a.getUnit();
+	Label articleUnitLabel = new Label (unit);
 
 	private Grid grid = new Grid(6, 6);
 
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
-
+	
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Neu");
 
@@ -151,37 +154,42 @@ public class NewListEntryForm extends DialogBox {
 			}
 		});
 
+//		// UnitListBox
+//		// Lade alle Einheit aus der Datenbank
+//		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
+//
+////			public void onFailure(Throwable caught) {
+////				Notification.show("failure");
+////			}
+////
+////			public void onSuccess(Vector<Unit> result) {
+////				unitsListBox.clear();
+////				for (Unit unit : result) {
+////					units.addElement(unit);
+////					unitsListBox.addItem(unit.getName());
+////
+////				}
+////			}
+////		});
+
 		// UnitListBox
 		// Lade alle Einheit aus der Datenbank
-		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
 
-//			public void onFailure(Throwable caught) {
-//				Notification.show("failure");
-//			}
+//		ArrayList<String> units = null;
 //
-//			public void onSuccess(Vector<Unit> result) {
-//				unitsListBox.clear();
-//				for (Unit unit : result) {
-//					units.addElement(unit);
-//					unitsListBox.addItem(unit.getName());
-//
-//				}
-//			}
-//		});
-
-		// UnitListBox
-		// Lade alle Einheit aus der Datenbank
-
-		ListBox listBoxUnits = new ListBox();
-		listBoxUnits.addItem("Kg");
-		listBoxUnits.addItem("Gramm");
-		listBoxUnits.addItem("Stück");
-		listBoxUnits.addItem("Pack");
-		listBoxUnits.addItem("Liter");
-		listBoxUnits.addItem("Milliliter");
+//		if (units == null) {
+//			units = new ArrayList<String>();
+//			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+//		}
+//		if (unitsListBox == null) {
+//			unitsListBox = new ListBox();
+//		}
+//		for (String unit : units) {
+//			unitsListBox.addItem(unit);
+//		}
 
 		// setting itemcount value to 1 turns listbox into a drop-down list
-		listBoxUnits.setVisibleItemCount(1);
+		// listBoxUnits.setVisibleItemCount(1);
 
 		/***********************************************************************
 		 * Building the grid
@@ -195,7 +203,7 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(1, 1, amountTextBox);
 
 		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, listBoxUnits);
+		grid.setWidget(2, 1, articleUnitLabel);
 
 		grid.setText(3, 0, "Wer?: ");
 		grid.setWidget(3, 1, usersListBox);
@@ -289,9 +297,7 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 			float newAmount = Float.parseFloat(amountTextBox.getText());
-			// String newUnit = listBoxUnits.
-
-			// Unit unit = new Unit();
+		
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
 
@@ -305,14 +311,14 @@ public class NewListEntryForm extends DialogBox {
 			store = stores.get(storesListBox.getSelectedIndex());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			// article.setUnit(unit); // falsch als String, muss Unit als Typ sein.
+			article.setUnit(unit);
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
-			// listEntry.setStore(store);
-			// listEntry.setShoppingList(shoppingList);
-			// listEntry.setUser(user);
+			listEntry.setStore(store);
+			listEntry.setShoppinglist(shoppingList);
+			listEntry.setUser(user);
 
-			ClientsideSettings.getLogger().info("id: " + listEntry.getShoppinglistId());
+			// ClientsideSettings.getLogger().info("id: " + listEntry.getShoppinglistId());
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -327,7 +333,7 @@ public class NewListEntryForm extends DialogBox {
 
 			} else {
 
-				elv.createListentry("", new CreateListEntryCallback());
+			//	elv.createListentry("", new CreateListEntryCallback());
 
 			}
 		}
