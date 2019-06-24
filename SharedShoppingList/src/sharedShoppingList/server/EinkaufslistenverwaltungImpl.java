@@ -187,6 +187,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Vector<Article> getAllArticles() throws IllegalArgumentException {
 		return this.articleMapper.findAllArticles();
 	}
+	
+	
+	public Article getArticleById (int id) throws IllegalArgumentException {
+		return this.articleMapper.findByID(id);
+	}
 
 	/**
 	 * 
