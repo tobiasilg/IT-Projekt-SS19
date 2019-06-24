@@ -374,12 +374,14 @@ public class ListEntryMapper {
 			 * check .getDate Methode
 			 */
 			//String sql = "SELECT * FROM listentry";
-			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+			
 			String sql= "";
 			if(store != null && beginningDate != null) {
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate >= '" + date + "'";
 			}
 			if(store == null && beginningDate != null) {
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 				sql = " Select * from listentry WHERE buyDate >= '" + date + "'";
 			} 
 			if(store != null && beginningDate == null) {
