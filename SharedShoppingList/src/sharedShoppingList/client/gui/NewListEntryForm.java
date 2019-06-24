@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -46,8 +48,8 @@ public class NewListEntryForm extends DialogBox {
 	ShoppingList selectedList = null;
 	ShoppingListForm slf = null;
 	Article article;
+	String unit;
 	private User u = CurrentUser.getUser();
-
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -55,15 +57,14 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	
-	Label unitLabel;
+	ArrayList <String> units;
 
 	private Grid grid = new Grid(6, 6);
-
+	Label unitLabel = new Label();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
-	
+
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Neu");
 
@@ -76,31 +77,17 @@ public class NewListEntryForm extends DialogBox {
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
 
-		}
+	}
 
 	/***********************************************************************
 	 * onLoad METHODEN
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		String unit;
-		
-		unit = article.getUnit();
-
-		unitLabel = new Label(unit);
-		
-//		Article article;
-//		articleSuggestBox.getValue();
-//		
-//		
-//		String unit;
-//		unit = articleSuggestBox.getValue(String n);
-//		articleUnitLabel.setText(unit);
-//		
+	
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
-
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 
 			public void onFailure(Throwable caught) {
@@ -108,10 +95,12 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 			public void onSuccess(Vector<Article> result) {
+				
 				for (Article a : result) {
 					articles.addElement(a);
 					articleOracle.add(a.getName());
-				}
+					unit = a.getUnit();
+					unitLabel.addStyleName(unit);				}
 
 			}
 		});
@@ -156,6 +145,14 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 		});
+				
+		
+		
+//		elv.getAllA;
+//		
+//		unit = article.getUnit();
+//
+//		unitLabel = new Label(unit);
 
 //		// UnitListBox
 //		// Lade alle Einheit aus der Datenbank
@@ -299,9 +296,9 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 
-			//a.getUniit(unit);
+			// a.getUniit(unit);
 			float newAmount = Float.parseFloat(amountTextBox.getText());
-					
+
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
 
@@ -314,8 +311,6 @@ public class NewListEntryForm extends DialogBox {
 			store = stores.get(storesListBox.getSelectedIndex());
 			user = users.get(usersListBox.getSelectedIndex());
 
-		
-			
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
 			listEntry.setStore(store);
@@ -337,7 +332,7 @@ public class NewListEntryForm extends DialogBox {
 
 			} else {
 
-			elv.createListentry("", user, article, newAmount, store, shoppingList,  new CreateListEntryCallback());
+				elv.createListentry("", user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
 
 			}
 		}
@@ -365,6 +360,22 @@ public class NewListEntryForm extends DialogBox {
 				}
 
 			}
+		}
+		
+		private class UnitCallback implements AsyncCallback {
+			
+			public void onFailure (Throwable caught) {
+				Window.alert("");
+				
+			}
+
+			@Override
+			public void onSuccess(Object result) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		
 		}
 	}
 
