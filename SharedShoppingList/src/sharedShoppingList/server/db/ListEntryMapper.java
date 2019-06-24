@@ -350,15 +350,21 @@ public class ListEntryMapper {
 			Connection con = DBConnection.connection();
 			
 			
+			String date = null;
+			if (listentry.getBuyDate() != null) {
+				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
+			}
+			
+	
 			String sql= "UPDATE listentry SET "
 					+ "articleid= "+ listentry.getArticleId()+","
 					+ " amount='"+listentry.getAmount()+"',"
 					+ " storeid="+listentry.getStoreId()+","
 					+ " userid="+listentry.getUserId()+","
 					+ " checked="+listentry.isChecked()+","
-					+ " buyDate =" + listentry.getBuyDate()+ ","
+					+ " buyDate ='" + date + "',"
 					+ " WHERE id= "+ listentry.getId();
-
+			
 			try {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(sql);
