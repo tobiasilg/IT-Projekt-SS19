@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -372,15 +373,17 @@ public class ListEntryMapper {
 			 * TODO: buydate anlegen in db
 			 * check .getDate Methode
 			 */
-			String sql = "SELECT * FROM listentry";
+			//String sql = "SELECT * FROM listentry";
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+			String sql= "";
 			if(store != null && beginningDate != null) {
-				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getTime();
+				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate >= '" + date + "'";
 			}
 			if(store == null && beginningDate != null) {
-				sql += " WHERE buydate >= " + beginningDate.getTime();
+				sql = " Select * from listentry WHERE buyDate >= '" + date + "'";
 			} 
 			if(store != null && beginningDate == null) {
-				sql += " WHERE storeid = " + store.getId();
+				 sql = " Select * from listentry WHERE storeid = " + store.getId();
 			}
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {

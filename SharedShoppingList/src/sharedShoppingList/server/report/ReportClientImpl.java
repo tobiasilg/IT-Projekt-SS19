@@ -248,6 +248,7 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 
 		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
+		
 
 		/**
 		 * Titel des Reports
@@ -269,36 +270,63 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		CompositeParagraph header = new CompositeParagraph();
 
 		// Name des Händlers aufnehmen
-		header.addSubParagraph(new SimpleParagraph(store.getName()));
+		if(store != null) {
+			
+			header.addSubParagraph(new SimpleParagraph(store.getName()));
 
-		// StoreID aufnehmen
-		header.addSubParagraph(new SimpleParagraph("Store-ID.: " + store.getId()));
+			// StoreID aufnehmen
+			header.addSubParagraph(new SimpleParagraph("Store-ID.: " + store.getId()));
+			
+		}
+		
 
 		// Zeitraum anzeigen lassen
-		header.addSubParagraph(new SimpleParagraph("Zeitraum: Von " + beginningDate.getDate() + "bis heute"));
+		
+		if(beginningDate != null) {
+			
+			header.addSubParagraph(new SimpleParagraph("Zeitraum: Von " + beginningDate.getTime() + "bis heute"));
 
+		}
+		
 		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
 		result.setHeaderData(header);
-
+		
+		Row headerRow= new Row();
+		headerRow.addColumn(new Column("Artikel"));
+		headerRow.addColumn(new Column("Menge"));
+		headerRow.addColumn(new Column("Einheit"));
+		headerRow.addColumn(new Column("Käufer"));
+		headerRow.addColumn(new Column("Händler"));
+		
+		result.addRow(headerRow);
+		
 		for (ListEntry le : listEntries) {
 
 			// Eine leere Zeile anlegen.
 			Row entryRow = new Row();
-
-			// Erste Spalte: ListEntry ID
-			entryRow.addColumn(new Column(String.valueOf(le.getId())));
-
-			// Zweite Spalte: Artikel ID
-			entryRow.addColumn(new Column(String.valueOf(le.getArticleId())));
-
-			// Dritte Spalte: Menge
+			
+			User user=elv.getUserByID(le.getUserId());
+			Store listEntryStore=elv.getStoreByID(le.getStoreId());
+			Article article = elv.getArticleById(le.getArticleId());
+			
+		
+			
+			
+			entryRow.addColumn(new Column(article.getName()));
+			
 			entryRow.addColumn(new Column(String.valueOf(le.getAmount())));
 
+			// Zweite Spalte: Artikel ID
+			entryRow.addColumn(new Column(article.getUnit()));
+
+			// Dritte Spalte: Menge
+			
+
 			// Vierte Spalte: Käufer
-			entryRow.addColumn(new Column(String.valueOf(le.getUserId())));
+			entryRow.addColumn(new Column(user.getName()));
 
 			// Fünfte Spalte: Händler
-			entryRow.addColumn(new Column(String.valueOf(le.getStoreId())));
+			entryRow.addColumn(new Column(listEntryStore.getName()));
 
 			// und schließlich die Zeile dem Report hinzufügen.
 			result.addRow(entryRow);

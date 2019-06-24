@@ -134,12 +134,13 @@ public class MainPanelReport extends VerticalPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 
-				sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getYear(),
-						FromDateBox.getValue().getMonth(), FromDateBox.getValue().getDate(), 0, 0, 0, 0);
+				sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
 
+				String test = DateTimeFormat.getFormat("yyyy-MM-dd hh:mm:ss").format(FromDateBox.getValue());
+				
 //!!!!!!!!!!!!wie führe ich wietere Aktionen aus wenn kein Datum eingetragen ist
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
-				Window.alert("Datum: " + sqlStartDate);
+				Window.alert("Datum: " + test);
 				Window.alert("Store: " + selectedStore.getName());
 
 				if (sqlStartDate == null) {
@@ -171,7 +172,7 @@ public class MainPanelReport extends VerticalPanel {
 			/*
 			 * Wenn ein Fehler auftritt, dann geben wir eine kurze Log Message aus.
 			 */
-			Notification.show("Bin in der onFailure vom createListByPeriodAndStoreAsyncCallback");
+			Notification.show(caught.getMessage());
 
 		}
 
@@ -181,8 +182,8 @@ public class MainPanelReport extends VerticalPanel {
 			if (result != null) {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(result);
-				RootPanel.get("report").clear();
-				RootPanel.get("report").add(new HTML(writer.getReportText()));
+				RootPanel.get("navigation").clear();
+				RootPanel.get("navigation").add(new HTML(writer.getReportText()));
 			}
 
 			Window.alert("komme bis zur onSuccess");

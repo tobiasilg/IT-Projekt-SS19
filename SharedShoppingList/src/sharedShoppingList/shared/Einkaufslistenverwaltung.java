@@ -111,6 +111,8 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException;
 	
+	public Article getArticleById(int id) throws IllegalArgumentException;
+	
 	
 	
 
