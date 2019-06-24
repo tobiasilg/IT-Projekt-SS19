@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
@@ -44,7 +45,9 @@ public class NewListEntryForm extends DialogBox {
 	Group selectedGroup = null;
 	ShoppingList selectedList = null;
 	ShoppingListForm slf = null;
-	Article a = new Article();
+	//Article a = new Article();
+	private User u = CurrentUser.getUser();
+
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -52,7 +55,7 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	String unit = a.getUnit();
+	//String unit = a.getUnit();
 	Label articleUnitLabel = new Label ();
 
 	private Grid grid = new Grid(6, 6);
@@ -73,8 +76,7 @@ public class NewListEntryForm extends DialogBox {
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
 
-		articleUnitLabel.setText(a.getUnit());
-	}
+		}
 
 //	private class Unit {
 //		private Unit unit;
@@ -95,7 +97,20 @@ public class NewListEntryForm extends DialogBox {
 	 */
 	public void onLoad() {
 		
+		String newArticle2 = articleSuggestBox.getText();
+
+		Article article2 = new Article();
+
+		for (Article a : articles) {
+			if (a.getName() == newArticle2) {
+				article2 = a;
+				break;
+			}
+		}
 		
+		String unit;
+		unit = article2.getUnit();
+		articleUnitLabel.setText(unit);
 
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
@@ -314,7 +329,7 @@ public class NewListEntryForm extends DialogBox {
 			store = stores.get(storesListBox.getSelectedIndex());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			
+			String unit = article.getUnit();
 			article.setUnit(unit);
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
@@ -337,7 +352,7 @@ public class NewListEntryForm extends DialogBox {
 
 			} else {
 
-			elv.createListentry("", user, article, newAmount, store,shoppingList,  new CreateListEntryCallback());
+			elv.createListentry("", user, article, newAmount, store, shoppingList,  new CreateListEntryCallback());
 
 			}
 		}
