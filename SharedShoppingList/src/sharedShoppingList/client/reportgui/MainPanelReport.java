@@ -52,8 +52,10 @@ public class MainPanelReport extends VerticalPanel {
 			@Override
 			public void onSuccess(Vector<Store> result) {
 
-				for (Store store : result) {
+				Window.alert("store" + result);
 
+				for (Store store : result) {
+					Window.alert("store" + store.getName());
 					storeListBox.addItem(store.getName());
 //					storeListBox.setValue(1, store.getName());
 
