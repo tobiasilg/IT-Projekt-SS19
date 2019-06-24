@@ -45,7 +45,7 @@ public class NewListEntryForm extends DialogBox {
 	Group selectedGroup = null;
 	ShoppingList selectedList = null;
 	ShoppingListForm slf = null;
-	//Article a = new Article();
+	Article article;
 	private User u = CurrentUser.getUser();
 
 
@@ -55,8 +55,8 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	//String unit = a.getUnit();
-	Label articleUnitLabel = new Label ();
+	
+	Label unitLabel;
 
 	private Grid grid = new Grid(6, 6);
 
@@ -78,40 +78,25 @@ public class NewListEntryForm extends DialogBox {
 
 		}
 
-//	private class Unit {
-//		private Unit unit;
-//
-//		public void setUnit(Unit unit) {
-//			this.unit = unit;
-//		}
-//
-//		public Unit getUnit() {
-//			return unit;
-//		}
-//
-//	}
-
 	/***********************************************************************
 	 * onLoad METHODEN
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		
-		String newArticle2 = articleSuggestBox.getText();
-
-		Article article2 = new Article();
-
-		for (Article a : articles) {
-			if (a.getName() == newArticle2) {
-				article2 = a;
-				break;
-			}
-		}
-		
 		String unit;
-		unit = article2.getUnit();
-		articleUnitLabel.setText(unit);
+		
+		unit = article.getUnit();
 
+		unitLabel = new Label(unit);
+		
+//		Article article;
+//		articleSuggestBox.getValue();
+//		
+//		
+//		String unit;
+//		unit = articleSuggestBox.getValue(String n);
+//		articleUnitLabel.setText(unit);
+//		
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
@@ -221,7 +206,7 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(1, 1, amountTextBox);
 
 		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, articleUnitLabel);
+		grid.setWidget(2, 1, unitLabel);
 
 		grid.setText(3, 0, "Wer?: ");
 		grid.setWidget(3, 1, usersListBox);
@@ -316,7 +301,7 @@ public class NewListEntryForm extends DialogBox {
 
 			//a.getUniit(unit);
 			float newAmount = Float.parseFloat(amountTextBox.getText());
-		
+					
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
 
@@ -329,8 +314,8 @@ public class NewListEntryForm extends DialogBox {
 			store = stores.get(storesListBox.getSelectedIndex());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			String unit = article.getUnit();
-			article.setUnit(unit);
+		
+			
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
 			listEntry.setStore(store);
