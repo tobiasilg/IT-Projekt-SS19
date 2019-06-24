@@ -41,11 +41,8 @@ public class MainPanelReport extends VerticalPanel {
 	HorizontalPanel hp = new HorizontalPanel();
 	VerticalPanel storeVp = new VerticalPanel();
 	VerticalPanel fromVp = new VerticalPanel();
-
-	/**
-	 * Label für das Startdatum
-	 */
-	Label fromText = new Label("Von");
+	VerticalPanel toVp = new VerticalPanel();
+	HorizontalPanel dateVp = new HorizontalPanel();
 
 	/**
 	 * Label für StoreTextBox
@@ -63,6 +60,11 @@ public class MainPanelReport extends VerticalPanel {
 	DateBox FromDateBox = new DateBox();
 
 	/**
+	 * DateBox um das Enddatum auszuwählen
+	 */
+	DateBox toDateBox = new DateBox();
+
+	/**
 	 * Button um sich den Report ausgeben zu lassen
 	 */
 	Button confirmButton = new Button("Report erstellen");
@@ -76,16 +78,27 @@ public class MainPanelReport extends VerticalPanel {
 		/**
 		 * Zusammensetzung der Panels und Widgets
 		 */
-		fromVp.add(fromText);
+
 		fromVp.add(FromDateBox);
+		toVp.add(toDateBox);
 		storeVp.add(storeText);
 		storeVp.add(storeListBox);
-		hp.add(fromVp);
 
+		dateVp.add(fromVp);
+		dateVp.add(toVp);
+
+		hp.add(fromVp);
+		hp.add(toVp);
 		hp.add(storeVp);
 		hp.add(confirmButton);
 
 		this.add(hp);
+
+		FromDateBox.getElement().setPropertyString("placeholder", "Datum von ");
+		toDateBox.getElement().setPropertyString("placeholder", "Datum bis ");
+
+		FromDateBox.setStyleName("Datebox");
+		toDateBox.setStyleName("Datebox");
 
 		/**
 		 * Der DateBox ein Zeitformat zuweisen
@@ -93,6 +106,9 @@ public class MainPanelReport extends VerticalPanel {
 		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
 		FromDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		FromDateBox.getDatePicker().setYearArrowsVisible(true);
+
+		toDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+		toDateBox.getDatePicker().setYearArrowsVisible(true);
 
 		/**
 		 * Hier holen wir uns alle Stores aus der Datenbank und schreiben diese in die
@@ -133,17 +149,14 @@ public class MainPanelReport extends VerticalPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				
 
-				
 //!!!!!!!!!!!!wie führe ich wietere Aktionen aus wenn kein Datum eingetragen ist
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
-				
+
 				Window.alert("Store: " + selectedStore.getName());
 
 				if (FromDateBox.getValue() == null) {
-					
+
 					repoClient.createListByPeriodAndStore(selectedStore, null,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Stores filtern");
@@ -186,8 +199,8 @@ public class MainPanelReport extends VerticalPanel {
 			if (result != null) {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(result);
-				RootPanel.get("navigation").clear();
-				RootPanel.get("navigation").add(new HTML(writer.getReportText()));
+				RootPanel.get("report").clear();
+				RootPanel.get("report").add(new HTML(writer.getReportText()));
 			}
 
 			Window.alert("komme bis zur onSuccess");
