@@ -378,7 +378,19 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	@Override
 	public Vector<Store> getStores() throws IllegalArgumentException {
 		
-		return elv.getAllStores();
+		/*
+		 * Zugriff auf die bereits definierte Methode getAllStores mit hilfe des Zugriffs auf die ELV
+		 */
+		Vector<Store> stores = elv.getAllStores();
+		
+		if(stores!= null) {
+			
+			return stores;
+		}else {
+			return null;
+		}
+		
+		
 	}
 
 }
