@@ -38,13 +38,6 @@ import sharedShoppingList.shared.bo.Article;
  *
  */
 
-/**
- * Formular für das Anlegen eines neuen Händlers im Datenstamm
- * 
- * @author patricktreiber
- *
- */
-
 public class ArticleForm extends VerticalPanel {
 
 	private Label nameLabel = new Label("Artikelverwaltung");
