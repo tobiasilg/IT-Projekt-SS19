@@ -69,7 +69,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public void save(Store store) throws IllegalArgumentException;
 	
-	public ListEntry createListentry(String name) throws IllegalArgumentException;
+	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException;
 	
 	public void save(ListEntry listentry) throws IllegalArgumentException;
 	
