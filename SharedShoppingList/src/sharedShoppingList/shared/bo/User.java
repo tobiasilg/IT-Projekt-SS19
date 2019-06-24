@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 
 public class User extends BusinessObject{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private int groupid;
 	private String username;
 	private String gmail;
