@@ -758,11 +758,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return null;
 	}
 
-	@Override
-	public ListEntry createListentry(String name) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	
 

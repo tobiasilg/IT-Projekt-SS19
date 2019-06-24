@@ -67,7 +67,8 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void save(Store store, AsyncCallback<Void> callback);
 
-	void createListentry(String name, AsyncCallback<ListEntry> callback);
+	void createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl,
+			AsyncCallback<ListEntry> callback);
 
 	void save(ListEntry listentry, AsyncCallback<Void> callback);
 
