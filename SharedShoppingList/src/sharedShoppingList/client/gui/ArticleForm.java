@@ -2,17 +2,30 @@ package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -25,29 +38,49 @@ import sharedShoppingList.shared.bo.Article;
  *
  */
 
-public class ArticleForm extends AbstractAdministrationForm {
+/**
+ * Formular für das Anlegen eines neuen Händlers im Datenstamm
+ * 
+ * @author patricktreiber
+ *
+ */
+
+public class ArticleForm extends VerticalPanel {
+
+	private Label nameLabel = new Label("Artikelverwaltung");
+	private TextBox nameTextBox = new TextBox();
+
+	private Button cancelButton = new Button("abbrechen");
+	private Button saveButton = new Button("Änderungen speichern");
+	private Button addButton = new Button("hinzufügen");
+
+	private ListBox unitListBox = createUnitListBox();
+	private ArrayList<String> units;
+
+	private HorizontalPanel hpCreate = new HorizontalPanel();
+
+	private ScrollPanel scrollPanel = new ScrollPanel();
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
-	FlexTable articleFlexTable;
+	// Create a data provider.
+	private ListDataProvider<Article> dataProvider = new ListDataProvider<Article>();
 
-	ListBox articleListBox;
+	private List<Article> list = dataProvider.getList();
 
-	ArrayList<Article> articles;
+	// create Table
+	private CellTable<Article> table = new CellTable<Article>(KEY_PROVIDER);
 
-	ArrayList<String> units;
-
-	ArrayList<CustomRow> rows;
-
-	Article newArticle;
-
-	public Article getNewArticle() {
-		return newArticle;
-	}
-
-	public void setNewArticle(Article newArticle) {
-		this.newArticle = newArticle;
-	}
+	/**
+	 * The key provider that allows us to identify Contacts even if a field changes.
+	 * We identify contacts by their unique ID.
+	 */
+	private static final ProvidesKey<Article> KEY_PROVIDER = new ProvidesKey<Article>() {
+		@Override
+		public Object getKey(Article aricle) {
+			return aricle.getId();
+		}
+	};
 
 	// Konstruktor
 	public ArticleForm() {
@@ -55,111 +88,201 @@ public class ArticleForm extends AbstractAdministrationForm {
 		saveButton.addClickHandler(new SaveArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
-
+//		deleteButton.addClickHandler(new DeleteStoreClickHandler());
 	}
 
-	@Override
-	protected String nameForm() {
-
-		return "Artikelverwaltung";
-	}
-
-	@Override
 	protected ListBox createUnitListBox() {
 		if (units == null) {
 			units = new ArrayList<String>();
 			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
 		}
-		if (articleListBox == null) {
-			articleListBox = new ListBox();
+		if (unitListBox == null) {
+			unitListBox = new ListBox();
 		}
 		for (String unit : units) {
-			articleListBox.addItem(unit);
+			unitListBox.addItem(unit);
 		}
 
-		return articleListBox;
+		return unitListBox;
 	}
 
-	@Override
-	protected FlexTable createTable() {
-		elv = ClientsideSettings.getEinkaufslistenverwaltung();
+	public void onLoad() {
 
-		// Erstelle FlexTable, falls nicht existent
-		if (articleFlexTable == null) {
-			articleFlexTable = new FlexTable();
+		hpCreate.add(nameTextBox);
+		hpCreate.add(unitListBox);
+		hpCreate.add(addButton);
+		hpCreate.add(saveButton);
+		hpCreate.add(cancelButton);
 
-		}
+		scrollPanel.add(table);
 
-		articleFlexTable.removeAllRows();
-		articleFlexTable.setText(0, 0, "Artikel");
-		articleFlexTable.setText(0, 1, "Einheit");
+		scrollPanel.setHeight("12");
 
-		articles = new ArrayList<Article>();
+		this.add(nameLabel);
+		this.add(hpCreate);
 
-		// Lade alle Artikel aus der Datenbank
+		this.add(scrollPanel);
+
+		nameLabel.addStyleName("profilTitle");
+		nameTextBox.addStyleName("profilTextBox");
+		saveButton.addStyleName("speicherButton");
+		addButton.addStyleName("speicherButton");
+		// Lade alle Store aus der Datenbank
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
+
 			@Override
 			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
 
-				Notification.show("failure");
 			}
 
 			@Override
 			public void onSuccess(Vector<Article> result) {
-				// Füge alle Elemente der Datenbank in die Liste hinzu
+				// Add the data to the data provider, which automatically pushes it to the
+				// widget.
+				for (Article aricle : result) {
 
-				for (Article article : result) {
-					// Frage: Schreibt Daten aus der DB rein obwohl diese leer ist
-
-					articles.add(article);
-					setContentOfArticleFlexTable(article);
+					list.add(aricle);
 				}
-				Notification.show("success");
+			}
 
+		});
+
+//		
+
+		EditTextCell editTextCell = new EditTextCell();
+		Column<Article, String> stringColumn = new Column<Article, String>(editTextCell) {
+			@Override
+			public String getValue(Article article) {
+
+				return article.getName();
+			}
+		};
+
+		ButtonCell deleteButton = new ButtonCell();
+		Column<Article, String> deleteColumn = new Column<Article, String>(deleteButton) {
+			public String getValue(Article object) {
+				return "x";
+			}
+
+		};
+
+		units = new ArrayList<String>();
+		units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+
+		SelectionCell categoryCell = new SelectionCell(units);
+		Column<Article, String> categoryColumn = new Column<Article, String>(categoryCell) {
+			@Override
+			public String getValue(Article object) {
+				return object.getUnit();
+			}
+		};
+
+		categoryColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
+			public void update(int index, Article object, String value) {
+//				for (Category category : units) {
+//					if (category.getDisplayName().equals(value)) {
+//						object.setUnit(category);
+//					}
+//				}
+
+				object.setUnit(value);
 			}
 		});
 
-		return articleFlexTable;
+		deleteColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
+
+			public void update(int index, Article article, String value) {
+				// Value is the button value. Object is the row object.
+//				Window.alert("You clicked: " + value);
+//				Window.alert("Object: " + store);
+//				Window.alert("Name: " + store.getName());
+
+				dataProvider.getList().remove(article);
+
+				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+
+				AsyncCallback<Void> deletecallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+
+				};
+				Window.alert("Artikel löschen :" + article);
+				elv.delete(article, deletecallback);
+			}
+
+		});
+
+//				dataProvider.getList().remove(store);
+//				dataProvider.refresh();
+//				table.redraw();
+
+		stringColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
+
+			public void update(int index, Article article, String value) {
+				// Value is the textCell value. Object is the row object.
+
+				article.setName(value);
+
+			}
+
+		});
+
+// Add the columns.
+		table.addColumn(stringColumn, "Artikel");
+		table.addColumn(deleteColumn, "");
+		table.addColumn(categoryColumn, "Einheit");
+		table.setColumnWidth(stringColumn, 20, Unit.PC);
+
+// Connect the table to the data provider.
+		dataProvider.addDataDisplay(table);
 	}
 
-	private void setContentOfArticleFlexTable(Article article) {
+	/**
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
+	 * Klicken des addButton erstellt.
+	 */
+	private class AddArticleClickHandler implements ClickHandler {
 
-		if (rows == null) {
-			rows = new ArrayList<CustomRow>();
+		public void onClick(ClickEvent event) {
+
+			Window.alert("Artikelname hinzufügen :" + nameTextBox.getValue());
+			Window.alert("Artikeleinheit hinzufügen :" + unitListBox.getSelectedValue());
+			// Persistiere in die Datenbank
+			elv.createArticle(nameTextBox.getValue(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
+
 		}
 
-		// Hole Zeilennummer, die aktuell bearbeitet wird
-		int rowCount = articleFlexTable.getRowCount();
+	}
 
-		CustomRow row = new CustomRow();
-		row.setArticle(article);
+	/**
+	 * Callback wird benï¿½tigt, um den Artikel zu erstellen
+	 */
+	private class ArticleCreationCallback implements AsyncCallback<Article> {
 
-		// Erstelle neue Textbox für eigetragenen Artikel und setze den Namen
-		ArticleCustomTextBox articleTextBox = new ArticleCustomTextBox();
-		articleTextBox.setValue(article.getName());
-		row.setTextBox(articleTextBox);
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show("Der Store konnte nicht erstellt werden");
 
-		// Erstelle neue Listbox für die ausgewählte Einheit
-		CustomListBox customArticleListBox = new CustomListBox();
-		for (String unit : units) {
-			customArticleListBox.addItem(unit);
 		}
-		customArticleListBox.setSelectedIndex(units.indexOf(article.getUnit()));
-		row.setListBox(customArticleListBox);
 
-		rows.add(row);
+		@Override
+		public void onSuccess(Article article) {
+			Notification.show("Der Store wurde erfolgreich erstellt");
 
-		// Erstelle x Button
-		ArticleCustomButton removeButton = new ArticleCustomButton();
-		removeButton.setArticle(article);
-
-		removeButton.addClickHandler(new DeleteArticleClickHandler(removeButton));
-
-		// Füge die TextBox und die ListBox in die FlexTable ein
-		articleFlexTable.setWidget(rowCount, 0, articleTextBox);
-		articleFlexTable.setWidget(rowCount, 1, customArticleListBox);
-		articleFlexTable.setWidget(rowCount, 3, removeButton);
-
+			dataProvider.getList().add(article);
+			dataProvider.refresh();
+		}
 	}
 
 	/**
@@ -175,211 +298,75 @@ public class ArticleForm extends AbstractAdministrationForm {
 
 	/**
 	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des addButton erstellt.
+	 * Klicken des Bestï¿½tigungsbutton erstellt.
 	 */
-	private class AddArticleClickHandler implements ClickHandler {
+	private class SaveArticleClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			// Persistiere in die Datenbank
-			elv.createArticle(nameTextBox.getValue(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
+			for (Article article : list) {
 
-//			setContentOfArticleFlexTable(newArticle);
+				Window.alert("Artikel speichern" + article);
+				Window.alert("Artikel speichern name" + article.getName());
+				Window.alert("Artikel speichern einheit" + article.getUnit());
 
-		}
-
-	}
-
-	/**
-	 * Callback wird benï¿½tigt, um den Artikel zu erstellen
-	 */
-	private class ArticleCreationCallback implements AsyncCallback<Article> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show("Der Artikel konnte nicht erstellt werden");
-
-		}
-
-		@Override
-		public void onSuccess(Article article) {
-			Notification.show("Der Artikel wurde erfolgreich erstellt");
-//			newArticle = null;
-			createTable();
-
-			// Klappt noch nicht
-//			setNewArticle(article);
-
-		}
-	}
-
-	private class ArticleCustomButton extends Button {
-		Article article;
-
-		public Article getArticle() {
-			return article;
-		}
-
-		public void setArticle(Article article) {
-			this.article = article;
-		}
-	}
-
-	private class DeleteArticleClickHandler implements ClickHandler {
-
-		private ArticleCustomButton cB;
-
-		public DeleteArticleClickHandler(ArticleCustomButton cB) {
-
-			this.cB = cB;
-		}
-
-		@Override
-		public void onClick(ClickEvent event) {
-			if (cB != null) {
-
-				elv.delete(cB.getArticle(), new DeleteArticleCallback());
-
-			} else {
-				Notification.show("Der Artikel konnte nicht gelöscht werden");
+				elv.save(article, new SaveArticleCallback());
 			}
-		}
-	}
 
-	private class ArticleCustomTextBox extends TextBox {
-		Article article;
-
-		public Article getArticle() {
-			return article;
 		}
 
-		public void setArticle(Article article) {
-			this.article = article;
+		private class SaveArticleCallback implements AsyncCallback<Void> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show(caught.toString());
+				Window.alert("speichern fehlgeschlagen");
+
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Notification.show("speichern erfolgreich");
+
+				dataProvider.refresh();
+			}
+
 		}
+
 	}
 
 	/**
 	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
 	 * Klicken des Bestï¿½tigungsbutton erstellt.
 	 */
-	private class SaveArticleClickHandler implements ClickHandler {
-
-//		private ArrayList<CustomRow> rows;
-
-		public SaveArticleClickHandler() {
-
-//			this.rows = rows;
-		}
+	private class DeleteArticleClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			for (CustomRow row : rows) {
+			Article article = dataProvider.getList().get(table.getKeyboardSelectedRow());
 
-				Article article = row.getArticle();
+		}
 
-				article.setName(row.getTextBox().getText());
-				article.setUnit(row.getListBox().getSelectedValue());
+		private class DeleteArticleCallback implements AsyncCallback<Void> {
 
-				// textbox.getArticle().setUnit(this.listbox.get(index).getSelectedItemText());
-
-				elv.save(article, new SaveArticleCallback());
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show(caught.toString());
+				Window.alert("speichern fehlgeschlagen");
 
 			}
-//			int index = 0;
-//			for (ArticleCustomTextBox textbox : textboxes) {
+
+			@Override
+			public void onSuccess(Void result) {
+				Notification.show("Store wurde entfernt");
+//				table.getKeyboardSelectedRow();
 //
-//				textbox.getArticle().setName(textbox.getValue());
-//				textbox.getArticle().setUnit(this.listbox.get(index).getSelectedItemText());
-//
-//				Window.alert("TextBox Objekt: " + textbox.getArticle());
-//				Window.alert("TextBox Unit: " + this.listbox.get(index).getSelectedItemText());
-//				Window.alert("Artikel name: " + textbox.getArticle().getName());
-//				Window.alert("Artikel ID: " + textbox.getArticle().getId());
-//
-//				elv.save(textbox.getArticle(), new SaveArticleCallback());
-//
-//			}
-		}
+//				dataProvider.getList().remove(table.getKeyboardSelectedRow());
 
-	}
-
-	private class CustomListBox extends ListBox {
-		Article article;
-
-		public Article getArticle() {
-			return article;
-		}
-
-		public void setArticle(Article article) {
-			this.article = article;
-		}
-	}
-
-	/**
-	 * @author treib
-	 *
-	 */
-	private class CustomRow {
-		CustomListBox listBox;
-		ArticleCustomTextBox textBox;
-		Article article;
-
-		public CustomListBox getListBox() {
-			return listBox;
-		}
-
-		public void setListBox(CustomListBox listBox) {
-			this.listBox = listBox;
-		}
-
-		public ArticleCustomTextBox getTextBox() {
-			return textBox;
-		}
-
-		public void setTextBox(ArticleCustomTextBox textBox) {
-			this.textBox = textBox;
-		}
-
-		public Article getArticle() {
-			return article;
-		}
-
-		public void setArticle(Article article) {
-			this.article = article;
-		}
-
-	}
-
-	private class DeleteArticleCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show(caught.toString());
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			rows.clear();
-			articles.clear();
-			createTable();
-		}
-	}
-
-	private class SaveArticleCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show(caught.toString());
-			Window.alert("speichern fehlgeschlagen");
+				dataProvider.refresh();
+			}
 
 		}
-
-		@Override
-		public void onSuccess(Void result) {
-			Window.alert("speichern erfolgreich");
-
-		}
-
 	}
 
 }

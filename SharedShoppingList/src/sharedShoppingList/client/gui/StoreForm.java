@@ -1,18 +1,27 @@
 package sharedShoppingList.client.gui;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
@@ -25,132 +34,172 @@ import sharedShoppingList.shared.bo.Store;
  *
  */
 
-public class StoreForm extends AbstractAdministrationForm {
+public class StoreForm extends VerticalPanel {
+
+	private Label nameLabel = new Label("STOREVERWALTUNG");
+	private TextBox nameTextBox = new TextBox();
+
+	private Button cancelButton = new Button("abbrechen");
+	private Button saveButton = new Button("Änderungen speichern");
+	private Button addButton = new Button("hinzufügen");
+
+	private HorizontalPanel hpCreate = new HorizontalPanel();
+
+	private ScrollPanel scrollPanel = new ScrollPanel();
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
-	FlexTable storeFlexTable;
+	// Create a data provider.
+	private ListDataProvider<Store> dataProvider = new ListDataProvider<Store>();
 
-	ArrayList<Store> stores;
+	private List<Store> list = dataProvider.getList();
 
-	ArrayList<CustomTextBox> textboxes;
+	// create Table
+	private CellTable<Store> table = new CellTable<Store>(KEY_PROVIDER);
 
-	Store newStore;
-
-	// Erstellen des Logout Icons
-	Image delete = new Image();
-
-	public Store getNewStore() {
-		return newStore;
-	}
-
-	public void setNewStore(Store newStore) {
-		this.newStore = newStore;
-	}
+	/**
+	 * The key provider that allows us to identify Contacts even if a field changes.
+	 * We identify contacts by their unique ID.
+	 */
+	private static final ProvidesKey<Store> KEY_PROVIDER = new ProvidesKey<Store>() {
+		@Override
+		public Object getKey(Store store) {
+			return store.getId();
+		}
+	};
 
 	// Konstruktor
 	public StoreForm() {
 
-		saveButton.addClickHandler(new SaveStoreClickHandler(textboxes));
+		saveButton.addClickHandler(new SaveStoreClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddStoreClickHandler());
-
+//		deleteButton.addClickHandler(new DeleteStoreClickHandler());
 	}
 
-	@Override
-	protected String nameForm() {
+	public void onLoad() {
 
-		return "Storeverwaltung";
-	}
+		hpCreate.add(nameTextBox);
+		hpCreate.add(addButton);
+		hpCreate.add(saveButton);
+		hpCreate.add(cancelButton);
 
-	@Override
-	protected ListBox createUnitListBox() {
-		return null;
-	}
+		scrollPanel.add(table);
 
-	@Override
-	protected FlexTable createTable() {
-		elv = ClientsideSettings.getEinkaufslistenverwaltung();
+		scrollPanel.setHeight("12");
 
-		if (storeFlexTable == null) {
-			storeFlexTable = new FlexTable();
+		this.add(nameLabel);
+		this.add(hpCreate);
 
-		}
-		textboxes = new ArrayList<CustomTextBox>();
-		textboxes.clear();
-		storeFlexTable.removeAllRows();
-		storeFlexTable.setText(0, 0, "Store");
+		this.add(scrollPanel);
 
-		stores = new ArrayList<Store>();
-
+		nameLabel.addStyleName("profilTitle");
+		nameTextBox.addStyleName("profilTextBox");
+		saveButton.addStyleName("speicherButton");
+		addButton.addStyleName("speicherButton");
 		// Lade alle Store aus der Datenbank
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+
 			@Override
 			public void onFailure(Throwable caught) {
-				Notification.show("failure");
+				// TODO Auto-generated method stub
+
 			}
 
 			@Override
 			public void onSuccess(Vector<Store> result) {
-				// Füge alle Elemente der Datenbank in die Liste hinzu
+
+				// Add the data to the data provider, which automatically pushes it to the
+				// widget.
 				for (Store store : result) {
 
-					stores.add(store);
-					setContentOfStoreFlexTable(store);
+					list.add(store);
+
 				}
-				Notification.show("success");
 
 			}
 		});
 
-		return storeFlexTable;
-	}
+		EditTextCell editTextCell = new EditTextCell();
+		Column<Store, String> stringColumn = new Column<Store, String>(editTextCell) {
+			@Override
+			public String getValue(Store store) {
 
-	private void setContentOfStoreFlexTable(Store store) {
-		// Hole Zeilennummer, die aktuell bearbeitet wird
-		int rowCount = storeFlexTable.getRowCount();
+				return store.getName();
+			}
+		};
 
-		// Erstelle neue Textbox für eigetragenen Store und setze den Namen
+		ButtonCell deleteButton = new ButtonCell();
+		Column<Store, String> deleteColumn = new Column<Store, String>(deleteButton) {
+			public String getValue(Store object) {
+				return "x";
+			}
 
-		CustomTextBox storeTextBox = new CustomTextBox();
-		storeTextBox.setValue(store.getName());
-		//
-		storeTextBox.setStore(store);
-		textboxes.add(storeTextBox);
+		};
 
-		// Erstelle x Button
-		CustomButton removeButton = new CustomButton();
-		removeButton.setStore(store);
-		removeButton.setStylePrimaryName("deleteStoreAndArticleButton");
+		deleteColumn.setFieldUpdater(new FieldUpdater<Store, String>() {
+			public void update(int index, Store store, String value) {
+				// Value is the button value. Object is the row object.
+//				Window.alert("You clicked: " + value);
+//				Window.alert("Object: " + store);
+//				Window.alert("Name: " + store.getName());
 
-		removeButton.addClickHandler(new DeleteStoreClickHandler(removeButton));
+				dataProvider.getList().remove(store);
 
-		storeFlexTable.setWidget(rowCount, 0, storeTextBox);
-		storeFlexTable.setWidget(rowCount, 1, removeButton);
+				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
+				AsyncCallback<Void> deletecallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+
+				};
+				elv.delete(store, deletecallback);
+			}
+
+		});
+
+//				dataProvider.getList().remove(store);
+//				dataProvider.refresh();
+//				table.redraw();
+
+		stringColumn.setFieldUpdater(new FieldUpdater<Store, String>() {
+			public void update(int index, Store store, String value) {
+				// Value is the textCell value. Object is the row object.
+
+				store.setName(value);
+
+			}
+
+		});
+
+		// Add the columns.
+		table.addColumn(stringColumn, "Stores");
+		table.addColumn(deleteColumn, "");
+		table.setColumnWidth(stringColumn, 20, Unit.PC);
+
+		// Connect the table to the data provider.
+		dataProvider.addDataDisplay(table);
 	}
 
 	/**
-	 * Hiermit wird der Erstellvorgang eine neuen Stores abbgebrochen.
-	 */
-	private class CancelClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-			RootPanel.get("details").clear();
-
-		}
-
-	}
-
-	/**
-	 * Sobald das Textfeld ausgef?llt wurde, wird ein neuer Store nach dem Klicken
-	 * des addButton erstellt.
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
+	 * Klicken des addButton erstellt.
 	 */
 	private class AddStoreClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			// Persistiere in die Datenbank
+//			// Persistiere in die Datenbank
 			elv.createStore(nameTextBox.getValue(), new StoreCreationCallback());
 
 		}
@@ -158,131 +207,103 @@ public class StoreForm extends AbstractAdministrationForm {
 	}
 
 	/**
-	 * Callback wird ben?tigt, um den Store zu erstellen
+	 * Callback wird benï¿½tigt, um den Artikel zu erstellen
 	 */
 	private class StoreCreationCallback implements AsyncCallback<Store> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Der Store konnte nicht erstellt werden");
+
 		}
 
 		@Override
 		public void onSuccess(Store store) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 
-			createTable();
-
-			// Erstelle neues Store Objekt
-//			setContentOfStoreFlexTable(newStore);
-
-			// Klappt noch nicht
-			setNewStore(store);
+			dataProvider.getList().add(store);
+			dataProvider.refresh();
 		}
-
 	}
 
-	private class CustomButton extends Button {
-		Store store;
+	/**
+	 * Hiermit wird der Erstellvorgang einer neuen Artikel abbgebrochen.
+	 */
+	private class CancelClickHandler implements ClickHandler {
 
-		public Store getStore() {
-			return store;
-		}
-
-		public void setStore(Store store) {
-			this.store = store;
-		}
-
-	}
-
-	private class DeleteStoreClickHandler implements ClickHandler {
-
-		private CustomButton cB;
-
-		public DeleteStoreClickHandler(CustomButton cB) {
-
-			this.cB = cB;
-		}
-
-		@Override
 		public void onClick(ClickEvent event) {
-			if (cB != null) {
-
-				elv.delete(cB.getStore(), new DeleteStoreCallback());
-
-			} else {
-				Notification.show("Der Store konnte nicht gelöscht werden");
-			}
+			RootPanel.get("details").clear();
 		}
+
 	}
 
-	private class CustomTextBox extends TextBox {
-		Store store;
-
-		public Store getStore() {
-			return store;
-		}
-
-		public void setStore(Store store) {
-			this.store = store;
-		}
-	}
-
+	/**
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
+	 * Klicken des Bestï¿½tigungsbutton erstellt.
+	 */
 	private class SaveStoreClickHandler implements ClickHandler {
 
-		private ArrayList<CustomTextBox> list;
-
-		public SaveStoreClickHandler(ArrayList<CustomTextBox> list) {
-
-			this.list = list;
-		}
-
-		@Override
 		public void onClick(ClickEvent event) {
 
-			for (CustomTextBox textbox : textboxes) {
+			for (Store store : list) {
 
-				textbox.getStore().setName(textbox.getValue());
+				elv.save(store, new SaveStoreCallback());
+			}
 
-				Window.alert("TextBox Objekt: " + textbox.getStore());
-				Window.alert("Store name: " + textbox.getStore().getName());
-				Window.alert("Store ID: " + textbox.getStore().getId());
-				elv.save(textbox.getStore(), new SaveStoreCallback());
-//				Notification.show("Der Store konnte nicht gespeichert werden");
+		}
+
+		private class SaveStoreCallback implements AsyncCallback<Void> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show(caught.toString());
+				Window.alert("speichern fehlgeschlagen");
 
 			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Notification.show("speichern erfolgreich");
+
+				dataProvider.refresh();
+			}
+
 		}
+
 	}
 
-	private class DeleteStoreCallback implements AsyncCallback<Void> {
+	/**
+	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
+	 * Klicken des Bestï¿½tigungsbutton erstellt.
+	 */
+	private class DeleteStoreClickHandler implements ClickHandler {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show(caught.toString());
-		}
+		public void onClick(ClickEvent event) {
 
-		@Override
-		public void onSuccess(Void result) {
-
-			stores.clear();
-			createTable();
-		}
-	}
-
-	private class SaveStoreCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show(caught.toString());
+			Store store = dataProvider.getList().get(table.getKeyboardSelectedRow());
 
 		}
 
-		@Override
-		public void onSuccess(Void result) {
-//			Window.alert();
+		private class DeleteStoreCallback implements AsyncCallback<Void> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show(caught.toString());
+				Window.alert("speichern fehlgeschlagen");
+
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Notification.show("Store wurde entfernt");
+//				table.getKeyboardSelectedRow();
+//
+//				dataProvider.getList().remove(table.getKeyboardSelectedRow());
+
+				dataProvider.refresh();
+			}
 
 		}
-
 	}
 
 }
