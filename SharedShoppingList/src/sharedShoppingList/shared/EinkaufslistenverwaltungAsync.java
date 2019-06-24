@@ -112,5 +112,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
 
+	void getArticleById(int id, AsyncCallback<Article> callback);
+
 
 }
