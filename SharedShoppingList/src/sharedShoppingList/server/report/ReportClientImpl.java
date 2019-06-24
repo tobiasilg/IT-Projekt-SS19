@@ -377,8 +377,8 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 
 	@Override
 	public Vector<Store> getStores() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return elv.getAllStores();
 	}
 
 }
