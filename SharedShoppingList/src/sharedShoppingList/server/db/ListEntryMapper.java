@@ -348,9 +348,16 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-		
 			
-			String sql= "UPDATE listentry SET articleid= "+ listentry.getArticleId()+", amount='"+listentry.getAmount()+"', storeid="+listentry.getStoreId()+", userid="+listentry.getUserId()+", checked="+listentry.isChecked()+" WHERE id= "+ listentry.getId();
+			
+			String sql= "UPDATE listentry SET "
+					+ "articleid= "+ listentry.getArticleId()+","
+					+ " amount='"+listentry.getAmount()+"',"
+					+ " storeid="+listentry.getStoreId()+","
+					+ " userid="+listentry.getUserId()+","
+					+ " checked="+listentry.isChecked()+","
+					+ " buyDate =" + listentry.getBuyDate()+ ","
+					+ " WHERE id= "+ listentry.getId();
 
 			try {
 				Statement stmt = con.createStatement();
