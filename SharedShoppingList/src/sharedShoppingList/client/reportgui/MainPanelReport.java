@@ -133,26 +133,30 @@ public class MainPanelReport extends VerticalPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				
+				
 
-				sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
-
-				String test = DateTimeFormat.getFormat("yyyy-MM-dd hh:mm:ss").format(FromDateBox.getValue());
 				
 //!!!!!!!!!!!!wie führe ich wietere Aktionen aus wenn kein Datum eingetragen ist
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
-				Window.alert("Datum: " + test);
+				
 				Window.alert("Store: " + selectedStore.getName());
 
-				if (sqlStartDate == null) {
+				if (FromDateBox.getValue() == null) {
+					
 					repoClient.createListByPeriodAndStore(selectedStore, null,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Stores filtern");
 
 				} else if (selectedStore.getId() == 0) {
+					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
+					Window.alert("Datum: " + sqlStartDate);
 					repoClient.createListByPeriodAndStore(null, sqlStartDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Datum filtern");
 				} else {
+					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
+					Window.alert("Datum: " + sqlStartDate);
 					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nach allem Filtern");
