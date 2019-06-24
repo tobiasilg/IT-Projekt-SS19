@@ -1,6 +1,7 @@
 package sharedShoppingList.server;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -371,6 +372,13 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 
 	public void save(ListEntry listentry) throws IllegalArgumentException {
+		/*
+		 * Wenn checked angehakt wurde, soll ein neues Datum (das aktuelle) gesetzt werden
+		 */
+		if(listentry.isChecked()) {
+			listentry.setBuyDate((Timestamp) new Date());
+		}
+		
 		this.listEntryMapper.update(listentry);
 	}
 	
