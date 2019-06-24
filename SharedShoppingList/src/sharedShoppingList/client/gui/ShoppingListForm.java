@@ -1,10 +1,15 @@
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -25,12 +30,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
@@ -50,7 +57,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
-	private final MultiSelectionModel<Vector<Object>> multiSelectionModel = new MultiSelectionModel<Vector<Object>>();
+	private final MultiSelectionModel<ListEntry> multiSelectionModel = new MultiSelectionModel<ListEntry>();
 
 	private User u = CurrentUser.getUser();
 
@@ -60,8 +67,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private NewListEntryForm nlef = null;
 	private ShoppingListForm slf = null;
 
-	private CellTable<Vector<Object>> cellTable = new CellTable<Vector<Object>>();
-	private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
+	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
 	private Label infoTitleLabel = new Label();
 
@@ -75,6 +81,21 @@ public class ShoppingListForm extends VerticalPanel {
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
 	private TextBox renameTextBox = new TextBox();
+
+	// Create a data provider.
+	private ListDataProvider<ListEntry> dataProvider = new ListDataProvider<ListEntry>();
+	private List<ListEntry> list = dataProvider.getList();
+	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
+
+	/**
+	 * The key provider that allows us to identify Contacts even if a field changes.
+	 * We identify contacts by their unique ID.
+	 */
+	private static final ProvidesKey<ListEntry> KEY_PROVIDER = new ProvidesKey<ListEntry>() {
+		public Object getKey(ListEntry le) {
+			return le.getId();
+		}
+	};
 
 	/***********************************************************************
 	 * Konstruktor
@@ -136,38 +157,23 @@ public class ShoppingListForm extends VerticalPanel {
 		 * Spalte der CheckBox
 		 */
 
-		Column<Vector<Object>, Boolean> checkBoxColumn = new Column<Vector<Object>, Boolean>(
+		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(
 				new CheckboxCell(true, false)) {
 
-			public Boolean getValue(Vector<Object> object) {
+			public Boolean getValue(ListEntry object) {
 				return multiSelectionModel.isSelected(object);
 			}
 		};
 
 		/*
-		 * Spalte des Artikelnamens
+		 * Spalte der Artikel
 		 */
 
-		Column<Vector<Object>, String> articleColumn = new Column<Vector<Object>, String>(new TextCell()) {
+		TextCell articleTextCell = new TextCell();
+		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
 
-			@Override
-			public String getValue(Vector<Object> object) {
-
-				return object.get(1).toString();
-
-			}
-		};
-
-		/*
-		 * Spalte der Mengenanzahl
-		 */
-
-		Column<Vector<Object>, String> amountColumn = new Column<Vector<Object>, String>(new TextCell()) {
-			@Override
-			public String getValue(Vector<Object> object) {
-
-				return object.get(2).toString();
-
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getArticle().getName();
 			}
 		};
 
@@ -175,44 +181,99 @@ public class ShoppingListForm extends VerticalPanel {
 		 * Spalte der Einheit
 		 */
 
-		Column<Vector<Object>, String> unitColumn = new Column<Vector<Object>, String>(new TextCell()) {
+		TextCell unitTextCell = new TextCell();
+		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
 
-			public String getValue(Vector<Object> object) {
-
-				return object.get(3).toString();
-
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getArticle().getUnit();
 			}
 		};
 
 		/*
-		 * Spalte der Einzehlhändler
+		 * Spalte der Menge
 		 */
 
-		Column<Vector<Object>, String> storeColumn = new Column<Vector<Object>, String>(new TextCell()) {
-			@Override
-			public String getValue(Vector<Object> object) {
+		TextCell amountTextCell = new TextCell();
+		Column<ListEntry, String> amountColumn = new Column<ListEntry, String>(amountTextCell) {
 
-				return object.get(4).toString();
-
+			public String getValue(ListEntry listEntry) {
+				return String.valueOf(listEntry.getAmount());
 			}
 		};
 
 		/*
-		 * Spalte des zugewiesenen Users
+		 * Spalte der Stores
 		 */
 
-		Column<Vector<Object>, String> userColumn = new Column<Vector<Object>, String>(new TextCell()) {
-			@Override
-			public String getValue(Vector<Object> object) {
+		TextCell storesTextCell = new TextCell();
+		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storesTextCell) {
 
-				return object.get(5).toString();
-
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getStore().getName();
 			}
 		};
 
-//	
+		/*
+		 * Spalte der User
+		 */
 
-		// cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		TextCell userTextCell = new TextCell();
+		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getUser().getName();
+			}
+		};
+
+		/*
+		 * // * Spalte der Mengenanzahl //
+		 */
+//
+//	Column<Vector<Object>, String> amountColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
+//
+//	return object.get(2).toString();
+//
+//	}};
+//
+//	/*
+//	 * Spalte der Einheit
+//	 */
+//
+//	Column<Vector<Object>, String> unitColumn=new Column<Vector<Object>,String>(new TextCell()){
+//
+//	public String getValue(Vector<Object>object){
+//
+//	return object.get(3).toString();
+//
+//	}};
+//
+//	/*
+//	 * Spalte der Einzehlhändler
+//	 */
+//
+//	Column<Vector<Object>, String> storeColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
+//
+//	return object.get(4).toString();
+//
+//	}};
+//
+//	/*
+//	 * Spalte des zugewiesenen Users
+//	 */
+//
+//	Column<Vector<Object>, String> userColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
+//
+//	return object.get(5).toString();
+//
+//	}};
+
+//		ButtonCell deleteButton = new ButtonCell();
+//		Column<Vector<ListEntry>, String> deleteColumn = new Column<Vector<ListEntry>, String>(deleteButton) {
+//			public String getValue(Vector<ListEntry> object) {
+//				return "x";
+//			}
+//		};
+
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
@@ -220,12 +281,13 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
-
-		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
-		// Add selection to table
-		cellTable.setSelectionModel(multiSelectionModel,
-				DefaultSelectionEventManager.<Vector<Object>>createCheckboxManager());
+//		
+//
+//		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+////
+////		// Add selection to table
+////		cellTable.setSelectionModel(multiSelectionModel,
+//				DefaultSelectionEventManager.<Vector<Object>>createCheckboxManager());
 
 	}
 

@@ -113,7 +113,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Article getArticleById(int id) throws IllegalArgumentException;
 	
-	
+
 	
 
 }
