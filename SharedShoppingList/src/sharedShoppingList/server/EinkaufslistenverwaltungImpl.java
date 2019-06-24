@@ -578,7 +578,23 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		shoppingList.setGroupId(group.getId());
 
 
-		this.listMapper.insert(shoppingList);
+		ShoppingList sl = this.listMapper.insert(shoppingList);
+		
+		Vector <Favourite> favs = this.favouriteMapper.findFavouritesByGroupId(group.getId());
+		
+		for (Favourite favourite : favs) {
+			ListEntry le = new ListEntry();
+			ListEntry favle = this.listEntryMapper.findByID(favourite.getListEntryId());
+			le.setAmount(favle.getAmount());
+			le.setUserId(favle.getUserId());
+			le.setArticleId(favle.getArticleId());
+			le.setShoppinglistId(sl.getId());
+			
+			this.listEntryMapper.insert(le);
+			
+			//le.setCreateDate(favourite.getlis);
+		}
+		
 		
 		return shoppingList;
 	}
