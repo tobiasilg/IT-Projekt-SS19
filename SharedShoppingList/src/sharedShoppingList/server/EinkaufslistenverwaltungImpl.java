@@ -383,6 +383,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		if(listentry.isChecked()) {
 			listentry.setBuyDate((Timestamp) new Date());
 		}
+		else {
+			listentry.setBuyDate(null);
+			
+		}
 		
 		this.listEntryMapper.update(listentry);
 	}
