@@ -188,8 +188,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.articleMapper.findAllArticles();
 	}
 	
-	
-	public Article getArticleById (int id) throws IllegalArgumentException {
+
+	public Article getArticleById(int id) throws IllegalArgumentException{
+
 		return this.articleMapper.findByID(id);
 	}
 
