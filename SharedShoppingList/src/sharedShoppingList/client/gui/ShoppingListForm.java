@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -74,9 +75,11 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button deleteListEntryButton = new Button("Markierten Listeneintrag löschen");
+	private Button filterByUserButton = new Button("Filtern nach User");
+	private ListBox filterByStoreListBox = new ListBox ();
 
-	private HorizontalPanel createButtonPanel = new HorizontalPanel();
+	private HorizontalPanel firstRowPanel = new HorizontalPanel ();
+	private HorizontalPanel filterPanel =  new HorizontalPanel ();
 	private FlowPanel buttonPanel = new FlowPanel();
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
@@ -107,19 +110,26 @@ public class ShoppingListForm extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		deleteListEntryButton.addClickHandler(new DeleteListEntryClickHandler());
+		//filterByUser.addClickHandler(new FilterByUserClickHandler());
+		//filterByStore.addClickHandler(new FilterByStoreClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
 		// Panel mit Button zum erzeugen eines neuen Listeneintrags
 
-		createButtonPanel.add(createShoppingListButton);
-
+		
+		// Panel der obersten Ebene
+		firstRowPanel.add(infoTitleLabel);
+		firstRowPanel.add(createShoppingListButton);
+		
 		// Panel der Buttons
 		buttonPanel.add(renameTextBox);
 		buttonPanel.add(saveSlButton);
 		buttonPanel.add(deleteSlButton);
+		
+		filterPanel.add(filterByUserButton);
+		filterPanel.add(filterByStoreListBox);
 
 		// CellTable
 		cellTableVP.add(cellTable);
@@ -127,13 +137,14 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTableVP.setWidth("400");
 
 		infoTitleLabel.addStyleName("profilTitle");
-		createButtonPanel.setCellHorizontalAlignment(createButtonPanel, ALIGN_LEFT);
+		filterPanel.setCellHorizontalAlignment(filterPanel, ALIGN_RIGHT);
+		
 
-		this.add(infoTitleLabel);
+		this.add(firstRowPanel);
 		this.add(buttonPanel);
-		this.add(createButtonPanel);
+		this.add(filterPanel);
 		this.add(cellTable);
-		this.add(deleteListEntryButton);
+		
 
 		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -223,55 +234,41 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getUser().getName();
 			}
 		};
+		
+		ButtonCell delteButton = new ButtonCell();
+			Column<ListEntry, String> deleteColumn = new Column <ListEntry, String>(delteButton){
+			
+			public String getValue (ListEntry listEntry) {
+				return "x";
+			}
+			
+		};
+		
+		deleteColumn.setFieldUpdater (new FieldUpdater <ListEntry, String>(){
+			
+			public void update (int index, ListEntry listEntry, String value) {
+				// Value is the button value. Object is the row object.
 
-		/*
-		 * // * Spalte der Mengenanzahl //
-		 */
-//
-//	Column<Vector<Object>, String> amountColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
-//
-//	return object.get(2).toString();
-//
-//	}};
-//
-//	/*
-//	 * Spalte der Einheit
-//	 */
-//
-//	Column<Vector<Object>, String> unitColumn=new Column<Vector<Object>,String>(new TextCell()){
-//
-//	public String getValue(Vector<Object>object){
-//
-//	return object.get(3).toString();
-//
-//	}};
-//
-//	/*
-//	 * Spalte der Einzehlhändler
-//	 */
-//
-//	Column<Vector<Object>, String> storeColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
-//
-//	return object.get(4).toString();
-//
-//	}};
-//
-//	/*
-//	 * Spalte des zugewiesenen Users
-//	 */
-//
-//	Column<Vector<Object>, String> userColumn=new Column<Vector<Object>,String>(new TextCell()){@Override public String getValue(Vector<Object>object){
-//
-//	return object.get(5).toString();
-//
-//	}};
+				dataProvider.getList().remove(listEntry);
+				
+				AsyncCallback <Void> deleteCallback = new AsyncCallback<Void>() {
+					
+					public void onFailure (Throwable caught) {
+						
+					}
+					
+					public void onSuccess (Void result) {
+						
+					}
+					
+				};
+				
+				Window.alert ("Listeneintrag löschen" + listEntry);
+				elv.delete(listEntry, deleteCallback);
+			}
+		});
 
-//		ButtonCell deleteButton = new ButtonCell();
-//		Column<Vector<ListEntry>, String> deleteColumn = new Column<Vector<ListEntry>, String>(deleteButton) {
-//			public String getValue(Vector<ListEntry> object) {
-//				return "x";
-//			}
-//		};
+
 
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
@@ -280,6 +277,7 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
+		cellTable.addColumn(deleteColumn, "");
 
 		dataProvider.addDataDisplay(cellTable);
 //		
@@ -390,61 +388,11 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		// Füge alle ListenEinträge aus der Datenbank hinzu
 
-//		elv.getAllListEntriesByShoppingList(this.getSelectedList(),
-//				new AsyncCallback<Map<ListEntry, Vector<String>>>() {
-//
-//					@Override
-//					public void onFailure(Throwable caught) {
-//						// TODO Auto-generated method stub
-//
-//					}
-//
-//					@Override
-//					public void onSuccess(Map<ListEntry, Vector<String>> result) {
-//
-//						entries.clear();
-//						if (entries.size() == 0) {
-//
-//							for (ListEntry le : result.keySet()) {
-//								Vector<Object> listEntries = new Vector<>();
-//
-//								listEntries.add(le);
-//								listEntries.add(result.get(le).get(1));
-//								listEntries.add(result.get(le).get(2));
-//								listEntries.add(result.get(le).get(3));
-//								listEntries.add(result.get(le).get(4));
-//								listEntries.add(result.get(le).get(5));
-//
-//								entries.add(listEntries);
-//							}
-//
-//							// setze den RowCount
-//							cellTable.setRowCount(result.size(), true);
-//
-//							cellTable.setRowData(0, entries);
-//
-//						}
-//					}
-//				});
 
 		this.add(cellTable);
 
-		/*
-		 * SelectionModel dient zum Markieren der Zellen
-		 */
-//	// Add a selection model to handle user selection.
-//    final SingleSelectionModel<Object> selectionModel = new SingleSelectionModel<Object>();
-//    table.setSelectionModel(selectionModel);
-//    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-//       public void onSelectionChange(SelectionChangeEvent event) {
-//          Object selected = selectionModel.getSelectedObject();
-//          if (selected != null) {
-//             Window.alert("You selected: " + selected);
-//          }
-//       }
-//    });
+
 	}
 
 	/***********************************************************************
@@ -525,6 +473,19 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+	
+	private class FilterByUserClickHandler implements ClickHandler {
+		
+		public void onClick (ClickEvent event) {
+			
+			RootPanel.get("details").clear();
+			ShoppingListFilterForm slff = new ShoppingListFilterForm();
+			RootPanel.get("details").add(slff);
+			
+		}
+	}
+	
+	
 
 	/**
 	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
