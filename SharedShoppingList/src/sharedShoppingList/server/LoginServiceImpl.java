@@ -16,6 +16,7 @@ import sharedShoppingList.shared.bo.User;
      * Ist der <code>User<code> nicht in mit seinem Google Account eingeloggt, 
      * wird ein LoginLink für das GoogleUserServiceAPI erstellt.
      * 
+     * @author Nico Weiler, Patrick Treiber
      * @param requestUri die Domain der Startseite
      * @return neuer oder eingeloggter User
      */
