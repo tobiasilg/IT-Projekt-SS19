@@ -1,5 +1,9 @@
-package sharedShoppingList.client.gui;
+  package sharedShoppingList.client.gui;
 
-public class ShoppingListFilterForm {
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+public class ShoppingListFilterForm extends VerticalPanel {
+	
+	
 
 }
