@@ -106,7 +106,7 @@ public class ProfilForm extends FlowPanel {
 		if (user == null) {
 			usernameTextBox.setText("Es gibt noch keinen Username");
 		} else {
-		usernameTextBox.setText(user.getUserName());
+		usernameTextBox.setText(user.getUsername());
 		}
 		
 		if (user == null) {
@@ -311,7 +311,7 @@ public class ProfilForm extends FlowPanel {
 			if (usernameNeu.isEmpty()) {
 				Window.alert("Der Username ist leer!");
 			} else {
-				user.setUserName(usernameNeu);
+				user.setUsername(usernameNeu);
 			}
 
 			if (nameNeu.isEmpty()) {

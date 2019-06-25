@@ -455,7 +455,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			this.parentDUDB.hide();
 		//	elv.delete(selectedGroup, new DeleteGroupCallback());
 			if (selectedGroup == null) {
-				Window.alert("Es wurde keine Gruppe ausgwählt");
+				Window.alert("Es wurde keine Gruppe ausgewählt");
 			} else {
 				elv.delete(selectedGroup, new DeleteGroupCallback());
 			}
