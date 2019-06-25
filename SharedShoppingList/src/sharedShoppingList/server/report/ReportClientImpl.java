@@ -240,13 +240,13 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 */
 
 	
-	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate, Timestamp endDate) {
+	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) {
 
 		if (this.getEinkaufslistenverwaltung() == null) {
 			return null;
 		}
 
-		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate, endDate);
+		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate, endDate, groupId);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
 
