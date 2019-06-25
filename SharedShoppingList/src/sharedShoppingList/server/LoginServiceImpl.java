@@ -5,6 +5,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import sharedShoppingList.client.LoginService;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.LoginInfo;
 import sharedShoppingList.shared.bo.User;
 
@@ -28,18 +29,18 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		private static final long serialVersionUID = 1L;
 		
 		public LoginInfo login(String requestUri) {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
+		//UserService userService = UserServiceFactory.getUserService();
+		User user = CurrentUser.getUser();
 		LoginInfo loginInfo = new LoginInfo();
 		
 		if (user != null) {
 		  loginInfo.setLoggedIn(true);
-		  loginInfo.setEmailAddress(user.getEmail());
-		  loginInfo.setNickname(user.getNickname());
-		  loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+		  loginInfo.setGmail(user.getGmail());
+		  loginInfo.setUsername(user.getUsername());
+//		  loginInfo.setLogoutUrl(CurrentUser.createLogoutURL(requestUri));
 		} else {
 		  loginInfo.setLoggedIn(false);
-		  loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
+//		  loginInfo.setLoginUrl(CurrentUser.createLoginURL(requestUri));
 		}
 		return loginInfo;
 		}
