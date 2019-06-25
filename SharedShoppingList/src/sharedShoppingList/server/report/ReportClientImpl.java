@@ -239,14 +239,14 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 *      java.sql.Timestamp)
 	 */
 
-	@Override
-	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate) {
+	
+	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate, Timestamp endDate) {
 
 		if (this.getEinkaufslistenverwaltung() == null) {
 			return null;
 		}
 
-		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
+		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate, endDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
 

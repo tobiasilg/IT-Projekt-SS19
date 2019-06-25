@@ -380,24 +380,22 @@ public class ListEntryMapper {
 		}
 
 
-		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate) {
+		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate) {
 			Connection con = DBConnection.connection();
-			/**
-			 * TODO: buydate anlegen in db
-			 * check .getDate Methode
-			 */
-			//String sql = "SELECT * FROM listentry";
+		
 			
 			String sql= "";
-			if(store != null && beginningDate != null) {
+			if(store != null && beginningDate != null &&endDate!=null) {
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
-				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate >= '" + date + "'";
+				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
+				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate BETWEEN'" + date + "'AND '"+ enddate+"'";
 			}
-			if(store == null && beginningDate != null) {
+			if(store == null && beginningDate != null && endDate!=null) {
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
-				sql = " Select * from listentry WHERE buyDate >= '" + date + "'";
+				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
+				sql = " Select * from listentry WHERE buyDate BETWEEN '" + date + "'AND '"+enddate+"'";
 			} 
-			if(store != null && beginningDate == null) {
+			if(store != null && beginningDate == null && endDate==null) {
 				 sql = " Select * from listentry WHERE storeid = " + store.getId();
 			}
 			Vector<ListEntry> result= new Vector<ListEntry>();
@@ -470,5 +468,7 @@ public class ListEntryMapper {
 			listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
 			return listEntry;
 		}
+
+
 }
 

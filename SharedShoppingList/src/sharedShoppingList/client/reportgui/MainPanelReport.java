@@ -70,6 +70,7 @@ public class MainPanelReport extends VerticalPanel {
 	Button confirmButton = new Button("Report erstellen");
 
 	private Timestamp sqlStartDate = null;
+	private Timestamp sqlEndDate=null;
 	private ArrayList<Store> allStores;
 	private Store selectedStore = null;
 
@@ -155,22 +156,26 @@ public class MainPanelReport extends VerticalPanel {
 
 				Window.alert("Store: " + selectedStore.getName());
 
-				if (FromDateBox.getValue() == null) {
+				if (FromDateBox.getValue() == null && toDateBox.getValue()==null) {
 
-					repoClient.createListByPeriodAndStore(selectedStore, null,
+					repoClient.createListByPeriodAndStore(selectedStore, null,null,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Stores filtern");
 
 				} else if (selectedStore.getId() == 0) {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
-					Window.alert("Datum: " + sqlStartDate);
-					repoClient.createListByPeriodAndStore(null, sqlStartDate,
+					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
+					Window.alert("Datum von: " + sqlStartDate);
+					Window.alert("Datum bis: " + sqlEndDate);
+					repoClient.createListByPeriodAndStore(null, sqlStartDate,sqlEndDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Datum filtern");
 				} else {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
+					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 					Window.alert("Datum: " + sqlStartDate);
-					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate,
+					Window.alert("Datum bis: " + sqlEndDate);
+					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate,sqlEndDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nach allem Filtern");
 				}
