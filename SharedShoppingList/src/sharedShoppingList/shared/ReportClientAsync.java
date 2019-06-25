@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -40,6 +41,8 @@ public interface ReportClientAsync {
 			AsyncCallback<AllListEntriesByStoreAndPeriod> callback);
 
 	void getStores(AsyncCallback<Vector<Store>> callback);
+
+	void getGroup(User user, AsyncCallback<Group> callback);
 	
 	
 
