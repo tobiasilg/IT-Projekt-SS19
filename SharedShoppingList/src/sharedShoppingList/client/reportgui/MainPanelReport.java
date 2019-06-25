@@ -19,9 +19,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.client.gui.Notification;
 import sharedShoppingList.shared.ReportClientAsync;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.report.AllListEntriesByStoreAndPeriod;
 import sharedShoppingList.shared.report.HTMLReportWriter;
 
@@ -70,9 +73,10 @@ public class MainPanelReport extends VerticalPanel {
 	Button confirmButton = new Button("Report erstellen");
 
 	private Timestamp sqlStartDate = null;
-	private Timestamp sqlEndDate=null;
+	private Timestamp sqlEndDate = null;
 	private ArrayList<Store> allStores;
 	private Store selectedStore = null;
+	private User user = CurrentUser.getUser();
 
 	public void onLoad() {
 
@@ -143,6 +147,23 @@ public class MainPanelReport extends VerticalPanel {
 
 		});
 
+		repoClient.getGroup(user, new AsyncCallback<Group>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.show("Error get Group: " + caught);
+			}
+
+			@Override
+			public void onSuccess(Group result) {
+
+				Group currentGroup = result;
+				int currentGroupId = currentGroup.getId();
+
+			}
+
+		});
+
 		/**
 		 * Clickhandler für den ConfirmButton (es erscheint der gewünschte Report)
 		 */
@@ -156,9 +177,9 @@ public class MainPanelReport extends VerticalPanel {
 
 				Window.alert("Store: " + selectedStore.getName());
 
-				if (FromDateBox.getValue() == null && toDateBox.getValue()==null) {
+				if (FromDateBox.getValue() == null && toDateBox.getValue() == null) {
 
-					repoClient.createListByPeriodAndStore(selectedStore, null,null,
+					repoClient.createListByPeriodAndStore(selectedStore, null, null,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Stores filtern");
 
@@ -167,7 +188,7 @@ public class MainPanelReport extends VerticalPanel {
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 					Window.alert("Datum von: " + sqlStartDate);
 					Window.alert("Datum bis: " + sqlEndDate);
-					repoClient.createListByPeriodAndStore(null, sqlStartDate,sqlEndDate,
+					repoClient.createListByPeriodAndStore(null, sqlStartDate, sqlEndDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Datum filtern");
 				} else {
@@ -175,7 +196,7 @@ public class MainPanelReport extends VerticalPanel {
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 					Window.alert("Datum: " + sqlStartDate);
 					Window.alert("Datum bis: " + sqlEndDate);
-					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate,sqlEndDate,
+					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate, sqlEndDate,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nach allem Filtern");
 				}
@@ -213,4 +234,31 @@ public class MainPanelReport extends VerticalPanel {
 		}
 	}
 
+//	/**
+//	 * Diese Nested Class wird als Callback für das Erzeugen des Reports benötigt.
+//	 */
+//	class GetGroupCallback implements AsyncCallback<Group> {
+//		@Override
+//		public void onFailure(Throwable caught) {
+//			/*
+//			 * Wenn ein Fehler auftritt, dann geben wir eine kurze Log Message aus.
+//			 */
+//			Notification.show(caught.getMessage());
+//
+//		}
+//
+//		@Override
+//		public void onSuccess(Group result) {
+//
+//			if (result != null) {
+//				HTMLReportWriter writer = new HTMLReportWriter();
+//				writer.process(result);
+//				RootPanel.get("report").clear();
+//				RootPanel.get("report").add(new HTML(writer.getReportText()));
+//			}
+//
+//			Window.alert("komme bis zur onSuccess");
+//
+//		}
+//	}
 }
