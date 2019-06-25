@@ -1,70 +1,73 @@
 package sharedShoppingList.shared;
 
-
 import java.io.Serializable;
 
-/*
- * Erstellen des LoginInfo-Objekts, das die Anmeldeinformation des Benutzerdienstes enthält
+public class LoginInfo implements Serializable {
+	
+
+/**
+ * Ein Objekt dieser Klasse wird erzeugt und mit den entsprechenden Attributen versehen, 
+ * sobald der Login erfolgreich war.
+ *
  */
 
-public class LoginInfo implements Serializable {
-
-	 /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	private boolean loggedIn = false;
-	  private String loginUrl;
-	  private String logoutUrl;
-	  private String emailAddress;
-	  private String nickname;
-
-
-	  /*
-	   * @return loggedIn Information ob, der User eingeloggt ist oder nicht.
-	   */
-	  public boolean isLoggedIn() {
-	    return loggedIn;
-	  }
-
-	  /*
-	   *  * @parameter loggedIn setzt den Login Status.
-	   */
-	  public void setLoggedIn(boolean loggedIn) {
-	    this.loggedIn = loggedIn;
-	  }
-
-
-	  public String getLoginUrl() {
-	    return loginUrl;
-	  }
-
-	  public void setLoginUrl(String loginUrl) {
-	    this.loginUrl = loginUrl;
-	  }
-
-	  public String getLogoutUrl() {
-	    return logoutUrl;
-	  }
-
-	  public void setLogoutUrl(String logoutUrl) {
-	    this.logoutUrl = logoutUrl;
-	  }
-
-	  public String getEmailAddress() {
-	    return emailAddress;
-	  }
-
-	  public void setEmailAddress(String emailAddress) {
-	    this.emailAddress = emailAddress;
-	  }
-
-	  public String getNickname() {
-	    return nickname;
-	  }
-
-	  public void setNickname(String nickname) {
-	    this.nickname = nickname;
-	  }
+	private String loginUrl;
+	private String logoutUrl;
+	
+	private String gmail;
+	private int groupid;
+	String username;
+	
+	public LoginInfo() {
+		
 	}
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
+	public String getLoginUrl() {
+		return loginUrl;
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
+
+	public String getLogoutUrl() {
+		return logoutUrl;
+	}
+
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
+	}
+
+	public int getGroupid() {
+		return groupid;
+	}
+
+	public void setGroupid(int groupid) {
+		this.groupid = groupid;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}	
+	
+	public String getGmail() {
+		return gmail;
+	}
+	public void setGmail(String gmail) {
+		this.gmail = gmail;
+	}
+	
+}
