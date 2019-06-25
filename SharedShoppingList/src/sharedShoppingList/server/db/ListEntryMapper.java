@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -347,10 +348,23 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-		
 			
-			String sql= "UPDATE listentry SET articleid= "+ listentry.getArticleId()+", amount='"+listentry.getAmount()+"', storeid="+listentry.getStoreId()+", userid="+listentry.getUserId()+", checked="+listentry.isChecked()+" WHERE id= "+ listentry.getId();
-
+			
+			String date = null;
+			if (listentry.getBuyDate() != null) {
+				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
+			}
+			
+	
+			String sql= "UPDATE listentry SET "
+					+ "articleid= "+ listentry.getArticleId()+","
+					+ " amount='"+listentry.getAmount()+"',"
+					+ " storeid="+listentry.getStoreId()+","
+					+ " userid="+listentry.getUserId()+","
+					+ " checked="+listentry.isChecked()+","
+					+ " buyDate ='" + date + "',"
+					+ " WHERE id= "+ listentry.getId();
+			
 			try {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(sql);
@@ -372,15 +386,19 @@ public class ListEntryMapper {
 			 * TODO: buydate anlegen in db
 			 * check .getDate Methode
 			 */
-			String sql = "SELECT * FROM listentry";
+			//String sql = "SELECT * FROM listentry";
+			
+			String sql= "";
 			if(store != null && beginningDate != null) {
-				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getTime();
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate >= '" + date + "'";
 			}
 			if(store == null && beginningDate != null) {
-				sql += " WHERE buydate >= " + beginningDate.getTime();
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				sql = " Select * from listentry WHERE buyDate >= '" + date + "'";
 			} 
 			if(store != null && beginningDate == null) {
-				sql += " WHERE storeid = " + store.getId();
+				 sql = " Select * from listentry WHERE storeid = " + store.getId();
 			}
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {

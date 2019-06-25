@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 
 public class Store extends BusinessObject{
 	
+	private static final long serialVersionUID = 1L;
+	
 	public Store() {
 		super();	
 	}

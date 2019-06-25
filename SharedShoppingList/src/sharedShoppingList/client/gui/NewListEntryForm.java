@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -20,6 +23,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
@@ -43,6 +47,9 @@ public class NewListEntryForm extends DialogBox {
 	Group selectedGroup = null;
 	ShoppingList selectedList = null;
 	ShoppingListForm slf = null;
+	Article article;
+	String unit;
+	private User u = CurrentUser.getUser();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -50,10 +57,10 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	//Vector<Unit> units = new Vector<Unit>();
+	ArrayList <String> units;
 
 	private Grid grid = new Grid(6, 6);
-
+	Label unitLabel = new Label();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -72,29 +79,15 @@ public class NewListEntryForm extends DialogBox {
 
 	}
 
-//	private class Unit {
-//		private Unit unit;
-//
-//		public void setUnit(Unit unit) {
-//			this.unit = unit;
-//		}
-//
-//		public Unit getUnit() {
-//			return unit;
-//		}
-//
-//	}
-
 	/***********************************************************************
 	 * onLoad METHODEN
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-
+	
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
-
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 
 			public void onFailure(Throwable caught) {
@@ -102,10 +95,12 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 			public void onSuccess(Vector<Article> result) {
+				
 				for (Article a : result) {
 					articles.addElement(a);
 					articleOracle.add(a.getName());
-				}
+					unit = a.getUnit();
+					unitLabel.addStyleName(unit);				}
 
 			}
 		});
@@ -150,38 +145,51 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 		});
+				
+		
+		
+//		elv.getAllA;
+//		
+//		unit = article.getUnit();
+//
+//		unitLabel = new Label(unit);
+
+//		// UnitListBox
+//		// Lade alle Einheit aus der Datenbank
+//		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
+//
+////			public void onFailure(Throwable caught) {
+////				Notification.show("failure");
+////			}
+////
+////			public void onSuccess(Vector<Unit> result) {
+////				unitsListBox.clear();
+////				for (Unit unit : result) {
+////					units.addElement(unit);
+////					unitsListBox.addItem(unit.getName());
+////
+////				}
+////			}
+////		});
 
 		// UnitListBox
 		// Lade alle Einheit aus der Datenbank
-		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
 
-//			public void onFailure(Throwable caught) {
-//				Notification.show("failure");
-//			}
+//		ArrayList<String> units = null;
 //
-//			public void onSuccess(Vector<Unit> result) {
-//				unitsListBox.clear();
-//				for (Unit unit : result) {
-//					units.addElement(unit);
-//					unitsListBox.addItem(unit.getName());
-//
-//				}
-//			}
-//		});
-
-		// UnitListBox
-		// Lade alle Einheit aus der Datenbank
-
-		ListBox listBoxUnits = new ListBox();
-		listBoxUnits.addItem("Kg");
-		listBoxUnits.addItem("Gramm");
-		listBoxUnits.addItem("Stück");
-		listBoxUnits.addItem("Pack");
-		listBoxUnits.addItem("Liter");
-		listBoxUnits.addItem("Milliliter");
+//		if (units == null) {
+//			units = new ArrayList<String>();
+//			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+//		}
+//		if (unitsListBox == null) {
+//			unitsListBox = new ListBox();
+//		}
+//		for (String unit : units) {
+//			unitsListBox.addItem(unit);
+//		}
 
 		// setting itemcount value to 1 turns listbox into a drop-down list
-		listBoxUnits.setVisibleItemCount(1);
+		// listBoxUnits.setVisibleItemCount(1);
 
 		/***********************************************************************
 		 * Building the grid
@@ -195,7 +203,7 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(1, 1, amountTextBox);
 
 		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, listBoxUnits);
+		grid.setWidget(2, 1, unitLabel);
 
 		grid.setText(3, 0, "Wer?: ");
 		grid.setWidget(3, 1, usersListBox);
@@ -288,10 +296,9 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 
+			// a.getUniit(unit);
 			float newAmount = Float.parseFloat(amountTextBox.getText());
-			// String newUnit = listBoxUnits.
 
-			// Unit unit = new Unit();
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
 
@@ -301,18 +308,16 @@ public class NewListEntryForm extends DialogBox {
 			// Listeneintrag
 			ListEntry listEntry = new ListEntry();
 
-			// unit = unit.get(listBoxUnits.getSelectedIndex());
 			store = stores.get(storesListBox.getSelectedIndex());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			// article.setUnit(unit); // falsch als String, muss Unit als Typ sein.
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
-			// listEntry.setStore(store);
-			// listEntry.setShoppingList(shoppingList);
-			// listEntry.setUser(user);
+			listEntry.setStore(store);
+			listEntry.setShoppinglist(shoppingList);
+			listEntry.setUser(user);
 
-			ClientsideSettings.getLogger().info("id: " + listEntry.getShoppinglistId());
+			// ClientsideSettings.getLogger().info("id: " + listEntry.getShoppinglistId());
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -327,7 +332,7 @@ public class NewListEntryForm extends DialogBox {
 
 			} else {
 
-				elv.createListentry("", new CreateListEntryCallback());
+				elv.createListentry("", user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
 
 			}
 		}
@@ -355,6 +360,22 @@ public class NewListEntryForm extends DialogBox {
 				}
 
 			}
+		}
+		
+		private class UnitCallback implements AsyncCallback {
+			
+			public void onFailure (Throwable caught) {
+				Window.alert("");
+				
+			}
+
+			@Override
+			public void onSuccess(Object result) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		
 		}
 	}
 

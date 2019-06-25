@@ -12,6 +12,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public abstract class BusinessObject implements IsSerializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private String name;
 	private Timestamp createDate;

@@ -146,7 +146,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findByUser(User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql="SELECT * FROM einkaufsgruppe WHERE id ="+ user.getGroupId();
+		String sql="SELECT * FROM einkaufsgruppe WHERE id ="+ user.getGroupid();
 		Group group = new Group();
 		try {
 

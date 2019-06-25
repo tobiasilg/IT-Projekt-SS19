@@ -1,6 +1,7 @@
 package sharedShoppingList.server;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -185,6 +186,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 
 	public Vector<Article> getAllArticles() throws IllegalArgumentException {
 		return this.articleMapper.findAllArticles();
+	}
+	
+
+	public Article getArticleById(int id) throws IllegalArgumentException{
+
+		return this.articleMapper.findByID(id);
 	}
 
 	/**
@@ -381,6 +388,17 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 
 	public void save(ListEntry listentry) throws IllegalArgumentException {
+		/*
+		 * Wenn checked angehakt wurde, soll ein neues Datum (das aktuelle) gesetzt werden
+		 */
+		if(listentry.isChecked()) {
+			listentry.setBuyDate((Timestamp) new Date());
+		}
+		else {
+			listentry.setBuyDate(null);
+			
+		}
+		
 		this.listEntryMapper.update(listentry);
 	}
 	
@@ -570,7 +588,23 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		shoppingList.setGroupId(group.getId());
 
 
-		this.listMapper.insert(shoppingList);
+		ShoppingList sl = this.listMapper.insert(shoppingList);
+		
+		Vector <Favourite> favs = this.favouriteMapper.findFavouritesByGroupId(group.getId());
+		
+		for (Favourite favourite : favs) {
+			ListEntry le = new ListEntry();
+			ListEntry favle = this.listEntryMapper.findByID(favourite.getListEntryId());
+			le.setAmount(favle.getAmount());
+			le.setUserId(favle.getUserId());
+			le.setArticleId(favle.getArticleId());
+			le.setShoppinglistId(sl.getId());
+			
+			this.listEntryMapper.insert(le);
+			
+			//le.setCreateDate(favourite.getlis);
+		}
+		
 		
 		return shoppingList;
 	}
@@ -768,11 +802,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return null;
 	}
 
-	@Override
-	public ListEntry createListentry(String name) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	
 

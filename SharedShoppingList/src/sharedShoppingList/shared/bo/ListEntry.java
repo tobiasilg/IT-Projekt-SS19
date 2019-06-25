@@ -1,5 +1,7 @@
 package sharedShoppingList.shared.bo;
 
+import java.sql.Timestamp;
+
 /**
  * Die Klasse <code>ListEntry</code> ist die Realisierung einer Klasse, welche den Eintrag einer Einkaufsliste darstellt. 
  * Alle Methoden und Attribute befinden sich in der Superklasse <code>BusinessObject</code>- außer die Attribute amount und checked
@@ -10,7 +12,7 @@ package sharedShoppingList.shared.bo;
 
 public class ListEntry extends BusinessObject {
 	
-	
+	private static final long serialVersionUID = 1L;
 	
 	public ListEntry() {
 		super();
@@ -30,6 +32,12 @@ public class ListEntry extends BusinessObject {
 	 * Fremdschlüssel-Beziehungen
 	 */
 	
+	/*
+	 * Datum, an welchem die Artikerl( Listeneinträge) abgehakt und somit gekauft wurden
+	 */
+	
+	private Timestamp buyDate;
+	
 	private int articleId;
 	private int storeId;
 	private int userId;
@@ -45,6 +53,14 @@ public class ListEntry extends BusinessObject {
 	
 	
 	
+	public Timestamp getBuyDate() {
+		return buyDate;
+	}
+
+	public void setBuyDate(Timestamp buyDate) {
+		this.buyDate = buyDate;
+	}
+
 	public ShoppingList getShoppinglist() {
 		return shoppinglist;
 	}

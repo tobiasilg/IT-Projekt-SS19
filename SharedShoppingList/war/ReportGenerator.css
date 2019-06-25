@@ -38,20 +38,29 @@ body {
 	grid-row-end: 2;
 }
 
-#details {
+#navigation {
 	background: white;
-	grid-column-start: 2;
+	grid-column-start: 1;
 	grid-column-end: 5;
 	grid-row-start: 2;
 	grid-row-end: 3;
+}
+
+#report {
+	background: white;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 4;
+	grid-row-end: 5;
+	padding: 20px;
 }
 
 #footer {
 	background-color: #d5dee0;
 	grid-column-start: 1;
 	grid-column-end: 5;
-	grid-row-start: 3;
-	grid-row-end: 4;
+	grid-row-start: 6;
+	grid-row-end: 7;
 }
 
 /*
@@ -78,4 +87,13 @@ body {
 	font-size: 1.25rem;
 	font-weight: 400;
 	line-height: 1.25;
+}
+
+.DateBox {
+	box-sizing: border-box;
+	clear: both;
+	font-size: 1rem;
+	position: relative;
+	text-align: left;
+	margin-top: 10em;
 }
