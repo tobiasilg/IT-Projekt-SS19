@@ -54,7 +54,7 @@ public class ArticleMapper {
 	public Article findByID(int id) {
 		Connection con = DBConnection.connection();
 		
-		String sql="select * from article where id=" + id;
+		String sql="SELECT * FROM article WHERE id=" + id;
 		try {
 
 			Statement stmt = con.createStatement();
@@ -68,7 +68,6 @@ public class ArticleMapper {
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				article.setFavourite(rs.getBoolean("favourite"));
 			
 				return article;
 			}
@@ -87,7 +86,7 @@ public class ArticleMapper {
 	
 	public Vector<Article>findAllArticles(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from article order by name";
+		String sql = "SELECT * FROM article ORDER BY name";
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
@@ -101,7 +100,6 @@ public class ArticleMapper {
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				article.setFavourite(rs.getBoolean("favourite"));
 				
 				result.addElement(article);
 			}
@@ -118,7 +116,7 @@ public class ArticleMapper {
 	
 	public Vector<Article> findAllByCurrentUser(User user){
 		Connection con = DBConnection.connection();
-		String sql = "select * from article where id=" + user.getId();
+		String sql = "SELECT * FROM article WHERE id=" + user.getId();
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
@@ -132,7 +130,6 @@ public class ArticleMapper {
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				article.setFavourite(rs.getBoolean("favourite"));
 				
 				result.addElement(article);
 			}
@@ -176,12 +173,35 @@ public class ArticleMapper {
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into article (name, createDate, modDate, unit) values ('"+ article.getName()+ "'," + article.getCreateDate()+ ","+ article.getModDate() +",'"+article.getUnit() + "')";
+		String sql= "INSERT INTO article (name, unit) VALUES ('"+ article.getName()+ "','"+article.getUnit() + "')";
 		
-	    try {
+		try {
+	    	/*
+	    	 * Einstellung dass automatisch generierte  ID's aus der DB
+	    	 * zureuckgeliefert werden.
+	    	 * Somit kann ohne einen Refresh der Artikel sofort angezeigt werden
+	    	 */
 	    	
-	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); //ID wird aus der DB geholt
+	    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
+
+	        if (affectedRows == 0) { //Kein neuer Eintrag in DB
+	            throw new SQLException("Creating article failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	        	
+	            if (generatedKeys.next()) {
+	                article.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating article failed, no ID obtained.");
+	            }
+	            
+	        }catch(SQLException e) {
+	        	e.printStackTrace();
+	        }
+	      
 	      
 	    }
 	    catch (SQLException e2) {
@@ -196,28 +216,22 @@ public class ArticleMapper {
 	
 	public Article update(Article article) {
 		Connection con = DBConnection.connection();
-		//String sql="UPDATE article " + "SET name=\"" + article.getName() + "\", " + "unit=\""
-				//+ article.getUnit() + "\" " + "WHERE id=" + article.getId();
+
+		
+		String sql= "UPDATE article SET name= '"+ article.getName()+"', unit='"+article.getUnit()+"' WHERE id= "+ article.getId();
+
 
 		try {
-			//Statement stmt = con.createStatement();
-			//stmt.executeUpdate(sql);
-			PreparedStatement stmt = con.prepareStatement("UPDATE article SET name= ?, unit= ? WHERE article.id = ?");
-
-			stmt.setTimestamp(1, article.getModDate());
-			stmt.setString(2, article.getUnit());
-			stmt.setInt(3, article.getId());
-			stmt.executeUpdate();
-
-			
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		
 		return article;
 	}
+
 	
 
 

@@ -1,28 +1,39 @@
 package sharedShoppingList.client.gui;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
@@ -30,48 +41,145 @@ import sharedShoppingList.shared.bo.User;
  * Formular für das Einsehen von Gruppenmitglieder, Hinzufügen von Usern, ändern
  * des Gruppennamens, Gruppe löschen
  * 
- * @author nicolaifischbach und moritzhampe
+ * * @author nicolaifischbach
  * 
  */
 
 public class AdministrationGroupForm extends VerticalPanel {
 
-	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	User u = CurrentUser.getUser();
-	Group g = CurrentGroup.getGroup();
-
-	Group selectedGroup = null;
+	private EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+	private User user = CurrentUser.getUser();
+	private Group selectedGroup = null;
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
-	private Label firstNameLabel = new Label("Gruppenverwaltung");
-	private Label secondNameLabel = new Label("Mitgliederverwaltung");
-	private Label thirdNameLabel = new Label("Gruppenname ändern");
+	private ShoppingListCreationForm shoppingListCreationForm;
+	
+	FieldVerifier verifier = new FieldVerifier();
 
-	private DynamicTextbox addUsersTextBox = new DynamicTextbox();
+	private Label membersLabel = new Label("Mitgliederverwaltung");
+	private Label groupLabel = new Label("Gruppenverwaltung");
+	
 	private DynamicTextbox renameTextBox = new DynamicTextbox();
+	
+	private MultiWordSuggestOracle userOracle = new MultiWordSuggestOracle();
+	private SuggestBox userTextBox = new SuggestBox(userOracle);
 
-	private FlexTable viewMembersFlexTable;
-
-	private Button addMembersButton = new Button("hinzufügen");
+	private Button addUserButton = new Button("Hinzufügen");
+	
 	private Button deleteGroupButton = new Button("loeschen");
 	private Button saveGroupNameButton = new Button("speichern");
+	private Button createShoppingListButton = new Button("Shoppingliste erstellen");
 
-	private HorizontalPanel hpButtonsPanelViewMembers = new HorizontalPanel();
+	private FlowPanel boxPanel = new FlowPanel();
+	private HorizontalPanel memberPanel = new HorizontalPanel();
 	private HorizontalPanel hpButtonsPanelGroup = new HorizontalPanel();
-	private ArrayList<User> groupMembers;
+	
+	private ListDataProvider<User> dataProvider = new ListDataProvider<User>();
+	private List<User> list = dataProvider.getList();
+	private Vector<User> users = new Vector<User>();
+	
+	private CellTable<User> memberTable = new CellTable<User>(KEY_PROVIDER);
+	
+	private static final ProvidesKey<User> KEY_PROVIDER = new ProvidesKey<User>() {
+		@Override
+		public Object getKey(User user) {
+			return user.getId();
+		}
+	};
 
-	// Prüfen des Eingabefelds auf richtige Zeichensetzung
-	private FieldVerifier verifier = new FieldVerifier();
+
 
 	/***********************************************************************
 	 * Konstruktor
 	 ***********************************************************************
 	 */
 	public AdministrationGroupForm() {
-
-		addMembersButton.addClickHandler(new AddMemberClickHandler());
-		deleteGroupButton.addClickHandler(new DeleteGroupClickHandler());
+		
 		saveGroupNameButton.addClickHandler(new SaveRenameGroupClickhandler());
+		deleteGroupButton.addClickHandler(new DeleteGroupClickHandler());
+		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
+		
+		addUserButton.addClickHandler(new AddUserClickHandler());
+		
+//		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void onSuccess(Vector<User> result) {
+//				
+//				for(User user : result) {
+//					list.add(user);
+//				}
+//				
+//			}
+//			
+//		});
+		
+		TextCell userTextCell = new TextCell();
+		
+		Column<User, String> stringColumn = new Column<User, String>(userTextCell) {
+			@Override
+			public String getValue(User user) {
+
+				return user.getName();
+			}
+		};
+		
+		ButtonCell deleteButton = new ButtonCell();
+		
+		Column<User, String> deleteColumn = new Column<User, String>(deleteButton) {
+
+			@Override
+			public String getValue(User object) {
+				// TODO Auto-generated method stub
+				return "entfernen";
+			}
+			
+		};
+		
+		deleteColumn.setFieldUpdater(new FieldUpdater<User, String>() {
+			public void update(int index, User user, String value) {
+
+				dataProvider.getList().remove(user);
+
+				AsyncCallback<Void> deleteCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+
+				};
+				elv.delete(user,deleteCallback);
+			}
+		});
+		
+		stringColumn.setFieldUpdater(new FieldUpdater<User, String>() {
+			public void update(int index, User user, String value) {
+				// Value is the textCell value. Object is the row object.
+				user.setName(value);
+
+			}
+
+		});
+			
+		memberTable.addColumn(stringColumn, "Users");
+		memberTable.addColumn(deleteColumn, "Mitglied entfernen");
+		memberTable.setColumnWidth(stringColumn, 20, Unit.PC);
+		dataProvider.addDataDisplay(memberTable);
+		
 	}
 
 	/***********************************************************************
@@ -80,45 +188,39 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-		hpButtonsPanelViewMembers.add(addUsersTextBox);
-		hpButtonsPanelViewMembers.add(addMembersButton);
+
+		memberPanel.add(userTextBox);
+		memberPanel.add(addUserButton);
+		
+		// GroupButtonsPanel
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
+		hpButtonsPanelGroup.add(createShoppingListButton);
 
 		// Add them to VerticalPanel
-		this.setWidth("100%");
-		this.add(firstNameLabel);
-		this.add(secondNameLabel);
-		this.add(viewMembersFlexTable);
-		this.add(hpButtonsPanelViewMembers);
-		this.add(thirdNameLabel);
-		this.add(renameTextBox);
-		this.add(hpButtonsPanelGroup);
+		boxPanel.add(groupLabel);
+		boxPanel.add(renameTextBox);
+		boxPanel.add(hpButtonsPanelGroup);
+		
+		boxPanel.add(membersLabel);
+		boxPanel.add(memberTable);
+		boxPanel.add(memberPanel);
+	
+		this.add(boxPanel);
 
-		firstNameLabel.addStyleName("name_label");
-		secondNameLabel.addStyleName("name_label");
-		thirdNameLabel.addStyleName("name_label");
+		// Styling der Labels
+		membersLabel.addStyleName("profilTitle");
+		membersLabel.setHorizontalAlignment(ALIGN_LEFT);
+		membersLabel.setWidth("100%");
+		groupLabel.addStyleName("profilTitle");
+		groupLabel.setHorizontalAlignment(ALIGN_LEFT);
+		groupLabel.setWidth("100%");
 
-		viewMembersFlexTable.setWidth("70%");
-		viewMembersFlexTable.setBorderWidth(2);
-		viewMembersFlexTable.setSize("100%", "100%");
-		viewMembersFlexTable.setCellPadding(10);
-
-		hpButtonsPanelViewMembers.setSpacing(20);
-		hpButtonsPanelGroup.setSpacing(20);
-
-		addMembersButton.setPixelSize(130, 40);
+		// Styling der Buttons
 		saveGroupNameButton.setPixelSize(130, 40);
 		deleteGroupButton.setPixelSize(130, 40);
+		createShoppingListButton.setPixelSize(130, 40);
 
-		// aktueller Name der Gruppe wird in der TextBox angezeigt
-		
-		//renameTextBox.getElement().setPropertyString(g.getName());
-
-		/*
-		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
-		 * Zugleich wird das Eingabefeld geleert.
-		 */
 		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
@@ -130,39 +232,124 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			}
 		});
+		
+		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
 
-		addUsersTextBox.addKeyPressHandler(new KeyPressHandler() {
+			public void onFailure(Throwable caught) {
+				Notification.show("failure");
+			}
 
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-					addMembersButton.click();
-					addUsersTextBox.setText("");
+			public void onSuccess(Vector<User> result) {
+				for (User u : result) {
+					users.addElement(u);
+					userOracle.add(u.getName());
 				}
 
 			}
 		});
+		
+		
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
-	}
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
 
-	public Group getSelected() {
-		return selectedGroup;
-	}
-
-	public void setSelected(Group group) {
-		selectedGroup = group;
-
-	}
+			@Override
+			public void onSuccess(Vector<User> result) {
+				
+				
+				for(User user : result) {
+					list.add(user);
+					break;
+				}
 	
-	public GroupShoppingListTreeViewModel getGsltvm() {
-		return gsltvm;
+			}
+			
+		});
+		
+//		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void onSuccess(Vector<User> result) {
+//				
+//				for(User user : result) {
+//					list.add(user);
+//				}
+//				
+//			}
+//			
+//		});
+//		
+//		TextCell userTestCell = new TextCell();
+//		Column<User, String> stringColumn = new Column<User, String>(userTestCell) {
+//			@Override
+//			public String getValue(User user) {
+//
+//				return user.getName();
+//			}
+//		};
+//		
+//		ButtonCell deleteButton = new ButtonCell();
+//		Column<User, String> deleteColumn = new Column<User, String>(deleteButton) {
+//
+//			@Override
+//			public String getValue(User object) {
+//				// TODO Auto-generated method stub
+//				return "entfernen";
+//			}
+//			
+//		};
+//		
+//		deleteColumn.setFieldUpdater(new FieldUpdater<User, String>() {
+//			public void update(int index, User user, String value) {
+//
+//				dataProvider.getList().remove(user);
+//
+//				AsyncCallback<Void> deleteCallback = new AsyncCallback<Void>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(Void result) {
+//						// TODO Auto-generated method stub
+//
+//					}
+//
+//				};
+//				elv.delete(user,deleteCallback);
+//			}
+//		});
+//		
+//		stringColumn.setFieldUpdater(new FieldUpdater<User, String>() {
+//			public void update(int index, User user, String value) {
+//				// Value is the textCell value. Object is the row object.
+//				user.setName(value);
+//
+//			}
+//
+//		});
+//			
+//		memberTable.addColumn(stringColumn, "Users");
+//		memberTable.addColumn(deleteColumn, "Mitglied entfernen");
+//		
+//		
+//		dataProvider.addDataDisplay(memberTable);
 		
 	}
-	
-	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
-		this.gsltvm = gsltvm;
-	}
-
+		
 	/***********************************************************************
 	 * Methoden
 	 ***********************************************************************
@@ -173,6 +360,31 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
 	 * FieldVerifyer benötigt werden.
 	 */
+
+	public Group getSelected() {
+		return selectedGroup;
+	}
+
+	public void setSelected(Group g) {
+		if (g != null) {
+			
+			selectedGroup = g;
+			renameTextBox.setText(selectedGroup.getName());
+		} else {
+			renameTextBox.setText("");
+		}
+
+	}
+
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+
+	}
+
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
+
 	private boolean checkTextboxesSaveableRename() {
 
 		renameTextBox.setSaveable(verifier.checkValue(renameTextBox.getlabelText(), renameTextBox.getText()));
@@ -182,14 +394,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 		return true;
 	}
 
-	private boolean checkTextboxesSaveableMember() {
-
-		addUsersTextBox.setSaveable(verifier.checkValue(addUsersTextBox.getlabelText(), addUsersTextBox.getText()));
-		if (addUsersTextBox.saveable == false) {
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
@@ -216,59 +420,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 		}
 	}
 
-	// Erstellt eie Flextable, falls nicht existent
-	// @return 3 spaltige Flextable wird zurück gegeben
-	protected FlexTable createTable() {
-
-		if (viewMembersFlexTable == null) {
-			viewMembersFlexTable = new FlexTable();
-
-			viewMembersFlexTable.setText(0, 0, "Nickname");
-			viewMembersFlexTable.setText(0, 1, "");
-		}
-
-		groupMembers = new ArrayList<User>();
-
-		// Lädt alle Gruppenmitglieder aus der Datenbank
-		elv.getUsersByGroup(g, new AsyncCallback<Vector<User>>() {
-
-			public void onFailure(Throwable caught) {
-				Notification.show("failure");
-			}
-
-			public void onSuccess(Vector<User> result) {
-				// Füge alle Elemente der Datenbank in die Liste hinzu
-				for (User user : result) {
-					groupMembers.add(user);
-					setContentOfviewMembersFlexTable(user);
-				}
-				Notification.show("success");
-
-			}
-		});
-
-		return viewMembersFlexTable;
-	}
-
-	private void setContentOfviewMembersFlexTable(User user) {
-		// Hole die Zeilennummer, die aktuell bearbeitet wird
-		int rowCount = viewMembersFlexTable.getRowCount();
-
-		// Erstellt eine neue Textbox für eigetragene User und setze den Namen
-		//
-		DynamicTextbox memberTextBox = new DynamicTextbox();
-		memberTextBox.setText(user.getName());
-
-		// Erstellt einen Lösch-Button (x)
-		CustomButton removeMemberButton = new CustomButton();
-		removeMemberButton.setUser(user);
-
-		removeMemberButton.addClickHandler(new RemoveMemberClickhandler(removeMemberButton));
-
-		// Füge die TextBox und die ListBox in die FlexTable ein
-		viewMembersFlexTable.setWidget(rowCount, 0, memberTextBox);
-		viewMembersFlexTable.setWidget(rowCount, 1, removeMemberButton);
-	}
 
 	/**
 	 * Die Nested-Class <code>DeleteUserDialogBox</code> erstellt eine DialogBox die
@@ -289,12 +440,12 @@ public class AdministrationGroupForm extends VerticalPanel {
 		 * DialogBox
 		 */
 		public DeleteGroupDialogBox() {
-			abfrage.addStyleName("label has-text-primary content_margin");
+			abfrage.addStyleName("Abfrage");
 			jaButton.addStyleName("button is-danger");
 			neinButton.addStyleName("button bg-primary has-text-white");
 
 			jaButton.addClickHandler(new YesDeleteClickHandler(this));
-			neinButton.addClickHandler(new CancelDeleteClickHandler(this));
+			neinButton.addClickHandler(new NoDeleteClickHandler(this));
 
 			vPanel.add(abfrage);
 			vPanel.add(buttonPanel);
@@ -309,62 +460,30 @@ public class AdministrationGroupForm extends VerticalPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
-
-	/**
-	 * Auf Mehtode warten *
-	 */
-
-	private class CustomButton extends Button {
-		User user;
-
-		public User getUser() {
-			return user;
-		}
-
-		public void setUser(User user) {
-			this.user = user;
-		}
-	}
-
-	private class RemoveMemberClickhandler implements ClickHandler {
-
-		private CustomButton cB;
-
-		public RemoveMemberClickhandler(CustomButton cB) {
-
-			this.cB = cB;
-		}
+	
+	private class AddUserClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			if (cB != null) {
-
-				elv.delete(cB.getUser(), new DeleteMemberCallback());
-
-			} else {
-				Notification.show("Das Gruppenmitglied konnte nicht gelöscht werden");
-			}
+			// TODO Auto-generated method stub
+			
 		}
+		
 	}
 
-	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer User nach dem Klicken
-	 * des addButton der Gruppe hinzugefügt.
-	 */
-	private class AddMemberClickHandler implements ClickHandler {
+	private class CreateShoppingListClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			User user = new User();
 
-			user.setName(addUsersTextBox.getValue());
-			setContentOfviewMembersFlexTable(user);
+			RootPanel.get("details").clear();
+			shoppingListCreationForm = new ShoppingListCreationForm();
+			shoppingListCreationForm.setGsltvm(gsltvm);
+			RootPanel.get("details").add(shoppingListCreationForm);
 
-			// Persistiere in die Datenbank
-			// elv.save(user.getName(), new AddMemberCallback());
 		}
 
 	}
-
+	
 	/**
 	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
 	 * ClickHandler-Interface, welches eine Interaktion ermöglicht. Hier wird das
@@ -397,7 +516,13 @@ public class AdministrationGroupForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			this.parentDUDB.hide();
-			elv.delete(g, new DeleteGroupCallback());
+		//	elv.delete(selectedGroup, new DeleteGroupCallback());
+			if (selectedGroup == null) {
+				Window.alert("Es wurde keine Gruppe ausgewählt");
+			} else {
+				elv.delete(selectedGroup, new DeleteGroupCallback());
+			}
+		
 		}
 	}
 
@@ -406,10 +531,10 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * ClickHandler-Interface, welches den Abbruchvorgang einleitet.
 	 * 
 	 */
-	private class CancelDeleteClickHandler implements ClickHandler {
+	private class NoDeleteClickHandler implements ClickHandler {
 		private DeleteGroupDialogBox parentDUDB;
 
-		public CancelDeleteClickHandler(DeleteGroupDialogBox dudb) {
+		public NoDeleteClickHandler(DeleteGroupDialogBox dudb) {
 			this.parentDUDB = dudb;
 		}
 
@@ -420,33 +545,21 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 	}
 
-	/**
-	 * Die Nested-Class <code>DeleteUserCallbac</code> implementiert einen
-	 * AsyncCallback und ermöglicht das Löschen des Users in der DB.
-	 */
-
-//	/**
-//	 * Hiermit wird der Vorgang, die Gruppe umzubenennen, abgebrochen.
-//	 */
-//	class CancelRenameGroupClickHandler implements ClickHandler {
-//		public void onClick(ClickEvent event) {
-//			RootPanel.get("details").clear();
-//		}
-//	}
 
 	/**
-	 * Info: getGroupMethode fehlt noch Sobald das Textfeld ausgef�llt wurde, wird
+	 * Info: getGroupMethode fehlt noch Sobald das Textfeld ausgef?llt wurde, wird
 	 * ein neue Gruppe nach dem Klicken des addButton erstellt.
 	 */
 	private class SaveRenameGroupClickhandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 
-			if (g != null) {
+			if (selectedGroup != null) {
 
-				g.setName(renameTextBox.getText());
+				selectedGroup.setName(renameTextBox.getValue());
 
-				elv.save(g, new SaveRenameGroupCallback());
+				//elv.save(selectedGroup, new SaveRenameGroupCallback());
+				elv.save(selectedGroup, new SaveRenameGroupCallback());
 
 			} else {
 				Window.alert("Es wurde keine Gruppe ausgewhält");
@@ -456,9 +569,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 	}
 
-	/***********************************************************************
-	 * CALLBACK
-	 ***********************************************************************/
 
 	/**
 	 * Callback wird benötigt, um die Gruppe umzubenennen
@@ -469,50 +579,20 @@ public class AdministrationGroupForm extends VerticalPanel {
 			Notification.show("Die Gruppen konnte nicht umbenannt werden");
 		}
 
-		public void onSuccess(Void Group) {
-			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
-
-			gsltvm.updateGroup(g);
-
-		}
-	}
-
-	/*
-	 * Callback wird benötigt, um ein Mitglieder aus der Gruppe zu entfernen.
-	 */
-
-	private class DeleteMemberCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show(caught.toString());
-		}
-
-		@Override
 		public void onSuccess(Void result) {
+			Notification.show("Die Gruppe wurde erfolgreich umbenannt");
+			
+			gsltvm.updateGroup(selectedGroup);
 
-			groupMembers.clear();
-			createTable();
 		}
 	}
 
-	private class AddMemberCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show("Der User konnte nicht hinzugefuegt werden");
-		}
-
-		@Override
-		public void onSuccess(Void user) {
-			Notification.show("Der User wurde erfolgreich hinzugefuegt");
-		}
-	}
 
 	/*
 	 * Callback wird benötigt, um die Gruppe zu löschen.
 	 */
 	private class DeleteGroupCallback implements AsyncCallback<Void> {
+	
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -520,9 +600,13 @@ public class AdministrationGroupForm extends VerticalPanel {
 		}
 
 		@Override
-		public void onSuccess(Void group) {
+		public void onSuccess(Void result) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
-		}
+			
+			gsltvm.removeGroup(selectedGroup);
+			
+			
 	}
 
+}
 }

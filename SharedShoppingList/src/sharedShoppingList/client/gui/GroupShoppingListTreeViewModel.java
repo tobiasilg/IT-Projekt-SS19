@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -173,7 +174,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					shoppingListForm.setSelectedGroup(selectedGroup);
+					groupForm.setSelected(group);
+					//shoppingListForm.setSelectedGroup(selectedGroup);
 				}
 			});
 		}
@@ -261,12 +263,13 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 		@Override
 		public void onFailure(Throwable t) {
-			Notification.show("Folgender Fehler: \n" + t.toString());
+			Notification.show("Folgender Fehler 1: \n" + t.toString());
 
 		}
 
 		@Override
 		public void onSuccess(Group group) {
+
 			List<ShoppingList> shoppingListList = shoppingListDataProviders.get(group).getList();
 
 			for (int i = 0; i < shoppingListList.size(); i++) {
@@ -290,19 +293,33 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 		if (value.equals("Root")) {
 			
 			groupDataProvider = new ListDataProvider<Group>();
-
-			einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+			
+			//einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
+			//einkaufslistenVerwaltung.getGroupById(selectedGroup.getId(), new AsyncCallback<Group>() {
+			einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
+			//einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
 
 				@Override
 				public void onFailure(Throwable t) {
-					Notification.show("Folgender Fehler: \n" + t.toString());
+				
+					Notification.show("Folgender Fehler 2: \n" + t.toString());
 
 				}
 
 				@Override
-				public void onSuccess(Group group) {
+				public void onSuccess(Vector <Group> group) {
+					Notification.show(" sucess! " );
+					//Notification.show(group.getName());
 					//GroupShoppingListTreeViewModel.this.getGroups().add(result);
-					groupDataProvider.getList().add(group);
+					//groupDataProvider.getList().add(group);
+					
+					for(Group g : group) {
+						Window.alert("g hat den Wert: " + g.getName());
+						
+						groupDataProvider.getList().add(g);
+						//GroupShoppingListTreeViewModel.this.addGroup(g);
+					//	Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
+					}
 			
 				}
 

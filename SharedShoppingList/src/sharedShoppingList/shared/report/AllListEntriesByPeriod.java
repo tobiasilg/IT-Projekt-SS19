@@ -19,6 +19,7 @@ public class AllListEntriesByPeriod extends SimpleReport {
     /**
      * Default Konstruktor.
      */
+	
     public AllListEntriesByPeriod() {
     	
     }

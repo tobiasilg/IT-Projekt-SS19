@@ -2,10 +2,9 @@
 <!-- The DOCTYPE declaration above will set the     -->
 <!-- browser's rendering engine into                -->
 <!-- "Standards Mode". Replacing this declaration   -->
+<!-- with a "Quirks Mode" doctype is not supported. -->
 
-<!-- @TODO unnötige Anmerkungen entfernen -->
-
-<html>
+<html lang="en" dir="ltr">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <!--                                                               -->
@@ -23,7 +22,7 @@
 <!-- be added before this line.                -->
 <!--                                           -->
 <script type="text/javascript" language="javascript"
-	src="sharedshoppinglist/sharedshoppinglist.nocache.js"></script>
+	src="reportgenerator/reportgenerator.nocache.js"></script>
 </head>
 
 <!--                                           -->
@@ -31,11 +30,9 @@
 <!-- you can leave the body empty if you want  -->
 <!-- to create a completely dynamic UI.        -->
 <!--                                           -->
-<body style="border: 0px none !important; margin: 0; padding: 0;">
+<body class="container" style="border: 0px none !important; margin: 0; padding: 0;">
 
-	<!-- OPTIONAL: include this if you want history support -->
-	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
-		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+	
 
 	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
 	<noscript>
@@ -45,10 +42,12 @@
 			application to display correctly.</div>
 	</noscript>
 
-	<div class="container">
+	
 		<div id="header"></div>
-		<div id="details">details</div>
+		<div id="navigation">nav</div>
+		<div id="report">rep</div>
+		<div id="footer">fot</div>
 		
-	</div>
+	
 </body>
 </html>

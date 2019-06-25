@@ -5,43 +5,58 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
-import sharedShoppingList.client.gui.AbstractDialogCreationForm.DynamicTextbox;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.FieldVerifier;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.User;
 
 /**
  * Formular für das Anlegen einer neuen ShoppingListe im Datenstamm
  * 
+ * @author nicolaifischbach
+ * 
+ *         Info: Anbindung dan Tree fehlt noch 
  * 
  */
 
-public class ShoppingListCreationForm extends VerticalPanel {
+public class ShoppingListCreationForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	User u = CurrentUser.getUser();
+	User user = CurrentUser.getUser();
+	
+	GroupShoppingListTreeViewModel gsltvm = null;
+	private Group selectedGroup;
+	private ShoppingList selectedShoppingList = null;
+	ShoppingListForm showForm = null;
 
-	private Label nameLabel = new Label("Neue Shoppingliste erstellen");
-	private DynamicTextbox textBox = new DynamicTextbox();
-	private Button saveButton = new Button("speichern");
-	private Button cancelButton = new Button("abbrechen");
-	private HorizontalPanel hpCancelAndSave = new HorizontalPanel();
+	private FlowPanel shoppingListPanel = new FlowPanel();
+	private FlowPanel buttonPanel = new FlowPanel();
+
+	private Label shoppingListLabel = new Label("Neue Shoppingliste");
+	private Label insertLabel = new Label("ShoppingList-Name eingeben:");
+
+	//private DynamicTextbox shoppingListNameTextBox = new DynamicTextbox();
+	private TextBox shoppingListNameTextBox = new TextBox();
+	
+	private Button saveButton = new Button("Speichern");
+	private Button cancelButton = new Button("Abbrechen");
 
 	// Prüfen des Eingabefelds auf richtige Zeichensetzung
-	private FieldVerifier verifier = new FieldVerifier();
+	
+	/*
+	 * 
+	 */
+//	private FieldVerifier verifier = new FieldVerifier();
 
 	/***********************************************************************
 	 * Konstruktor
@@ -59,87 +74,109 @@ public class ShoppingListCreationForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-		hpCancelAndSave.add(saveButton);
-		hpCancelAndSave.add(cancelButton);
 
-		// Add them to VerticalPanel
-		this.setWidth ("100%");
-		this.add(nameLabel);
-		this.add(textBox);
-		this.add(hpCancelAndSave);
+		shoppingListPanel.addStyleName("profilBox");
+		shoppingListLabel.addStyleName("profilTitle");
+		insertLabel.addStyleName("profilLabel");
+		shoppingListNameTextBox.addStyleName("profilTextBox");
 
-		textBox.getElement().setPropertyString("placeholder", "Namen eingeben... ");
+		saveButton.addStyleName("saveNewGrouButton");
+		cancelButton.addStyleName("cancelNewGroupButton");
+		
+		shoppingListNameTextBox.getElement().setPropertyString("placeholder", "Shoppingliste... ");
 
-		nameLabel.addStyleName("name_label");
-		textBox.addStyleName("addUsersTextBox_textBox");
-		cancelButton.addStyleName("cancel_button");
-		saveButton.addStyleName("save_button");
+		buttonPanel.add(saveButton);
+		buttonPanel.add(cancelButton);
 
-		hpCancelAndSave.setSpacing(20);
-		cancelButton.setPixelSize(130, 40);
-		saveButton.setPixelSize(130, 40);
+		shoppingListPanel.add(shoppingListLabel);
+		shoppingListPanel.add(insertLabel);
+		shoppingListPanel.add(shoppingListNameTextBox);
+		shoppingListPanel.add(buttonPanel);
+
+		this.add(shoppingListPanel);
+
 
 		/*
 		 * Mit dem Enter-Button kann ebenfalls die Speicherfunktion ausgeführt werden.
 		 * Zugleich wird das Eingabefeld geleert.
 		 */
-		textBox.addKeyPressHandler(new KeyPressHandler() {
+		shoppingListNameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
 					saveButton.click();
-					textBox.setText("");
+					shoppingListNameTextBox.setText("");
 				}
 
 			}
 		});
 
-		}
+	}
 
 	/***********************************************************************
 	 * Methoden
 	 ***********************************************************************
 	 */
+
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+
+	}
 	
+
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+
+	}
+
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
+
 	/**
 	 * Mit der privaten Klasse <code>DynamicTextbox</code> werden dynamische
 	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
 	 * FieldVerifyer benötigt werden.
 	 */
-	private boolean checkTextboxesSaveable() {
-
-		textBox.setSaveable(verifier.checkValue(textBox.getlabelText(), textBox.getText()));
-		if (textBox.saveable == false) {
-			return false;
-		}
-		return true;
-	}
+//	private boolean checkTextboxesSaveable() {
+//
+//		shoppingListNameTextBox.setSaveable(
+//				verifier.checkValue(shoppingListNameTextBox.getlabelText(), shoppingListNameTextBox.getText()));
+//		if (shoppingListNameTextBox.saveable == false) {
+//			return false;
+//		}
+//		return true;
+//	}
 
 	/**
 	 * Mit der Klasse <code>DynamicTextbox</code> werden dynamische Textboxen
 	 * definiert.
 	 */
-	class DynamicTextbox extends TextBox {
-		boolean saveable = true;
-		String labelText;
-
-		public boolean isSaveable() {
-			return saveable;
-		}
-
-		public void setSaveable(boolean saveable) {
-			this.saveable = saveable;
-		}
-
-		public String getlabelText() {
-			return labelText;
-		}
-
-		public void setlabelText(String labelText) {
-			this.labelText = labelText;
-		}
-	}
+//	class DynamicTextbox extends TextBox {
+//		boolean saveable = true;
+//		String labelText;
+//
+//		public boolean isSaveable() {
+//			return saveable;
+//		}
+//
+//		public void setSaveable(boolean saveable) {
+//			this.saveable = saveable;
+//		}
+//
+//		public String getlabelText() {
+//			return labelText;
+//		}
+//
+//		public void setlabelText(String labelText) {
+//			this.labelText = labelText;
+//		}
+//	}
 
 	/***********************************************************************
 	 * ClickHandler
@@ -152,7 +189,7 @@ public class ShoppingListCreationForm extends VerticalPanel {
 	private class CancelListCreationClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			RootPanel.get("Details").clear();
+			RootPanel.get("details").clear();
 
 		}
 	}
@@ -165,11 +202,21 @@ public class ShoppingListCreationForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 
-			elv.createShoppingList(textBox.getText(), new ListCreationCallback());
+			selectedGroup = gsltvm.getSelectedGroup();
+		
+			if(shoppingListNameTextBox.getValue() == "") {
+			Window.alert("Einkaufsliste muss einen Namen besitzen !");
+			
+			}else {
+			//elv.createShoppingList(shoppingListNameTextBox.getValue(), new ListCreationCallback());
+			
+			showForm = new ShoppingListForm();
+			elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup, new ListCreationCallback(selectedGroup));
 
+			}
 		}
-
 	}
+	
 
 	/***********************************************************************
 	 * AsyncCallbacks
@@ -180,15 +227,39 @@ public class ShoppingListCreationForm extends VerticalPanel {
 	 * Callback wird benötigt, um eine Liste zu erstellen
 	 */
 	private class ListCreationCallback implements AsyncCallback<ShoppingList> {
+		
+		Group group = null; 
+	
+		public ListCreationCallback(Group selectedGroup) {
+			group = selectedGroup;
+		}
+
 		@Override
 		public void onFailure(Throwable caught) {
-			Notification.show("Die Gruppen konnte nicht erstellt werden");
+			Notification.show("Die Shoppingliste konnte nicht erstellt werden");
+			
 		}
 
 		@Override
-		public void onSuccess(ShoppingList shoppingList) {
-			Notification.show("Die Gruppe wurde erfolgreich erstellt");
-		}
-	}
+		public void onSuccess(ShoppingList result) {
+			
+			Notification.show(String.valueOf(result.getId()));
+			
+				RootPanel.get("details").clear();
+				selectedShoppingList = result;
+				showForm.setSelected(selectedShoppingList);
+				RootPanel.get("details").add(showForm);
+				
+				gsltvm.setSelectedList(selectedShoppingList);
+				gsltvm.getSelectionModel().setSelected(selectedShoppingList, true);
 
+				gsltvm.addShoppingListOfGroup(selectedShoppingList, group);
+				
+				
+		
+			}
+
+		}
 }
+	
+

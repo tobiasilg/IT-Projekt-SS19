@@ -16,9 +16,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentGroup;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
-import sharedShoppingList.client.gui.ShoppingListCreationForm.DynamicTextbox;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Group;
@@ -223,4 +221,9 @@ public class AdministrationShoppingListForm extends VerticalPanel {
 		}
 	}
 
+/** MERGECONFLICT gelöst */
+	protected SuggestBox suggestUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

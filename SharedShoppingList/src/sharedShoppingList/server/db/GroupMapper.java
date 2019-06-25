@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Group;
@@ -41,13 +42,31 @@ public class GroupMapper {
 	
 	public Group insert (Group group) {
 		Connection con = DBConnection.connection();
-		
-		String sql= "insert into einkaufsgruppe (name, createDate, modDate) values ('"+ group.getName()+ "'," + group.getCreateDate()+ ","+ group.getModDate() +")";  
+
+    
+		String sql= "INSERT INTO einkaufsgruppe (name) VALUES ('"+ group.getName()+ "')";  
+
 		
 	    try {
+	    	/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
 	    	
-	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+	    	int affectedRows = stmt.executeUpdate();
+
+	        if (affectedRows == 0) {
+	            throw new SQLException("Creating group failed, no rows affected.");
+	        }
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                group.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating group failed, no ID obtained.");
+	            }
+	        }
 	      
 	    }
 	    catch (SQLException e) {
@@ -65,7 +84,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	/* find all */
 	public Vector<Group> findAll(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from group order by name";
+		String sql = "SELECT * FROM einkaufsgruppe";
 		
 		Vector<Group> groups= new Vector<Group>();
 		try {
@@ -94,7 +113,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findById(int id) {
 		Connection con = DBConnection.connection();
 		Group group = new Group();
-		String sql="select * from group where id=" + id;
+		String sql="SELECT * FROM einkaufsgruppe WHERE id=" + id;
 			
 		try {
 
@@ -127,7 +146,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	public Group findByUser(User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql="select * from einkaufsgruppe where id ="+ user.getGroupId();
+		String sql="SELECT * FROM einkaufsgruppe WHERE id ="+ user.getGroupid();
 		Group group = new Group();
 		try {
 
@@ -156,7 +175,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	
 	public Group update(Group group) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE group " + "SET name=\"" + group.getName() + "\", " + "WHERE id=" + group.getId();
+		String sql= "UPDATE einkaufsgruppe SET name= '"+ group.getName()+"' WHERE id= "+ group.getId();
 
 		try {
 			Statement stmt = con.createStatement();
@@ -171,11 +190,12 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 	
 
 /*DELETE*/
+
 	
 	public void delete (Group group) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from group where id=" + group +")";
+		String sql="DELETE FROM einkaufsgruppe WHERE id = " + group.getId();
 		
 	    try {
 	    	

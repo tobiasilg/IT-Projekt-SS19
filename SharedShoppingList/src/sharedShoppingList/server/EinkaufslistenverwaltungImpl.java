@@ -1,6 +1,7 @@
 package sharedShoppingList.server;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -132,12 +133,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Article article = new Article();
 		article.setName(name);
 		article.setUnit(unit);
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 * autoincrement=1
-		 */
-		article.setId(1);
+		
+	
 
 		return this.articleMapper.insert(article);
 	}
@@ -190,6 +187,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Vector<Article> getAllArticles() throws IllegalArgumentException {
 		return this.articleMapper.findAllArticles();
 	}
+	
+
+	public Article getArticleById(int id) throws IllegalArgumentException{
+
+		return this.articleMapper.findByID(id);
+	}
 
 	/**
 	 * 
@@ -199,8 +202,14 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 
 	public Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException {
-		return this.articleMapper.findAllByCurrentUser(user);
 		
+		if (user != null) {
+			
+			return this.articleMapper.findAllByCurrentUser(user);
+		}else {
+			
+			return null;
+		}
 	}
 	
 	/**
@@ -275,11 +284,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 **/
 	public Store createStore(String name) throws IllegalArgumentException {
 		Store store = new Store();
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 */
-		store.setId(1);
+		
+		
+		
 		store.setName(name);
 
 		return this.storeMapper.insert(store);
@@ -345,23 +352,43 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * 
 	 * @author Leon
 	 */
-	public ListEntry createListentry(String name) throws IllegalArgumentException {
+	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException {
 		ListEntry listentry = new ListEntry();
 
-		/*
-		 * Setzen einer vorläufigen Storenr. Der insert-Aufruf liefert dann ein Objekt,
-		 * dessen Nummer mit der Datenbank konsistent ist.
-		 */
-
-		listentry.setId(1);
+	
 		listentry.setName(name);
+		
+		listentry.setUserId(user.getId());
+		
+		listentry.setArticle(article);
+		
+		listentry.setAmount(amount);
+		
+		listentry.setStoreId(store.getId());
+		
+		listentry.setShoppinglistId(sl.getId());
+		
+		
+		
 		/*
 		 * 
 		 */
+		
 		return this.listEntryMapper.insert(listentry);
 	}
 
 	public void save(ListEntry listentry) throws IllegalArgumentException {
+		/*
+		 * Wenn checked angehakt wurde, soll ein neues Datum (das aktuelle) gesetzt werden
+		 */
+		if(listentry.isChecked()) {
+			listentry.setBuyDate((Timestamp) new Date());
+		}
+		else {
+			listentry.setBuyDate(null);
+			
+		}
+		
 		this.listEntryMapper.update(listentry);
 	}
 	
@@ -376,6 +403,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	public Vector<ListEntry> getAllListEntriesByStore(Store store) throws IllegalArgumentException {
 		return this.listEntryMapper.findByStore(store);
+		
+	}
+	
+	public Vector<ListEntry> getAllListEntries() throws IllegalArgumentException {
+		return this.listEntryMapper.findAllListEntries();
 		
 	}
 	
@@ -419,7 +451,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 	
 	/**
-	 * Alle User einer Gruppe zur Anzeigen in der Gruppenverwaltung
+	 * Alle User einer Gruppe zum Anzeigen in der Gruppenverwaltung
 	 * 
 	 */
 	
@@ -439,12 +471,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Group createGroup(String name) throws IllegalArgumentException {
 		Group group = new Group();
 		group.setName(name);
-
-        /** ACHTUNG! NUR VORLÄUFIG!
-        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
-        * @TODO ID-Verabe anpassen.
-        */
-		group.setId(1);
 
 		this.groupMapper.insert(group);
 		
@@ -474,7 +500,13 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		this.groupMapper.update(group);
 	}
 
-	/** Löschen einer Gruppe */
+	/** Löschen einer Gruppe mit zugehöriger Löschweitergabe
+	 * Nachdem Listeneintrgäge und Shoppinglisten gelöscht wurden, 
+	 * kann die Gruppe gelöscht werden.
+	 * @param group
+	 * @author Nico Weiler
+	 * 
+	 **/
 
 	public void delete(Group group) throws IllegalArgumentException {
 		
@@ -539,17 +571,30 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	/** Create einer neuen Shoppingliste */
 
-	public ShoppingList createShoppingList(String name) throws IllegalArgumentException {
+	public ShoppingList createShoppingList(String name, Group group) throws IllegalArgumentException {
+		
 		ShoppingList shoppingList = new ShoppingList();
 		shoppingList.setName(name);
+		shoppingList.setGroupId(group.getId());
 
-        /** ACHTUNG! NUR VORLÄUFIG!
-        * Die ID muss später in aufsteigender Reihenfolge vergeben werden
-        * @TODO ID-Verabe anpassen.
-        */
-		shoppingList.setId(1);
 
-		this.listMapper.insert(shoppingList);
+		ShoppingList sl = this.listMapper.insert(shoppingList);
+		
+		Vector <Favourite> favs = this.favouriteMapper.findFavouritesByGroupId(group.getId());
+		
+		for (Favourite favourite : favs) {
+			ListEntry le = new ListEntry();
+			ListEntry favle = this.listEntryMapper.findByID(favourite.getListEntryId());
+			le.setAmount(favle.getAmount());
+			le.setUserId(favle.getUserId());
+			le.setArticleId(favle.getArticleId());
+			le.setShoppinglistId(sl.getId());
+			
+			this.listEntryMapper.insert(le);
+			
+			//le.setCreateDate(favourite.getlis);
+		}
+		
 		
 		return shoppingList;
 	}
@@ -634,6 +679,120 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Group getGroupById(int id) throws IllegalArgumentException {
 		return this.groupMapper.findById(id);
 	}
+	
+	/**
+	 * Beginn Abschnitt sonstige Methoden 
+	 * @author Nico Weiler
+	 */
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung in einer Gruppe
+	 * @param group eines bestimmten users
+	 * @param user 
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(Group group, User user) throws IllegalArgumentException {
+
+		Group g = this.getGroupByUser(user);
+
+		if (g != null && group != null) {
+
+			if (!g.equals(group)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung in einer Shoppinglist
+	 * @param shoppingList
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(ShoppingList shoppingList) throws IllegalArgumentException {
+
+		ShoppingList sl = this.findShoppingListById(shoppingList.getId());
+
+		if (sl != null) {
+
+			if (!sl.equals(shoppingList)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Kenntlichmachung der letzten Änderung eines Listeneintrags
+	 * @param group eines bestimmten users
+	 * @param user 
+	 * @return Boolean
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Boolean changed(Vector<ListEntry> listEntry, ShoppingList shoppingList) throws IllegalArgumentException {
+
+		Vector<ListEntry> le = this.getAllListEntriesByShoppingList(shoppingList);
+
+		if (le != null) {
+
+			if (!le.equals(listEntry)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Filtert Listeneinträge innerhalb von Shoppinglisten nach Händler
+	 * @param store
+	 * @return le
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<ListEntry> filterByStore(Store store)throws IllegalArgumentException{
+		Vector<ListEntry> le= this.getAllListEntriesByStore(store);
+		
+
+		if(le != null) {
+			return le;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Filtert Listeneinträge innerhalb von Shoppinglisten nach Einkäufer
+	 * @param user
+	 * @return le
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException{
+		Vector<ListEntry> le= this.getAllListEntriesByUser(user);
+		
+
+		if(le != null) {
+			return le;
+		}
+		
+		return null;
+	}
+
+	@Override
+	public List<ListEntry> getEntriesByDate(Timestamp beginningDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	
 	
 

@@ -1,10 +1,12 @@
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -59,7 +61,7 @@ public class ListEntryMapper {
 		public ListEntry findByID(int id) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where id=" + id;
+			String sql="SELECT * FROM listentry WHERE id=" + id;
 			try {
 
 				Statement stmt = con.createStatement();
@@ -94,7 +96,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findByArticle(Article article) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where articleid=" + article.getId();
+			String sql="SELECT * FROM listentry WHERE articleid=" + article.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -138,7 +140,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where shoppinglistid=" + sl.getId();
+			String sql="SELECT * FROM listentry WHERE shoppinglistid=" + sl.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -177,7 +179,7 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findByStore(Store store) {
 			Connection con = DBConnection.connection();
 			
-			String sql="select * from listentry where storeid=" + store.getId();
+			String sql="SELECT * FROM listentry WHERE storeid=" + store.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -216,7 +218,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry>findAllListEntries(){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listentry order by name";
+			String sql = "SELECT * FROM listentry ORDER BY name";
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -251,7 +253,7 @@ public class ListEntryMapper {
 		
 		public Vector<ListEntry> findAllByCurrentUser(User user){
 			Connection con = DBConnection.connection();
-			String sql = "select * from listentry where userid=" + user.getId();
+			String sql = "SELECT * FROM listentry WHERE userid=" + user.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -286,7 +288,7 @@ public class ListEntryMapper {
 		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "delete from listentry where id=" + listEntry.getId() +")";
+			String sql= "DELETE FROM listentry WHERE id=" + listEntry.getId() +")";
 			
 		    try {
 		    	
@@ -307,14 +309,33 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "insert into listentry (name, createDate, modDate, amount, checked, userid, storeid, articleid, shoppinglistid) values ('"+ listEntry.getName()+ "',"+ listEntry.getCreateDate()+ "," + listEntry.getModDate()+","+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
+			String sql= "INSERT INTO listentry (name, amount, checked, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+ ")";
 			
-		    try {
+			try {
+		    	/*
+		    	 * Einstellung dass automatisch generierte  ID's aus der DB
+		    	 * zureuckgeliefert werden.
+		    	 * Somit kann ohne einen Refresh der Listeneintrag sofort angezeigt werden
+		    	 */
 		    	
-		    	Statement stmt = con.createStatement();
-		    	stmt.executeUpdate(sql);	 
-		      
-		    }
+		    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); //ID wird aus der DB geholt
+		    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
+
+		        if (affectedRows == 0) { //Kein neuer Eintrag in DB
+		            throw new SQLException("Creating ListEntry failed, no rows affected.");
+		        }
+		        
+		        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+		        	
+		            if (generatedKeys.next()) {
+		                listEntry.setId(generatedKeys.getInt(1)); //index 1 = id column
+		            }
+		            else {
+		                throw new SQLException("Creating ListEntry failed, no ID obtained.");
+		            }
+		        }
+			}
+		        
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
@@ -327,9 +348,23 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-			String sql="UPDATE listentry " + "SET name=\"" + listentry.getName() + "\", " + "amount=\""
-					+ listentry.getAmount() + "\" " + "WHERE id=" + listentry.getId();
-
+			
+			
+			String date = null;
+			if (listentry.getBuyDate() != null) {
+				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
+			}
+			
+	
+			String sql= "UPDATE listentry SET "
+					+ "articleid= "+ listentry.getArticleId()+","
+					+ " amount='"+listentry.getAmount()+"',"
+					+ " storeid="+listentry.getStoreId()+","
+					+ " userid="+listentry.getUserId()+","
+					+ " checked="+listentry.isChecked()+","
+					+ " buyDate ='" + date + "',"
+					+ " WHERE id= "+ listentry.getId();
+			
 			try {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(sql);
@@ -351,16 +386,51 @@ public class ListEntryMapper {
 			 * TODO: buydate anlegen in db
 			 * check .getDate Methode
 			 */
-			String sql = "SELECT * FROM listentry";
+			//String sql = "SELECT * FROM listentry";
+			
+			String sql= "";
 			if(store != null && beginningDate != null) {
-				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getDate();
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate >= '" + date + "'";
 			}
 			if(store == null && beginningDate != null) {
-				sql += " WHERE buydate >= " + beginningDate.getDate();
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				sql = " Select * from listentry WHERE buyDate >= '" + date + "'";
 			} 
 			if(store != null && beginningDate == null) {
-				sql += " WHERE storeid = " + store.getId();
+				 sql = " Select * from listentry WHERE storeid = " + store.getId();
 			}
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					ListEntry listEntry = createEntry(rs);
+					
+					result.addElement(listEntry);
+				}
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}
+			return result;
+		}
+		
+		// Methode um Listeneinträge eines Zeitraums ausgeben zu lassen
+		
+		public List<ListEntry> findByDate(Timestamp beginningDate) {
+			Connection con = DBConnection.connection();
+			/**
+			 * TODO: buydate anlegen in db
+			 * check .getDate Methode
+			 */
+			String sql = "SELECT * FROM listentry";
+			if(beginningDate != null) {
+				sql += " WHERE buydate >= " + beginningDate.getTime();
+			}
+			if(beginningDate != null) {
+				sql += " WHERE buydate >= " + beginningDate.getTime();
+			} 
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
 				Statement stmt = con.createStatement();

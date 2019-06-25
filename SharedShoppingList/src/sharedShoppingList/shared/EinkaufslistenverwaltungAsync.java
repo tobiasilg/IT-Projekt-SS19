@@ -21,6 +21,8 @@ import sharedShoppingList.shared.bo.User;
 public interface EinkaufslistenverwaltungAsync {
 
 	void getEntriesByStoreAndDate(Store store, Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
+	
+	void getEntriesByDate(Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
 
 	void createArticle(String name, String unit, AsyncCallback<Article> callback);
 
@@ -42,7 +44,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void delete(Group group, AsyncCallback<Void> callback);
 	
-	void createShoppingList(String name, AsyncCallback<ShoppingList> callback);
+	void createShoppingList(String name, Group group, AsyncCallback<ShoppingList> callback);
 	
     void getAll(AsyncCallback<Vector<ShoppingList>> callback);
     
@@ -65,7 +67,8 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void save(Store store, AsyncCallback<Void> callback);
 
-	void createListentry(String name, AsyncCallback<ListEntry> callback);
+	void createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl,
+			AsyncCallback<ListEntry> callback);
 
 	void save(ListEntry listentry, AsyncCallback<Void> callback);
 
@@ -98,6 +101,18 @@ public interface EinkaufslistenverwaltungAsync {
 	void getGroupById(int id, AsyncCallback<Group> callback);
 
 	void getAllListEntriesByShoppingList(ShoppingList sl, AsyncCallback<Vector<ListEntry>> callback);
+
+	void changed(Vector<ListEntry> listEntry, ShoppingList shoppingList, AsyncCallback<Boolean> callback);
+
+	void changed(ShoppingList shoppingList, AsyncCallback<Boolean> callback);
+
+	void changed(Group group, User user, AsyncCallback<Boolean> callback);
+
+	void filterByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
+
+	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
+
+	void getArticleById(int id, AsyncCallback<Article> callback);
 
 
 }

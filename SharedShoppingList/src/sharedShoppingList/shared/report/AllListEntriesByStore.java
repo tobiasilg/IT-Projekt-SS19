@@ -19,6 +19,7 @@ public class AllListEntriesByStore extends SimpleReport {
     /**
      * Default Konstruktor.
      */
+	
     public AllListEntriesByStore() {
     	
     }

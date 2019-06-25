@@ -15,7 +15,7 @@ import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 import sharedShoppingList.shared.bo.Group;
 
-/*
+/**
  * @author: Leon Seiz, Nico Weiler, Tobias Ilg
  * 
  */
@@ -24,6 +24,8 @@ import sharedShoppingList.shared.bo.Group;
 public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate);
+	
+	public List<ListEntry> getEntriesByDate(Timestamp beginningDate);
 
 	Article createArticle(String name, String unit) throws IllegalArgumentException;
 
@@ -45,7 +47,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	public void delete(ShoppingList shoppingList) throws IllegalArgumentException;
 	
-	ShoppingList createShoppingList(String name) throws IllegalArgumentException;
+	ShoppingList createShoppingList(String name, Group group) throws IllegalArgumentException;
 
 	Vector<ShoppingList> getAll() throws IllegalArgumentException;
 
@@ -67,7 +69,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public void save(Store store) throws IllegalArgumentException;
 	
-	public ListEntry createListentry(String name) throws IllegalArgumentException;
+	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException;
 	
 	public void save(ListEntry listentry) throws IllegalArgumentException;
 	
@@ -99,9 +101,19 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException;
 	
+	public Boolean changed(Vector<ListEntry> listEntry, ShoppingList shoppingList) throws IllegalArgumentException;
 	
+	public Boolean changed(ShoppingList shoppingList) throws IllegalArgumentException;
 	
+	public Boolean changed(Group group, User user) throws IllegalArgumentException;
 	
+	public Vector<ListEntry> filterByStore(Store store)throws IllegalArgumentException;
+	
+	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException;
+	
+	public Article getArticleById(int id) throws IllegalArgumentException;
+	
+
 	
 
 }

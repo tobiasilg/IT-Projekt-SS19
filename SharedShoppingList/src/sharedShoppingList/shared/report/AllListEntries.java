@@ -23,6 +23,7 @@ public class AllListEntries extends SimpleReport {
     /**
      * Default Konstruktor.
      */
+	
     public AllListEntries() {
     	
     }

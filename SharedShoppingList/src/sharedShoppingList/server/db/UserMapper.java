@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Group;
@@ -13,7 +14,7 @@ import sharedShoppingList.shared.bo.User;
 /**
 * Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage aus der DB, sowie der Datenablage in der DB - des BOs User verantwortlich.
 * Er ermöglicht die Durchführung aller "CRUD-Vorgänge". Dazu bietet er verschiedene Methoden.
-* Author dieser Klasse: @author Tobias Ilg
+* @author Tobias Ilg
 */
 
 
@@ -40,12 +41,30 @@ public class UserMapper {
 	public void insert (User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "insert into user (name, username, gmail, groupid, createDate, modDate) values ('" + user.getName() + "','" + user.getUserName() + "','" + user.getGmail()+ "'," + user.getGroupId()+ "," + user.getCreateDate()+ ","+ user.getModDate() +")";  
+		String sql= "INSERT INTO user (name, username, gmail, groupid) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "'," + user.getGroupid()+")";
 		
 	    try {
 	    	
-	    	Statement stmt = con.createStatement();
-	    	stmt.executeUpdate(sql);	 
+	    	/*
+	    	 * Einstellung dass autoincremented ID's zureuckgeliefert werden
+	    	 */
+	    	
+	    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+	    	int affectedRows = stmt.executeUpdate();
+
+	        if (affectedRows == 0) {
+	            throw new SQLException("Creating user failed, no rows affected.");
+	        }
+	        
+	        
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                user.setId(generatedKeys.getInt(1)); //index 1 = id column
+	            }
+	            else {
+	                throw new SQLException("Creating user failed, no ID obtained.");
+	            }
+	        }	 
 	      
 	    }
 	    catch (SQLException e) {
@@ -59,7 +78,7 @@ public class UserMapper {
 	/* find all */
 	public Vector<User> findAll(){
 		Connection con = DBConnection.connection();
-		String sql = "select * from user order by name";
+		String sql = "SELECT * FROM user ORDER BY name";
 		
 		Vector<User> users= new Vector<User>();
 		try {
@@ -72,9 +91,9 @@ public class UserMapper {
 
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
-                user.setUserName(rs.getString("username"));
+                user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupId(rs.getInt("groupid"));
+                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -91,7 +110,7 @@ public class UserMapper {
 	public User findById(int id) {
 		Connection con = DBConnection.connection();
 		User user = new User();
-		String sql="select * from user where id=" + id;
+		String sql="SELECT * FROM user WHERE id=" + id;
 			
 		try {
 
@@ -102,9 +121,43 @@ public class UserMapper {
 					
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
-                user.setUserName(rs.getString("username"));
+                user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupId(rs.getInt("groupid"));
+                user.setGroupid(rs.getInt("groupid"));
+				user.setCreateDate(rs.getTimestamp("createDate"));
+				user.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return user;
+		}
+	
+	/* find by name */
+	public User findByName(String name) {
+		
+		Connection con = DBConnection.connection();
+		User user = new User();
+		
+		// DISTINCT sorg hier dafür, dass nur ein Nutzer-Objekt zurückgegeben wird
+		
+		String sql="SELECT DISTINCT * FROM user WHERE name=" + name;
+			
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("username"));
+                user.setGmail(rs.getString("gmail"));
+                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -127,7 +180,7 @@ public class UserMapper {
 	public Vector <User> findByGroup(Group group) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "select * from user where groupid="+ group.getId();
+		String sql = "SELECT * FROM user WHERE groupid="+ group.getId();
 		
 		Vector<User> users= new Vector<User>();
 		
@@ -142,9 +195,9 @@ public class UserMapper {
 
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
-                user.setUserName(rs.getString("username"));
+                user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupId(rs.getInt("groupid"));
+                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -166,7 +219,7 @@ public class UserMapper {
 	
 	public User update(User user) {
 		Connection con = DBConnection.connection();
-		String sql="UPDATE user " + "SET name=\"" + user.getName() + "\", " + "SET username=\"" + user.getUserName() + "\", " + "SET gmail=\"" + user.getGmail() + "\", " + "SET groupid=\"" + user.getGroupId() + "\", " + "WHERE id=" + user.getId();
+		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"', groupid="+user.getGroupid()+" WHERE id= "+ user.getId();
 
 		try {
 			Statement stmt = con.createStatement();
@@ -185,7 +238,7 @@ public class UserMapper {
 	public void delete (User user) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "delete from user where id=" + user.getId()+")";
+		String sql= "DELETE FROM user WHERE id=" + user.getId()+")";
 		
 	    try {
 	    	

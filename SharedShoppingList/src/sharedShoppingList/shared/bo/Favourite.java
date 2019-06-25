@@ -3,12 +3,15 @@ package sharedShoppingList.shared.bo;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /*
+ * @author: Leon Seiz
  * Die Klasse <code>Favourite</code> ist die Realisierung einer Artikelklasse. 
  * Die Klasse erbt als einzige Klasse nicht von der Klasse Business Object, da Sie die Attribute nicht ben�tigt
  */
 
 
 public class Favourite implements IsSerializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	
 	/*
