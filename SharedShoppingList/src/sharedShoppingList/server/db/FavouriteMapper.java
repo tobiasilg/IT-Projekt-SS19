@@ -117,7 +117,9 @@ public class FavouriteMapper {
 	public Vector <Favourite> findAllFavourites () {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge,"
+				+ " a.name AS Artikelname,"
+				+ " a.unit AS Einheit FROM favourite AS f"
 				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
 				+ " LEFT JOIN article AS a ON a.id = l.articleid";
 		

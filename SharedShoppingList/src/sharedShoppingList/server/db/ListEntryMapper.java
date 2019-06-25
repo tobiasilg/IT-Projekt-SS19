@@ -380,7 +380,7 @@ public class ListEntryMapper {
 		}
 
 
-		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate) {
+		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) {
 			Connection con = DBConnection.connection();
 		
 			
@@ -388,15 +388,26 @@ public class ListEntryMapper {
 			if(store != null && beginningDate != null &&endDate!=null) {
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
-				 sql = " Select * from listentry WHERE storeid = " + store.getId() + " AND buyDate BETWEEN'" + date + "'AND '"+ enddate+"'";
+				 sql = "SELECT le.*, e.groupId FROM listentry AS le"
+						+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+						+ "WHERE le.buyDate BETWEEN '" + date + "' AND '" + enddate
+						+  "AND e.groupId =" + groupId
+						+ "AND storeid =" + store.getId();
 			}
 			if(store == null && beginningDate != null && endDate!=null) {
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
-				sql = " Select * from listentry WHERE buyDate BETWEEN '" + date + "'AND '"+enddate+"'";
+				sql = "SELECT le.*, e.groupId FROM listentry AS le"
+						+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+						+ "WHERE le.buyDate BETWEEN '" + date + "' AND '" + enddate
+						+  "AND e.groupId =" + groupId;
 			} 
 			if(store != null && beginningDate == null && endDate==null) {
-				 sql = " Select * from listentry WHERE storeid = " + store.getId();
+				 sql = "SELECT le.*, e.groupId FROM listentry AS le"
+							+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+							+ "WHERE e.groupId =" + groupId
+							+ "AND storeid =" + store.getId();
+		
 			}
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
