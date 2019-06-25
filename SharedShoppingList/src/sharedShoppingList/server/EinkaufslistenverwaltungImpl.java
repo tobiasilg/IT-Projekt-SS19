@@ -276,6 +276,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.userMapper.findById(id);
 	}
 	
+	/**
+	 * Gibt einen User mit dem entsprechenden Name zurück
+	 * @param name
+	 * @return UserObjekt
+	 * @throws IllegalArgumentException
+	 */
+	public User getUserByName(String name) throws IllegalArgumentException{
+		return this.userMapper.findByName(name);
+	}
+	
 	
 	/**
 	 * ************************* ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte
