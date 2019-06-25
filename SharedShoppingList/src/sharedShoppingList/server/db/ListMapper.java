@@ -163,7 +163,7 @@ public class ListMapper {
 	 * Methode um eine neue Einkaufsliste der Datenbank hinzuzufügen
 	 */
 	
-	public void insert (ShoppingList shoppinglist) {
+	public ShoppingList insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
 		String sql= "INSERT INTO shoppinglist (id, name, groupid) VALUES ("+shoppinglist.getId() + ",'" + shoppinglist.getName()+ "',"+shoppinglist.getGroupId()+ ")";
@@ -196,6 +196,7 @@ public class ListMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+		return shoppinglist;
 	}
 	
 	/*
