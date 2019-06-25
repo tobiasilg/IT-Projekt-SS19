@@ -136,6 +136,38 @@ public class UserMapper {
 			return user;
 		}
 	
+	/* find by gmail 
+	 * 
+	 *  */
+	public User findByGmail(String gmail) {
+		Connection con = DBConnection.connection();
+		User user = new User();
+		String sql="SELECT * FROM user WHERE gmail=" + gmail;
+			
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("username"));
+                user.setGmail(rs.getString("gmail"));
+                user.setGroupid(rs.getInt("groupid"));
+				user.setCreateDate(rs.getTimestamp("createDate"));
+				user.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return user;
+		}
+	
 	/* find by name */
 	public User findByName(String name) {
 		
