@@ -77,6 +77,7 @@ public class MainPanelReport extends VerticalPanel {
 	private ArrayList<Store> allStores;
 	private Store selectedStore = null;
 	private User user = CurrentUser.getUser();
+	int currentGroupID;
 
 	public void onLoad() {
 
@@ -158,7 +159,7 @@ public class MainPanelReport extends VerticalPanel {
 			public void onSuccess(Group result) {
 
 				Group currentGroup = result;
-				int currentGroupId = currentGroup.getId();
+				currentGroup.getId();
 
 			}
 
@@ -174,12 +175,12 @@ public class MainPanelReport extends VerticalPanel {
 
 //!!!!!!!!!!!!wie führe ich wietere Aktionen aus wenn kein Datum eingetragen ist
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
-
+				
 				Window.alert("Store: " + selectedStore.getName());
 
 				if (FromDateBox.getValue() == null && toDateBox.getValue() == null) {
 
-					repoClient.createListByPeriodAndStore(selectedStore, null, null,
+					repoClient.createListByPeriodAndStore(selectedStore, null, null, currentGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Stores filtern");
 
@@ -188,7 +189,7 @@ public class MainPanelReport extends VerticalPanel {
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 					Window.alert("Datum von: " + sqlStartDate);
 					Window.alert("Datum bis: " + sqlEndDate);
-					repoClient.createListByPeriodAndStore(null, sqlStartDate, sqlEndDate,
+					repoClient.createListByPeriodAndStore(null, sqlStartDate, sqlEndDate, currentGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Datum filtern");
 				} else {
@@ -196,7 +197,7 @@ public class MainPanelReport extends VerticalPanel {
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 					Window.alert("Datum: " + sqlStartDate);
 					Window.alert("Datum bis: " + sqlEndDate);
-					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate, sqlEndDate,
+					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate, sqlEndDate, currentGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nach allem Filtern");
 				}
