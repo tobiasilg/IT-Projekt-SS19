@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.Store;
 
 /**
@@ -127,6 +129,32 @@ public class StoreMapper {
 			return null;
 		}
 		return store;
+	}
+	
+	/* find Store by Group */
+	public Vector<Store> findStoreByGroup(Group group) {
+		Connection con = DBConnection.connection();
+		Store store = new Store();
+		
+		String sql = "SELECT * FROM article WHERE groupid=" + group.getId();
+
+		Vector<Store> result= new Vector<Store>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				store.setId(rs.getInt("id"));
+				store.setName(rs.getString("name"));
+				store.setCreateDate(rs.getTimestamp("createDate"));
+				store.setModDate(rs.getTimestamp("modDate"));
+				
+				result.addElement(store);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
 	}
 
 	/* UPDATE */
