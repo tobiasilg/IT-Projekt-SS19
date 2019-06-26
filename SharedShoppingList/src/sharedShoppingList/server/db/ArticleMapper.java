@@ -29,7 +29,7 @@ public class ArticleMapper {
 	 * Geschützter Konstrukter verhindert weitere Instanzierungen von ArticleMapper.
 	 * Somit kann nur eine Instanz der Klasse ArticleMapper angelegt werden.
 	 */
-	public ArticleMapper() {
+	protected ArticleMapper() {
 	}
 
 	
