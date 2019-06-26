@@ -280,6 +280,13 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(deleteColumn, "");
 
 		dataProvider.addDataDisplay(cellTable);
+		
+		/*
+		 * Spalte der Artikel
+		 */
+
+		this.add(cellTable);
+
 //		
 //
 //		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -312,87 +319,6 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		});
 		
-		/***********************************************************************
-		 * Erstellung Celltable
-		 ***********************************************************************
-		 */
-
-		/*
-		 * Spalte der CheckBox
-		 */
-
-		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(new CheckboxCell(true, false)) {
-
-			public Boolean getValue(ListEntry object) {
-				return multiSelectionModel.isSelected(object);
-			}
-		};
-
-		/*
-		 * Spalte der Artikel
-		 */
-
-		TextCell articleTextCell = new TextCell();
-		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return listEntry.getArticle().getName();
-			}
-		};
-
-		/*
-		 * Spalte der Einheit
-		 */
-
-		TextCell unitTextCell = new TextCell();
-		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return listEntry.getArticle().getUnit();
-			}
-		};
-
-		/*
-		 * Spalte der Menge
-		 */
-
-		TextCell amountTextCell = new TextCell();
-		Column<ListEntry, String> amountColumn = new Column<ListEntry, String>(amountTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return String.valueOf(listEntry.getAmount());
-			}
-		};
-
-		/*
-		 * Spalte der Stores
-		 */
-
-		TextCell storesTextCell = new TextCell();
-		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storesTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return listEntry.getStore().getName();
-			}
-		};
-
-		/*
-		 * Spalte der User
-		 */
-
-		TextCell userTextCell = new TextCell();
-		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return listEntry.getUser().getName();
-			}
-		};
-
-
-
-		this.add(cellTable);
-
-
 	}
 
 	/***********************************************************************
