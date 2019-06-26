@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.User;
 
 
@@ -16,7 +17,7 @@ import sharedShoppingList.shared.bo.User;
  * Diese umfasst  Methoden um ArticleMapper Objekte zu erstellen, zu suchen, zu  ändern und zu löschen.
  * Das Mapping funktioniert dabei bidirektional. Es können Objekte in DB-Strukturen und DB-Stukturen in Objekte umgewandelt werden.
  * 
- * @author Nico Weiler
+ * @author Nico Weiler, Tobi Ilg
  */
 
 public class ArticleMapper {
@@ -117,6 +118,36 @@ public class ArticleMapper {
 	public Vector<Article> findAllByCurrentUser(User user){
 		Connection con = DBConnection.connection();
 		String sql = "SELECT * FROM article WHERE id=" + user.getId();
+		
+		Vector<Article> result= new Vector<Article>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("name"));
+				article.setCreateDate(rs.getTimestamp("createDate"));
+				article.setModDate(rs.getTimestamp("modDate"));
+				article.setUnit(rs.getString("unit"));
+				
+				result.addElement(article);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * Methode zur Auflistung aller Artikel einer Gruppe
+	  * @author Tobi Ilg
+	 */
+	
+	public Vector<Article> getArticleByGroup(Group group){
+		Connection con = DBConnection.connection();
+		String sql = "SELECT * FROM article WHERE groupid=" + group.getId();
 		
 		Vector<Article> result= new Vector<Article>();
 		try {
