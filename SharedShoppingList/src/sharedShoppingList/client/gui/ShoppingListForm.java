@@ -60,12 +60,9 @@ public class ShoppingListForm extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	private final MultiSelectionModel<ListEntry> multiSelectionModel = new MultiSelectionModel<ListEntry>();
 
-	private User u = CurrentUser.getUser();
-
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
-	private NewListEntryForm nlef = null;
 	private ShoppingListForm slf = null;
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
@@ -110,7 +107,7 @@ public class ShoppingListForm extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		//filterByUser.addClickHandler(new FilterByUserClickHandler());
+		filterByUserButton.addClickHandler(new FilterByUserClickHandler());
 		//filterByStore.addClickHandler(new FilterByStoreClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
@@ -121,8 +118,7 @@ public class ShoppingListForm extends VerticalPanel {
 		
 		// Panel der obersten Ebene
 		firstRowPanel.add(infoTitleLabel);
-		firstRowPanel.add(createShoppingListButton);
-		
+			
 		// Panel der Buttons
 		buttonPanel.add(renameTextBox);
 		buttonPanel.add(saveSlButton);
@@ -141,6 +137,7 @@ public class ShoppingListForm extends VerticalPanel {
 		
 
 		this.add(firstRowPanel);
+		this.add(createShoppingListButton);
 		this.add(buttonPanel);
 		this.add(filterPanel);
 		this.add(cellTable);
@@ -235,8 +232,8 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 		
-		ButtonCell delteButton = new ButtonCell();
-			Column<ListEntry, String> deleteColumn = new Column <ListEntry, String>(delteButton){
+		ButtonCell deleteButton = new ButtonCell();
+			Column<ListEntry, String> deleteColumn = new Column <ListEntry, String>(deleteButton){
 			
 			public String getValue (ListEntry listEntry) {
 				return "x";
@@ -480,6 +477,8 @@ public class ShoppingListForm extends VerticalPanel {
 			
 			RootPanel.get("details").clear();
 			ShoppingListFilterForm slff = new ShoppingListFilterForm();
+			
+			
 			RootPanel.get("details").add(slff);
 			
 		}
@@ -487,8 +486,8 @@ public class ShoppingListForm extends VerticalPanel {
 	
 	
 
-	/**
-	 * Die Nested-Class <code>DeleteGroupClickHandler</code> implementiert das
+	/*
+	 * Die Nested-Class <code>DeleteListEntryClickHandler</code> implementiert das
 	 * ClickHandler-Interface, welches eine Interaktion ermöglicht. Hier wird das
 	 * Erscheinen der DeleteListEntryDialogBox ermöglicht.
 	 * 
@@ -651,6 +650,8 @@ public class ShoppingListForm extends VerticalPanel {
 			RootPanel.get("details").clear();
 			NewListEntryForm nlef = new NewListEntryForm();
 			RootPanel.get("details").add(nlef);
+			
+			
 
 		}
 
