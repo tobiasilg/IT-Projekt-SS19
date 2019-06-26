@@ -24,7 +24,7 @@ public class UserMapper {
 	private static UserMapper userMapper = null;
 	
     /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
-	public UserMapper() {}
+	protected UserMapper() {}
 	
 	public static UserMapper userMapper() {
 		if (userMapper == null) {
@@ -111,6 +111,38 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 		User user = new User();
 		String sql="SELECT * FROM user WHERE id=" + id;
+			
+		try {
+
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+					
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("username"));
+                user.setGmail(rs.getString("gmail"));
+                user.setGroupid(rs.getInt("groupid"));
+				user.setCreateDate(rs.getTimestamp("createDate"));
+				user.setModDate(rs.getTimestamp("modDate"));
+					
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return user;
+		}
+	
+	/* find by gmail 
+	 * 
+	 *  */
+	public User findByGmail(String gmail) {
+		Connection con = DBConnection.connection();
+		User user = new User();
+		String sql="SELECT * FROM user WHERE gmail=" + gmail;
 			
 		try {
 

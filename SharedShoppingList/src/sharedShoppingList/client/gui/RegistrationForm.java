@@ -44,20 +44,20 @@ public class RegistrationForm extends FlowPanel {
 	// dient der Weiterleitung
 	private Anchor destinationUrl = new Anchor();
 
-//	public RegistrationForm(Anchor destinationUrl, User user ) {
-//		this.destinationUrl = destinationUrl;
-//		this.user = user;
-//
-//		registrationButton.addClickHandler(new RegistrationClickHandler());
-//		cancelButton.addClickHandler(new CancelClickHandler());
-//	}
+	public RegistrationForm(Anchor destinationUrl, User user ) {
+		this.destinationUrl = destinationUrl;
+		this.user = user;
 
-	public RegistrationForm() {
-		
 		registrationButton.addClickHandler(new RegistrationClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
-		
 	}
+
+//	public RegistrationForm() {
+//		
+//		registrationButton.addClickHandler(new RegistrationClickHandler());
+//		cancelButton.addClickHandler(new CancelClickHandler());
+//		
+//	}
 
 	private class RegistrationClickHandler implements ClickHandler {
 

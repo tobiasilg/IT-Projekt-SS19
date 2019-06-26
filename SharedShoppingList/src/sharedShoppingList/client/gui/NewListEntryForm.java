@@ -42,8 +42,8 @@ public class NewListEntryForm extends DialogBox {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	Group selectedGroup = null;
-	ShoppingList selectedList = null;
-	ShoppingListForm slf = null;
+	ShoppingListForm slf;
+
 	Article article;
 	String unit;
 	private User u = CurrentUser.getUser();
@@ -57,7 +57,7 @@ public class NewListEntryForm extends DialogBox {
 	ArrayList<String> units;
 
 	private Grid grid = new Grid(6, 6);
-	ListBox unitLabel = new ListBox();
+	Label unitLabel = new Label();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -81,9 +81,14 @@ public class NewListEntryForm extends DialogBox {
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		
+
+		int column = 0;
+		int row = 1;
+
+		// String value = grid.
+
 		// Zusammenbau des Grid
-		
+
 		grid.setText(0, 0, "Artikel: ");
 		grid.setWidget(0, 1, articleSuggestBox);
 
@@ -122,8 +127,9 @@ public class NewListEntryForm extends DialogBox {
 				for (Article a : result) {
 					articles.addElement(a);
 					articleOracle.add(a.getName());
-					unit = a.getUnit();
-					unitLabel.addItem(unit);
+//					unit = a.getUnit();
+//					unitLabel.setText(unit);
+
 				}
 
 			}
@@ -175,7 +181,6 @@ public class NewListEntryForm extends DialogBox {
 		 ***********************************************************************
 		 */
 
-		
 	}
 
 	/***********************************************************************
@@ -208,13 +213,13 @@ public class NewListEntryForm extends DialogBox {
 		this.selectedGroup = selectedGroup;
 	}
 
-	public ShoppingList getSelectedList() {
-		return selectedList;
-	}
-
-	public void setSelected(ShoppingList sl) {
-		selectedList = sl;
-	}
+//	public ShoppingList getSelectedList() {
+//		return selectedList;
+//	}
+//
+//	public void setSelected(ShoppingList sl) {
+//		selectedList = sl;
+//	}
 
 	/***********************************************************************
 	 * CLICKHANDLER
@@ -228,8 +233,8 @@ public class NewListEntryForm extends DialogBox {
 
 			RootPanel.get("details").clear();
 			NewListEntryForm nlef = new NewListEntryForm();
-			nlef.setSelected(selectedList);
-			nlef.setSelectedGroup(selectedGroup);
+//			nlef.setSelected(selectedList);
+			// nlef.setSelectedGroup(selectedGroup);
 			slf = new ShoppingListForm();
 			RootPanel.get("details").add(slf);
 
@@ -308,10 +313,11 @@ public class NewListEntryForm extends DialogBox {
 			public void onSuccess(ListEntry result) {
 
 				if (result != null) {
+					ShoppingListForm slf = new ShoppingListForm();
 
 					RootPanel.get("details").clear();
-					slf.setSelected(selectedList);
-					slf.setSelected(selectedGroup);
+//					slf.setSelected(selectedList);
+//					slf.setSelected(selectedGroup);
 					RootPanel.get("details").add(slf);
 
 				}

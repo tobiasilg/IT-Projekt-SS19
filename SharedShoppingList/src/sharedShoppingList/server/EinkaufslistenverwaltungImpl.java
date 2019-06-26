@@ -452,8 +452,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 	
 	
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate) throws IllegalArgumentException {
-		return listEntryMapper.findByStoreAndDate(store, beginningDate, endDate);
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) throws IllegalArgumentException {
+		return listEntryMapper.findByStoreAndDate(store, beginningDate, endDate, groupId);
 	}
 	
 	public Vector <User> getAllUser (User user) throws IllegalArgumentException {

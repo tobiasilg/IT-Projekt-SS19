@@ -26,7 +26,7 @@ public class GroupMapper {
 	private static GroupMapper groupMapper = null;
 	
     /*Der Konstruktur duch "protected" dafür, dass nur eine Instanz existieren kann*/
-	public GroupMapper() {}
+	protected GroupMapper() {}
 	
 	public static GroupMapper groupMapper() {
 		if (groupMapper == null) {

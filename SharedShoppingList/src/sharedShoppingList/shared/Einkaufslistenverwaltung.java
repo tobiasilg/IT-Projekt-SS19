@@ -23,7 +23,7 @@ import sharedShoppingList.shared.bo.Group;
 @RemoteServiceRelativePath("einkaufslistenverwaltung")
 public interface Einkaufslistenverwaltung extends RemoteService{
 	
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate);
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId);
 	
 	public List<ListEntry> getEntriesByDate(Timestamp beginningDate);
 
