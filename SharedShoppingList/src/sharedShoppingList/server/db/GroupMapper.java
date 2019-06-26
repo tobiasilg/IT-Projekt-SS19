@@ -192,9 +192,10 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 		
 		 /** Einen User aus einer Gruppe entfernen
-		 * 
+		 * @author Nico Weiler
 		 * @param userId
 		 * @param groupId
 		 */

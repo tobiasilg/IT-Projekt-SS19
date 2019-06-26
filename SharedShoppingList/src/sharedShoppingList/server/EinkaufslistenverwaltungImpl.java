@@ -478,11 +478,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	/** Create einer neuen Gruppe */
 
-	public Group createGroup(String name) throws IllegalArgumentException {
+	public Group createGroup(User user, String name) throws IllegalArgumentException {
 		Group group = new Group();
 		group.setName(name);
 
 		this.groupMapper.insert(group);
+		
+		/*
+		 * Nachdem die  ID vorhanden ist, wird der User der Gruppe hinzugefügt.
+		 */
+		this.groupMapper.insertMembership(user.getId(), group.getId());
 		
 		return group;
 	}
@@ -801,6 +806,28 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/**
+	 * Einen User einer Gruppe hinzufügen
+	 * @param user 
+	 * @param group 
+	 * @throws IllegalArgumentException
+	 */
+	@Override
+	public void addUser(User user, Group group) throws IllegalArgumentException {
+		this.groupMapper.insertMembership(user.getId(), group.getId());
+	}
+	
+	/**
+	 * User aus der Gruppe entfernen
+	 * @param user 
+	 * @param group
+	 * @throws IllegalArgumentException
+	 */
+	@Override
+	public void removeUserMembership(User user, Group group) throws IllegalArgumentException {
+		this.groupMapper.deleteMembership(user.getId(), group.getId());
+}
 
 
 	
