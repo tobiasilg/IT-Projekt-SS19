@@ -1,6 +1,7 @@
 package sharedShoppingList.client.gui;
 
 import java.util.List;
+import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -41,6 +42,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	private final MultiSelectionModel<ListEntry> multiSelectionModel = new MultiSelectionModel<ListEntry>();
 
+	private User selectedUser;
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
@@ -239,11 +241,30 @@ public class FilterShoppingList extends VerticalPanel {
 	
 	}
 	
-	
+		
 	/***********************************************************************
-	 * Clickhandler
+	 * onLoad-Methode
 	 ***********************************************************************
 	 */
+	
+	public void onLoad() {
+		elv.filterByUser(selectedUser, new AsyncCallback<Vector<ListEntry>>() {
+			
+			public void onFailure (Throwable caught) {
+				Window.alert("");
+				
+			}
+			
+			public void onSuccess (Vector<ListEntry> listEntry) {
+				
+				for(ListEntry le : listEntry) {
+					list.add(le);
+					}
+			}
+		});  
+	}
+	
+	
 
 	private class CreateShoppingListClickHandler implements ClickHandler {
 
@@ -255,7 +276,27 @@ public class FilterShoppingList extends VerticalPanel {
 
 		}
 
+	
+	
+	/***********************************************************************
+	 * Setter und Getter
+	 ***********************************************************************
+	 */
+	
+	public void setSelectedUser (User u) {
+		selectedUser = u;
+		
 	}
+	
+	public User getSelectedUser () {
+		return selectedUser;
+	}
+	
+	}
+	/***********************************************************************
+	 * Clickhandler
+	 ***********************************************************************
+	 */
 
 	private class RenameShoppingListClickHandler implements ClickHandler {
 
@@ -381,7 +422,4 @@ public class FilterShoppingList extends VerticalPanel {
 
 }
 
-/***********************************************************************
- * Getter und Setter
- ***********************************************************************
- */
+
