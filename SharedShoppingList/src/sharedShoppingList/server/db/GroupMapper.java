@@ -182,7 +182,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 
 		try {
 
-			PreparedStatement pstmt = con.prepareStatement("INSERT INTO memberships (userid, groupid) VALUES (?, ?)",
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO membership (userid, groupid) VALUES (?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			pstmt.setInt(1, userid);
@@ -192,8 +192,27 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 		
-}
+		 /** Einen User aus einer Gruppe entfernen
+		 * @author Nico Weiler
+		 * @param userId
+		 * @param groupId
+		 */
+		
+		public void deleteMembership(int userid, int groupid) {
+			
+			Connection con = DBConnection.connection();
+			String sql="DELETE FROM membership where userid = " + userid + " and groupid = " + groupid;
+			try {
+
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
 	
 	
 	
