@@ -249,7 +249,7 @@ public class UserMapper {
 	
 	public User update(User user) {
 		Connection con = DBConnection.connection();
-		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"', WHERE id= "+ user.getId();
+		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"' WHERE id= "+ user.getId();
 
 		try {
 			Statement stmt = con.createStatement();
