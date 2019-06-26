@@ -64,7 +64,7 @@ public class RegistrationForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 
-		elv.save(user, new NewUserCallback());
+		elv.createUser(nameTextbox.getValue(), user.getGmail(), usernameTextbox.getValue(), new NewUserCallback());
 
 		}
 
@@ -130,7 +130,7 @@ public class RegistrationForm extends FlowPanel {
 	 * Callback
 	 */
 
-	private class NewUserCallback implements AsyncCallback<Void>{
+	private class NewUserCallback implements AsyncCallback<User>{
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -139,7 +139,7 @@ public class RegistrationForm extends FlowPanel {
 		}
 
 		@Override
-		public void onSuccess(Void result) {
+		public void onSuccess(User result) {
 			Window.open(destinationUrl.getHref(), "_self", "");
 
 		}

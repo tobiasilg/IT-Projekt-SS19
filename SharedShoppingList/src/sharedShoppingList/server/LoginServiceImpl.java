@@ -2,6 +2,7 @@ package sharedShoppingList.server;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import sharedShoppingList.server.db.UserMapper;
@@ -30,7 +31,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		@Override
 		public User login(String requestUri) {
 			
-			UserService userService= UserServiceFactory.getUserService(); 
+			UserService userService= UserServiceFactory.getUserService();
 			com.google.appengine.api.users.User googleUser = userService.getCurrentUser(); 
 			User user = new User();
 			

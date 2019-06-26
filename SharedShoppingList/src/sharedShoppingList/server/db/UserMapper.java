@@ -36,7 +36,7 @@ public class UserMapper {
 	
 /* CREATE (insert) - Dieser Block verfügt nur über eine Methode, die für alle Neueinträge verantwortlich ist*/
 	
-	public void insert (User user) {
+	public User insert (User user) {
 		Connection con = DBConnection.connection();
 		
 		String sql= "INSERT INTO user (name, username, gmail) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "')";
@@ -68,6 +68,8 @@ public class UserMapper {
 	    catch (SQLException e) {
 	      e.printStackTrace();
 	    }
+	    
+	    return user;
 	}
 	
 	
@@ -136,31 +138,34 @@ public class UserMapper {
 	 * 
 	 *  */
 	public User findByGmail(String gmail) {
+		
 		Connection con = DBConnection.connection();
-		User user = new User();
 		String sql="SELECT * FROM user WHERE gmail='" + gmail+"'";
 			
 		try {
 
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
+				
 
 				if (rs.next()) {
-					
+				User user = new User();
+
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
-					
+				
+				return user;
 				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return null;
+				
 			}
-			return user;
+		return null;
 		}
 	
 	/* find by name */

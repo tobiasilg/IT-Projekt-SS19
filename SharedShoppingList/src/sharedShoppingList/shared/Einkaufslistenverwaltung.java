@@ -123,6 +123,8 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	void removeUserMembership(User user, Group group) throws IllegalArgumentException;
 	
+	public User createUser(String name, String gmail, String username) throws IllegalArgumentException;
+	
 
 	
 
