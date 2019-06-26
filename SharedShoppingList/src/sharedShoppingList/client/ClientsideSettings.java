@@ -8,6 +8,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import sharedShoppingList.shared.CommonSettings;
 import sharedShoppingList.shared.Einkaufslistenverwaltung;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.LoginService;
+import sharedShoppingList.shared.LoginServiceAsync;
 import sharedShoppingList.shared.ReportClient;
 import sharedShoppingList.shared.ReportClientAsync;
 
@@ -35,7 +37,7 @@ public class ClientsideSettings extends CommonSettings {
 	 * LoginService
 	 */
 
-//	private static LoginServiceAsync loginService = null;
+	private static LoginServiceAsync loginService = null;
 
 	/**
 	 * Name des Client-seitigen Loggers.
@@ -57,12 +59,12 @@ public class ClientsideSettings extends CommonSettings {
 		return log;
 	}
 
-//	public static LoginServiceAsync getLoginService() {
-//		if (loginService == null) {
-//			loginService = GWT.create(LoginService.class);
-//		}
-//		return loginService;
-//	}
+	public static LoginServiceAsync getLoginService() {
+		if (loginService == null) {
+			loginService = GWT.create(LoginService.class);
+		}
+		return loginService;
+	}
 
 	/**
 	 * Anlegen und Auslesen der Einkaufslistenverwaltung

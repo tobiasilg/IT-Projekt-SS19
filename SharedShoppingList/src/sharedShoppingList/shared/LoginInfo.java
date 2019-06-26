@@ -6,6 +6,10 @@ public class LoginInfo implements Serializable {
 	
 
 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+/**
  * Ein Objekt dieser Klasse wird erzeugt und mit den entsprechenden Attributen versehen, 
  * sobald der Login erfolgreich war.
  *

@@ -137,28 +137,40 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 		}
 	
 	/**
-	 * Gruppe pro User 
+	 * Gibt alle Gruppen eines bestimmten users aus
 	 * @author Nico Weiler
 	 * @param user
 	 * @return group
 	 */
 	
-	public Group findByUser(User user) {
+	public Vector<Group> findByUser(User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql="SELECT * FROM einkaufsgruppe WHERE id ="+ user.getGroupid();
-		Group group = new Group();
+		Vector<Group>vGroups = new Vector<Group>();
+		String sql="select membership.userid as userid, "
+				+ "membership.groupid as groupid, "
+				+ "einkaufsgruppe.createDate as groupCreateDate, "
+				+ "einkaufsgruppe.modDate as groupModDate, "
+				+ "einkaufsgruppe.name as groupName "
+				+ "FROM membership INNER JOIN einkaufsgruppe"
+				+ "ON membership.groupid = einkaufsgruppe.id"
+				+ "WHERE membership.userid =" + user.getId();
+		
+		
 		try {
 
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 
-				if (rs.next()) {
+				while (rs.next()) {
+					Group group = new Group();
 					
-					group.setId(rs.getInt("id"));
-					group.setName(rs.getString("name"));
-					group.setCreateDate(rs.getTimestamp("createDate"));
+					group.setId(rs.getInt("groupid"));
+					group.setName(rs.getString("groupName"));
+					group.setCreateDate(rs.getTimestamp("groupCreateDate"));
 					group.setModDate(rs.getTimestamp("modDate"));
+					
+					vGroups.add(group);
 					
 				}
 
@@ -166,7 +178,52 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 				e.printStackTrace();
 				return null;
 			}
-			return group;
+			return vGroups;
+		}
+	
+	/**
+	 * 
+	 * Eine Beziehung zwischen Gruppe und User herstellen
+	 * @author Nico Weiler
+	 * @param userid
+	 * @param groupid
+	 */
+	public void insertMembership(int userid, int groupid) {
+		
+		Connection con = DBConnection.connection();
+
+		try {
+
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO membership (userid, groupid) VALUES (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, groupid);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+		
+		 /** Einen User aus einer Gruppe entfernen
+		 * @author Nico Weiler
+		 * @param userId
+		 * @param groupId
+		 */
+		
+		public void deleteMembership(int userid, int groupid) {
+			
+			Connection con = DBConnection.connection();
+			String sql="DELETE FROM membership where userid = " + userid + " and groupid = " + groupid;
+			try {
+
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
 	
 	

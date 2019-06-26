@@ -35,7 +35,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getAllArticlesOf(User user, AsyncCallback<Vector<Article>> callback);
 	
-	void createGroup(String name, AsyncCallback<Group> callback);
+	void createGroup(User user, String name, AsyncCallback<Group> callback);
 
     void getAllGroups(AsyncCallback<Vector<Group>> callback);
 
@@ -92,7 +92,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);
 
-	void getGroupByUser(User user, AsyncCallback<Group> callback);
+	void getGroupsByUser(User user, AsyncCallback<Vector<Group>> callback);
 
 	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
 
@@ -115,6 +115,11 @@ public interface EinkaufslistenverwaltungAsync {
 	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
 
 	void getArticleById(int id, AsyncCallback<Article> callback);
+
+	void addUser(User user, Group group, AsyncCallback<Void> callback);
+
+	void removeUserMembership(User user, Group group, AsyncCallback<Void> callback);
+
 
 
 }

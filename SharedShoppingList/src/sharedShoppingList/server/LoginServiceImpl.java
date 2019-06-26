@@ -68,7 +68,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 
 			user.setLoginUrl(userService.createLoginURL(requestUri));
 			
-			return null;
+			return user;
 		}
 		
 	

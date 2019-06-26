@@ -37,7 +37,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException;
 	
-	Group createGroup(String name) throws IllegalArgumentException;
+	Group createGroup(User user,String name) throws IllegalArgumentException;
 
 	Vector<Group> getAllGroups() throws IllegalArgumentException;
 
@@ -93,7 +93,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
 	
-	public Group getGroupByUser (User user) throws IllegalArgumentException;
+	public Vector<Group> getGroupsByUser (User user) throws IllegalArgumentException;
 	
 	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
 	
@@ -114,6 +114,10 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException;
 	
 	public Article getArticleById(int id) throws IllegalArgumentException;
+
+	void addUser(User user, Group group) throws IllegalArgumentException;
+
+	void removeUserMembership(User user, Group group) throws IllegalArgumentException;
 	
 
 	
