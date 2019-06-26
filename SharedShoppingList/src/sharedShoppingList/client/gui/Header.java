@@ -1,6 +1,5 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -119,8 +118,9 @@ public class Header extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			report.setHref(GWT.getHostPageBaseURL() + "ReportGenerator.html");
-			Window.open(report.getHref(), "_blank", ""); // öffnet neunen Tab
+//			report.setHref(GWT.getHostPageBaseURL() + "ReportGenerator.html");
+//			Window.open(report.getHref(), "_blank", ""); // öffnet neunen Tab
+			Window.Location.assign("ReportGenerator.html");
 		}
 
 	}

@@ -101,6 +101,8 @@ public class MainPanelReport extends VerticalPanel {
 
 	public void onLoad() {
 
+		Window.alert("User: " + user);
+
 		/**
 		 * Zusammensetzung der Panels und Widgets
 		 */
@@ -110,7 +112,7 @@ public class MainPanelReport extends VerticalPanel {
 		storeVp.add(storeText);
 		storeVp.add(storeListBox);
 
-		groupVp.add(storeText);
+		groupVp.add(groupText);
 		groupVp.add(groupSelectorListBox);
 
 		dateVp.add(fromVp);
