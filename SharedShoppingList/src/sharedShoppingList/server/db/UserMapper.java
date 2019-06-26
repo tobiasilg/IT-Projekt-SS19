@@ -211,7 +211,9 @@ public class UserMapper {
 	public Vector <User> findByGroup(Group group) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM user WHERE groupid="+ group.getId();
+		String sql = "SELECT * FROM membership INNER JOIN user "
+				+ "ON membership.userid = user.id "
+				+ "WHERE membership.groupid = " + group.getId();
 		
 		Vector<User> users= new Vector<User>();
 		
