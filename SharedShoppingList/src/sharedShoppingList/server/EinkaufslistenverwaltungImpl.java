@@ -118,7 +118,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	/**
 	 * ************************* 
 	 * ABSCHNITT, Beginn: Methoden fuer Article Objekte
-	 * @author Nico Weiler
+	 * @author Nico Weiler, Tobias Ilg
 	 * *************************
 	 **/
 
@@ -188,10 +188,29 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.articleMapper.findAllArticles();
 	}
 	
-
+	/**
+	 * Auslesen eines Artikels anhand der ID
+	 * 
+	 * @param id
+	 * @return spezifischer Artikel
+	 * @throws IllegalArgumentException
+	 */
+	
 	public Article getArticleById(int id) throws IllegalArgumentException{
 
 		return this.articleMapper.findByID(id);
+	}
+	
+	/**
+	 * Auslesen aller Artikel einer spez. Gruppe
+	 * 
+	 * @param group
+	 * @return Vector<Article>
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Article> getArticleByGroup(Group group) throws IllegalArgumentException {
+		return this.articleMapper.getArticleByGroup(group);
 	}
 
 	/**
@@ -336,13 +355,37 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * store
 	 */
 
+	/** Alle Stores ausgeben lassen
+	 * 
+	 * @return Vector<Store>
+	 * @throws IllegalArgumentException
+	 */
+	
 	public Vector<Store> getAllStores() throws IllegalArgumentException {
 		return this.storeMapper.findAll();
 
 	}
 
-	public Store getStoreByID( int id) throws IllegalArgumentException {
+	/** Einen spez. Store anhand dessen ID ausgeben lassen
+	 * 
+	 * @param id
+	 * @return Store
+	 * @throws IllegalArgumentException
+	 */
+	public Store getStoreByID(int id) throws IllegalArgumentException {
 		return this.storeMapper.findById(id);
+
+	}
+	
+	/** Alle Stores einer Gruppe ausgeben lassen
+	 * 
+	 * @param group
+	 * @return Vector<Store>
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Store> getStoreByGroup(Group group) throws IllegalArgumentException {
+		return this.storeMapper.findStoreByGroup(group);
 
 	}
 
