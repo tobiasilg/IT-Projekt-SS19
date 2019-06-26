@@ -2,9 +2,17 @@ package sharedShoppingList.client.gui;
 
 import java.util.List;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -64,11 +72,7 @@ public class FilterShoppingList extends VerticalPanel {
 	 * The key provider that allows us to identify Contacts even if a field changes.
 	 * We identify contacts by their unique ID.
 	 */
-	private static final ProvidesKey<ListEntry> KEY_PROVIDER = new ProvidesKey<ListEntry>() {
-		public Object getKey(ListEntry le) {
-			return le.getId();
-		}
-	};
+	private static final ProvidesKey<ListEntry> KEY_PROVIDER=new ProvidesKey<ListEntry>(){public Object getKey(ListEntry le){return le.getId();}};
 
 	/***********************************************************************
 	 * Konstruktor
@@ -80,9 +84,162 @@ public class FilterShoppingList extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHandler());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		// CreateShoppingListClickHandler());
-	}
 
+		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
+		renameTextBox.setWidth("15rem");
+
+		// Panel mit Button zum erzeugen eines neuen Listeneintrags
+
+		// Panel der obersten Ebene
+		firstRowPanel.add(infoTitleLabel);
+
+		// Panel der Buttons
+		buttonPanel.add(renameTextBox);
+		buttonPanel.add(saveSlButton);
+		buttonPanel.add(deleteSlButton);
+
+		filterPanel.add(filterByUserButton);
+		filterPanel.add(filterByStoreListBox);
+
+		// CellTable
+		cellTableVP.add(cellTable);
+		cellTableVP.setBorderWidth(1);
+		cellTableVP.setWidth("400");
+
+		infoTitleLabel.addStyleName("profilTitle");
+		filterPanel.setCellHorizontalAlignment(filterPanel, ALIGN_RIGHT);
+
+		this.add(firstRowPanel);
+		this.add(createShoppingListButton);
+		this.add(buttonPanel);
+		this.add(filterPanel);
+		this.add(cellTable);
+
+		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
+
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+					saveSlButton.click();
+					renameTextBox.setText("");
+				}
+
+			}
+
+		});
+	
+
+	/***********************************************************************
+	 * Erstellung der Celltable mit Columns
+	 ***********************************************************************
+	 */
+
+	/*
+	 * Spalte der CheckBox
+	 */
+
+	Column<ListEntry, Boolean> checkBoxColumn=new Column<ListEntry,Boolean>(new CheckboxCell(true,false)){
+
+	public Boolean getValue(ListEntry object){return multiSelectionModel.isSelected(object);}};
+
+	/*
+	 * Spalte der Artikel
+	 */
+	TextCell articleTextCell = new TextCell();
+	Column<ListEntry, String> articleColumn=new Column<ListEntry,String>(articleTextCell){
+
+	public String getValue(ListEntry listEntry){return listEntry.getArticle().getName();}};
+
+	/*
+	 * Spalte der Einheit
+	 */
+
+	TextCell unitTextCell = new TextCell();
+	Column<ListEntry, String> unitColumn=new Column<ListEntry,String>(unitTextCell){
+
+	public String getValue(ListEntry listEntry){return listEntry.getArticle().getUnit();}};
+
+	/*
+	 * Spalter der Menge
+	 */
+
+	TextCell amountTextCell = new TextCell();
+	Column<ListEntry, String> amountColumn=new Column<ListEntry,String>(amountTextCell){
+
+	public String getValue(ListEntry listEntry){return String.valueOf(listEntry.getAmount());}};
+
+	/*
+	 * Spalter der Stores
+	 */
+
+	TextCell storeTextCell = new TextCell();
+	Column<ListEntry, String> storeColumn=new Column<ListEntry,String>(storeTextCell){
+
+	public String getValue(ListEntry listEntry){return listEntry.getStore().getName();
+
+	}};
+
+	/*
+	 * Spalter der user
+	 */
+
+	TextCell userTextCell = new TextCell();
+	Column<ListEntry, String> userColumn=new Column<ListEntry,String>(userTextCell){
+
+	public String getValue(ListEntry listEntry){
+
+	return listEntry.getUser().getName();}};
+	/*
+	 * Spalter des Lösch-Buttons
+	 */
+
+	ButtonCell deleteButton = new ButtonCell();
+	Column <ListEntry, String> deleteColumn = new Column <ListEntry, String> (deleteButton){
+		
+		public String getValue (ListEntry listEntry) {
+			return "x";
+		}
+	};
+	
+	deleteColumn.setFieldUpdater (new FieldUpdater <ListEntry, String>(){
+		
+		public void update (int index, ListEntry listEntry, String value) {
+			// Value is the button value. Object is the row object.
+
+			dataProvider.getList().remove(listEntry);
+			
+			AsyncCallback <Void> deleteCallback = new AsyncCallback<Void>() {
+				
+				public void onFailure (Throwable caught) {
+					
+				}
+				
+				public void onSuccess (Void result) {
+					
+				}
+				
+			};
+			
+			Window.alert ("Listeneintrag löschen" + listEntry);
+			elv.delete(listEntry, deleteCallback);
+		}
+	});
+	
+	// Die Spalten werden hier der CellTable hinzugefügt
+			cellTable.addColumn(checkBoxColumn, "Erledigt?");
+			cellTable.addColumn(articleColumn, "Artikel");
+			cellTable.addColumn(amountColumn, "Menge");
+			cellTable.addColumn(unitColumn, "Einheit");
+			cellTable.addColumn(userColumn, "Wer?");
+			cellTable.addColumn(storeColumn, "Wo?");
+			cellTable.addColumn(deleteColumn, "");
+
+			dataProvider.addDataDisplay(cellTable);
+	
+	
+	}
+	
+	
 	/***********************************************************************
 	 * Clickhandler
 	 ***********************************************************************
