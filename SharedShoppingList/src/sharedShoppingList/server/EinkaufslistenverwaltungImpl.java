@@ -384,7 +384,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<Store> getStoreByGroup(Group group) throws IllegalArgumentException {
+	public Vector<Store> findStoreByGroup(Group group) throws IllegalArgumentException {
 		return this.storeMapper.findStoreByGroup(group);
 
 	}
@@ -871,6 +871,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public void removeUserMembership(User user, Group group) throws IllegalArgumentException {
 		this.groupMapper.deleteMembership(user.getId(), group.getId());
 }
+
 
 
 	
