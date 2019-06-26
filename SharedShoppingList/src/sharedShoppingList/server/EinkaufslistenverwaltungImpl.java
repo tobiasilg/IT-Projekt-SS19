@@ -205,7 +205,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * Auslesen aller Artikel einer spez. Gruppe
 	 * 
 	 * @param group
-	 * @return spezifischer Artikel
+	 * @return Vector<Article>
 	 * @throws IllegalArgumentException
 	 */
 	
@@ -355,16 +355,39 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * store
 	 */
 
+	/** Alle Stores ausgeben lassen
+	 * 
+	 * @return Vector<Store>
+	 * @throws IllegalArgumentException
+	 */
+	
 	public Vector<Store> getAllStores() throws IllegalArgumentException {
 		return this.storeMapper.findAll();
 
 	}
 
-	public Store getStoreByID( int id) throws IllegalArgumentException {
+	/** Einen spez. Store anhand dessen ID ausgeben lassen
+	 * 
+	 * @param id
+	 * @return Store
+	 * @throws IllegalArgumentException
+	 */
+	public Store getStoreByID(int id) throws IllegalArgumentException {
 		return this.storeMapper.findById(id);
 
 	}
 	
+	/** Alle Stores einer Gruppe ausgeben lassen
+	 * 
+	 * @param group
+	 * @return Vector<Store>
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Store> getStoreByGroup(Group group) throws IllegalArgumentException {
+		return this.storeMapper.findStoreByGroup(group);
+
+	}
 
 	public void save(Store store) throws IllegalArgumentException {
 		this.storeMapper.update(store);
