@@ -142,7 +142,7 @@ public class UserMapper {
 	public User findByGmail(String gmail) {
 		Connection con = DBConnection.connection();
 		User user = new User();
-		String sql="SELECT * FROM user WHERE gmail=" + gmail;
+		String sql="SELECT * FROM user WHERE gmail='" + gmail+"'";
 			
 		try {
 

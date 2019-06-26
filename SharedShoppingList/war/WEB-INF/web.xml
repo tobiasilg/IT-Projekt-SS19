@@ -40,13 +40,12 @@
   
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
-    <url-pattern>/SharedShoppingList/login</url-pattern>
+    <url-pattern>/sharedshoppinglist/login</url-pattern>
   </servlet-mapping>
 
   
   <welcome-file-list>
     <welcome-file>SharedShoppingList.html</welcome-file>
-    <welcome-file>ReportGenerator.html</welcome-file>
   </welcome-file-list>
 
 
