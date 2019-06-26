@@ -169,6 +169,32 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 			return group;
 		}
 	
+	/**
+	 * 
+	 * Eine Beziehung zwischen Gruppe und User herstellen
+	 * @author Nico Weiler
+	 * @param userid
+	 * @param groupid
+	 */
+	public void insertMembership(int userid, int groupid) {
+		
+		Connection con = DBConnection.connection();
+
+		try {
+
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO memberships (userid, groupid) VALUES (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, groupid);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+}
+	
 	
 	
 /*UPDATE*/
