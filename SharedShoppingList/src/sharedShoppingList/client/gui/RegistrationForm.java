@@ -18,7 +18,7 @@ import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.User;
 
 public class RegistrationForm extends FlowPanel {
-	
+
 	private EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
 	private User user;
@@ -39,12 +39,12 @@ public class RegistrationForm extends FlowPanel {
 	private Button registrationButton = new Button("Registrieren");
 	private Button cancelButton = new Button("Abbrechen");
 
-	private Grid registrationGrid = new Grid(2,2);
+	private Grid registrationGrid = new Grid(2, 2);
 
 	// dient der Weiterleitung
 	private Anchor destinationUrl = new Anchor();
 
-	public RegistrationForm(Anchor destinationUrl, User user ) {
+	public RegistrationForm(Anchor destinationUrl, User user) {
 		this.destinationUrl = destinationUrl;
 		this.user = user;
 
@@ -64,8 +64,15 @@ public class RegistrationForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 
-		elv.createUser(nameTextbox.getValue(), user.getGmail(), usernameTextbox.getValue(), new NewUserCallback());
+//		elv.createUser(nameTextbox.getValue(), user.getGmail(), usernameTextbox.getValue(), new NewUserCallback());
 
+			String name = nameTextbox.getText();
+			String uName = usernameTextbox.getText();
+			user.setName(name);
+			user.setUsername(uName);
+			Window.alert(user.getName() + user.getId() + user.getGmail() + user.getUsername());
+
+			elv.save(user, new SaveUserCallback());
 		}
 
 	}
@@ -107,7 +114,7 @@ public class RegistrationForm extends FlowPanel {
 		registrationGrid.setWidget(1, 0, usernameLabel);
 		registrationGrid.setWidget(1, 1, usernameTextbox);
 
-	//	titlePanel.add(welcomeLabel);
+		// titlePanel.add(welcomeLabel);
 		buttonPanel.add(cancelButton);
 		buttonPanel.add(registrationButton);
 
@@ -118,11 +125,9 @@ public class RegistrationForm extends FlowPanel {
 
 		this.add(registrationBox);
 
-
 	}
 
 	private class DynamicTextBox extends TextBox {
-
 
 	}
 
@@ -130,7 +135,7 @@ public class RegistrationForm extends FlowPanel {
 	 * Callback
 	 */
 
-	private class NewUserCallback implements AsyncCallback<User>{
+	private class NewUserCallback implements AsyncCallback<User> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -142,6 +147,26 @@ public class RegistrationForm extends FlowPanel {
 		public void onSuccess(User result) {
 			Window.open(destinationUrl.getHref(), "_self", "");
 
+		}
+
+	}
+
+	/*
+	 * Callback
+	 */
+
+	private class SaveUserCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			Notification.show("User wurde upgedated");
+			Window.open(destinationUrl.getHref(), "_self", "");
 		}
 
 	}
