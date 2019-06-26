@@ -39,7 +39,7 @@ public class UserMapper {
 	public void insert (User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "INSERT INTO user (name, username, gmail, groupid) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "'," + user.getGroupid()+")";
+		String sql= "INSERT INTO user (name, username, gmail) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "')";
 		
 	    try {
 	    	
@@ -91,7 +91,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -121,7 +120,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -153,7 +151,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -187,7 +184,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -227,7 +223,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -249,7 +244,7 @@ public class UserMapper {
 	
 	public User update(User user) {
 		Connection con = DBConnection.connection();
-		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"', groupid="+user.getGroupid()+" WHERE id= "+ user.getId();
+		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"', WHERE id= "+ user.getId();
 
 		try {
 			Statement stmt = con.createStatement();
