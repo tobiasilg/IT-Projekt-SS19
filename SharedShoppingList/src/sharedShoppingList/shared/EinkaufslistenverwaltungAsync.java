@@ -64,6 +64,8 @@ public interface EinkaufslistenverwaltungAsync {
 	void getAllStores(AsyncCallback<Vector<Store>> callback);
 
 	void getStoreByID(int id, AsyncCallback<Store> callback);
+	
+	void findStoreByGroup(Group group, AsyncCallback<Vector<Store>> callback);
 
 	void save(Store store, AsyncCallback<Void> callback);
 
@@ -115,6 +117,8 @@ public interface EinkaufslistenverwaltungAsync {
 	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
 
 	void getArticleById(int id, AsyncCallback<Article> callback);
+	
+	void getArticleByGroup(Group group, AsyncCallback<Vector<Article>> callback);
 
 	void addUser(User user, Group group, AsyncCallback<Void> callback);
 

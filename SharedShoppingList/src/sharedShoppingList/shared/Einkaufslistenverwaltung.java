@@ -37,6 +37,10 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	Vector<Article> getAllArticlesOf(User user) throws IllegalArgumentException;
 	
+	Vector<Article> getArticleByGroup(Group group) throws IllegalArgumentException;
+	
+	Vector<Store> findStoreByGroup(Group group) throws IllegalArgumentException;
+	
 	Group createGroup(User user,String name) throws IllegalArgumentException;
 
 	Vector<Group> getAllGroups() throws IllegalArgumentException;
