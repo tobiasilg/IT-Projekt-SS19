@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
@@ -63,10 +62,10 @@ public class GroupCreationForm extends FlowPanel {
 		groupNameTextBox.addStyleName("profilTextBox");
 
 		buttonPanel.addStyleName("profilPanel");
-		
+
 		saveButton.addStyleName("saveNewGroupButton");
 		cancelButton.addStyleName("cancelNewGroupButton");
-		
+
 		groupNameTextBox.getElement().setPropertyString("placeholder", "Gruppenname...");
 
 		buttonPanel.add(cancelButton);
@@ -78,7 +77,6 @@ public class GroupCreationForm extends FlowPanel {
 		groupBox.add(buttonPanel);
 
 		this.add(groupBox);
-	
 
 		groupNameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -98,7 +96,7 @@ public class GroupCreationForm extends FlowPanel {
 	public void setGroupShoppingListTreeViewModel(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
 	}
-	
+
 	public GroupShoppingListTreeViewModel getGroupShoppingListTreeViewModel() {
 		return gsltvm;
 	}
@@ -122,20 +120,19 @@ public class GroupCreationForm extends FlowPanel {
 
 		public void onClick(ClickEvent event) {
 
-			//String groupName = groupNameTextBox.getText();
-			
+			// String groupName = groupNameTextBox.getText();
+
 			if (groupNameTextBox.getValue() == "") {
-				
+
 				Window.alert("Die Gruppe muss einen Namen besitzen !");
-			}else {
-				
+			} else {
 
-			groupForm = new AdministrationGroupForm();
-			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
-			
-			//elv.createGroup(groupName, new GroupCreationCallback());
+				groupForm = new AdministrationGroupForm();
+//			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
 
-		}
+				// elv.createGroup(groupName, new GroupCreationCallback());
+
+			}
 		}
 
 	}
@@ -153,17 +150,14 @@ public class GroupCreationForm extends FlowPanel {
 		public void onSuccess(Group result) {
 
 			Notification.show(String.valueOf(result.getId()));
-			
-				
-				 RootPanel.get("details").clear();
-				 group = result;
-				 groupForm.setSelected(group);
-				 RootPanel.get("details").add(groupForm);
-				 
-				 gsltvm.addGroup(group);
-				 
+
+			RootPanel.get("details").clear();
+			group = result;
+			groupForm.setSelected(group);
+			RootPanel.get("details").add(groupForm);
+
+			gsltvm.addGroup(group);
+
 		}
 	}
 }
-
-
