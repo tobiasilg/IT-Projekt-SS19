@@ -118,7 +118,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	/**
 	 * ************************* 
 	 * ABSCHNITT, Beginn: Methoden fuer Article Objekte
-	 * @author Nico Weiler
+	 * @author Nico Weiler, Tobias Ilg
 	 * *************************
 	 **/
 
@@ -188,10 +188,29 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.articleMapper.findAllArticles();
 	}
 	
-
+	/**
+	 * Auslesen eines Artikels anhand der ID
+	 * 
+	 * @param id
+	 * @return spezifischer Artikel
+	 * @throws IllegalArgumentException
+	 */
+	
 	public Article getArticleById(int id) throws IllegalArgumentException{
 
 		return this.articleMapper.findByID(id);
+	}
+	
+	/**
+	 * Auslesen aller Artikel einer spez. Gruppe
+	 * 
+	 * @param group
+	 * @return spezifischer Artikel
+	 * @throws IllegalArgumentException
+	 */
+	
+	public Vector<Article> getArticleByGroup(Group group) throws IllegalArgumentException {
+		return this.articleMapper.getArticleByGroup(group);
 	}
 
 	/**
@@ -345,6 +364,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.storeMapper.findById(id);
 
 	}
+	
 
 	public void save(Store store) throws IllegalArgumentException {
 		this.storeMapper.update(store);
