@@ -231,7 +231,10 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getUser().getName();
 			}
 		};
-		
+	
+		/*
+		 * Spalte des Lösch-Buttons
+		 */
 		ButtonCell deleteButton = new ButtonCell();
 			Column<ListEntry, String> deleteColumn = new Column <ListEntry, String>(deleteButton){
 			
