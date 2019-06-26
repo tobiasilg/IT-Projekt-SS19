@@ -239,14 +239,14 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 	 *      java.sql.Timestamp)
 	 */
 
-	@Override
-	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate) {
+	
+	public AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate, Timestamp endDate) {
 
 		if (this.getEinkaufslistenverwaltung() == null) {
 			return null;
 		}
 
-		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate);
+		List<ListEntry> listEntries = elv.getEntriesByStoreAndDate(store, beginningDate, endDate);
 		AllListEntriesByStoreAndPeriod result = new AllListEntriesByStoreAndPeriod();
 		
 
@@ -418,6 +418,14 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 			return null;
 		}
 		
+		
+	}
+	
+	public Group getGroup(User user) throws IllegalArgumentException{
+		
+		Group group = elv.getGroupByUser(user);
+		
+		return group;
 		
 	}
 

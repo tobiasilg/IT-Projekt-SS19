@@ -451,9 +451,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @param Store und ausgewähltes Datum
 	 */
 	
-	@Override
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) throws IllegalArgumentException {
-		return listEntryMapper.findByStoreAndDate(store, beginningDate);
+	
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate) throws IllegalArgumentException {
+		return listEntryMapper.findByStoreAndDate(store, beginningDate, endDate);
 	}
 	
 	public Vector <User> getAllUser (User user) throws IllegalArgumentException {

@@ -1,15 +1,12 @@
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 
-import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -57,10 +54,10 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Article> articles = new Vector<Article>();
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
-	ArrayList <String> units;
+	ArrayList<String> units;
 
 	private Grid grid = new Grid(6, 6);
-	Label unitLabel = new Label();
+	ListBox unitLabel = new ListBox();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -84,7 +81,33 @@ public class NewListEntryForm extends DialogBox {
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-	
+		
+		// Zusammenbau des Grid
+		
+		grid.setText(0, 0, "Artikel: ");
+		grid.setWidget(0, 1, articleSuggestBox);
+
+		grid.setText(1, 0, "Menge: ");
+		grid.setWidget(1, 1, amountTextBox);
+
+		grid.setText(2, 0, "Einheit: ");
+		grid.setWidget(2, 1, unitLabel);
+
+		grid.setText(3, 0, "Wer?: ");
+		grid.setWidget(3, 1, usersListBox);
+
+		grid.setText(4, 0, "Wo?: ");
+		grid.setWidget(4, 1, storesListBox);
+
+		grid.setWidget(5, 2, saveButton);
+		grid.setWidget(5, 3, cancelButton);
+
+		saveButton.addStyleName("buttonAbfrage");
+		cancelButton.addStyleName("buttonAbfrage");
+
+		// Füge das Grid der Dialogbox hinzu
+		this.add(grid);
+
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
@@ -95,12 +118,13 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 			public void onSuccess(Vector<Article> result) {
-				
+
 				for (Article a : result) {
 					articles.addElement(a);
 					articleOracle.add(a.getName());
 					unit = a.getUnit();
-					unitLabel.addStyleName(unit);				}
+					unitLabel.addItem(unit);
+				}
 
 			}
 		});
@@ -145,80 +169,13 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 		});
-				
-		
-		
-//		elv.getAllA;
-//		
-//		unit = article.getUnit();
-//
-//		unitLabel = new Label(unit);
-
-//		// UnitListBox
-//		// Lade alle Einheit aus der Datenbank
-//		// elv.getUnit(new AsyncCallback<Vector<Store>>() {
-//
-////			public void onFailure(Throwable caught) {
-////				Notification.show("failure");
-////			}
-////
-////			public void onSuccess(Vector<Unit> result) {
-////				unitsListBox.clear();
-////				for (Unit unit : result) {
-////					units.addElement(unit);
-////					unitsListBox.addItem(unit.getName());
-////
-////				}
-////			}
-////		});
-
-		// UnitListBox
-		// Lade alle Einheit aus der Datenbank
-
-//		ArrayList<String> units = null;
-//
-//		if (units == null) {
-//			units = new ArrayList<String>();
-//			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
-//		}
-//		if (unitsListBox == null) {
-//			unitsListBox = new ListBox();
-//		}
-//		for (String unit : units) {
-//			unitsListBox.addItem(unit);
-//		}
-
-		// setting itemcount value to 1 turns listbox into a drop-down list
-		// listBoxUnits.setVisibleItemCount(1);
 
 		/***********************************************************************
 		 * Building the grid
 		 ***********************************************************************
 		 */
 
-		grid.setText(0, 0, "Artikel: ");
-		grid.setWidget(0, 1, articleSuggestBox);
-
-		grid.setText(1, 0, "Menge: ");
-		grid.setWidget(1, 1, amountTextBox);
-
-		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, unitLabel);
-
-		grid.setText(3, 0, "Wer?: ");
-		grid.setWidget(3, 1, usersListBox);
-
-		grid.setText(4, 0, "Wo?: ");
-		grid.setWidget(4, 1, storesListBox);
-
-		grid.setWidget(5, 2, saveButton);
-		grid.setWidget(5, 3, cancelButton);
-
-		saveButton.addStyleName("buttonAbfrage");
-		cancelButton.addStyleName("buttonAbfrage");
-
-		this.add(grid);
-
+		
 	}
 
 	/***********************************************************************
@@ -361,21 +318,20 @@ public class NewListEntryForm extends DialogBox {
 
 			}
 		}
-		
+
 		private class UnitCallback implements AsyncCallback {
-			
-			public void onFailure (Throwable caught) {
+
+			public void onFailure(Throwable caught) {
 				Window.alert("");
-				
+
 			}
 
 			@Override
 			public void onSuccess(Object result) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
-		
+
 		}
 	}
 

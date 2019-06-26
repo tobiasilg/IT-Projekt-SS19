@@ -20,7 +20,8 @@ import sharedShoppingList.shared.bo.User;
 
 public interface EinkaufslistenverwaltungAsync {
 
-	void getEntriesByStoreAndDate(Store store, Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
+	void getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate,
+			AsyncCallback<List<ListEntry>> callback);
 	
 	void getEntriesByDate(Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
 
