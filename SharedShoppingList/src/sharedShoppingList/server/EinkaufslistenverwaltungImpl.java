@@ -286,6 +286,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.userMapper.findByName(name);
 	}
 	
+	public User createUser(String name, String gmail, String username) throws IllegalArgumentException {
+		User user= new User();
+		
+		user.setName(name);
+		user.setUsername(username);
+		user.setGmail(gmail);
+		
+		return this.userMapper.insert(user);
+	}
+	
 	
 	/**
 	 * ************************* ABSCHNITT, Beginn: Methoden fÃ¼r Store Objekte

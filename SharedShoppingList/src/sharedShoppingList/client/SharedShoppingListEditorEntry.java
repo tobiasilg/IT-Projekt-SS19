@@ -59,8 +59,8 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 		
 
 		loginService = ClientsideSettings.getLoginService();
-  Window.alert(GWT.getHostPageBaseURL() + "SharedShoppingList.html");
-		loginService.login(GWT.getHostPageBaseURL() + "SharedShoppingList.html", new loginServiceCallback());
+		
+		loginService.login(GWT.getHostPageBaseURL()+"SharedShoppingList.html", new loginServiceCallback());
 
 	}
 
@@ -75,19 +75,18 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 		@Override
 		public void onSuccess(User u) {
-
+	
 			CurrentUser.setUser(u);
 
 			if (u.isLoggedIn()) {
 				if (u.getName() == null) {
 					Anchor shoppingListEditorLink = new Anchor();
 					shoppingListEditorLink.setHref(GWT.getHostPageBaseURL() + "SharedShoppingList.html");
-					Window.alert("Test");
 //					RootPanel.get("navigator").setVisible(false);
 //					RootPanel.get("header").setVisible(false);
 //					RootPanel.get("footer").setVisible(false);
 					RootPanel.get("details").add(new RegistrationForm(shoppingListEditorLink, u));
-
+				
 				} else {
 					
 					Window.alert("else");
@@ -101,7 +100,7 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 					rootPanelNavigator.add(navigator);
 				}
 			} else {
-				Window.alert("loadlogin");
+				
 				loadLogin();
 			}
 
