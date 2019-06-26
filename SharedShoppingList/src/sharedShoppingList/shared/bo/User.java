@@ -11,7 +11,7 @@ public class User extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int groupid;
+	
 	private String username;
 	private String gmail;
 	
@@ -23,13 +23,7 @@ public class User extends BusinessObject{
 		super();	
 	}
 	
-	public int getGroupid() {
-		return groupid;
-	}
 
-	public void setGroupid(int groupid) {
-		this.groupid = groupid;
-	}
 
 	public String getUsername() {
 		return username;

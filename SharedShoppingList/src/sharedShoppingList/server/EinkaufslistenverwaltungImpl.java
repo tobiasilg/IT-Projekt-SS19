@@ -576,7 +576,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * 
 	 */
 	
-	public Group getGroupByUser (User user) throws IllegalArgumentException{
+	public Vector<Group> getGroupsByUser (User user) throws IllegalArgumentException{
 		return this.groupMapper.findByUser(user);
 	}
 	
@@ -710,7 +710,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 	public Boolean changed(Group group, User user) throws IllegalArgumentException {
 
-		Group g = this.getGroupByUser(user);
+		Vector<Group> g = this.getGroupsByUser(user);
 
 		if (g != null && group != null) {
 

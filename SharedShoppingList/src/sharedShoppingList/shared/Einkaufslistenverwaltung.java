@@ -93,7 +93,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
 	
-	public Group getGroupByUser (User user) throws IllegalArgumentException;
+	public Vector<Group> getGroupsByUser (User user) throws IllegalArgumentException;
 	
 	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
 	

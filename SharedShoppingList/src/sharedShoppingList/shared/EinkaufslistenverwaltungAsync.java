@@ -92,7 +92,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);
 
-	void getGroupByUser(User user, AsyncCallback<Group> callback);
+	void getGroupsByUser(User user, AsyncCallback<Vector<Group>> callback);
 
 	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
 
@@ -119,6 +119,7 @@ public interface EinkaufslistenverwaltungAsync {
 	void addUser(User user, Group group, AsyncCallback<Void> callback);
 
 	void removeUserMembership(User user, Group group, AsyncCallback<Void> callback);
+
 
 
 }
