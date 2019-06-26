@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -48,6 +49,8 @@ public interface ReportClient extends RemoteService {
 	   * @throws IllegalArgumentException
 	   */
 	  public void setArticle(Article a) throws IllegalArgumentException;
+	  
+	  public Group getGroup(User user) throws IllegalArgumentException;
 	  
 	  public Vector<Store> getStores() throws IllegalArgumentException;
 	  
@@ -92,6 +95,6 @@ public interface ReportClient extends RemoteService {
 	  public abstract AllListEntriesByPeriod createAllListEntriesByPeriodReport(Timestamp beginningDate) 
 			  throws IllegalArgumentException;
 	  
-	  public abstract AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate);
+	  public abstract AllListEntriesByStoreAndPeriod createListByPeriodAndStore(Store store, Timestamp beginningDate, Timestamp endDate, int groupId);
 
 }

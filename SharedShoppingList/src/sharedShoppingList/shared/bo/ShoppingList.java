@@ -11,6 +11,8 @@ package sharedShoppingList.shared.bo;
 
 public class ShoppingList extends BusinessObject {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private int groupId;
 	
 	public ShoppingList() {

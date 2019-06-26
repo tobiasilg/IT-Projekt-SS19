@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 
 public class ListEntry extends BusinessObject {
 	
-	
+	private static final long serialVersionUID = 1L;
 	
 	public ListEntry() {
 		super();

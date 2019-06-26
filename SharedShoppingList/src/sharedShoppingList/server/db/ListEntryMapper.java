@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -35,7 +36,7 @@ public class ListEntryMapper {
 		 * Geschützter Konstrukter verhindert weitere Instanzierungen von ListEntryMapper.
 		 * Somit kann nur eine Instanz der Klasse ListEntryMapper angelegt werden.
 		 */
-		public ListEntryMapper() {
+		protected ListEntryMapper() {
 		}
 
 		
@@ -347,10 +348,23 @@ public class ListEntryMapper {
 		
 		public ListEntry update(ListEntry listentry) {
 			Connection con = DBConnection.connection();
-		
 			
-			String sql= "UPDATE listentry SET articleid= "+ listentry.getArticleId()+", amount='"+listentry.getAmount()+"', storeid="+listentry.getStoreId()+", userid="+listentry.getUserId()+", checked="+listentry.isChecked()+" WHERE id= "+ listentry.getId();
-
+			
+			String date = null;
+			if (listentry.getBuyDate() != null) {
+				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
+			}
+			
+	
+			String sql= "UPDATE listentry SET "
+					+ "articleid= "+ listentry.getArticleId()+","
+					+ " amount='"+listentry.getAmount()+"',"
+					+ " storeid="+listentry.getStoreId()+","
+					+ " userid="+listentry.getUserId()+","
+					+ " checked="+listentry.isChecked()+","
+					+ " buyDate ='" + date + "',"
+					+ " WHERE id= "+ listentry.getId();
+			
 			try {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(sql);
@@ -366,21 +380,34 @@ public class ListEntryMapper {
 		}
 
 
-		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate) {
+		public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) {
 			Connection con = DBConnection.connection();
-			/**
-			 * TODO: buydate anlegen in db
-			 * check .getDate Methode
-			 */
-			String sql = "SELECT * FROM listentry";
-			if(store != null && beginningDate != null) {
-				sql += " WHERE storeid = " + store.getId() + " AND buydate >= " + beginningDate.getTime();
+		
+			
+			String sql= "";
+			if(store != null && beginningDate != null &&endDate!=null) {
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
+				 sql = "SELECT le.*, e.groupId FROM listentry AS le"
+						+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+						+ "WHERE le.buyDate BETWEEN '" + date + "' AND '" + enddate
+						+  "AND e.groupId =" + groupId
+						+ "AND storeid =" + store.getId();
 			}
-			if(store == null && beginningDate != null) {
-				sql += " WHERE buydate >= " + beginningDate.getTime();
+			if(store == null && beginningDate != null && endDate!=null) {
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
+				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
+				sql = "SELECT le.*, e.groupId FROM listentry AS le"
+						+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+						+ "WHERE le.buyDate BETWEEN '" + date + "' AND '" + enddate
+						+  "AND e.groupId =" + groupId;
 			} 
-			if(store != null && beginningDate == null) {
-				sql += " WHERE storeid = " + store.getId();
+			if(store != null && beginningDate == null && endDate==null) {
+				 sql = "SELECT le.*, e.groupId FROM listentry AS le"
+							+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id"
+							+ "WHERE e.groupId =" + groupId
+							+ "AND storeid =" + store.getId();
+		
 			}
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -452,5 +479,7 @@ public class ListEntryMapper {
 			listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
 			return listEntry;
 		}
+
+
 }
 

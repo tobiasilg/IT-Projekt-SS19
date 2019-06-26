@@ -23,7 +23,7 @@ import sharedShoppingList.shared.bo.Group;
 @RemoteServiceRelativePath("einkaufslistenverwaltung")
 public interface Einkaufslistenverwaltung extends RemoteService{
 	
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate);
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId);
 	
 	public List<ListEntry> getEntriesByDate(Timestamp beginningDate);
 
@@ -89,6 +89,8 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public User getUserByID(int id) throws IllegalArgumentException;
 	
+	public User getUserByName(String name) throws IllegalArgumentException;
+	
 	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
 	
 	public Group getGroupByUser (User user) throws IllegalArgumentException;
@@ -111,7 +113,9 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException;
 	
+	public Article getArticleById(int id) throws IllegalArgumentException;
 	
+
 	
 
 }

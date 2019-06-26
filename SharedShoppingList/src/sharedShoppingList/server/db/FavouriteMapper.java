@@ -28,17 +28,17 @@ public class FavouriteMapper {
 	private static FavouriteMapper favouriteMapper=null;
 	
 	/*
-	 * Der geschütze Konstruktor verhindert weitere Instanziierungen von FavouriteMapper.
+	 * Der geschï¿½tze Konstruktor verhindert weitere Instanziierungen von FavouriteMapper.
 	 * Daher kann nur eine Instanz der Klasse FavouriteMapper angelegt werden
 	 */
 	
-	public FavouriteMapper() {
+	protected FavouriteMapper() {
 		
 	}
 	
 	/*
 	 * Sicherstellung der Singleton-Eigenschaft der Mapperklasse.
-	 * @return gibt dann den Favourite Mapper zurück
+	 * @return gibt dann den Favourite Mapper zurï¿½ck
 	 */
 	
 	public static FavouriteMapper favouriteMapper() {
@@ -117,7 +117,9 @@ public class FavouriteMapper {
 	public Vector <Favourite> findAllFavourites () {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge,"
+				+ " a.name AS Artikelname,"
+				+ " a.unit AS Einheit FROM favourite AS f"
 				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
 				+ " LEFT JOIN article AS a ON a.id = l.articleid";
 		
@@ -187,7 +189,7 @@ public class FavouriteMapper {
 				listentry.setUserId(rs.getInt("userId"));
 				
 				/*
-				 * Hier eventuell im SQL Statement alias setzen für "name"?
+				 * Hier eventuell im SQL Statement alias setzen fï¿½r "name"?
 				 */
 				listentry.setName(rs.getString("name"));
 				listentry.setStoreId(rs.getInt("storeid"));

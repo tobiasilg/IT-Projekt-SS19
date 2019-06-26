@@ -20,7 +20,8 @@ import sharedShoppingList.shared.bo.User;
 
 public interface EinkaufslistenverwaltungAsync {
 
-	void getEntriesByStoreAndDate(Store store, Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
+	void getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId,
+			AsyncCallback<List<ListEntry>> callback);
 	
 	void getEntriesByDate(Timestamp beginningDate, AsyncCallback<List<ListEntry>> callback);
 
@@ -54,7 +55,6 @@ public interface EinkaufslistenverwaltungAsync {
     
     void save(ShoppingList shoppingList, AsyncCallback<Void> callback);
   
-
 	void delete(User user, AsyncCallback<Void> callback);
 
 	void createStore(String name, AsyncCallback<Store> callback);
@@ -87,6 +87,8 @@ public interface EinkaufslistenverwaltungAsync {
 	void getAllUsers(AsyncCallback<Vector<User>> callback);
 
 	void getUserByID(int id, AsyncCallback<User> callback);
+	
+	void getUserByName(String name, AsyncCallback<User> callback);
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);
 
@@ -111,6 +113,8 @@ public interface EinkaufslistenverwaltungAsync {
 	void filterByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
 
 	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
+
+	void getArticleById(int id, AsyncCallback<Article> callback);
 
 
 }

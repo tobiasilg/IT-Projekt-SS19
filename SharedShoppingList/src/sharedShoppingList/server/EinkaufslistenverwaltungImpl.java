@@ -187,6 +187,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Vector<Article> getAllArticles() throws IllegalArgumentException {
 		return this.articleMapper.findAllArticles();
 	}
+	
+
+	public Article getArticleById(int id) throws IllegalArgumentException{
+
+		return this.articleMapper.findByID(id);
+	}
 
 	/**
 	 * 
@@ -268,6 +274,16 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 	public User getUserByID(int id) throws IllegalArgumentException{
 		return this.userMapper.findById(id);
+	}
+	
+	/**
+	 * Gibt einen User mit dem entsprechenden Name zurück
+	 * @param name
+	 * @return UserObjekt
+	 * @throws IllegalArgumentException
+	 */
+	public User getUserByName(String name) throws IllegalArgumentException{
+		return this.userMapper.findByName(name);
 	}
 	
 	
@@ -378,6 +394,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		if(listentry.isChecked()) {
 			listentry.setBuyDate((Timestamp) new Date());
 		}
+		else {
+			listentry.setBuyDate(null);
+			
+		}
 		
 		this.listEntryMapper.update(listentry);
 	}
@@ -431,9 +451,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @param Store und ausgewähltes Datum
 	 */
 	
-	@Override
-	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate) throws IllegalArgumentException {
-		return listEntryMapper.findByStoreAndDate(store, beginningDate);
+	
+	public List<ListEntry> getEntriesByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) throws IllegalArgumentException {
+		return listEntryMapper.findByStoreAndDate(store, beginningDate, endDate, groupId);
 	}
 	
 	public Vector <User> getAllUser (User user) throws IllegalArgumentException {
@@ -568,7 +588,23 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		shoppingList.setGroupId(group.getId());
 
 
-		this.listMapper.insert(shoppingList);
+		ShoppingList sl = this.listMapper.insert(shoppingList);
+		
+		Vector <Favourite> favs = this.favouriteMapper.findFavouritesByGroupId(group.getId());
+		
+		for (Favourite favourite : favs) {
+			ListEntry le = new ListEntry();
+			ListEntry favle = this.listEntryMapper.findByID(favourite.getListEntryId());
+			le.setAmount(favle.getAmount());
+			le.setUserId(favle.getUserId());
+			le.setArticleId(favle.getArticleId());
+			le.setShoppinglistId(sl.getId());
+			
+			this.listEntryMapper.insert(le);
+			
+			//le.setCreateDate(favourite.getlis);
+		}
+		
 		
 		return shoppingList;
 	}

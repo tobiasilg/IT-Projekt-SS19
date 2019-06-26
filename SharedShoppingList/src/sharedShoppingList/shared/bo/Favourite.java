@@ -11,6 +11,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Favourite implements IsSerializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	
 	/*
 	 * int id wird als PK in der Entit�t Favourite genutzt
