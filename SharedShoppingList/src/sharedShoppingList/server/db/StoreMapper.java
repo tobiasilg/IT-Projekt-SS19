@@ -1,4 +1,3 @@
-
 package sharedShoppingList.server.db;
 
 import java.sql.Connection;
