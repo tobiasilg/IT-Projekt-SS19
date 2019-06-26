@@ -42,7 +42,7 @@ public interface ReportClientAsync {
 
 	void getStores(AsyncCallback<Vector<Store>> callback);
 
-	void getGroup(User user, AsyncCallback<Group> callback);
+	void getGroupsOfUser(User user, AsyncCallback<Vector<Group>> callback);
 	
 	
 

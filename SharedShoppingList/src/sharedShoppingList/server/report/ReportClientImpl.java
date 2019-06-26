@@ -421,11 +421,11 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		
 	}
 	
-	public Group getGroup(User user) throws IllegalArgumentException{
+	public Vector<Group> getGroupsOfUser(User user) throws IllegalArgumentException{
 		
-		Group group = elv.getGroupByUser(user);
+		Vector<Group> groups = elv.getGroupsByUser(user);
 		
-		return group;
+		return groups;
 		
 	}
 
