@@ -193,7 +193,25 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 			e.printStackTrace();
 		}
 		
-}
+		 /** Einen User aus einer Gruppe entfernen
+		 * 
+		 * @param userId
+		 * @param groupId
+		 */
+		
+		public void deleteMembership(int userid, int groupid) {
+			
+			Connection con = DBConnection.connection();
+			String sql="DELETE FROM membership where userid = " + userid + " and groupid = " + groupid;
+			try {
+
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
 	
 	
 	
