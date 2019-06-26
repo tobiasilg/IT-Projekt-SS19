@@ -182,7 +182,7 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 
 		try {
 
-			PreparedStatement pstmt = con.prepareStatement("INSERT INTO memberships (user_id, usergroup_id) VALUES (?, ?)",
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO memberships (userid, groupid) VALUES (?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			pstmt.setInt(1, userid);
