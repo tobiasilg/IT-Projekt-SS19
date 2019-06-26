@@ -40,9 +40,12 @@ import sharedShoppingList.shared.bo.User;
 public class NewListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
+	private GroupShoppingListTreeViewModel gsltvm = null;
 	Group selectedGroup = null;
+	ShoppingList selectedShoppingList = null;
 	ShoppingListForm slf;
+	ListEntry selectedListEntry;
+	
 
 	Article article;
 	String unit;
@@ -82,10 +85,13 @@ public class NewListEntryForm extends DialogBox {
 	 */
 	public void onLoad() {
 
-		int column = 0;
-		int row = 1;
+		articleSuggestBox.getValue();
+		// String.valueOf(listEntry.getAmount());
 
-		// String value = grid.
+//		String unit = new String();
+//		unitLabel.setText(unit);
+
+		articleSuggestBox.getElement();
 
 		// Zusammenbau des Grid
 
@@ -213,13 +219,13 @@ public class NewListEntryForm extends DialogBox {
 		this.selectedGroup = selectedGroup;
 	}
 
-//	public ShoppingList getSelectedList() {
-//		return selectedList;
-//	}
-//
-//	public void setSelected(ShoppingList sl) {
-//		selectedList = sl;
-//	}
+	public ShoppingList getSelectedList() {
+		return selectedShoppingList;
+	}
+
+	public void setSelectedList(ShoppingList sl) {
+		selectedShoppingList = sl;
+	}
 
 	/***********************************************************************
 	 * CLICKHANDLER
@@ -230,13 +236,13 @@ public class NewListEntryForm extends DialogBox {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-
-			RootPanel.get("details").clear();
-			NewListEntryForm nlef = new NewListEntryForm();
-//			nlef.setSelected(selectedList);
-			// nlef.setSelectedGroup(selectedGroup);
-			slf = new ShoppingListForm();
-			RootPanel.get("details").add(slf);
+			if (selectedShoppingList != null) {
+				RootPanel.get("details").clear();
+				slf = new ShoppingListForm();
+				slf.setSelected(selectedShoppingList);
+				slf.setSelected(selectedShoppingList);
+				RootPanel.get("details").add(slf);
+			}
 
 		}
 
@@ -258,7 +264,6 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 
-			// a.getUniit(unit);
 			float newAmount = Float.parseFloat(amountTextBox.getText());
 
 			Store store = new Store();
@@ -267,7 +272,7 @@ public class NewListEntryForm extends DialogBox {
 			User user = new User();
 			user.setName(usersListBox.getSelectedItemText());
 
-			// Listeneintrag
+			// Erstellung Listeneintrag
 			ListEntry listEntry = new ListEntry();
 
 			store = stores.get(storesListBox.getSelectedIndex());
@@ -279,8 +284,7 @@ public class NewListEntryForm extends DialogBox {
 			listEntry.setShoppinglist(shoppingList);
 			listEntry.setUser(user);
 
-			// ClientsideSettings.getLogger().info("id: " + listEntry.getShoppinglistId());
-
+		
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
 			}
@@ -312,18 +316,17 @@ public class NewListEntryForm extends DialogBox {
 
 			public void onSuccess(ListEntry result) {
 
-				if (result != null) {
-					ShoppingListForm slf = new ShoppingListForm();
-
-					RootPanel.get("details").clear();
-//					slf.setSelected(selectedList);
-//					slf.setSelected(selectedGroup);
-					RootPanel.get("details").add(slf);
-
-				}
-
-			}
-		}
+				if (result != null)
+				RootPanel.get("details").clear();
+				slf = new ShoppingListForm();
+				slf.setSelected(selectedShoppingList);
+				slf.setSelected(selectedGroup);
+				RootPanel.get("details").add(slf);
+				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
+			} 
+					}
+			
+		
 
 		private class UnitCallback implements AsyncCallback {
 
