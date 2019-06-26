@@ -131,7 +131,7 @@ public class StoreMapper {
 		return store;
 	}
 	
-	/* find by Group */
+	/* find Store by Group */
 	public Vector<Store> findStoreByGroup(Group group) {
 		Connection con = DBConnection.connection();
 		Store store = new Store();
