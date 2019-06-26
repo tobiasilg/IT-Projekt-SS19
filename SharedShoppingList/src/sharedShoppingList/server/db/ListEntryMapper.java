@@ -36,7 +36,7 @@ public class ListEntryMapper {
 		 * Geschützter Konstrukter verhindert weitere Instanzierungen von ListEntryMapper.
 		 * Somit kann nur eine Instanz der Klasse ListEntryMapper angelegt werden.
 		 */
-		public ListEntryMapper() {
+		protected ListEntryMapper() {
 		}
 
 		

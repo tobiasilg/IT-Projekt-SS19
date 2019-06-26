@@ -24,7 +24,7 @@ public class StoreMapper {
 
 	private static StoreMapper storeMapper = null;
 
-	public StoreMapper() {
+	protected StoreMapper() {
 	}
 
 	public static StoreMapper storeMapper() {
