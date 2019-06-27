@@ -124,6 +124,8 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void removeUserMembership(User user, Group group, AsyncCallback<Void> callback);
 
+	void createUser(String name, String gmail, String username, AsyncCallback<User> callback);
+
 
 
 }

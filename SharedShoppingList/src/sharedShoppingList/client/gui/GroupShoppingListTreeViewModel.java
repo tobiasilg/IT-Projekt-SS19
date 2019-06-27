@@ -294,10 +294,11 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			
 			groupDataProvider = new ListDataProvider<Group>();
 			
-			//einkaufslistenVerwaltung.getGroupById(1, new AsyncCallback<Group>() {
-			//einkaufslistenVerwaltung.getGroupById(selectedGroup.getId(), new AsyncCallback<Group>() {
+			// Methode muss noch auf getGroupsByUSer abgeändert werden, sobald der Login steht!
+		
 			einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
-			//einkaufslistenVerwaltung.getGroupByUser(user, new AsyncCallback<Group>() {
+			//einkaufslistenVerwaltung.getGroupsByUser(user, new AsyncCallback<Vector<Group>>() {
+
 
 				@Override
 				public void onFailure(Throwable t) {

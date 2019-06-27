@@ -50,7 +50,7 @@ public interface ReportClient extends RemoteService {
 	   */
 	  public void setArticle(Article a) throws IllegalArgumentException;
 	  
-	  public Group getGroup(User user) throws IllegalArgumentException;
+	  public Vector<Group> getGroupsOfUser(User user) throws IllegalArgumentException;
 	  
 	  public Vector<Store> getStores() throws IllegalArgumentException;
 	  

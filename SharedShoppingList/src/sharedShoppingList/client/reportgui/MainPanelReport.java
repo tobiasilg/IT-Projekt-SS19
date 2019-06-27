@@ -46,11 +46,17 @@ public class MainPanelReport extends VerticalPanel {
 	VerticalPanel fromVp = new VerticalPanel();
 	VerticalPanel toVp = new VerticalPanel();
 	HorizontalPanel dateVp = new HorizontalPanel();
+	VerticalPanel groupVp = new VerticalPanel();
 
 	/**
 	 * Label für StoreTextBox
 	 */
 	Label storeText = new Label("Store auswählen");
+
+	/**
+	 * Label für GroupTextBox
+	 */
+	Label groupText = new Label("Gruppe auswählen");
 
 	/**
 	 * ListBox in der die Store angezeigt werden
@@ -72,14 +78,30 @@ public class MainPanelReport extends VerticalPanel {
 	 */
 	Button confirmButton = new Button("Report erstellen");
 
+	/**
+	 * Drop-Down-Liste zur Gruppenauswahl
+	 */
+	private ListBox groupSelectorListBox = new ListBox();
+
 	private Timestamp sqlStartDate = null;
 	private Timestamp sqlEndDate = null;
 	private ArrayList<Store> allStores;
 	private Store selectedStore = null;
+	private Group selectedGroup = null;
 	private User user = CurrentUser.getUser();
 	int currentGroupID;
 
+	public Group getGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
 	public void onLoad() {
+
+		Window.alert("User: " + user);
 
 		/**
 		 * Zusammensetzung der Panels und Widgets
@@ -90,9 +112,13 @@ public class MainPanelReport extends VerticalPanel {
 		storeVp.add(storeText);
 		storeVp.add(storeListBox);
 
+		groupVp.add(groupText);
+		groupVp.add(groupSelectorListBox);
+
 		dateVp.add(fromVp);
 		dateVp.add(toVp);
 
+		hp.add(groupVp);
 		hp.add(fromVp);
 		hp.add(toVp);
 		hp.add(storeVp);
@@ -148,7 +174,7 @@ public class MainPanelReport extends VerticalPanel {
 
 		});
 
-		repoClient.getGroup(user, new AsyncCallback<Group>() {
+		repoClient.getGroupsOfUser(user, new AsyncCallback<Vector<Group>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -156,10 +182,15 @@ public class MainPanelReport extends VerticalPanel {
 			}
 
 			@Override
-			public void onSuccess(Group result) {
+			public void onSuccess(Vector<Group> result) {
 
-				Group currentGroup = result;
-				currentGroup.getId();
+//				Group currentGroup = result;
+//				currentGroup.getId();
+
+				for (int i = 0; i < result.size(); i++) {
+					groupSelectorListBox.addItem(result.get(i).getName());
+					selectedGroup = result.get(0);
+				}
 
 			}
 
@@ -173,9 +204,8 @@ public class MainPanelReport extends VerticalPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 
-//!!!!!!!!!!!!wie führe ich wietere Aktionen aus wenn kein Datum eingetragen ist
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
-				
+
 				Window.alert("Store: " + selectedStore.getName());
 
 				if (FromDateBox.getValue() == null && toDateBox.getValue() == null) {

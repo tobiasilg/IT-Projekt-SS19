@@ -36,10 +36,10 @@ public class UserMapper {
 	
 /* CREATE (insert) - Dieser Block verfügt nur über eine Methode, die für alle Neueinträge verantwortlich ist*/
 	
-	public void insert (User user) {
+	public User insert (User user) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "INSERT INTO user (name, username, gmail, groupid) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "'," + user.getGroupid()+")";
+		String sql= "INSERT INTO user (name, username, gmail) VALUES ('" + user.getName() + "','" + user.getUsername() + "','" + user.getGmail()+ "')";
 		
 	    try {
 	    	
@@ -68,6 +68,8 @@ public class UserMapper {
 	    catch (SQLException e) {
 	      e.printStackTrace();
 	    }
+	    
+	    return user;
 	}
 	
 	
@@ -91,7 +93,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -121,7 +122,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -138,32 +138,34 @@ public class UserMapper {
 	 * 
 	 *  */
 	public User findByGmail(String gmail) {
+		
 		Connection con = DBConnection.connection();
-		User user = new User();
 		String sql="SELECT * FROM user WHERE gmail='" + gmail+"'";
 			
 		try {
 
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
+				
 
 				if (rs.next()) {
-					
+				User user = new User();
+
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
-					
+				
+				return user;
 				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return null;
+				
 			}
-			return user;
+		return null;
 		}
 	
 	/* find by name */
@@ -187,7 +189,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 					
@@ -210,7 +211,9 @@ public class UserMapper {
 	public Vector <User> findByGroup(Group group) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM user WHERE groupid="+ group.getId();
+		String sql = "SELECT * FROM membership INNER JOIN user "
+				+ "ON membership.userid = user.id "
+				+ "WHERE membership.groupid = " + group.getId();
 		
 		Vector<User> users= new Vector<User>();
 		
@@ -227,7 +230,6 @@ public class UserMapper {
 				user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setGmail(rs.getString("gmail"));
-                user.setGroupid(rs.getInt("groupid"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
 				
@@ -249,7 +251,7 @@ public class UserMapper {
 	
 	public User update(User user) {
 		Connection con = DBConnection.connection();
-		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"', groupid="+user.getGroupid()+" WHERE id= "+ user.getId();
+		String sql= "UPDATE user SET name= '"+ user.getName()+"', username='"+user.getUsername()+"' WHERE id= "+ user.getId();
 
 		try {
 			Statement stmt = con.createStatement();
