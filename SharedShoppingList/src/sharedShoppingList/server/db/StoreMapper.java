@@ -10,7 +10,9 @@ import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
 
 /**
  * Dieser Mapper ist für alle Datenbankvorgänge - also der Informationsabfrage
@@ -103,6 +105,7 @@ public class StoreMapper {
 		}
 		return stores;
 	}
+	
 
 	/* find by id */
 	public Store findById(int id) {
@@ -131,31 +134,74 @@ public class StoreMapper {
 		return store;
 	}
 	
-	/* find Store by Group */
-	public Vector<Store> findStoreByGroup(Group group) {
+	
+	/* find by ListEntry */
+	public Store findByListEntry(ListEntry le) {
 		Connection con = DBConnection.connection();
 		Store store = new Store();
 		
-		String sql = "SELECT * FROM store WHERE groupid=" + group.getId();
+		String sql = "SELECT * FROM store WHERE id=" + le.getStore();
 
-		Vector<Store> result= new Vector<Store>();
 		try {
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			
-			while (rs.next()) {
+
+			if (rs.next()) {
+
 				store.setId(rs.getInt("id"));
 				store.setName(rs.getString("name"));
 				store.setCreateDate(rs.getTimestamp("createDate"));
 				store.setModDate(rs.getTimestamp("modDate"));
-				
-				result.addElement(store);
+
 			}
-		}catch(SQLException ex){
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return store;
+	}
+	
+	
+	/* find Stores by Group */
+	public Vector<Store> findStoreByGroup(Group group) {
+		Connection con = DBConnection.connection();
+		
+		//Unser späteres result ist dieser Vektor
+		Vector<Store> result = new Vector<Store>();
+		
+		//Da der Zugriffe auf mehrere Tabellen notwendig ist, benötigen wir deren Mapper
+		final UserMapper userMapper = UserMapper.userMapper();
+		final ListEntryMapper listEntryMapper = ListEntryMapper.listEntryMapper();
+		
+		try {
+			//Zunächst werden alle Nutzer einer Gruppe abgefragt und zwischengespeichert
+			Vector<User> users = userMapper.findByGroup(group);
+			
+			for (User user : users) {
+				
+				//Für jeden Nutzer werden nun dessen Listeneinträge abgefragt
+				Vector<ListEntry> listentries = listEntryMapper.findAllByCurrentUser(user);
+				
+				for (ListEntry listentry : listentries) {
+					
+					//Für jeden Listeneintrag wird nun der Store abgefragt
+					Store store = findByListEntry(listentry);
+					
+					result.addElement(store);
+				}
+				
+			}
+			
+		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
 		return result;
 	}
+		
+
 
 	/* UPDATE */
 
