@@ -136,7 +136,7 @@ public class StoreMapper {
 		Connection con = DBConnection.connection();
 		Store store = new Store();
 		
-		String sql = "SELECT * FROM article WHERE groupid=" + group.getId();
+		String sql = "SELECT * FROM store WHERE groupid=" + group.getId();
 
 		Vector<Store> result= new Vector<Store>();
 		try {
