@@ -128,9 +128,11 @@ public class GroupCreationForm extends FlowPanel {
 			} else {
 
 				groupForm = new AdministrationGroupForm();
-//			elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
-
-				// elv.createGroup(groupName, new GroupCreationCallback());
+				
+		//	elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
+			//	 elv.createGroup(groupName, new GroupCreationCallback());
+				
+				elv.createGroup(user, groupNameTextBox.getValue(), new GroupCreationCallback());
 
 			}
 		}
