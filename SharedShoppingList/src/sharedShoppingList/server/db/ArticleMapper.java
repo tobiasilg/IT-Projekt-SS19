@@ -9,6 +9,8 @@ import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
+import sharedShoppingList.shared.bo.ListEntry;
+import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
 
@@ -140,33 +142,70 @@ public class ArticleMapper {
 		return result;
 	}
 	
-	/**
-	 * Methode zur Auflistung aller Artikel einer Gruppe
-	  * @author Tobi Ilg
-	 */
+	/*Den Article eines Listeneintrags zurückgeben*/
 	
-	public Vector<Article> getArticleByGroup(Group group){
+	public Article findByListEntry(ListEntry le) {
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM article WHERE groupid=" + group.getId();
+		Article article = new Article();
 		
-		Vector<Article> result= new Vector<Article>();
+		String sql = "SELECT * FROM article INNER JOIN listentry ON article.id = " + le.getArticleId();
+
 		try {
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			
-			while (rs.next()) {
-				Article article = new Article();
+
+			if (rs.next()) {
+				
 				article.setId(rs.getInt("id"));
 				article.setName(rs.getString("name"));
 				article.setCreateDate(rs.getTimestamp("createDate"));
 				article.setModDate(rs.getTimestamp("modDate"));
 				article.setUnit(rs.getString("unit"));
-				
-				result.addElement(article);
+
 			}
-		}catch(SQLException ex){
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return article;
+	}
+	
+	
+	/* find Stores by Group */
+	public Vector<Article> findArticleByGroup(Group group) {
+		
+		//Unser späteres result ist dieser Vektor
+		Vector<Article> result = new Vector<Article>();
+		
+		//Da der Zugriffe auf mehrere Tabellen notwendig ist, benötigen wir deren Mapper
+		final UserMapper userMapper = UserMapper.userMapper();
+		final ListEntryMapper listEntryMapper = ListEntryMapper.listEntryMapper();
+		
+		try {
+			//Zunächst werden alle Nutzer einer Gruppe abgefragt und zwischengespeichert
+			Vector<User> users = userMapper.findByGroup(group);
+			
+			for (User user : users) {
+				
+				//Für jeden Nutzer werden nun dessen Listeneinträge abgefragt
+				Vector<ListEntry> listentries = listEntryMapper.findAllByCurrentUser(user);
+				
+				for (ListEntry listentry : listentries) {
+					
+					//Für jeden Listeneintrag wird nun der Store abgefragt
+					Article article = findByListEntry(listentry);
+					
+					result.addElement(article);
+				}
+				
+			}
+			
+		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
 		return result;
 	}
 	

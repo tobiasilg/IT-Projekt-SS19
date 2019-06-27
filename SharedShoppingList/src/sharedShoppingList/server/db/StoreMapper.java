@@ -166,7 +166,6 @@ public class StoreMapper {
 	
 	/* find Stores by Group */
 	public Vector<Store> findStoreByGroup(Group group) {
-		Connection con = DBConnection.connection();
 		
 		//Unser späteres result ist dieser Vektor
 		Vector<Store> result = new Vector<Store>();
