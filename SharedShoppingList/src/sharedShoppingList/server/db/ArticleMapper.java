@@ -173,7 +173,19 @@ public class ArticleMapper {
 	}
 	
 	
-	/* find Stores by Group */
+	/**ACHTUNG!!!
+	 * Der folgende Mapper enthält Applikationslogik!
+	 * er stellt damit KEINEN fertigen Code sondern mehr einen
+	 * Entwurf für einen möglichen Lösungsansatz dar.
+	 * 
+	 * Da eine Lösung auf DaBa-Ebene derzeit nicht realisierbar scheint,
+	 * verbleibt er bis zur Lösung des Problems in auskommentierter Form.
+	 * 
+	 * @ToDo ÄNDERN
+	 */
+
+	
+	/* find Stores by Group *//*
 	public Vector<Article> findArticleByGroup(Group group) {
 		
 		//Unser späteres result ist dieser Vektor
@@ -207,7 +219,7 @@ public class ArticleMapper {
 		}
 		
 		return result;
-	}
+	}*/
 	
 	/*
 	 * Methode zum Löschen eines Artikels aus der Datenbank
