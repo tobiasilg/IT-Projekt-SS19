@@ -165,8 +165,21 @@ public class StoreMapper {
 	
 	
 	/* find Stores by Group */
+		
+	/**ACHTUNG!!!
+		 * Der folgende Mapper enthält Applikationslogik!
+		 * er stellt damit KEINEN fertigen Code sondern mehr einen
+		 * Entwurf für einen möglichen Lösungsansatz dar.
+		 * 
+		 * Da eine Lösung auf DaBa-Ebene derzeit nicht realisierbar scheint,
+		 * verbleibt er bis zur Lösung des Problems in auskommentierter Form.
+		 * 
+		 * @ToDo ÄNDERN
+		 */
+	/*
 	public Vector<Store> findStoreByGroup(Group group) {
 		
+
 		//Unser späteres result ist dieser Vektor
 		Vector<Store> result = new Vector<Store>();
 		
@@ -198,7 +211,7 @@ public class StoreMapper {
 		}
 		
 		return result;
-	}
+	} */
 		
 
 
