@@ -206,11 +206,11 @@ public class ArticleForm extends VerticalPanel {
 					@Override
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
-
+						Notification.show("Artikel wurde gelöscht");
 					}
 
 				};
-				Window.alert("Artikel löschen :" + article);
+
 				elv.delete(article, deletecallback);
 			}
 
@@ -249,8 +249,8 @@ public class ArticleForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 
-			Window.alert("Artikelname hinzufügen :" + nameTextBox.getValue());
-			Window.alert("Artikeleinheit hinzufügen :" + unitListBox.getSelectedValue());
+//			Window.alert("Artikelname hinzufügen :" + nameTextBox.getValue());
+//			Window.alert("Artikeleinheit hinzufügen :" + unitListBox.getSelectedValue());
 			// Persistiere in die Datenbank
 			elv.createArticle(nameTextBox.getValue(), unitListBox.getSelectedValue(), new ArticleCreationCallback());
 
@@ -265,13 +265,13 @@ public class ArticleForm extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Notification.show("Der Store konnte nicht erstellt werden");
+			Notification.show("Der Artikel konnte nicht erstellt werden");
 
 		}
 
 		@Override
 		public void onSuccess(Article article) {
-			Notification.show("Der Store wurde erfolgreich erstellt");
+			Notification.show("Der Artikel wurde erfolgreich erstellt");
 
 			dataProvider.getList().add(article);
 			dataProvider.refresh();
@@ -299,9 +299,9 @@ public class ArticleForm extends VerticalPanel {
 
 			for (Article article : list) {
 
-				Window.alert("Artikel speichern" + article);
-				Window.alert("Artikel speichern name" + article.getName());
-				Window.alert("Artikel speichern einheit" + article.getUnit());
+//				Window.alert("Artikel speichern" + article);
+//				Window.alert("Artikel speichern name" + article.getName());
+//				Window.alert("Artikel speichern einheit" + article.getUnit());
 
 				elv.save(article, new SaveArticleCallback());
 			}
@@ -313,7 +313,6 @@ public class ArticleForm extends VerticalPanel {
 			@Override
 			public void onFailure(Throwable caught) {
 				Notification.show(caught.toString());
-				Window.alert("speichern fehlgeschlagen");
 
 			}
 
@@ -352,9 +351,6 @@ public class ArticleForm extends VerticalPanel {
 			@Override
 			public void onSuccess(Void result) {
 				Notification.show("Store wurde entfernt");
-//				table.getKeyboardSelectedRow();
-//
-//				dataProvider.getList().remove(table.getKeyboardSelectedRow());
 
 				dataProvider.refresh();
 			}
