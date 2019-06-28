@@ -225,6 +225,20 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 			}
 			
 		}
+		
+		public void deleteMembership(int groupid) {
+			
+			Connection con = DBConnection.connection();
+			String sql="DELETE FROM membership where groupid = " + groupid;
+			try {
+
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
 	
 	
 	

@@ -145,7 +145,7 @@ public class ListMapper {
 	public void delete (ShoppingList shoppingList ) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "DELETE FROM shoppinglist WHERE id=" + shoppingList.getId() +")";
+		String sql= "DELETE FROM shoppinglist WHERE id=" + shoppingList.getId();
 		
 	    try {
 	    	
