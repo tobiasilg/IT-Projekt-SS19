@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -78,7 +77,7 @@ public class ArticleForm extends VerticalPanel {
 	// Konstruktor
 	public ArticleForm() {
 
-		saveButton.addClickHandler(new SaveArticleClickHandler());
+//		saveButton.addClickHandler(new SaveArticleClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddArticleClickHandler());
 //		deleteButton.addClickHandler(new DeleteStoreClickHandler());
@@ -87,7 +86,7 @@ public class ArticleForm extends VerticalPanel {
 	protected ListBox createUnitListBox() {
 		if (units == null) {
 			units = new ArrayList<String>();
-			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+			units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter", "Kasten", "Flasche"));
 		}
 		if (unitListBox == null) {
 			unitListBox = new ListBox();
@@ -120,6 +119,7 @@ public class ArticleForm extends VerticalPanel {
 		nameTextBox.addStyleName("profilTextBox");
 		saveButton.addStyleName("speicherButton");
 		addButton.addStyleName("speicherButton");
+
 		// Lade alle Store aus der Datenbank
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {
 
@@ -141,8 +141,6 @@ public class ArticleForm extends VerticalPanel {
 
 		});
 
-//		
-
 		EditTextCell editTextCell = new EditTextCell();
 		Column<Article, String> stringColumn = new Column<Article, String>(editTextCell) {
 			@Override
@@ -161,7 +159,7 @@ public class ArticleForm extends VerticalPanel {
 		};
 
 		units = new ArrayList<String>();
-		units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter"));
+		units.addAll(Arrays.asList("kg", "Gramm", "Stück", "Pack", "Liter", "Milliliter", "Kasten", "Flasche"));
 
 		SelectionCell categoryCell = new SelectionCell(units);
 		Column<Article, String> categoryColumn = new Column<Article, String>(categoryCell) {
@@ -172,26 +170,36 @@ public class ArticleForm extends VerticalPanel {
 		};
 
 		categoryColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
-			public void update(int index, Article object, String value) {
-//				for (Category category : units) {
-//					if (category.getDisplayName().equals(value)) {
-//						object.setUnit(category);
-//					}
-//				}
+			public void update(int index, Article article, String value) {
 
-				object.setUnit(value);
+				article.setUnit(value);
+
+				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+
+				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						Notification.show("Artikel wurde gespeichert");
+					}
+
+				};
+
+				elv.save(article, saveCallback);
 			}
-		});
 
+		});
 		deleteColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
 
 			public void update(int index, Article article, String value) {
 				// Value is the button value. Object is the row object.
-//				Window.alert("You clicked: " + value);
-//				Window.alert("Object: " + store);
-//				Window.alert("Name: " + store.getName());
-
-				dataProvider.getList().remove(article);
 
 				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
@@ -207,26 +215,41 @@ public class ArticleForm extends VerticalPanel {
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
 						Notification.show("Artikel wurde gelöscht");
+
 					}
 
 				};
 
 				elv.delete(article, deletecallback);
+				dataProvider.getList().remove(article);
 			}
 
 		});
-
-//				dataProvider.getList().remove(store);
-//				dataProvider.refresh();
-//				table.redraw();
 
 		stringColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
 
 			public void update(int index, Article article, String value) {
 				// Value is the textCell value. Object is the row object.
-
+				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 				article.setName(value);
 
+				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						Notification.show("Artikel wurde gespeichert");
+					}
+
+				};
+
+				elv.save(article, saveCallback);
 			}
 
 		});
@@ -271,10 +294,15 @@ public class ArticleForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Article article) {
-			Notification.show("Der Artikel wurde erfolgreich erstellt");
+			if (article == null) {
+				Notification.show("Der Artikel existiert bereits");
+			} else {
+				Notification.show("Der Artikel wurde erfolgreich erstellt");
 
-			dataProvider.getList().add(article);
-			dataProvider.refresh();
+				dataProvider.getList().add(article);
+				dataProvider.refresh();
+			}
+
 		}
 	}
 
@@ -287,75 +315,6 @@ public class ArticleForm extends VerticalPanel {
 			RootPanel.get("details").clear();
 		}
 
-	}
-
-	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des Bestï¿½tigungsbutton erstellt.
-	 */
-	private class SaveArticleClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			for (Article article : list) {
-
-//				Window.alert("Artikel speichern" + article);
-//				Window.alert("Artikel speichern name" + article.getName());
-//				Window.alert("Artikel speichern einheit" + article.getUnit());
-
-				elv.save(article, new SaveArticleCallback());
-			}
-
-		}
-
-		private class SaveArticleCallback implements AsyncCallback<Void> {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Notification.show(caught.toString());
-
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				Notification.show("speichern erfolgreich");
-
-				dataProvider.refresh();
-			}
-
-		}
-
-	}
-
-	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des Bestï¿½tigungsbutton erstellt.
-	 */
-	private class DeleteArticleClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			Article article = dataProvider.getList().get(table.getKeyboardSelectedRow());
-
-		}
-
-		private class DeleteArticleCallback implements AsyncCallback<Void> {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Notification.show(caught.toString());
-				Window.alert("speichern fehlgeschlagen");
-
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				Notification.show("Store wurde entfernt");
-
-				dataProvider.refresh();
-			}
-
-		}
 	}
 
 }
