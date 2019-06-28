@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
+import sharedShoppingList.client.SharedShoppingListReportEntry.CurrentReportUser;
 import sharedShoppingList.client.gui.Notification;
 import sharedShoppingList.shared.ReportClientAsync;
 import sharedShoppingList.shared.bo.Group;
@@ -88,7 +88,7 @@ public class MainPanelReport extends VerticalPanel {
 	private ArrayList<Store> allStores;
 	private Store selectedStore = null;
 	private Group selectedGroup = null;
-	private User user = CurrentUser.getUser();
+	private User user = CurrentReportUser.getUser();
 	int currentGroupID;
 
 	public Group getGroup() {
@@ -186,6 +186,8 @@ public class MainPanelReport extends VerticalPanel {
 
 //				Group currentGroup = result;
 //				currentGroup.getId();
+
+				Window.alert("result: " + result);
 
 				for (int i = 0; i < result.size(); i++) {
 					groupSelectorListBox.addItem(result.get(i).getName());

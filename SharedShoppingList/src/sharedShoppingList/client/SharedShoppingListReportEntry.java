@@ -52,7 +52,7 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 		@Override
 		public void onSuccess(User u) {
 
-			CurrentUser.setUser(u);
+			CurrentReportUser.setUser(u);
 
 			if (u.isLoggedIn()) {
 				if (u.getName() == null) {
@@ -65,7 +65,6 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 
 				} else {
 
-					Window.alert("else");
 					HeaderRepo headerReport = new HeaderRepo();
 					RootPanel rootPanelHeaderReport = RootPanel.get("header");
 
@@ -96,7 +95,7 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 		loginPanel.add(loginButton);
 		loginPanel.setCellHorizontalAlignment(loginLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		loginPanel.setCellHorizontalAlignment(loginButton, HasHorizontalAlignment.ALIGN_CENTER);
-		signInLink.setHref(CurrentUser.getUser().getLoginUrl());
+		signInLink.setHref(CurrentReportUser.getUser().getLoginUrl());
 
 		RootPanel.get("header").setVisible(false);
 //				RootPanel.get("navigation").setVisible(false);
@@ -128,16 +127,18 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 	 * angemeldeten User. Da weitere GUI-Klassen das angemeldetet User-Objekt
 	 * verwenden, muss diese jederzeit aufrufbar sein.
 	 */
-	public static class CurrentUser {
+	public static class CurrentReportUser {
 
 		private static User u = null;
 
 		public static User getUser() {
+			Window.alert("GetUser: " + u);
 			return u;
 		}
 
 		public static void setUser(User u) {
-			CurrentUser.u = u;
+			Window.alert("SetUser: " + u);
+			CurrentReportUser.u = u;
 		}
 	}
 
