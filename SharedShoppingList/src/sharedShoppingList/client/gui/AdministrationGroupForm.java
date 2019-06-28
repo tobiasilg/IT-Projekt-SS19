@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -51,6 +50,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private User user = CurrentUser.getUser();
 	private User newGroupUser = null;
 	private Group selectedGroup = null;
+
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private ShoppingListCreationForm shoppingListCreationForm;
@@ -78,8 +78,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 	private ListDataProvider<User> dataProvider = new ListDataProvider<User>();
 	private List<User> list = dataProvider.getList();
 	private Vector<User> users = new Vector<User>();
-	
-	private ScrollPanel scrollPanel = new ScrollPanel();
+
+//	private ScrollPanel scrollPanel = new ScrollPanel();
 
 	private CellTable<User> memberTable = new CellTable<User>(KEY_PROVIDER);
 
@@ -89,6 +89,29 @@ public class AdministrationGroupForm extends VerticalPanel {
 			return user.getId();
 		}
 	};
+
+	public Group getSelected() {
+		return selectedGroup;
+	}
+
+	public void setSelected(Group g) {
+		if (g != null) {
+
+			selectedGroup = g;
+			renameTextBox.setText(selectedGroup.getName());
+		} else {
+			renameTextBox.setText("");
+		}
+	}
+
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+
+	}
+
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
 
 	/***********************************************************************
 	 * Konstruktor
@@ -101,30 +124,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
 
 		addUserButton.addClickHandler(new AddUserClickHandler());
-		
+
 		userTextBox.getElement().setPropertyString("placeholder", "Mitglied hinzufügen...");
-		
-		// Alle User einer Gruppe sollen in die CellTable geladen werden 
-		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler bei getUsersByGroup" + caught.getMessage());
-
-			}
-
-			@Override
-			public void onSuccess(Vector<User> result) {
-
-				for (User user : result) {
-					list.add(user);
-
-				}
-
-			}
-
-		});
-		
 
 		TextCell userTextCell = new TextCell();
 
@@ -133,6 +134,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			public String getValue(User user) {
 
 				return user.getName();
+				
 			}
 		};
 
@@ -184,9 +186,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		memberTable.addColumn(stringColumn, "Users");
 		memberTable.addColumn(deleteColumn, "Mitglied entfernen");
 		memberTable.setColumnWidth(stringColumn, 20, Unit.PC);
-		
-		dataProvider.addDataDisplay(memberTable);
 
+		dataProvider.addDataDisplay(memberTable);
 
 	}
 
@@ -201,11 +202,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 		hpButtonsPanelGroup.add(saveGroupNameButton);
 		hpButtonsPanelGroup.add(deleteGroupButton);
 		hpButtonsPanelGroup.add(createShoppingListButton);
-		
+
 		memberPanel.add(userTextBox);
 		memberPanel.add(addUserButton);
-		
-		scrollPanel.add(memberTable);
+
+		// scrollPanel.add(memberTable);
 
 		// Add them to VerticalPanel
 		boxPanel.add(groupLabel);
@@ -214,7 +215,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		boxPanel.add(membersLabel);
 		boxPanel.add(memberPanel);
-		boxPanel.add(scrollPanel);
+		boxPanel.add(memberTable);
 
 		this.add(boxPanel);
 
@@ -230,8 +231,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		saveGroupNameButton.setPixelSize(130, 40);
 		deleteGroupButton.setPixelSize(130, 40);
 		createShoppingListButton.setPixelSize(130, 40);
-		
-		scrollPanel.setHeight("12");
+
+		// scrollPanel.setHeight("12");
 
 		renameTextBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -243,6 +244,36 @@ public class AdministrationGroupForm extends VerticalPanel {
 				}
 
 			}
+		});
+
+		// Alle User einer Gruppe sollen in die CellTable geladen werden
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+//		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei getUsersByGroup" + caught.getMessage());
+
+			}
+
+			@Override
+			public void onSuccess(Vector<User> result) {
+				// Window.alert("User wird angezeigt");
+
+				for (User user : result) {
+
+					if (list.contains(user)) {
+
+						break;
+					} else {
+						list.add(user);
+
+					}
+
+				}
+
+			}
+
 		});
 
 		// Alle User die im System vorhanden sind werden geladen
@@ -261,6 +292,29 @@ public class AdministrationGroupForm extends VerticalPanel {
 			}
 		});
 
+//		// Alle User einer Gruppe sollen in die CellTable geladen werden 
+//		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+////		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				Window.alert("Fehler bei getUsersByGroup" + caught.getMessage());
+//
+//			}
+//
+//			@Override
+//			public void onSuccess(Vector<User> result) {
+//				Window.alert(user.getName());
+//				
+//				for (User user : result) {
+//					list.add(user);
+//
+//				}
+//
+//			}
+//
+//		});
+
 	}
 
 	/***********************************************************************
@@ -274,29 +328,29 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * FieldVerifyer benötigt werden.
 	 */
 
-	public Group getSelected() {
-		return selectedGroup;
-	}
-
-	public void setSelected(Group g) {
-		if (g != null) {
-
-			selectedGroup = g;
-			renameTextBox.setText(selectedGroup.getName());
-		} else {
-			renameTextBox.setText("");
-		}
-
-	}
-
-	public GroupShoppingListTreeViewModel getGsltvm() {
-		return gsltvm;
-
-	}
-
-	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
-		this.gsltvm = gsltvm;
-	}
+//	public Group getSelected() {
+//		return selectedGroup;
+//	}
+//	
+//	public void setSelected(Group g) {
+//		if (g != null) {
+//
+//			selectedGroup = g;
+//			renameTextBox.setText(selectedGroup.getName());
+//		} else {
+//			renameTextBox.setText("");
+//		}
+//	}
+//
+//
+//	public GroupShoppingListTreeViewModel getGsltvm() {
+//		return gsltvm;
+//
+//	}
+//
+//	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+//		this.gsltvm = gsltvm;
+//	}
 
 	private boolean checkTextboxesSaveableRename() {
 
@@ -376,31 +430,55 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			
-			elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
+
+			// elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
+			elv.getUserByName(userTextBox.getValue(), new UserCallback());
+			userTextBox.setText("");
 
 		}
 
 	}
-	
+
 	private class AddUserCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-		Notification.show("Es konnte kein Mitglied hinzugefügt werden");
-			
+			Notification.show("Es konnte kein Mitglied hinzugefügt werden");
+
 		}
 
 		@Override
 		public void onSuccess(Void result) {
-		
-		Notification.show("Das Gruppenmitglied wurde erfolgreich hinzugefügt");
-			
-		dataProvider.getList().add(newGroupUser);
-		dataProvider.refresh();
-		
+
+			Notification.show("Das Gruppenmitglied wurde erfolgreich hinzugefügt");
+
+	//	dataProvider.getList().add(newGroupUser);
+	//	dataProvider.refresh();
+
 		}
-		
+
+	}
+
+	private class UserCallback implements AsyncCallback<User> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onSuccess(User result) {
+			
+			newGroupUser = result;
+
+			elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
+						
+			dataProvider.getList().add(newGroupUser);
+			dataProvider.refresh();
+
+		}
+
 	}
 
 	private class CreateShoppingListClickHandler implements ClickHandler {
@@ -452,6 +530,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			if (selectedGroup == null) {
 				Window.alert("Es wurde keine Gruppe ausgewählt");
 			} else {
+			
 				elv.delete(selectedGroup, new DeleteGroupCallback());
 			}
 
