@@ -254,8 +254,27 @@ public class ArticleMapper {
 	
 	public Article insert (Article article) {
 		Connection con = DBConnection.connection();
+
+		String duplicate="SELECT * FROM article WHERE name= '" +article.getName() + "'";
+		try {
+		
+			Statement stmt1 = con.createStatement();
+			ResultSet rs=stmt1.executeQuery(duplicate);
+		
+			if(rs.next()) {
+				
+				
+			return null;
+			
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 		String sql= "INSERT INTO article (name, unit) VALUES ('"+ article.getName()+ "','"+article.getUnit() + "')";
+		
+		
 		
 		try {
 	    	/*

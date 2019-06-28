@@ -128,6 +128,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @param String name String unit
 	 * 
 	 */
+	
 
 	public Article createArticle(String name, String unit) throws IllegalArgumentException {
 		Article article = new Article();
@@ -209,9 +210,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<Article> getArticleByGroup(Group group) throws IllegalArgumentException {
-		return this.articleMapper.getArticleByGroup(group);
-	}
 
 	/**
 	 * 
@@ -394,10 +392,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<Store> findStoreByGroup(Group group) throws IllegalArgumentException {
-		return this.storeMapper.findStoreByGroup(group);
-
-	}
+//	public Vector<Store> findStoreByGroup(Group group) throws IllegalArgumentException {
+//		return this.storeMapper.findStoreByGroup(group);
+//
+//	}
 
 	public void save(Store store) throws IllegalArgumentException {
 		this.storeMapper.update(store);
@@ -580,8 +578,6 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 		Vector<ShoppingList> shoppingLists = this.getAllByGroup(group);
 		
-				
-		
 		/*
 		 * Prüfen ob Shoppinglisten der jeweiligen Gruppe vorhanden sind.
 		 */
@@ -618,8 +614,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		/*
 		 * Zum Schluss wird die gewünschte Gruppe gelöscht
 		 */
-
 		
+		System.out.println(group.getName());
+		
+		this.groupMapper.deleteMembership(group.getId());
 		this.groupMapper.delete(group);
 		
 	}
@@ -881,6 +879,18 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public void removeUserMembership(User user, Group group) throws IllegalArgumentException {
 		this.groupMapper.deleteMembership(user.getId(), group.getId());
 }
+
+	@Override
+	public Vector<Article> getArticleByGroup(Group group) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Store> findStoreByGroup(Group group) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 
