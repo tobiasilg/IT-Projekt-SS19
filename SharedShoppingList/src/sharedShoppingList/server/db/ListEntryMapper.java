@@ -288,7 +288,7 @@ public class ListEntryMapper {
 		public void delete (ListEntry listEntry) {
 		Connection con = DBConnection.connection();
 			
-			String sql= "DELETE FROM listentry WHERE id=" + listEntry.getId() +")";
+			String sql= "DELETE FROM listentry WHERE id=" + listEntry.getId();
 			
 		    try {
 		    	
