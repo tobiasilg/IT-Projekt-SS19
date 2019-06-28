@@ -149,11 +149,11 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 		Vector<Group>vGroups = new Vector<Group>();
 		String sql="select membership.userid as userid, "
 				+ "membership.groupid as groupid, "
-				+ "einkaufsgruppe.createDate as groupCreateDate, "
-				+ "einkaufsgruppe.modDate as groupModDate, "
-				+ "einkaufsgruppe.name as groupName "
-				+ "FROM membership INNER JOIN einkaufsgruppe"
-				+ "ON membership.groupid = einkaufsgruppe.id"
+				+ "einkaufsgruppe.name as groupName, "
+				+ "einkaufsgruppe.createDate as createDate, "
+				+ "einkaufsgruppe.modDate as modDate "
+				+ "FROM membership INNER JOIN einkaufsgruppe "
+				+ "ON membership.groupid = einkaufsgruppe.id "
 				+ "WHERE membership.userid =" + user.getId();
 		
 		
@@ -161,13 +161,13 @@ Um eine spezifische Gruppe zu erhalten, bietet sich die Methode findById an.*/
 
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
-
+				
 				while (rs.next()) {
 					Group group = new Group();
 					
 					group.setId(rs.getInt("groupid"));
 					group.setName(rs.getString("groupName"));
-					group.setCreateDate(rs.getTimestamp("groupCreateDate"));
+					group.setCreateDate(rs.getTimestamp("createDate"));
 					group.setModDate(rs.getTimestamp("modDate"));
 					
 					vGroups.add(group);

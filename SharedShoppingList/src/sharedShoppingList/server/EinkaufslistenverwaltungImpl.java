@@ -128,6 +128,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @param String name String unit
 	 * 
 	 */
+	
 
 	public Article createArticle(String name, String unit) throws IllegalArgumentException {
 		Article article = new Article();
