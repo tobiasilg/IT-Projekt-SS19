@@ -46,6 +46,28 @@ public class StoreMapper {
 
 	public Store insert(Store store) {
 		Connection con = DBConnection.connection();
+		
+		/**
+		 * duplicate repräsentiert den String der Abfrage, ob der Store mit dem
+		 * jeweiligen Namen schon vorhanden ist
+		 */
+		String duplicate="SELECT * FROM store WHERE name= '" +store.getName() + "'";
+		try {
+			
+			//Ausführen des statements duplicate
+			Statement stmt1 = con.createStatement();
+			ResultSet rs=stmt1.executeQuery(duplicate);
+			
+			//wenn es bereits einen Eintrag gibt return null
+			if(rs.next()) {
+			return null;
+			
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		//Sonst fahre wie gewohnt fort
 
 		String sql = "INSERT INTO store (name) VALUES ('" + store.getName() + "')";
 
