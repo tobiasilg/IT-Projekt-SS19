@@ -22,7 +22,6 @@ import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
-
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -38,7 +37,7 @@ public class NewListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = null;
-	Group selectedGroup = null;
+	private Group selectedGroup;
 
 	ShoppingList selectedShoppingList = null;
 	ShoppingListForm slf;
@@ -75,11 +74,46 @@ public class NewListEntryForm extends DialogBox {
 
 	}
 
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public void getAllUsers() {
+		// UsersListBox
+		// Lade alle User aus der Datenbank
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+
+			public void onFailure(Throwable caught) {
+				Window.alert("Gruppe:" + selectedGroup.getName());
+
+			}
+
+			public void onSuccess(Vector<User> result) {
+				usersListBox.clear();
+				for (User user : result) {
+					users.addElement(user);
+					usersListBox.addItem(user.getName());
+					usersListBox.setVisibleItemCount(1);
+				}
+
+			}
+		});
+	}
+
 	/***********************************************************************
 	 * onLoad METHODEN
 	 ***********************************************************************
 	 */
 	public void onLoad() {
+
+//		selectedGroup = gsltvm.getSelectedGroup();
+		Window.alert("selected Group by nico: " + selectedGroup);
+//
+//		Window.alert("selectedGroup123: " + selectedGroup);
 
 		// UnitListBox
 
@@ -142,26 +176,6 @@ public class NewListEntryForm extends DialogBox {
 			}
 		});
 
-	
-		// UsersListBox
-		// Lade alle User aus der Datenbank
-		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Gruppe:"+selectedGroup.getName());
-			}
-
-			public void onSuccess(Vector<User> result) {
-				usersListBox.clear();
-				for (User user : result) {
-					users.addElement(user);
-					usersListBox.addItem(user.getName());
-					usersListBox.setVisibleItemCount(1);
-				}
-
-			}
-		});
-
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
@@ -203,14 +217,6 @@ public class NewListEntryForm extends DialogBox {
 
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
-	}
-
-	public Group getSelectedGroup() {
-		return selectedGroup;
-	}
-
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
 	}
 
 	/***********************************************************************
@@ -332,6 +338,7 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 		}
+
 	}
 
 }
