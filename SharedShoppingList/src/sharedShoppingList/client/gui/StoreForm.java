@@ -71,7 +71,7 @@ public class StoreForm extends VerticalPanel {
 	// Konstruktor
 	public StoreForm() {
 
-		saveButton.addClickHandler(new SaveStoreClickHandler());
+//		saveButton.addClickHandler(new SaveStoreClickHandler());
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddStoreClickHandler());
 //		deleteButton.addClickHandler(new DeleteStoreClickHandler());
@@ -140,9 +140,7 @@ public class StoreForm extends VerticalPanel {
 		deleteColumn.setFieldUpdater(new FieldUpdater<Store, String>() {
 			public void update(int index, Store store, String value) {
 				// Value is the button value. Object is the row object.
-//				Window.alert("You clicked: " + value);
-//				Window.alert("Object: " + store);
-//				Window.alert("Name: " + store.getName());
+//				
 
 				dataProvider.getList().remove(store);
 
@@ -175,13 +173,29 @@ public class StoreForm extends VerticalPanel {
 		stringColumn.setFieldUpdater(new FieldUpdater<Store, String>() {
 			public void update(int index, Store store, String value) {
 				// Value is the textCell value. Object is the row object.
-
 				store.setName(value);
+				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
+				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						Notification.show("Artikel wurde gespeichert");
+					}
+
+				};
+
+				elv.save(store, saveCallback);
 			}
 
 		});
-
 		// Add the columns.
 		table.addColumn(stringColumn, "Stores");
 		table.addColumn(deleteColumn, "");
@@ -233,41 +247,6 @@ public class StoreForm extends VerticalPanel {
 
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
-		}
-
-	}
-
-	/**
-	 * Sobald das Textfeld ausgefï¿½llt wurde, wird ein neuer Artikel nach dem
-	 * Klicken des Bestï¿½tigungsbutton erstellt.
-	 */
-	private class SaveStoreClickHandler implements ClickHandler {
-
-		public void onClick(ClickEvent event) {
-
-			for (Store store : list) {
-
-				elv.save(store, new SaveStoreCallback());
-			}
-
-		}
-
-		private class SaveStoreCallback implements AsyncCallback<Void> {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Notification.show(caught.toString());
-				Window.alert("speichern fehlgeschlagen");
-
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				Notification.show("speichern erfolgreich");
-
-				dataProvider.refresh();
-			}
-
 		}
 
 	}
