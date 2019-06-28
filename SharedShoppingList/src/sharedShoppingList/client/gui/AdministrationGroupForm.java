@@ -452,7 +452,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			if (selectedGroup == null) {
 				Window.alert("Es wurde keine Gruppe ausgewählt");
 			} else {
-				elv.delete(selectedGroup,user, new DeleteGroupCallback());
+				elv.delete(selectedGroup, new DeleteGroupCallback());
 			}
 
 		}
