@@ -296,8 +296,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			
 			// Methode muss noch auf getGroupsByUSer abgeändert werden, sobald der Login steht!
 		
-			einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
-			//einkaufslistenVerwaltung.getGroupsByUser(user, new AsyncCallback<Vector<Group>>() {
+			//einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
+			einkaufslistenVerwaltung.getGroupsByUser(user, new AsyncCallback<Vector<Group>>() {
 
 
 				@Override
