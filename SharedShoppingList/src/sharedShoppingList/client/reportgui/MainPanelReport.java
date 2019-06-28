@@ -10,6 +10,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -48,20 +49,31 @@ public class MainPanelReport extends VerticalPanel {
 	HorizontalPanel dateVp = new HorizontalPanel();
 	VerticalPanel groupVp = new VerticalPanel();
 
+	Grid reportGrid = new Grid(5, 5);
 	/**
 	 * Label für StoreTextBox
 	 */
-	Label storeText = new Label("Store auswählen");
+	Label storeText = new Label("Händler");
+
+	/**
+	 * Label für GridTextBox
+	 */
+	Label gridText = new Label("Filter");
 
 	/**
 	 * Label für GroupTextBox
 	 */
-	Label groupText = new Label("Gruppe auswählen");
+	Label groupText = new Label("Gruppe");
 
 	/**
 	 * ListBox in der die Store angezeigt werden
 	 */
 	ListBox storeListBox = new ListBox();
+
+	/**
+	 * Text Datum auswählen
+	 */
+	Label dateLabel = new Label("Datum");
 
 	/**
 	 * DateBox um das Startdatum auszuwählen
@@ -86,6 +98,7 @@ public class MainPanelReport extends VerticalPanel {
 	private Timestamp sqlStartDate = null;
 	private Timestamp sqlEndDate = null;
 	private ArrayList<Store> allStores;
+	private ArrayList<Group> allGroups;
 	private Store selectedStore = null;
 	private Group selectedGroup = null;
 	private User user = CurrentReportUser.getUser();
@@ -101,33 +114,32 @@ public class MainPanelReport extends VerticalPanel {
 
 	public void onLoad() {
 
-		Window.alert("User: " + user);
+		Window.alert("User: " + user.getId());
 
 		/**
 		 * Zusammensetzung der Panels und Widgets
 		 */
+		reportGrid.setWidget(0, 0, gridText);
 
-		fromVp.add(FromDateBox);
-		toVp.add(toDateBox);
-		storeVp.add(storeText);
-		storeVp.add(storeListBox);
+		reportGrid.setWidget(1, 0, groupText);
+		reportGrid.setWidget(1, 1, groupSelectorListBox);
 
-		groupVp.add(groupText);
-		groupVp.add(groupSelectorListBox);
+		reportGrid.setWidget(2, 0, storeText);
+		reportGrid.setWidget(2, 1, storeListBox);
 
-		dateVp.add(fromVp);
-		dateVp.add(toVp);
+		reportGrid.setWidget(3, 0, dateLabel);
+		reportGrid.setWidget(3, 1, FromDateBox);
+		reportGrid.setWidget(3, 2, toDateBox);
 
-		hp.add(groupVp);
-		hp.add(fromVp);
-		hp.add(toVp);
-		hp.add(storeVp);
-		hp.add(confirmButton);
+		reportGrid.setWidget(4, 2, confirmButton);
 
-		this.add(hp);
+		reportGrid.setCellPadding(2);
+		reportGrid.setCellSpacing(4);
 
-		FromDateBox.getElement().setPropertyString("placeholder", "Datum von ");
-		toDateBox.getElement().setPropertyString("placeholder", "Datum bis ");
+		this.add(reportGrid);
+
+		FromDateBox.getElement().setPropertyString("placeholder", "von ");
+		toDateBox.getElement().setPropertyString("placeholder", "bis ");
 
 		FromDateBox.setStyleName("Datebox");
 		toDateBox.setStyleName("Datebox");
@@ -189,8 +201,18 @@ public class MainPanelReport extends VerticalPanel {
 
 				Window.alert("result: " + result);
 
-				for (int i = 0; i < result.size(); i++) {
-					groupSelectorListBox.addItem(result.get(i).getName());
+				ArrayList<Group> groups = new ArrayList<Group>();
+				Group noGroup = new Group();
+				noGroup.setId(0);
+				noGroup.setName("keine Gruppe ausgewählt");
+
+				groups.add(noGroup);
+				groups.addAll(result);
+				allGroups = groups;
+
+				for (int i = 0; i < groups.size(); i++) {
+
+					groupSelectorListBox.addItem(groups.get(i).getName());
 					selectedGroup = result.get(0);
 				}
 

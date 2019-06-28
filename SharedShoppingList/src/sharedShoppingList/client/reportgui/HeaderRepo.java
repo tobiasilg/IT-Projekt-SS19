@@ -36,6 +36,8 @@ public class HeaderRepo extends VerticalPanel {
 
 		// einkaufslistenverwaltung = ClientsideSettings.getEinkaufslistenverwaltung();
 
+		linkToMainBtn.setStyleName("buttonHeaderRepo");
+
 		/*
 		 * Vergeben von Stylenamen, um die Divs über CSS ansprechen zu können
 		 */
