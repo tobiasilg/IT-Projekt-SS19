@@ -218,13 +218,13 @@ public class ArticleForm extends VerticalPanel {
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
 
-						dataProvider.getList().remove(article);
 						Notification.show("Artikel wurde gelöscht");
 					}
 
 				};
 
 				elv.delete(article, deletecallback);
+				dataProvider.getList().remove(article);
 			}
 
 		});
