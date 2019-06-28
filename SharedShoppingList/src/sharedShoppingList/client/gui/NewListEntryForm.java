@@ -45,11 +45,10 @@ public class NewListEntryForm extends DialogBox {
 	ShoppingList selectedShoppingList = null;
 	ShoppingListForm slf;
 	ListEntry selectedListEntry;
-	
 
 	Article article;
 	String unit;
-	private User u = CurrentUser.getUser();
+	//private User u = CurrentUser.getUser();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
 	private SuggestBox articleSuggestBox = new SuggestBox(articleOracle);
@@ -60,7 +59,7 @@ public class NewListEntryForm extends DialogBox {
 	ArrayList<String> units;
 
 	private Grid grid = new Grid(6, 6);
-	Label unitLabel = new Label();
+	private ListBox unitListBox;
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -88,9 +87,6 @@ public class NewListEntryForm extends DialogBox {
 		articleSuggestBox.getValue();
 		// String.valueOf(listEntry.getAmount());
 
-//		String unit = new String();
-//		unitLabel.setText(unit);
-
 		articleSuggestBox.getElement();
 
 		// Zusammenbau des Grid
@@ -102,7 +98,7 @@ public class NewListEntryForm extends DialogBox {
 		grid.setWidget(1, 1, amountTextBox);
 
 		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, unitLabel);
+		grid.setWidget(2, 1, unitListBox);
 
 		grid.setText(3, 0, "Wer?: ");
 		grid.setWidget(3, 1, usersListBox);
@@ -141,10 +137,18 @@ public class NewListEntryForm extends DialogBox {
 			}
 		});
 
-		/***********************************************************************
-		 * LISTBOXEN
-		 ***********************************************************************
-		 */
+		// UnitListBox
+
+		unitListBox = new ListBox();
+		unitListBox.addItem("Kg");
+		unitListBox.addItem("Gramm");
+		unitListBox.addItem("Stück");
+		unitListBox.addItem("Pack");
+		unitListBox.addItem("Liter");
+		unitListBox.addItem("Milliliter");
+
+		// setting itemcount value to 1 turns listbox into a drop-down list.
+		unitListBox.setVisibleItemCount(1);
 
 		// UsersListBox
 		// Lade alle User aus der Datenbank
@@ -159,6 +163,7 @@ public class NewListEntryForm extends DialogBox {
 				for (User user : result) {
 					users.addElement(user);
 					usersListBox.addItem(user.getName());
+					usersListBox.setVisibleItemCount(1);
 				}
 
 			}
@@ -177,15 +182,11 @@ public class NewListEntryForm extends DialogBox {
 				for (Store store : result) {
 					stores.addElement(store);
 					storesListBox.addItem(store.getName());
+					storesListBox.setVisibleItemCount(1);
 
 				}
 			}
 		});
-
-		/***********************************************************************
-		 * Building the grid
-		 ***********************************************************************
-		 */
 
 	}
 
@@ -209,22 +210,6 @@ public class NewListEntryForm extends DialogBox {
 
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
-	}
-
-	public Group getSelectedGroup() {
-		return selectedGroup;
-	}
-
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
-	}
-
-	public ShoppingList getSelectedList() {
-		return selectedShoppingList;
-	}
-
-	public void setSelectedList(ShoppingList sl) {
-		selectedShoppingList = sl;
 	}
 
 	/***********************************************************************
@@ -268,35 +253,44 @@ public class NewListEntryForm extends DialogBox {
 
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
-
+			store = stores.get(storesListBox.getSelectedIndex());
+			
 			User user = new User();
 			user.setName(usersListBox.getSelectedItemText());
+			user = users.get(usersListBox.getSelectedIndex());
+			
+			String unit = new String();
+			unit = unitListBox.getSelectedItemText();
+			
+			
+			
+			
+			
 
 			// Erstellung Listeneintrag
 			ListEntry listEntry = new ListEntry();
 
-			store = stores.get(storesListBox.getSelectedIndex());
-			user = users.get(usersListBox.getSelectedIndex());
-
+			listEntry.getArticle().setUnit(unit);
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
 			listEntry.setStore(store);
 			listEntry.setShoppinglist(shoppingList);
 			listEntry.setUser(user);
 
-		
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
 			}
 
-			if (usersListBox == null) {
-				Window.alert("User auswählen!");
-			}
+//			if (usersListBox == null) {
+//				Window.alert("User auswählen!");
+//			}
+//
+//			if (storesListBox == null) {
+//				Window.alert("Einzelhändler auswählen!");
+				
+			
 
-			if (storesListBox == null) {
-				Window.alert("Einzelhändler auswählen!");
-
-			} else {
+			else {
 
 				elv.createListentry("", user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
 
@@ -317,16 +311,14 @@ public class NewListEntryForm extends DialogBox {
 			public void onSuccess(ListEntry result) {
 
 				if (result != null)
-				RootPanel.get("details").clear();
+					RootPanel.get("details").clear();
 				slf = new ShoppingListForm();
 				slf.setSelected(selectedShoppingList);
 				slf.setSelected(selectedGroup);
 				RootPanel.get("details").add(slf);
 				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
-			} 
-					}
-			
-		
+			}
+		}
 
 		private class UnitCallback implements AsyncCallback {
 
