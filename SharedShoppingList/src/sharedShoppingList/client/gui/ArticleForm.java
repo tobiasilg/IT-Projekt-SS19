@@ -200,6 +200,9 @@ public class ArticleForm extends VerticalPanel {
 
 			public void update(int index, Article article, String value) {
 				// Value is the button value. Object is the row object.
+//				Window.alert("You clicked: " + value);
+//				Window.alert("Object: " + store);
+//				Window.alert("Name: " + store.getName());
 
 				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
@@ -214,18 +217,17 @@ public class ArticleForm extends VerticalPanel {
 					@Override
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
-						Notification.show("Artikel wurde gelöscht");
 
+						dataProvider.getList().remove(article);
+						Notification.show("Artikel wurde gelöscht");
 					}
 
 				};
 
 				elv.delete(article, deletecallback);
-				dataProvider.getList().remove(article);
 			}
 
 		});
-
 		stringColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
 
 			public void update(int index, Article article, String value) {
