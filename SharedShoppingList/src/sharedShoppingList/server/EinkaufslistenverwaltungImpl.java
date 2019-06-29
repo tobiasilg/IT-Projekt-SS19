@@ -256,8 +256,14 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			}
 		}
 		/*
+		 * Löschen der Zuordnung zu einer Gruppe
+		 */
+		this.userMapper.deleteMembership(user);
+		
+		/*
 		 * Eigentliches Löschen des Users
 		 */
+		
 		this.userMapper.delete(user);
 	}
 	
