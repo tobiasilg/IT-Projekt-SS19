@@ -1,6 +1,5 @@
 package sharedShoppingList.client.gui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -61,16 +60,16 @@ public class ProfilForm extends FlowPanel {
 
 		profilTitle.addStyleName("profilTitle");
 
-		usernameLabel.addStyleName("profilLabel");
 		nameLabel.addStyleName("profilLabel");
+		usernameLabel.addStyleName("profilLabel");
 		mailLabel.addStyleName("profilLabel");
-
-		usernameTextBox.addStyleName("profilTextBox");
+		
 		nameTextBox.addStyleName("profilTextBox");
+		usernameTextBox.addStyleName("profilTextBox");
 		mailTextBox.addStyleName("profilTextBox");
 		
-		usernameTextBox.setWidth("20em");
 		nameTextBox.setWidth("20em");
+		usernameTextBox.setWidth("20em");
 		mailTextBox.setWidth("20em");
 
 		topPanel.addStyleName("topPanel");
@@ -86,12 +85,12 @@ public class ProfilForm extends FlowPanel {
 
 		topPanel.add(deleteAccountButton);
 		topPanel.add(logoutButton);
+		
+		profilBox.add(nameLabel);
+		profilBox.add(nameTextBox);
 
 		profilBox.add(usernameLabel);
 		profilBox.add(usernameTextBox);
-
-		profilBox.add(nameLabel);
-		profilBox.add(nameTextBox);
 
 		profilBox.add(mailLabel);
 		profilBox.add(mailTextBox);
@@ -104,15 +103,15 @@ public class ProfilForm extends FlowPanel {
 //		mailTextBox.getElement().setPropertyString("placeholder", "Deine Mailadresse:" + user.getGmail());
 		
 		if (user == null) {
-			usernameTextBox.setText("Es gibt noch keinen Username");
-		} else {
-		usernameTextBox.setText(user.getUsername());
-		}
-		
-		if (user == null) {
 			nameTextBox.setText("Es gibt noch keinen Namen");
 		} else {
 			nameTextBox.setText(user.getName());
+		}
+		
+		if (user == null) {
+			usernameTextBox.setText("Es gibt noch keinen Username");
+		} else {
+			usernameTextBox.setText(user.getUsername());
 		}
 		
 		if (user == null) {
@@ -199,6 +198,8 @@ public class ProfilForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			this.deleteProfileBox.hide();
 
+			user.setLogoutUrl(user.getLogoutUrl());
+			Window.open(user.getLogoutUrl(), "_self", "");	
 			einkaufslistenverwaltung.delete(user, new DeleteUserCallback());
 
 		}
@@ -216,7 +217,7 @@ public class ProfilForm extends FlowPanel {
 		@Override
 		public void onSuccess(Void result) {
 			Notification.show("Dein Profil wurde erfolgreich gelöscht!");
-			Window.Location.assign(logoutUrl);
+//			Window.Location.assign(logoutUrl);
 
 		}
 
@@ -301,7 +302,6 @@ public class ProfilForm extends FlowPanel {
 
 		public void onClick(ClickEvent event) {
 
-			// einkaufslistenverwaltung.getUser(user, new GetUserCallback());
 
 			// Den Wert aus den Textboxen ziehen
 			String usernameNeu = usernameTextBox.getValue();
@@ -330,21 +330,6 @@ public class ProfilForm extends FlowPanel {
 	 * Die Klasse GetUserCallback wird benötigt um den User aufzurufen
 	 */
 
-	private class GetUserCallback implements AsyncCallback<User> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("GetUserCallback funktioniert nicht!");
-
-		}
-
-		@Override
-		public void onSuccess(User result) {
-			user = result;
-		}
-
-	}
-
 	private class UpdateUserCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -357,7 +342,7 @@ public class ProfilForm extends FlowPanel {
 		@Override
 		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
-			GWT.log("Dein User wurde geändert!");
+			Notification.show("Dein User wurde geändert!");
 
 		}
 

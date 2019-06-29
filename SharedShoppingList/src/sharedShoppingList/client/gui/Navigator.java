@@ -38,7 +38,7 @@ public class Navigator extends FlowPanel {
 
 	private Button neuButton = new Button("NEU");
 
-	private Label navTitle = new Label("Meine Gruppe");
+	private Label navTitle = new Label("Meine Gruppen");
 
 	// Erstellen des Images für Favorite Article
 	Image star = new Image();
@@ -59,7 +59,7 @@ public class Navigator extends FlowPanel {
 	
 	private CellTree tree;
 	
-	private Label refreshLabel = new Label("test");
+	private Label refreshLabel = new Label();
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,8 +160,7 @@ public class Navigator extends FlowPanel {
 	}
 	protected void refreshInfo() {
 		
-		// Funktioniert erst wenn Login funktioniert
-	//	einkaufslistenVerwaltung.changed(this.getGsltvm().getSelectedGroup(), user, new RefreshGroupCallback());
+		einkaufslistenVerwaltung.changed(this.getGsltvm().getSelectedGroup(), user, new RefreshGroupCallback());
 		
 	}
 
@@ -169,7 +168,7 @@ public class Navigator extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			//Window.alert("Refresh Methode greift noch nicht");
+			Window.alert("Refresh Methode greift noch nicht");
 			
 		}
 
@@ -177,7 +176,7 @@ public class Navigator extends FlowPanel {
 		public void onSuccess(Boolean result) {
 			// TODO Auto-generated method stub
 			if (result == true ) {
-				refreshLabel.setText("Es gibt Änderungen zum aktualisieren");
+				refreshLabel.setText("Die Anwendung wurde aktualisiert");
 			}
 			else {
 				refreshLabel.setText("Es gibt zurzeit keine Änderungen");
