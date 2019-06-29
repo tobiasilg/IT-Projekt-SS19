@@ -30,7 +30,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
+//import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.FieldVerifier;
 import sharedShoppingList.shared.bo.Group;
@@ -47,10 +47,10 @@ import sharedShoppingList.shared.bo.User;
 public class AdministrationGroupForm extends VerticalPanel {
 
 	private EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	private User user = CurrentUser.getUser();
+//	private User user = CurrentUser.getUser();
 	private User newGroupUser = null;
 	private Group selectedGroup = null;
-
+	
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private ShoppingListCreationForm shoppingListCreationForm;
@@ -95,14 +95,20 @@ public class AdministrationGroupForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
+
 		if (g != null) {
 
 			selectedGroup = g;
 			renameTextBox.setText(selectedGroup.getName());
+			
+			dataProvider.getList().clear();
+			
+			
 		} else {
 			renameTextBox.setText("");
 		}
 	}
+
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
@@ -126,7 +132,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		addUserButton.addClickHandler(new AddUserClickHandler());
 
 		userTextBox.getElement().setPropertyString("placeholder", "Mitglied hinzufügen...");
-
+		
 		TextCell userTextCell = new TextCell();
 
 		Column<User, String> stringColumn = new Column<User, String>(userTextCell) {
@@ -159,13 +165,13 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						Notification.show("Das Gruppenmitglied konnte nicht entfernt werden");
 
 					}
 
 					@Override
 					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
+						Notification.show("Das Gruppenmitglied wurde erfolgreich entfernt");
 
 					}
 
@@ -187,9 +193,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 		memberTable.addColumn(stringColumn, "Users");
 		memberTable.addColumn(deleteColumn, "Mitglied entfernen");
 		memberTable.setColumnWidth(stringColumn, 20, Unit.PC);
-
+		
 		dataProvider.addDataDisplay(memberTable);
-
+		
 	}
 
 	/***********************************************************************
@@ -264,10 +270,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 					if (list.contains(user)) {
 
-						break;
+					break;
+						
 					} else {
 						list.add(user);
-
+					
 					}
 
 				}
@@ -291,9 +298,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			}
 		});
+		
 
 	}
-
 	/***********************************************************************
 	 * Methoden
 	 ***********************************************************************
