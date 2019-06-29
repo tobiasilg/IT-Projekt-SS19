@@ -303,6 +303,10 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.userMapper.findByName(name);
 	}
 	
+	public User getUserByMail(String gmail) throws IllegalArgumentException {
+		return this.userMapper.findByGmail(gmail);
+	}
+	
 	public User createUser(String name, String gmail, String username) throws IllegalArgumentException {
 		User user= new User();
 		
