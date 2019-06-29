@@ -8,6 +8,8 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -33,10 +35,12 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
+import sharedShoppingList.shared.bo.Store;
 
 /**
  * 
@@ -58,8 +62,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm slf = null;
-
-	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
+	private Store selectedStore;
 
 	private Label infoTitleLabel = new Label();
 
@@ -77,6 +80,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private TextBox renameTextBox = new TextBox();
 
 	// Create a data provider.
+	Vector<Store> stores = new Vector<Store>();
 	private ListDataProvider<ListEntry> dataProvider = new ListDataProvider<ListEntry>();
 	private List<ListEntry> list = dataProvider.getList();
 	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
@@ -102,8 +106,9 @@ public class ShoppingListForm extends VerticalPanel {
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
 		filterByUserButton.addClickHandler(new FilterByUserClickHandler());
-		// filterByStore.addClickHandler(new FilterByStoreClickHandler());
-
+		filterByStoreListBox.addChangeHandler (new FilterByStoreChangeHandler());
+		
+		
 		/***********************************************************************
 		 * Erstellung Celltable
 		 ***********************************************************************
@@ -271,7 +276,28 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
+		
+		// StoresListBox
+				// Lade alle Stores aus der Datenbank
+				elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
+					public void onFailure(Throwable caught) {
+						Notification.show("3. failure");
+					}
+
+					public void onSuccess(Vector<Store> result) {
+						filterByStoreListBox.clear();
+						for (Store store : result) {
+							stores.addElement(store);
+							filterByStoreListBox.addItem(store.getName());
+							filterByStoreListBox.setVisibleItemCount(1);
+
+						}
+					}
+				});
+
+		
+		
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
@@ -386,7 +412,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
-		selectedGroup = g;
+		this.selectedGroup = g;
 
 	}
 
@@ -398,7 +424,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 		if (sl != null) {
 
-			selectedShoppingList = sl;
+			this.selectedShoppingList = sl;
 			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
@@ -410,6 +436,20 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
+	
+	private class FilterByStoreChangeHandler implements ChangeHandler {
+		
+		public void onChange (ChangeEvent event) {
+			
+			int item = filterByStoreListBox.getSelectedIndex();
+			
+			selectedStore = stores.get(item);
+			
+			
+			
+			
+		}
+	}
 
 	private class FilterByUserClickHandler implements ClickHandler {
 
@@ -586,6 +626,10 @@ public class ShoppingListForm extends VerticalPanel {
 
 			RootPanel.get("details").clear();
 			NewListEntryForm nlef = new NewListEntryForm();
+			nlef.setGsltvm(ShoppingListForm.this.gsltvm);
+			nlef.setShoppinglistForm(ShoppingListForm.this);
+			nlef.setSelected(selectedShoppingList);
+			nlef.setSelectedGroup(selectedGroup);			
 			RootPanel.get("details").add(nlef);
 
 		}

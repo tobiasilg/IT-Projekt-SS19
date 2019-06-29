@@ -22,6 +22,7 @@ import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
+
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
@@ -37,14 +38,15 @@ public class NewListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = null;
-	private Group selectedGroup;
+	Group selectedGroup = null;
 
 	ShoppingList selectedShoppingList = null;
+	ShoppingListForm shoppingListForm = null;
 	ShoppingListForm slf;
 	ListEntry selectedListEntry;
-
 	Article article;
 	String unit;
+	NewListEntryForm nlef;
 	// private User u = CurrentUser.getUser();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
@@ -71,49 +73,6 @@ public class NewListEntryForm extends DialogBox {
 
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
-
-	}
-
-	public Group getSelectedGroup() {
-		return selectedGroup;
-	}
-
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
-	}
-
-	public void getAllUsers() {
-		// UsersListBox
-		// Lade alle User aus der Datenbank
-		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Gruppe:" + selectedGroup.getName());
-
-			}
-
-			public void onSuccess(Vector<User> result) {
-				usersListBox.clear();
-				for (User user : result) {
-					users.addElement(user);
-					usersListBox.addItem(user.getName());
-					usersListBox.setVisibleItemCount(1);
-				}
-
-			}
-		});
-	}
-
-	/***********************************************************************
-	 * onLoad METHODEN
-	 ***********************************************************************
-	 */
-	public void onLoad() {
-
-//		selectedGroup = gsltvm.getSelectedGroup();
-		Window.alert("selected Group by nico: " + selectedGroup);
-//
-//		Window.alert("selectedGroup123: " + selectedGroup);
 
 		// UnitListBox
 
@@ -152,6 +111,16 @@ public class NewListEntryForm extends DialogBox {
 		cancelButton.addStyleName("buttonAbfrage");
 
 		// Füge das Grid der Dialogbox hinzu
+
+	}
+
+	/***********************************************************************
+	 * onLoad METHODEN
+	 ***********************************************************************
+	 */
+
+	public void onLoad() {
+
 		this.add(grid);
 
 		/*
@@ -171,6 +140,25 @@ public class NewListEntryForm extends DialogBox {
 //					unit = a.getUnit();
 //					unitLabel.setText(unit);
 
+				}
+
+			}
+		});
+
+//		 UsersListBox
+//		 Lade alle User aus der Datenbank
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+
+			public void onFailure(Throwable caught) {
+				Window.alert("Gruppe:" + selectedGroup.getName());
+			}
+
+			public void onSuccess(Vector<User> result) {
+				usersListBox.clear();
+				for (User user : result) {
+					users.addElement(user);
+					usersListBox.addItem(user.getName());
+					usersListBox.setVisibleItemCount(1);
 				}
 
 			}
@@ -212,11 +200,34 @@ public class NewListEntryForm extends DialogBox {
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
-
 	}
 
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
 		this.gsltvm = gsltvm;
+	}
+
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public ShoppingList getSelected() {
+		return selectedShoppingList;
+	}
+
+	public void setSelected(ShoppingList selectedShoppingList) {
+		this.selectedShoppingList = selectedShoppingList;
+	}
+
+	public ShoppingListForm getShoppinglistForm() {
+		return shoppingListForm;
+	}
+
+	public void setShoppinglistForm(ShoppingListForm shoppingListForm) {
+		this.shoppingListForm = shoppingListForm;
 	}
 
 	/***********************************************************************
@@ -266,8 +277,7 @@ public class NewListEntryForm extends DialogBox {
 			user.setName(usersListBox.getSelectedItemText());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			String unit = new String();
-			unit = unitListBox.getSelectedItemText();
+			String unit = unitListBox.getSelectedItemText();
 
 			String name = new String();
 			name = "";
@@ -296,8 +306,20 @@ public class NewListEntryForm extends DialogBox {
 
 			else {
 
-				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
+				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback() {
 
+					public void onFailure(Throwable caught) {
+						Window.alert("Das Erzeugen eines Listeneintrags schlug fehl!");
+
+					}
+
+					public void onSuccess(ListEntry object) {
+						Window.alert("Listeneintragwurde generiert: "+ listEntry.getArticle());
+					
+						
+
+					}
+				});
 			}
 		}
 
@@ -338,7 +360,6 @@ public class NewListEntryForm extends DialogBox {
 			}
 
 		}
-
 	}
 
 }
