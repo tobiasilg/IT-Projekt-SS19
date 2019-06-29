@@ -133,8 +133,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 			@Override
 			public String getValue(User user) {
 
-				return user.getName();
-				
+				return user.getGmail();
+
 			}
 		};
 
@@ -177,7 +177,8 @@ public class AdministrationGroupForm extends VerticalPanel {
 		stringColumn.setFieldUpdater(new FieldUpdater<User, String>() {
 			public void update(int index, User user, String value) {
 				// Value is the textCell value. Object is the row object.
-				user.setName(value);
+			//	user.setName(value);
+				user.setGmail(value);
 
 			}
 
@@ -248,7 +249,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		// Alle User einer Gruppe sollen in die CellTable geladen werden
 		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
-//		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -286,34 +286,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 			public void onSuccess(Vector<User> result) {
 				for (User u : result) {
 					users.addElement(u);
-					userOracle.add(u.getName());
+					userOracle.add(u.getGmail());
 				}
 
 			}
 		});
-
-//		// Alle User einer Gruppe sollen in die CellTable geladen werden 
-//		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
-////		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				Window.alert("Fehler bei getUsersByGroup" + caught.getMessage());
-//
-//			}
-//
-//			@Override
-//			public void onSuccess(Vector<User> result) {
-//				Window.alert(user.getName());
-//				
-//				for (User user : result) {
-//					list.add(user);
-//
-//				}
-//
-//			}
-//
-//		});
 
 	}
 
@@ -327,30 +304,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 	 * Textboxen definiert, die zusätzliche Attribute besitzen, die für den
 	 * FieldVerifyer benötigt werden.
 	 */
-
-//	public Group getSelected() {
-//		return selectedGroup;
-//	}
-//	
-//	public void setSelected(Group g) {
-//		if (g != null) {
-//
-//			selectedGroup = g;
-//			renameTextBox.setText(selectedGroup.getName());
-//		} else {
-//			renameTextBox.setText("");
-//		}
-//	}
-//
-//
-//	public GroupShoppingListTreeViewModel getGsltvm() {
-//		return gsltvm;
-//
-//	}
-//
-//	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
-//		this.gsltvm = gsltvm;
-//	}
 
 	private boolean checkTextboxesSaveableRename() {
 
@@ -431,29 +384,10 @@ public class AdministrationGroupForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 
-			// elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
-			elv.getUserByName(userTextBox.getValue(), new UserCallback());
+//			elv.getUserByName(userTextBox.getValue(), new UserCallback());
+//			userTextBox.setText("");
+			elv.getUserByMail(userTextBox.getValue(), new UserCallback());
 			userTextBox.setText("");
-
-		}
-
-	}
-
-	private class AddUserCallback implements AsyncCallback<Void> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Notification.show("Es konnte kein Mitglied hinzugefügt werden");
-
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-
-			Notification.show("Das Gruppenmitglied wurde erfolgreich hinzugefügt");
-
-	//	dataProvider.getList().add(newGroupUser);
-	//	dataProvider.refresh();
 
 		}
 
@@ -463,19 +397,40 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Notification.show("UserCallback funktioniert nicht");
 
 		}
 
 		@Override
 		public void onSuccess(User result) {
+
+			Window.alert("UserCallback");
 			
 			newGroupUser = result;
-
+			result.getGmail();
+			
 			elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
-						
+
 			dataProvider.getList().add(newGroupUser);
 			dataProvider.refresh();
+
+		}
+
+	}
+	
+	private class AddUserCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Notification.show(caught.toString());
+
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+
+			Notification.show("Das Gruppenmitglied wurde erfolgreich hinzugefügt");
+
 
 		}
 
@@ -530,7 +485,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 			if (selectedGroup == null) {
 				Window.alert("Es wurde keine Gruppe ausgewählt");
 			} else {
-			
+
 				elv.delete(selectedGroup, new DeleteGroupCallback());
 			}
 
