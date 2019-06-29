@@ -122,7 +122,6 @@ public class NewListEntryForm extends DialogBox {
 	public void onLoad() {
 
 		this.add(grid);
-		
 
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
@@ -222,7 +221,7 @@ public class NewListEntryForm extends DialogBox {
 	public void setSelected(ShoppingList selectedShoppingList) {
 		this.selectedShoppingList = selectedShoppingList;
 	}
-	
+
 	public ShoppingListForm getShoppinglistForm() {
 		return shoppingListForm;
 	}
@@ -278,8 +277,7 @@ public class NewListEntryForm extends DialogBox {
 			user.setName(usersListBox.getSelectedItemText());
 			user = users.get(usersListBox.getSelectedIndex());
 
-			String unit = new String();
-			unit = unitListBox.getSelectedItemText();
+			String unit = unitListBox.getSelectedItemText();
 
 			String name = new String();
 			name = "";
@@ -308,8 +306,20 @@ public class NewListEntryForm extends DialogBox {
 
 			else {
 
-				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
+				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback() {
 
+					public void onFailure(Throwable caught) {
+						Window.alert("Das Erzeugen eines Listeneintrags schlug fehl!");
+
+					}
+
+					public void onSuccess(ListEntry object) {
+						Window.alert("Listeneintragwurde generiert: "+ listEntry.getArticle());
+					
+						
+
+					}
+				});
 			}
 		}
 

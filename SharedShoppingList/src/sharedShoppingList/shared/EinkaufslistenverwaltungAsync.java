@@ -90,6 +90,8 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void getUserByID(int id, AsyncCallback<User> callback);
 	
+	void getUserByMail(String gmail, AsyncCallback<User> callback);
+	
 	void getUserByName(String name, AsyncCallback<User> callback);
 
 	void getUsersByGroup(Group group, AsyncCallback<Vector<User>> callback);

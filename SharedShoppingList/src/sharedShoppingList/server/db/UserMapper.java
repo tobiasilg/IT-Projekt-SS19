@@ -209,11 +209,14 @@ public class UserMapper {
 	 */
 	
 	public Vector <User> findByGroup(Group group) {
-		
+		System.out.println("Beginn findByGroup Mapper Methode");
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM membership INNER JOIN user "
-				+ "ON membership.userid = user.id "
-				+ "WHERE membership.groupid = " + group.getId();
+		String sql = "SELECT user.id, user.name, user.username, "
+				+"user.gmail, user.createDate, user.modDate "
+				+"FROM membership INNER JOIN user "
+				+"ON membership.userid = user.id "
+				+"WHERE membership.groupid = " + group.getId();
+		System.out.println("findByGroup nach sql");
 		
 		Vector<User> users= new Vector<User>();
 		
@@ -232,8 +235,9 @@ public class UserMapper {
                 user.setGmail(rs.getString("gmail"));
 				user.setCreateDate(rs.getTimestamp("createDate"));
 				user.setModDate(rs.getTimestamp("modDate"));
-				
 				users.addElement(user);
+				
+				
 			}
 
 			} catch (SQLException e) {
@@ -270,7 +274,7 @@ public class UserMapper {
 	public void delete (User user) {
 	Connection con = DBConnection.connection();
 		
-		String sql= "DELETE FROM user WHERE id=" + user.getId()+")";
+		String sql= "DELETE FROM user WHERE id=" + user.getId();
 		
 	    try {
 	    	
@@ -283,5 +287,26 @@ public class UserMapper {
 	    }
 		
 	}
+	
+	/**
+	 * Löschen der Zuordnung zu einer bestimmten Gruppe
+	 */
+	
+	public void deleteMembership (User user) {
+		Connection con = DBConnection.connection();
+			
+			String sql= "DELETE FROM membership WHERE id=" + user.getId();
+			
+		    try {
+		    	
+		    	Statement stmt = con.createStatement();
+		    	stmt.executeUpdate(sql);	 
+		      
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+			
+		}
 	
 } 
