@@ -41,11 +41,12 @@ public class NewListEntryForm extends DialogBox {
 	Group selectedGroup = null;
 
 	ShoppingList selectedShoppingList = null;
+	ShoppingListForm shoppingListForm = null;
 	ShoppingListForm slf;
 	ListEntry selectedListEntry;
-
 	Article article;
 	String unit;
+	NewListEntryForm nlef;
 	// private User u = CurrentUser.getUser();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
@@ -72,14 +73,6 @@ public class NewListEntryForm extends DialogBox {
 
 		cancelButton.addClickHandler(new CancelClickHandler());
 		saveButton.addClickHandler(new SaveClickHandler());
-
-	}
-
-	/***********************************************************************
-	 * onLoad METHODEN
-	 ***********************************************************************
-	 */
-	public void onLoad() {
 
 		// UnitListBox
 
@@ -118,7 +111,18 @@ public class NewListEntryForm extends DialogBox {
 		cancelButton.addStyleName("buttonAbfrage");
 
 		// Füge das Grid der Dialogbox hinzu
+
+	}
+
+	/***********************************************************************
+	 * onLoad METHODEN
+	 ***********************************************************************
+	 */
+
+	public void onLoad() {
+
 		this.add(grid);
+		
 
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
@@ -142,13 +146,12 @@ public class NewListEntryForm extends DialogBox {
 			}
 		});
 
-	
-		// UsersListBox
-		// Lade alle User aus der Datenbank
+//		 UsersListBox
+//		 Lade alle User aus der Datenbank
 		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
-				Window.alert("Gruppe:"+selectedGroup.getName());
+				Window.alert("Gruppe:" + selectedGroup.getName());
 			}
 
 			public void onSuccess(Vector<User> result) {
@@ -198,7 +201,6 @@ public class NewListEntryForm extends DialogBox {
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
-
 	}
 
 	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
@@ -211,6 +213,22 @@ public class NewListEntryForm extends DialogBox {
 
 	public void setSelectedGroup(Group selectedGroup) {
 		this.selectedGroup = selectedGroup;
+	}
+
+	public ShoppingList getSelected() {
+		return selectedShoppingList;
+	}
+
+	public void setSelected(ShoppingList selectedShoppingList) {
+		this.selectedShoppingList = selectedShoppingList;
+	}
+	
+	public ShoppingListForm getShoppinglistForm() {
+		return shoppingListForm;
+	}
+
+	public void setShoppinglistForm(ShoppingListForm shoppingListForm) {
+		this.shoppingListForm = shoppingListForm;
 	}
 
 	/***********************************************************************
