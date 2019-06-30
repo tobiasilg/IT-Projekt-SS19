@@ -7,7 +7,6 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,14 +27,12 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -69,7 +66,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button filterByUserButton = new Button("Filtern nach User");
+	private Button filterByUserButton = new Button("Filtern nach Usern");
 	private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -106,9 +103,8 @@ public class ShoppingListForm extends VerticalPanel {
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
 		filterByUserButton.addClickHandler(new FilterByUserClickHandler());
-		filterByStoreListBox.addChangeHandler (new FilterByStoreChangeHandler());
-		
-		
+		filterByStoreListBox.addChangeHandler(new FilterByStoreChangeHandler());
+
 		/***********************************************************************
 		 * Erstellung Celltable
 		 ***********************************************************************
@@ -250,7 +246,7 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
-	//	cellTable.addColumn(unitColumn, "Einheit");
+		// cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(deleteColumn, "");
@@ -276,28 +272,26 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-		
+
 		// StoresListBox
-				// Lade alle Stores aus der Datenbank
-				elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		// Lade alle Stores aus der Datenbank
+		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
-					public void onFailure(Throwable caught) {
-						Notification.show("3. failure");
-					}
+			public void onFailure(Throwable caught) {
+				Notification.show("3. failure");
+			}
 
-					public void onSuccess(Vector<Store> result) {
-						filterByStoreListBox.clear();
-						for (Store store : result) {
-							stores.addElement(store);
-							filterByStoreListBox.addItem(store.getName());
-							filterByStoreListBox.setVisibleItemCount(1);
+			public void onSuccess(Vector<Store> result) {
+				filterByStoreListBox.clear();
+				for (Store store : result) {
+					stores.addElement(store);
+					filterByStoreListBox.addItem(store.getName());
+					filterByStoreListBox.setVisibleItemCount(1);
 
-						}
-					}
-				});
+				}
+			}
+		});
 
-		
-		
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
@@ -436,18 +430,15 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
-	
+
 	private class FilterByStoreChangeHandler implements ChangeHandler {
-		
-		public void onChange (ChangeEvent event) {
-			
+
+		public void onChange(ChangeEvent event) {
+
 			int item = filterByStoreListBox.getSelectedIndex();
-			
+
 			selectedStore = stores.get(item);
-			
-			
-			
-			
+
 		}
 	}
 
@@ -456,9 +447,12 @@ public class ShoppingListForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 
 			RootPanel.get("details").clear();
-			ShoppingListFilterForm slff = new ShoppingListFilterForm();
-
-			RootPanel.get("details").add(slff);
+			FilterShoppingList fsl = new FilterShoppingList();
+			fsl.setGsltvm(ShoppingListForm.this.gsltvm);
+			fsl.setSelectedShoppingListForm(ShoppingListForm.this);
+			fsl.setSelectedGroup(selectedGroup);
+			fsl.setSelectedShoppingList(selectedShoppingList);
+			RootPanel.get("details").add(fsl);
 
 		}
 	}
@@ -629,7 +623,7 @@ public class ShoppingListForm extends VerticalPanel {
 			nlef.setGsltvm(ShoppingListForm.this.gsltvm);
 			nlef.setShoppinglistForm(ShoppingListForm.this);
 			nlef.setSelected(selectedShoppingList);
-			nlef.setSelectedGroup(selectedGroup);			
+			nlef.setSelectedGroup(selectedGroup);
 			RootPanel.get("details").add(nlef);
 
 		}
