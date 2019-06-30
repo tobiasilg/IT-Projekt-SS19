@@ -236,9 +236,15 @@ public class AdministrationGroupForm extends VerticalPanel {
 		groupLabel.setWidth("100%");
 
 		// Styling der Buttons
-		saveGroupNameButton.setPixelSize(130, 40);
-		deleteGroupButton.setPixelSize(130, 40);
-		createShoppingListButton.setPixelSize(130, 40);
+//		saveGroupNameButton.setPixelSize(130, 40);
+//		deleteGroupButton.setPixelSize(130, 40);
+//		createShoppingListButton.setPixelSize(130, 40);
+		
+		saveGroupNameButton.addStyleName("saveButton");
+		deleteGroupButton.addStyleName("deleteButton");
+		createShoppingListButton.addStyleName("createButton");
+		
+		addUserButton.addStyleName("createButton");
 
 		// scrollPanel.setHeight("12");
 
