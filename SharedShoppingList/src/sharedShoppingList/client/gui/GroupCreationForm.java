@@ -63,8 +63,8 @@ public class GroupCreationForm extends FlowPanel {
 
 		buttonPanel.addStyleName("profilPanel");
 
-		saveButton.addStyleName("saveNewGroupButton");
-		cancelButton.addStyleName("cancelNewGroupButton");
+		saveButton.addStyleName("saveButton");
+		cancelButton.addStyleName("deleteButton");
 
 		groupNameTextBox.getElement().setPropertyString("placeholder", "Gruppenname...");
 

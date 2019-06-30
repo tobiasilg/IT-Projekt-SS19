@@ -431,7 +431,7 @@ body {
 }
 
 .profilTextBox.gwt-TextBox {
-	color: #209cee;
+	color: blue;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	clear: both;
@@ -674,4 +674,49 @@ body {
 	position: relative;
 	z-index: 30;
 }
-
+.navTree {
+	font-size: 23px;
+}
+.saveButton.gwt-Button {
+	background: #00d1b2;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	white-space: nowrap;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	font-size: 1rem;
+	user-select: none;
+	text-decoration: none;
+}
+.deleteButton.gwt-Button {
+	background: #ff3860;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 1rem;
+	user-select: none;
+	
+}
+.createButton.gwt-Button {
+	background: #209cee;
+	border-color: #209cee;
+	color: white;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	white-space: nowrap;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	font-size: 1rem;
+	user-select: none;
+	text-decoration: none;
+	
+}
