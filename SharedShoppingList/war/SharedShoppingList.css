@@ -633,3 +633,45 @@ body {
 	color: #209cee;
 	font-size: 12px;
 }
+
+.storeForm {
+	min-height: 3.25rem;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	
+}
+
+.storeFormLabel{
+	margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: default;
+	-webkit-box-flex: 1;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+	margin-left: auto;
+}
+
+.hpCreateStore{
+	min-height: 3.25rem;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
+}
+

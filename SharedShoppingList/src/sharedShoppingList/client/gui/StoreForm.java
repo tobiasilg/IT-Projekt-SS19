@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -40,12 +39,12 @@ public class StoreForm extends VerticalPanel {
 	private TextBox nameTextBox = new TextBox();
 
 	private Button cancelButton = new Button("abbrechen");
-	private Button saveButton = new Button("Änderungen speichern");
+//	private Button saveButton = new Button("Änderungen speichern");
 	private Button addButton = new Button("hinzufügen");
 
 	private HorizontalPanel hpCreate = new HorizontalPanel();
 
-	private ScrollPanel scrollPanel = new ScrollPanel();
+//	private ScrollPanel scrollPanel = new ScrollPanel();
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
@@ -81,22 +80,35 @@ public class StoreForm extends VerticalPanel {
 
 		hpCreate.add(nameTextBox);
 		hpCreate.add(addButton);
-		hpCreate.add(saveButton);
+//		hpCreate.add(saveButton);
 		hpCreate.add(cancelButton);
 
-		scrollPanel.add(table);
+//		scrollPanel.add(table);
 
-		scrollPanel.setHeight("12");
+//		scrollPanel.setHeight("12");
 
 		this.add(nameLabel);
 		this.add(hpCreate);
 
-		this.add(scrollPanel);
+//
+		this.add(table);
 
-		nameLabel.addStyleName("profilTitle");
+		this.setWidth("100%");
+		this.setHeight("100");
+		this.setHorizontalAlignment(ALIGN_CENTER);
+		this.addStyleName("storeForm");
+		this.setCellHorizontalAlignment(hpCreate, ALIGN_CENTER);
+		nameLabel.setWidth("100%");
+
+		hpCreate.addStyleName("hpCreateStore");
+		hpCreate.setWidth("100%");
+		hpCreate.setHorizontalAlignment(ALIGN_CENTER);
+		hpCreate.setStyleName("hpCreateStore");
+		nameLabel.addStyleName("storeFormLabel");
 		nameTextBox.addStyleName("profilTextBox");
-		saveButton.addStyleName("speicherButton");
-		addButton.addStyleName("speicherButton");
+//		saveButton.addStyleName("speicherButton");
+		addButton.addStyleName("storeFormButton");
+
 		// Lade alle Store aus der Datenbank
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
@@ -156,7 +168,6 @@ public class StoreForm extends VerticalPanel {
 
 					@Override
 					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -235,6 +246,7 @@ public class StoreForm extends VerticalPanel {
 		public void onSuccess(Store store) {
 			Notification.show("Der Store wurde erfolgreich erstellt");
 
+			nameTextBox.setText("");
 			dataProvider.getList().add(store);
 			dataProvider.refresh();
 		}
