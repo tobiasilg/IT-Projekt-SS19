@@ -46,7 +46,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
-	private ShoppingListForm slf = null;
+	private ShoppingListForm selectedShoppingListForm = null;
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -56,6 +56,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
 	private Button filterByUserButton = new Button("Filtern nach User");
+	private Button unfilteredButton = new Button ("Filterung aufheben");
 	private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -74,7 +75,11 @@ public class FilterShoppingList extends VerticalPanel {
 	 * The key provider that allows us to identify Contacts even if a field changes.
 	 * We identify contacts by their unique ID.
 	 */
-	private static final ProvidesKey<ListEntry> KEY_PROVIDER=new ProvidesKey<ListEntry>(){public Object getKey(ListEntry le){return le.getId();}};
+	private static final ProvidesKey<ListEntry> KEY_PROVIDER = new ProvidesKey<ListEntry>() {
+		public Object getKey(ListEntry le) {
+			return le.getId();
+		}
+	};
 
 	/***********************************************************************
 	 * Konstruktor
@@ -86,6 +91,7 @@ public class FilterShoppingList extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHandler());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
+		unfilteredButton.addClickHandler(new UnfilterdClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
@@ -129,142 +135,140 @@ public class FilterShoppingList extends VerticalPanel {
 			}
 
 		});
-	
 
-	/***********************************************************************
-	 * Erstellung der Celltable mit Columns
-	 ***********************************************************************
-	 */
+		/***********************************************************************
+		 * Erstellung der Celltable mit Columns
+		 ***********************************************************************
+		 */
 
-	/*
-	 * Spalte der CheckBox
-	 */
+		/*
+		 * Spalte der CheckBox
+		 */
 
-	Column<ListEntry, Boolean> checkBoxColumn=new Column<ListEntry,Boolean>(new CheckboxCell(true,false)){
+		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(new CheckboxCell(true, false)) {
 
-	public Boolean getValue(ListEntry object){return multiSelectionModel.isSelected(object);}};
+			public Boolean getValue(ListEntry object) {
+				return multiSelectionModel.isSelected(object);
+			}
+		};
 
-	/*
-	 * Spalte der Artikel
-	 */
-	TextCell articleTextCell = new TextCell();
-	Column<ListEntry, String> articleColumn=new Column<ListEntry,String>(articleTextCell){
+		/*
+		 * Spalte der Artikel
+		 */
+		TextCell articleTextCell = new TextCell();
+		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
 
-	public String getValue(ListEntry listEntry){return listEntry.getArticle().getName();}};
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getArticle().getName();
+			}
+		};
 
-	/*
-	 * Spalte der Einheit
-	 */
+		/*
+		 * Spalter der Menge
+		 */
 
-	TextCell unitTextCell = new TextCell();
-	Column<ListEntry, String> unitColumn=new Column<ListEntry,String>(unitTextCell){
+		TextCell amountTextCell = new TextCell();
+		Column<ListEntry, String> amountColumn = new Column<ListEntry, String>(amountTextCell) {
 
-	public String getValue(ListEntry listEntry){return listEntry.getArticle().getUnit();}};
+			public String getValue(ListEntry listEntry) {
+				return String.valueOf(listEntry.getAmount());
+			}
+		};
 
-	/*
-	 * Spalter der Menge
-	 */
+		/*
+		 * Spalter der Stores
+		 */
 
-	TextCell amountTextCell = new TextCell();
-	Column<ListEntry, String> amountColumn=new Column<ListEntry,String>(amountTextCell){
+		TextCell storeTextCell = new TextCell();
+		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storeTextCell) {
 
-	public String getValue(ListEntry listEntry){return String.valueOf(listEntry.getAmount());}};
+			public String getValue(ListEntry listEntry) {
+				return listEntry.getStore().getName();
 
-	/*
-	 * Spalter der Stores
-	 */
+			}
+		};
 
-	TextCell storeTextCell = new TextCell();
-	Column<ListEntry, String> storeColumn=new Column<ListEntry,String>(storeTextCell){
+		/*
+		 * Spalter der user
+		 */
 
-	public String getValue(ListEntry listEntry){return listEntry.getStore().getName();
+		TextCell userTextCell = new TextCell();
+		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userTextCell) {
 
-	}};
+			public String getValue(ListEntry listEntry) {
 
-	/*
-	 * Spalter der user
-	 */
+				return listEntry.getUser().getName();
+			}
+		};
+		/*
+		 * Spalter des Lösch-Buttons
+		 */
 
-	TextCell userTextCell = new TextCell();
-	Column<ListEntry, String> userColumn=new Column<ListEntry,String>(userTextCell){
+		ButtonCell deleteButton = new ButtonCell();
+		Column<ListEntry, String> deleteColumn = new Column<ListEntry, String>(deleteButton) {
 
-	public String getValue(ListEntry listEntry){
+			public String getValue(ListEntry listEntry) {
+				return "x";
+			}
+		};
 
-	return listEntry.getUser().getName();}};
-	/*
-	 * Spalter des Lösch-Buttons
-	 */
+		deleteColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
-	ButtonCell deleteButton = new ButtonCell();
-	Column <ListEntry, String> deleteColumn = new Column <ListEntry, String> (deleteButton){
-		
-		public String getValue (ListEntry listEntry) {
-			return "x";
-		}
-	};
-	
-	deleteColumn.setFieldUpdater (new FieldUpdater <ListEntry, String>(){
-		
-		public void update (int index, ListEntry listEntry, String value) {
-			// Value is the button value. Object is the row object.
+			public void update(int index, ListEntry listEntry, String value) {
+				// Value is the button value. Object is the row object.
 
-			dataProvider.getList().remove(listEntry);
-			
-			AsyncCallback <Void> deleteCallback = new AsyncCallback<Void>() {
-				
-				public void onFailure (Throwable caught) {
-					
-				}
-				
-				public void onSuccess (Void result) {
-					
-				}
-				
-			};
-			
-			Window.alert ("Listeneintrag löschen" + listEntry);
-			elv.delete(listEntry, deleteCallback);
-		}
-	});
-	
-	// Die Spalten werden hier der CellTable hinzugefügt
-			cellTable.addColumn(checkBoxColumn, "Erledigt?");
-			cellTable.addColumn(articleColumn, "Artikel");
-			cellTable.addColumn(amountColumn, "Menge");
-			cellTable.addColumn(unitColumn, "Einheit");
-			cellTable.addColumn(userColumn, "Wer?");
-			cellTable.addColumn(storeColumn, "Wo?");
-			cellTable.addColumn(deleteColumn, "");
+				dataProvider.getList().remove(listEntry);
 
-			dataProvider.addDataDisplay(cellTable);
-	
-	
+				AsyncCallback<Void> deleteCallback = new AsyncCallback<Void>() {
+
+					public void onFailure(Throwable caught) {
+
+					}
+
+					public void onSuccess(Void result) {
+
+					}
+
+				};
+
+				Window.alert("Listeneintrag löschen" + listEntry);
+				elv.delete(listEntry, deleteCallback);
+			}
+		});
+
+		// Die Spalten werden hier der CellTable hinzugefügt
+		cellTable.addColumn(checkBoxColumn, "Erledigt?");
+		cellTable.addColumn(articleColumn, "Artikel");
+		cellTable.addColumn(amountColumn, "Menge");
+		cellTable.addColumn(userColumn, "Wer?");
+		cellTable.addColumn(storeColumn, "Wo?");
+		cellTable.addColumn(deleteColumn, "");
+
+		dataProvider.addDataDisplay(cellTable);
+
 	}
-	
-		
+
 	/***********************************************************************
 	 * onLoad-Methode
 	 ***********************************************************************
 	 */
-	
 	public void onLoad() {
 		elv.filterByUser(selectedUser, new AsyncCallback<Vector<ListEntry>>() {
-			
-			public void onFailure (Throwable caught) {
+
+		
+			public void onFailure(Throwable caught) {
 				Window.alert("");
-				
+
 			}
-			
-			public void onSuccess (Vector<ListEntry> listEntry) {
-				
-				for(ListEntry le : listEntry) {
+
+			public void onSuccess(Vector<ListEntry> listEntry) {
+
+				for (ListEntry le : listEntry) {
 					list.add(le);
-					}
+				}
 			}
-		});  
+		});
 	}
-	
-	
 
 	private class CreateShoppingListClickHandler implements ClickHandler {
 
@@ -276,12 +280,44 @@ public class FilterShoppingList extends VerticalPanel {
 
 		}
 
-	
-	
-	/***********************************************************************
-	 * Setter und Getter
-	 ***********************************************************************
-	 */
+		/***********************************************************************
+		 * Setter und Getter
+		 ***********************************************************************
+		 */
+
+	}
+
+	public GroupShoppingListTreeViewModel getGsltvm() {
+		return gsltvm;
+	}
+
+	public void setGsltvm(GroupShoppingListTreeViewModel gsltvm) {
+		this.gsltvm = gsltvm;
+	}
+
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public ShoppingList getSelectedShoppingList() {
+		return selectedShoppingList;
+	}
+
+	public void setSelectedShoppingList(ShoppingList selectedShoppingList) {
+		this.selectedShoppingList = selectedShoppingList;
+	}
+
+	public ShoppingListForm getSelectedShoppingListForm() {
+		return selectedShoppingListForm;
+	}
+
+	public void setSelectedShoppingListForm(ShoppingListForm slf) {
+		this.selectedShoppingListForm = slf;
+	}
 	
 	public void setSelectedUser (User u) {
 		selectedUser = u;
@@ -291,12 +327,25 @@ public class FilterShoppingList extends VerticalPanel {
 	public User getSelectedUser () {
 		return selectedUser;
 	}
-	
-	}
+
 	/***********************************************************************
 	 * Clickhandler
 	 ***********************************************************************
 	 */
+	
+	private class UnfilterdClickHandler implements ClickHandler {
+		public void onClick (ClickEvent event) {
+			if (selectedShoppingList != null) {
+				RootPanel.get("details").clear();
+				selectedShoppingListForm = new ShoppingListForm();
+				selectedShoppingListForm.setSelected(selectedShoppingList);
+				selectedShoppingListForm.setSelected(selectedGroup);
+				RootPanel.get("details").add(selectedShoppingListForm);
+			
+			
+		}
+	}
+	}
 
 	private class RenameShoppingListClickHandler implements ClickHandler {
 
@@ -421,5 +470,3 @@ public class FilterShoppingList extends VerticalPanel {
 	}
 
 }
-
-
