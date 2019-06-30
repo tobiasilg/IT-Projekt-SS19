@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -37,7 +38,7 @@ import sharedShoppingList.shared.bo.User;
 public class NewListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-	private GroupShoppingListTreeViewModel gsltvm = null;
+	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	Group selectedGroup = null;
 
 	ShoppingList selectedShoppingList = null;
@@ -56,8 +57,8 @@ public class NewListEntryForm extends DialogBox {
 	Vector<Store> stores = new Vector<Store>();
 	Vector<User> users = new Vector<User>();
 
-	private Grid grid = new Grid(6, 6);
-	private ListBox unitListBox;
+	private Grid grid = new Grid(5, 5);
+	//private Label unitListLabel = new Label();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -76,16 +77,16 @@ public class NewListEntryForm extends DialogBox {
 
 		// UnitListBox
 
-		unitListBox = new ListBox();
-		unitListBox.addItem("Kg");
-		unitListBox.addItem("Gramm");
-		unitListBox.addItem("Stück");
-		unitListBox.addItem("Pack");
-		unitListBox.addItem("Liter");
-		unitListBox.addItem("Milliliter");
+//		unitListBox = new ListBox();
+//		unitListBox.addItem("Kg");
+//		unitListBox.addItem("Gramm");
+//		unitListBox.addItem("Stück");
+//		unitListBox.addItem("Pack");
+//		unitListBox.addItem("Liter");
+//		unitListBox.addItem("Milliliter");
 
 		// setting itemcount value to 1 turns listbox into a drop-down list.
-		unitListBox.setVisibleItemCount(1);
+	//	unitListBox.setVisibleItemCount(1);
 
 		// Zusammenbau des Grid
 
@@ -95,17 +96,17 @@ public class NewListEntryForm extends DialogBox {
 		grid.setText(1, 0, "Menge: ");
 		grid.setWidget(1, 1, amountTextBox);
 
-		grid.setText(2, 0, "Einheit: ");
-		grid.setWidget(2, 1, unitListBox);
+//		grid.setText(2, 0, "Einheit: ");
+//		grid.setWidget(2, 1, unitListLabel);
 
-		grid.setText(3, 0, "Wer?: ");
-		grid.setWidget(3, 1, usersListBox);
+		grid.setText(2, 0, "Wer?: ");
+		grid.setWidget(2, 1, usersListBox);
 
-		grid.setText(4, 0, "Wo?: ");
-		grid.setWidget(4, 1, storesListBox);
+		grid.setText(3, 0, "Wo?: ");
+		grid.setWidget(3, 1, storesListBox);
 
-		grid.setWidget(5, 2, saveButton);
-		grid.setWidget(5, 3, cancelButton);
+		grid.setWidget(4, 2, saveButton);
+		grid.setWidget(4, 3, cancelButton);
 
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
@@ -136,10 +137,7 @@ public class NewListEntryForm extends DialogBox {
 
 				for (Article a : result) {
 					articles.addElement(a);
-					articleOracle.add(a.getName());
-//					unit = a.getUnit();
-//					unitLabel.setText(unit);
-
+					articleOracle.add(a.getName() + ", "+ a.getUnit() );
 				}
 
 			}
@@ -147,7 +145,7 @@ public class NewListEntryForm extends DialogBox {
 
 //		 UsersListBox
 //		 Lade alle User aus der Datenbank
-		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
+		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback<Vector<User>>() {
 
 			public void onFailure(Throwable caught) {
 				Window.alert("Gruppe:" + selectedGroup.getName());
@@ -182,6 +180,7 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 		});
+		
 
 	}
 
@@ -210,8 +209,8 @@ public class NewListEntryForm extends DialogBox {
 		return selectedGroup;
 	}
 
-	public void setSelectedGroup(Group selectedGroup) {
-		this.selectedGroup = selectedGroup;
+	public void setSelectedGroup(Group g) {
+		this.selectedGroup = g;
 	}
 
 	public ShoppingList getSelected() {
@@ -254,8 +253,11 @@ public class NewListEntryForm extends DialogBox {
 	private class SaveClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			ShoppingList shoppingList = slf.getSelectedList(); // aktuelle Shoppingliste, stimmt das?
-
+			
+			ShoppingList shoppingList = gsltvm.getSelectedList(); 
+			
+			Window.alert(shoppingList.getName());
+			
 			String newArticle = articleSuggestBox.getText();
 
 			Article article = new Article();
@@ -271,13 +273,11 @@ public class NewListEntryForm extends DialogBox {
 
 			Store store = new Store();
 			store.setName(storesListBox.getSelectedItemText());
-			store = stores.get(storesListBox.getSelectedIndex());
+			//store = stores.get(storesListBox.getSelectedIndex());
 
 			User user = new User();
 			user.setName(usersListBox.getSelectedItemText());
-			user = users.get(usersListBox.getSelectedIndex());
-
-			String unit = unitListBox.getSelectedItemText();
+			//user = users.get(usersListBox.getSelectedIndex());
 
 			String name = new String();
 			name = "";
@@ -286,7 +286,6 @@ public class NewListEntryForm extends DialogBox {
 			ListEntry listEntry = new ListEntry();
 
 			listEntry.setName(name);
-			listEntry.getArticle().setUnit(unit);
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
 			listEntry.setStore(store);
@@ -305,21 +304,11 @@ public class NewListEntryForm extends DialogBox {
 //				Window.alert("Einzelhändler auswählen!");
 
 			else {
+				Window.alert(name + user + article + newAmount + store + shoppingList);
+				
+				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
 
-				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback() {
 
-					public void onFailure(Throwable caught) {
-						Window.alert("Das Erzeugen eines Listeneintrags schlug fehl!");
-
-					}
-
-					public void onSuccess(ListEntry object) {
-						Window.alert("Listeneintragwurde generiert: "+ listEntry.getArticle());
-					
-						
-
-					}
-				});
 			}
 		}
 
@@ -346,20 +335,6 @@ public class NewListEntryForm extends DialogBox {
 			}
 		}
 
-		private class UnitCallback implements AsyncCallback {
-
-			public void onFailure(Throwable caught) {
-				Window.alert("");
-
-			}
-
-			@Override
-			public void onSuccess(Object result) {
-				// TODO Auto-generated method stub
-
-			}
-
-		}
 	}
 
 }
