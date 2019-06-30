@@ -189,7 +189,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 		public void onClick(ClickEvent event) {
 
-			if (selectedGroup != null) {
+			if (gsltvm.getSelectedGroup() != null) {
 
 				RootPanel.get("details").clear();
 				groupForm = new AdministrationGroupForm();
@@ -198,7 +198,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 				gsltvm.setGroupForm(groupForm);
 				RootPanel.get("details").add(groupForm);
 			}
-
 		}
 	}
 
@@ -216,8 +215,8 @@ public class ShoppingListCreationForm extends FlowPanel {
 				Window.alert("Einkaufsliste muss einen Namen besitzen !");
 
 			} else {
-				// elv.createShoppingList(shoppingListNameTextBox.getValue(), new
-				// ListCreationCallback());
+//				 elv.createShoppingList(shoppingListNameTextBox.getValue(), new
+//				 ListCreationCallback());
 
 				elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup,
 						new ListCreationCallback(selectedGroup));
@@ -256,7 +255,7 @@ public class ShoppingListCreationForm extends FlowPanel {
 			RootPanel.get("details").clear();
 			selectedShoppingList = result;
 			showForm.setSelected(selectedShoppingList);
-			// showForm.setSelected(selectedGroup);
+			showForm.setSelected(gsltvm.getSelectedGroup());
 			RootPanel.get("details").add(showForm);
 
 			gsltvm.setSelectedList(selectedShoppingList);

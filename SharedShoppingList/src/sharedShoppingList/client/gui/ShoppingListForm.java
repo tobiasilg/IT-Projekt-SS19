@@ -160,21 +160,21 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
 
 			public String getValue(ListEntry listEntry) {
-				return listEntry.getArticle().getName();
+				return listEntry.getArticle().getName() + ", " + listEntry.getArticle().getUnit();
 			}
 		};
 
-		/*
-		 * Spalte der Einheit
-		 */
-
-		TextCell unitTextCell = new TextCell();
-		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
-
-			public String getValue(ListEntry listEntry) {
-				return listEntry.getArticle().getUnit();
-			}
-		};
+//		/*
+//		 * Spalte der Einheit
+//		 */
+//
+//		TextCell unitTextCell = new TextCell();
+//		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
+//
+//			public String getValue(ListEntry listEntry) {
+//				return listEntry.getArticle().getUnit();
+//			}
+//		};
 
 		/*
 		 * Spalte der Menge
@@ -250,7 +250,7 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
-		cellTable.addColumn(unitColumn, "Einheit");
+	//	cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(deleteColumn, "");
