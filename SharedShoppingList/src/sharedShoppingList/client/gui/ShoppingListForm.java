@@ -34,6 +34,7 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -125,30 +126,37 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 		};
+		
+		checkBoxColumn.setFieldUpdater(new FieldUpdater<ListEntry, Boolean>() {
+			public void update(int index, ListEntry listEntry, Boolean value) {
+				// Value is the button value. Object is the row object.
+				Article article = listEntry.getArticle();
+				AsyncCallback<Favourite> updateCallback = new AsyncCallback<Favourite>() {
 
-//		checkBoxColumn.setFieldUpdater(new FieldUpdater<ListEntry, Boolean>() {
-//
-//			public void update(int index, ListEntry object, Boolean value) {
-//
-//				selectionModel.setSelected(object, value);
-//
-//				AsyncCallback checkCallback = new AsyncCallback<Favourite>() {
-//
-//					public void onFailure(Throwable caught) {
-//
-//					}
-//
-//					public void onSuccess(Favourite result) {
-//
-//					}
-//
-//				};
-//
-//				elv.createFavourite(selectedListEntry, selectedGroup, checkCallback);
-//
-//			}
-//		});
+					public void onFailure(Throwable caught) {
 
+					}
+
+					public void onSuccess(Favourite result) {
+						Notification.show("Listeneintrag wurde gelöscht.");
+					}
+
+				};
+
+				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
+				
+				if(value == false) {
+//					elv.delete.deleteArticle(article, callback);
+				}else {
+					elv.createFavourite(listEntry, selectedGroup, updateCallback);
+				}
+				
+				
+				
+			}
+		});
+
+		
 		/*
 		 * Spalte der Artikel
 		 */
