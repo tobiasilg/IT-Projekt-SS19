@@ -674,7 +674,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			le.setUserId(favle.getUserId());
 			le.setArticleId(favle.getArticleId());
 			le.setShoppinglistId(sl.getId());
-			
+			le.setStoreId(favle.getStoreId());
+			System.out.println(favle);
 			this.listEntryMapper.insert(le);
 			
 			//le.setCreateDate(favourite.getlis);

@@ -164,7 +164,8 @@ public class FavouriteMapper {
 	public Vector <Favourite> findFavouritesByGroupId (int groupId) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname, a.unit AS Einheit FROM favourite AS f"
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname,"
+				+ "a.unit AS Einheit, l.userid, l.storeid FROM favourite AS f"
 				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
 				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE f.groupid =" + groupId;
 		
@@ -176,22 +177,19 @@ public class FavouriteMapper {
 			while (rs.next()) {
 				Favourite favourite = new Favourite();
 				favourite.setId(rs.getInt("id"));
-				favourite.setGroupsId(rs.getInt("groupsId"));
+				favourite.setGroupsId(rs.getInt("groupId"));
 				favourite.setListEntryId(rs.getInt("listEntryId"));
 				
 				Article article = new Article();
 				article.setId(rs.getInt("id"));
 				article.setName(rs.getString("Artikelname"));
-				article.setUnit(rs.getString("unit"));
+				article.setUnit(rs.getString("Einheit"));
 				
 				ListEntry listentry = new ListEntry ();
 				listentry.setAmount(rs.getDouble("Menge"));
-				listentry.setUserId(rs.getInt("userId"));
+				listentry.setUserId(rs.getInt("userid"));
 				
-				/*
-				 * Hier eventuell im SQL Statement alias setzen f�r "name"?
-				 */
-				listentry.setName(rs.getString("name"));
+				
 				listentry.setStoreId(rs.getInt("storeid"));
 				
 				listentry.setArticle(article);
