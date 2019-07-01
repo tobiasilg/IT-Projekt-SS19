@@ -425,19 +425,25 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException {
 		ListEntry listentry = new ListEntry();
+		System.out.println("createListentry");
 
 	
 		listentry.setName(name);
 		
 		listentry.setUserId(user.getId());
+		System.out.println("UserID:"+ user.getId());
 		
 		listentry.setArticleId(article.getId());
+		System.out.println("ArtikelID:"+ article.getId());
 		
 		listentry.setAmount(amount);
+		System.out.println("Menge:"+ amount);
 		
 		listentry.setStoreId(store.getId());
+		System.out.println("StoreID:"+ store.getId());
 		
 		listentry.setShoppinglistId(sl.getId());
+		System.out.println("ShoppingListID:"+ sl.getId());
 		
 		
 		

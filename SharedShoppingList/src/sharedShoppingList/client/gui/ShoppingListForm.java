@@ -163,7 +163,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 		TextCell articleTextCell = new TextCell();
 		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
-
+			
 			public String getValue(ListEntry listEntry) {
 				return listEntry.getArticle().getName() + ", " + listEntry.getArticle().getUnit();
 			}
@@ -189,6 +189,7 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storesTextCell) {
 
 			public String getValue(ListEntry listEntry) {
+
 				return listEntry.getStore().getName();
 			}
 		};
@@ -202,6 +203,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 			public String getValue(ListEntry listEntry) {
 				return listEntry.getUser().getName();
+				
 			}
 		};
 
@@ -348,14 +350,14 @@ public class ShoppingListForm extends VerticalPanel {
 
 		});
 
-		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
+		elv.getAllListEntriesByShoppingList(gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
 				Window.alert("");
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
-
+				Window.alert("onSuccess getAllbyshoppinglist");
 				for (ListEntry le : listEntry) {
 					list.add(le);
 				}

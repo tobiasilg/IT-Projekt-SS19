@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import sharedShoppingList.shared.bo.Article;
+import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
@@ -142,7 +143,16 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
 			Connection con = DBConnection.connection();
 			
-			String sql="SELECT * FROM listentry WHERE shoppinglistid=" + sl.getId();
+			String sql="SELECT article.name, article.unit, listentry.id, listentry.checked, listentry.amount, user.name as username, store.name as storename, favourite.id as favid FROM listentry " + 
+					"left join article " + 
+					"	on listentry.articleid = article.id " + 
+					"left join user " + 
+					"	on listentry.userid = user.id " + 
+					"left join store " + 
+					"	on listentry.storeid = store.id " + 
+					"left join favourite " + 
+					"	on listentry.id=favourite.listentryid " + 
+					"WHERE listentry.shoppinglistid= " + sl.getId();
 			
 			Vector<ListEntry> result= new Vector<ListEntry>();
 			try {
@@ -153,17 +163,31 @@ public class ListEntryMapper {
 				while (rs.next()) {
 
 					ListEntry listEntry = new ListEntry();
-					listEntry.setId(rs.getInt("id"));
-					listEntry.setName(rs.getString("name"));
-					listEntry.setCreateDate(rs.getTimestamp("createDate"));
-					listEntry.setAmount(rs.getDouble("amount"));
 					listEntry.setChecked(rs.getBoolean("checked"));
-					listEntry.setArticleId(rs.getInt("articleid"));
-					listEntry.setUserId(rs.getInt("userid"));
-					listEntry.setStoreId(rs.getInt("storeid"));
-					listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
+					listEntry.setAmount(rs.getDouble("amount"));
+					listEntry.setId(rs.getInt("id"));
+					
+					Article article = new Article();
+					article.setName(rs.getString("name"));
+					article.setUnit(rs.getString("unit"));
+					
+					User user=new User();
+					user.setName(rs.getString("username"));
+					
+					Store store= new Store();
+					store.setName(rs.getString("storename"));
+					
+					Favourite fav=new Favourite();
+					fav.setId(rs.getInt("favid"));
+					
+					listEntry.setArticle(article);
+					listEntry.setStore(store);
+					listEntry.setUser(user);
+					
+					//setFav fehlt noch
 					
 					result.addElement(listEntry);
+				
 				}
 
 			} catch (SQLException e) {
@@ -312,7 +336,7 @@ public class ListEntryMapper {
 			Connection con = DBConnection.connection();
 			
 			String sql= "INSERT INTO listentry (name, amount, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
-			System.out.println(listEntry.getUserId());
+			
 			try {
 		    	/*
 		    	 * Einstellung dass automatisch generierte  ID's aus der DB
