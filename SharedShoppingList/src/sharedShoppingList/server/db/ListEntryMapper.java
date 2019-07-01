@@ -180,11 +180,11 @@ public class ListEntryMapper {
 					Favourite fav=new Favourite();
 					fav.setId(rs.getInt("favid"));
 					
+					
 					listEntry.setArticle(article);
 					listEntry.setStore(store);
 					listEntry.setUser(user);
-					
-					//setFav fehlt noch
+					listEntry.setFavourite(fav);
 					
 					result.addElement(listEntry);
 				
