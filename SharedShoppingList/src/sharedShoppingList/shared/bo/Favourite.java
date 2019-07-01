@@ -27,6 +27,7 @@ public class Favourite implements IsSerializable {
 	private int groupsId;
 	private int listEntryId;
 	private ListEntry listEntry;
+	private Favourite favourite;
 	
 	public Favourite() {
 		
@@ -65,6 +66,14 @@ public class Favourite implements IsSerializable {
 	
 	public void setListEntryId(int listEntryId) {
 		this.listEntryId=listEntryId;
+	}
+	
+	public Favourite getFavourite() {
+		return favourite;
+	}
+	
+	public void setFavourite(Favourite fav) {
+		this.favourite=fav;
 	}
 	
 	
