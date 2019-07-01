@@ -110,6 +110,8 @@ public class ListEntryMapper {
 					listEntry.setId(rs.getInt("id"));
 					listEntry.setName(rs.getString("name"));
 					listEntry.setCreateDate(rs.getTimestamp("createDate"));
+					listEntry.setModDate(rs.getTimestamp("modDate"));
+					listEntry.setBuyDate(rs.getTimestamp("buyDate"));
 					listEntry.setAmount(rs.getDouble("amount"));
 					listEntry.setChecked(rs.getBoolean("checked"));
 					listEntry.setArticleId(rs.getInt("articleid"));
