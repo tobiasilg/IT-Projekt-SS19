@@ -254,9 +254,10 @@ public class NewListEntryForm extends DialogBox {
 
 		public void onClick(ClickEvent event) {
 			
-			ShoppingList shoppingList = gsltvm.getSelectedList(); 
-			
-			Window.alert(shoppingList.getName());
+			 selectedShoppingList = gsltvm.getSelectedList(); 
+			 selectedGroup = gsltvm.getSelectedGroup();
+			 
+			Window.alert("Einkaufslite: " + selectedShoppingList.getName());
 			
 			String newArticle = articleSuggestBox.getText();
 
@@ -268,14 +269,14 @@ public class NewListEntryForm extends DialogBox {
 					break;
 				}
 			}
-			Window.alert(article.getName()+"Artikelname");
-			Window.alert(article.getId()+"ArtikelID") ;
+//			Window.alert(article.getName()+"Artikelname");
+//			Window.alert(article.getId()+"ArtikelID") ;
 			float newAmount = Float.parseFloat(amountTextBox.getText());
 
 			Store store = new Store();
 //			store.setName(storesListBox.getSelectedItemText());
 			store = stores.get(storesListBox.getSelectedIndex());
-			Window.alert("Storename123" + store.getName() );
+			Window.alert("Storename: " + store.getName() );
 
 			User user = new User();
 			//user.setName(usersListBox.getSelectedItemText());
@@ -291,7 +292,7 @@ public class NewListEntryForm extends DialogBox {
 			listEntry.setArticle(article);
 			listEntry.setAmount(newAmount);
 			listEntry.setStore(store);
-			listEntry.setShoppinglist(shoppingList);
+			listEntry.setShoppinglist(selectedShoppingList);
 			listEntry.setUser(user);
 			Window.alert(user.getId()+"");
 
@@ -307,10 +308,10 @@ public class NewListEntryForm extends DialogBox {
 //				Window.alert("Einzelhändler auswählen!");
 
 			else {
-				Window.alert(name + user + article + newAmount + store + shoppingList);
+				Window.alert(name + user + article + newAmount + store + selectedShoppingList);
 				Window.alert("UserID" + user.getId());
 				
-				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
+				elv.createListentry(name, user, article, newAmount, store, selectedShoppingList, new CreateListEntryCallback());
 
 
 			}
@@ -332,6 +333,7 @@ public class NewListEntryForm extends DialogBox {
 				if (result != null)
 					RootPanel.get("details").clear();
 				slf = new ShoppingListForm();
+				
 				slf.setSelected(selectedShoppingList);
 				slf.setSelected(selectedGroup);
 				RootPanel.get("details").add(slf);

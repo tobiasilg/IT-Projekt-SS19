@@ -31,7 +31,7 @@ public class GroupCreationForm extends FlowPanel {
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	User user = CurrentUser.getUser();
 
-	GroupShoppingListTreeViewModel gsltvm = null;
+	GroupShoppingListTreeViewModel gsltvm;
 	AdministrationGroupForm groupForm = null;
 	Group group = null;
 
@@ -55,6 +55,8 @@ public class GroupCreationForm extends FlowPanel {
 	}
 
 	public void onLoad() {
+		
+		gsltvm = new GroupShoppingListTreeViewModel();
 
 		groupBox.addStyleName("profilBox");
 		groupLabel.addStyleName("profilTitle");
@@ -129,9 +131,7 @@ public class GroupCreationForm extends FlowPanel {
 
 				groupForm = new AdministrationGroupForm();
 				
-		//	elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback());
-			//	 elv.createGroup(groupName, new GroupCreationCallback());
-				
+		//	elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback())
 				elv.createGroup(user, groupNameTextBox.getValue(), new GroupCreationCallback());
 
 			}
@@ -151,7 +151,8 @@ public class GroupCreationForm extends FlowPanel {
 		@Override
 		public void onSuccess(Group result) {
 
-			Notification.show(String.valueOf(result.getId()));
+		//	Notification.show(String.valueOf(result.getName()));
+			Notification.show(result.getName());
 
 			RootPanel.get("details").clear();
 			group = result;
@@ -159,6 +160,7 @@ public class GroupCreationForm extends FlowPanel {
 			RootPanel.get("details").add(groupForm);
 
 			gsltvm.addGroup(group);
+			
 
 		}
 	}

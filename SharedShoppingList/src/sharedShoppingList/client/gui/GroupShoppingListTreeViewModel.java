@@ -192,8 +192,8 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 		//this.getGroups().add(g);
 		//selectionModel.setSelected(g, true);
 		//groupDataProvider.refresh();
-		
 		groupDataProvider.getList().add(group);
+		Window.alert("addGroup");
 		selectionModel.setSelected(group, true);
 
 	}
@@ -294,7 +294,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 			
 			groupDataProvider = new ListDataProvider<Group>();
 			
-			// Methode muss noch auf getGroupsByUSer abgeändert werden, sobald der Login steht!
+			
 		
 			//einkaufslistenVerwaltung.getAllGroups(new AsyncCallback<Vector<Group>>() {
 			einkaufslistenVerwaltung.getGroupsByUser(user, new AsyncCallback<Vector<Group>>() {
@@ -315,7 +315,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 					//groupDataProvider.getList().add(group);
 					
 					for(Group g : group) {
-						Window.alert("g hat den Wert: " + g.getName());
+						//Window.alert("g hat den Wert: " + g.getName());
 						
 						groupDataProvider.getList().add(g);
 						//GroupShoppingListTreeViewModel.this.addGroup(g);
