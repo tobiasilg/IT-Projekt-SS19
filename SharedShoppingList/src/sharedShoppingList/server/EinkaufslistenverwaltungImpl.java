@@ -147,7 +147,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 
 	public void save(Article article) throws IllegalArgumentException {
+		
 		this.articleMapper.update(article);
+		 
 	}
 
 	/**

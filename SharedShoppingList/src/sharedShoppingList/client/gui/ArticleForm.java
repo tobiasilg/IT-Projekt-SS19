@@ -199,6 +199,7 @@ public class ArticleForm extends VerticalPanel {
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
 						Notification.show("Artikel wurde gespeichert");
+
 					}
 
 				};
