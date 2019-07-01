@@ -431,7 +431,7 @@ body {
 }
 
 .profilTextBox.gwt-TextBox {
-	color: #209cee;
+	color: blue;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	clear: both;
@@ -632,4 +632,91 @@ body {
 .refreshLabel {
 	color: #209cee;
 	font-size: 12px;
+}
+
+.storeForm {
+	min-height: 3.25rem;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	
+}
+
+.storeFormLabel{
+	margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: default;
+	-webkit-box-flex: 1;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+	margin-left: auto;
+}
+
+.hpCreateStore{
+	min-height: 3.25rem;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
+}
+.navTree {
+	font-size: 23px;
+}
+.saveButton.gwt-Button {
+	background: #00d1b2;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	white-space: nowrap;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	font-size: 1rem;
+	user-select: none;
+	text-decoration: none;
+}
+.deleteButton.gwt-Button {
+	background: #ff3860;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 1rem;
+	user-select: none;
+	
+}
+.createButton.gwt-Button {
+	background: #209cee;
+	border-color: #209cee;
+	color: white;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	white-space: nowrap;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	font-size: 1rem;
+	user-select: none;
+	text-decoration: none;
+	
 }

@@ -81,8 +81,8 @@ public class ShoppingListCreationForm extends FlowPanel {
 		insertLabel.addStyleName("profilLabel");
 		shoppingListNameTextBox.addStyleName("profilTextBox");
 
-		saveButton.addStyleName("saveNewGrouButton");
-		cancelButton.addStyleName("cancelNewGroupButton");
+		saveButton.addStyleName("saveButton");
+		cancelButton.addStyleName("deleteButton");
 
 		shoppingListNameTextBox.getElement().setPropertyString("placeholder", "Shoppingliste... ");
 
