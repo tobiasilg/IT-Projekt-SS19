@@ -65,7 +65,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Store createStore(String name) throws IllegalArgumentException;
 	
-	public void delete(Store store) throws IllegalArgumentException;
+	public Store delete(Store store) throws IllegalArgumentException;
 	
 	public Vector<Store> getAllStores() throws IllegalArgumentException;
 	

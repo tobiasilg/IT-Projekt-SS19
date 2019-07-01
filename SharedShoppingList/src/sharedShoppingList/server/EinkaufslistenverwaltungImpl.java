@@ -169,12 +169,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 				
 			
 		}else {
+			/**
+			 * Eigentliches Löschen des Artikels
+			 */
 			this.articleMapper.delete(article);
 			return article;
 		}
-		/*
-		 * Eigentliches Löschen des Artikels
-		 */
 		
 		
 	
@@ -350,25 +350,25 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 
-	public void delete(Store store) throws IllegalArgumentException {
+	public Store delete(Store store) throws IllegalArgumentException {
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByStore(store);
 		/*
-		 * Prüfen ob Listeneinträge mit dem jeweiligen Händler vorhanden sind.
+		 * Falls ein Store in einem Listeneintrag auftaucht, soll dieser nicht gelöscht werden
+		 * Gui wirft Meldung
 		 */
-		
 		if(listEntries != null) {
-			for(ListEntry le:listEntries) {
-
-				this.listEntryMapper.delete(le);
+			 
+			return null;
 				
-			}
+			
+		}else {
+			/**
+			 * Eigentliches Löschen des Stores
+			 */
+			this.storeMapper.delete(store);
+			return store;
 		}
-		/*
-		 * Löschen des Händlers
-		 */
-
-		this.storeMapper.delete(store);
 
 	}
 	/*

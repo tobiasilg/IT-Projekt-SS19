@@ -59,7 +59,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createStore(String name, AsyncCallback<Store> callback);
 
-	void delete(Store store, AsyncCallback<Void> callback);
+	void delete(Store store, AsyncCallback<Store> callback);
 
 	void getAllStores(AsyncCallback<Vector<Store>> callback);
 
