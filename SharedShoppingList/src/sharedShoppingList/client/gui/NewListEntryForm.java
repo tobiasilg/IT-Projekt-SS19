@@ -263,21 +263,23 @@ public class NewListEntryForm extends DialogBox {
 			Article article = new Article();
 
 			for (Article a : articles) {
-				if (a.getName() == newArticle) {
+				if (a.getName() + ", " + a.getUnit() == newArticle) {
 					article = a;
 					break;
 				}
 			}
-
+			Window.alert(article.getName()+"Artikelname");
+			Window.alert(article.getId()+"ArtikelID") ;
 			float newAmount = Float.parseFloat(amountTextBox.getText());
 
 			Store store = new Store();
-			store.setName(storesListBox.getSelectedItemText());
-			//store = stores.get(storesListBox.getSelectedIndex());
+//			store.setName(storesListBox.getSelectedItemText());
+			store = stores.get(storesListBox.getSelectedIndex());
+			Window.alert("Storename123" + store.getName() );
 
 			User user = new User();
-			user.setName(usersListBox.getSelectedItemText());
-			//user = users.get(usersListBox.getSelectedIndex());
+			//user.setName(usersListBox.getSelectedItemText());
+			user = users.get(usersListBox.getSelectedIndex());
 
 			String name = new String();
 			name = "";
@@ -291,6 +293,7 @@ public class NewListEntryForm extends DialogBox {
 			listEntry.setStore(store);
 			listEntry.setShoppinglist(shoppingList);
 			listEntry.setUser(user);
+			Window.alert(user.getId()+"");
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -305,6 +308,7 @@ public class NewListEntryForm extends DialogBox {
 
 			else {
 				Window.alert(name + user + article + newAmount + store + shoppingList);
+				Window.alert("UserID" + user.getId());
 				
 				elv.createListentry(name, user, article, newAmount, store, shoppingList, new CreateListEntryCallback());
 
