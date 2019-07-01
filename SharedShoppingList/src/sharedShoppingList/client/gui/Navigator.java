@@ -47,7 +47,7 @@ public class Navigator extends FlowPanel {
 	 * Klassen auf die im Navigator verwiesen werden
 	 */
 	private GroupCreationForm gcf; // Klasse die hinter dem NEU-Button steckt
-	private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
+	//private FavoriteArticleForm faf; // Klasse die hinter dem Stern steckt
 	
 	private AdministrationGroupForm agf;
 	private ShoppingListForm sf;
@@ -129,7 +129,7 @@ public class Navigator extends FlowPanel {
 
 		// Hinzufügen der ClickHandler
 		neuButton.addClickHandler(new ShowGroupCreationForm());
-		star.addClickHandler(new ShowFavoriteArticleForm());
+		//star.addClickHandler(new ShowFavoriteArticleForm());
 
 	}
 	
@@ -205,16 +205,16 @@ public class Navigator extends FlowPanel {
 	 * Die Klasse ShowFavoriteArticleForm ermöglicht die Weiterletung zur
 	 * FavoriteArticleForm
 	 */
-	private class ShowFavoriteArticleForm implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			RootPanel.get("details").clear();
-			faf = new FavoriteArticleForm();
-			RootPanel.get("details").add(faf);
-
-		}
-
-	}
+//	private class ShowFavoriteArticleForm implements ClickHandler {
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//			RootPanel.get("details").clear();
+//			faf = new FavoriteArticleForm();
+//			RootPanel.get("details").add(faf);
+//
+//		}
+//
+//	}
 
 }

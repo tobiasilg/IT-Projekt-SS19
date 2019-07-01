@@ -164,11 +164,11 @@ public class StoreForm extends VerticalPanel {
 				// Value is the button value. Object is the row object.
 //				
 
-				dataProvider.getList().remove(store);
+				
 
 				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
-				AsyncCallback<Void> deletecallback = new AsyncCallback<Void>() {
+				AsyncCallback<Store> deletecallback = new AsyncCallback<Store>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -177,8 +177,16 @@ public class StoreForm extends VerticalPanel {
 					}
 
 					@Override
-					public void onSuccess(Void result) {
+					public void onSuccess(Store result) {
+						if (result == null) {
+							Window.alert("Einzelhändler konnte nicht gelöscht werden, da er verwendet wird");
 
+						} else {
+
+							dataProvider.getList().remove(result);
+							Notification.show("Händler wurde gelöscht");
+							dataProvider.refresh();
+						}
 					}
 
 				};
