@@ -73,17 +73,17 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
 	private Button filterByUserButton = new Button("Filtern nach Usern");
-	
-	private ListBox storesListBox = new ListBox ();
-	private ListBox usersListBox = new ListBox ();
-	
+
+	private ListBox storesListBox = new ListBox();
+	private ListBox usersListBox = new ListBox();
+
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
 	private TextBox renameTextBox = new TextBox();
-	
+
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
 
@@ -114,7 +114,6 @@ public class ShoppingListForm extends VerticalPanel {
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHanlder());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
 		filterByUserButton.addClickHandler(new FilterByUserClickHandler());
-		
 
 		/***********************************************************************
 		 * Erstellung Celltable
@@ -190,7 +189,7 @@ public class ShoppingListForm extends VerticalPanel {
 		/*
 		 * Spalte der Stores
 		 */
-		
+
 		elv.getAllListEntriesByShoppingList(gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
@@ -205,31 +204,30 @@ public class ShoppingListForm extends VerticalPanel {
 
 			}
 		});
-		
+
 		// StoresListBox
-		
+
 		// StoresListBox
-				// Lade alle Stores aus der Datenbank
-		
-		 Vector <Store>  stores = new Vector<Store>();
+		// Lade alle Stores aus der Datenbank
 
-				elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		Vector<Store> stores = new Vector<Store>();
 
-					public void onFailure(Throwable caught) {
-						Notification.show("3. failure");
-					}
+		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
-					public void onSuccess(Vector<Store> result) {
-						storesListBox.clear();
-						for (Store store : result) {
-							stores.addElement(store);
-							
+			public void onFailure(Throwable caught) {
+				Notification.show("3. failure");
+			}
 
-						}
-					}
-				});
-		
-		List<String> storeNames = new ArrayList <String>();
+			public void onSuccess(Vector<Store> result) {
+				storesListBox.clear();
+				for (Store store : result) {
+					stores.addElement(store);
+
+				}
+			}
+		});
+
+		List<String> storeNames = new ArrayList<String>();
 		for (Store s : stores) {
 			storeNames.add(s.getName());
 		}
@@ -241,22 +239,20 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getStore().getName();
 			}
 		};
-		
-		storeColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>(){
+
+		storeColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
 				for (Store s : stores) {
 					if (s.getName().equals(value)) {
 						listEntry.setStore(s);
+					}
 				}
+
 			}
-				
-				
-		}
 		});
-		
-	
+
 		/*
 		 * Spalte der User
 		 */
@@ -365,7 +361,6 @@ public class ShoppingListForm extends VerticalPanel {
 		buttonPanel.add(deleteSlButton);
 
 		filterPanel.add(filterByUserButton);
-	
 
 		// CellTable
 		cellTableVP.add(cellTable);
@@ -474,8 +469,6 @@ public class ShoppingListForm extends VerticalPanel {
 	 * Abschnitt der CLICKHANDLER
 	 ***********************************************************************
 	 */
-
-	
 
 	private class FilterByUserClickHandler implements ClickHandler {
 
