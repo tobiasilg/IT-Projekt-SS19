@@ -9,6 +9,8 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -74,6 +76,14 @@ public class StoreForm extends VerticalPanel {
 		cancelButton.addClickHandler(new CancelClickHandler());
 		addButton.addClickHandler(new AddStoreClickHandler());
 //		deleteButton.addClickHandler(new DeleteStoreClickHandler());
+	}
+
+	public void onKeyPress(KeyPressEvent event) {
+		if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+			addButton.click();
+
+		}
+
 	}
 
 	public void onLoad() {

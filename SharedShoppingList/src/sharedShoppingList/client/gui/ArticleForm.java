@@ -12,6 +12,8 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -43,7 +45,7 @@ public class ArticleForm extends VerticalPanel {
 	private TextBox nameTextBox = new TextBox();
 
 	private Button cancelButton = new Button("abbrechen");
-	private Button saveButton = new Button("Änderungen speichern");
+//	private Button saveButton = new Button("Änderungen speichern");
 	private Button addButton = new Button("hinzufügen");
 
 	private ListBox unitListBox = createUnitListBox();
@@ -98,12 +100,20 @@ public class ArticleForm extends VerticalPanel {
 		return unitListBox;
 	}
 
+	public void onKeyPress(KeyPressEvent event) {
+		if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+			addButton.click();
+
+		}
+
+	}
+
 	public void onLoad() {
 
 		hpCreate.add(nameTextBox);
 		hpCreate.add(unitListBox);
 		hpCreate.add(addButton);
-		hpCreate.add(saveButton);
+//		hpCreate.add(saveButton);
 		hpCreate.add(cancelButton);
 
 		scrollPanel.add(table);
@@ -117,7 +127,7 @@ public class ArticleForm extends VerticalPanel {
 
 		nameLabel.addStyleName("profilTitle");
 		nameTextBox.addStyleName("profilTextBox");
-		saveButton.addStyleName("speicherButton");
+//		saveButton.addStyleName("speicherButton");
 		addButton.addStyleName("speicherButton");
 
 		// Lade alle Store aus der Datenbank
@@ -258,8 +268,9 @@ public class ArticleForm extends VerticalPanel {
 
 // Add the columns.
 		table.addColumn(stringColumn, "Artikel");
-		table.addColumn(deleteColumn, "");
 		table.addColumn(categoryColumn, "Einheit");
+		table.addColumn(deleteColumn, "");
+
 		table.setColumnWidth(stringColumn, 20, Unit.PC);
 
 // Connect the table to the data provider.
@@ -300,7 +311,7 @@ public class ArticleForm extends VerticalPanel {
 				Notification.show("Der Artikel existiert bereits");
 			} else {
 				Notification.show("Der Artikel wurde erfolgreich erstellt");
-
+				nameTextBox.setText("");
 				dataProvider.getList().add(article);
 				dataProvider.refresh();
 			}
