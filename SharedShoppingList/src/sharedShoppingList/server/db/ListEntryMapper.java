@@ -309,8 +309,8 @@ public class ListEntryMapper {
 		public ListEntry insert (ListEntry listEntry) {
 			Connection con = DBConnection.connection();
 			
-			String sql= "INSERT INTO listentry (name, buyDate, amount, checked, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "','"+listEntry.getBuyDate()+"',"+listEntry.getAmount()+","+listEntry.isChecked()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
-			
+			String sql= "INSERT INTO listentry (name, amount, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
+			System.out.println(listEntry.getUserId());
 			try {
 		    	/*
 		    	 * Einstellung dass automatisch generierte  ID's aus der DB

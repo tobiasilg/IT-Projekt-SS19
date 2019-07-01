@@ -431,7 +431,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		
 		listentry.setUserId(user.getId());
 		
-		listentry.setArticle(article);
+		listentry.setArticleId(article.getId());
 		
 		listentry.setAmount(amount);
 		
