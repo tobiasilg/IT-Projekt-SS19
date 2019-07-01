@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -198,6 +199,7 @@ public class ArticleForm extends VerticalPanel {
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
 						Notification.show("Artikel wurde gespeichert");
+
 					}
 
 				};
@@ -208,7 +210,7 @@ public class ArticleForm extends VerticalPanel {
 		});
 		deleteColumn.setFieldUpdater(new FieldUpdater<Article, String>() {
 
-			public void update(int index, Article article, String value) {
+			public void update(int index, Article a, String value) {
 				// Value is the button value. Object is the row object.
 //				Window.alert("You clicked: " + value);
 //				Window.alert("Object: " + store);
@@ -216,7 +218,7 @@ public class ArticleForm extends VerticalPanel {
 
 				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 
-				AsyncCallback<Void> deletecallback = new AsyncCallback<Void>() {
+				AsyncCallback<Article> deletecallback = new AsyncCallback<Article>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -225,16 +227,24 @@ public class ArticleForm extends VerticalPanel {
 					}
 
 					@Override
-					public void onSuccess(Void result) {
+					public void onSuccess(Article result) {
 						// TODO Auto-generated method stub
 
-						Notification.show("Artikel wurde gelöscht");
+						if (result == null) {
+							Window.alert("Artikel konnte nicht gelöscht werden, da er verwendet wird");
+
+						} else {
+
+							dataProvider.getList().remove(result);
+							Notification.show("Artikel wurde gelöscht");
+							dataProvider.refresh();
+						}
 					}
 
 				};
 
-				elv.delete(article, deletecallback);
-				dataProvider.getList().remove(article);
+				elv.delete(a, deletecallback);
+
 			}
 
 		});

@@ -147,7 +147,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 
 	public void save(Article article) throws IllegalArgumentException {
+		
 		this.articleMapper.update(article);
+		 
 	}
 
 	/**
@@ -159,14 +161,18 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Article delete(Article article) throws IllegalArgumentException {
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByArticle(article);
+
 		/*
 		 * Falls ein Artikel in einem Listeneintrag auftaucht, soll dieser nicht gelöscht werden
 		 * Gui wirft Meldung
 		 */
-		if(listEntries != null) {
+
+
+		if(listEntries.size() > 0) {
+
 			 
 			return null;
-				
+			
 			
 		}else {
 			/**
@@ -174,6 +180,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			 */
 			this.articleMapper.delete(article);
 			return article;
+			
 		}
 		
 		
