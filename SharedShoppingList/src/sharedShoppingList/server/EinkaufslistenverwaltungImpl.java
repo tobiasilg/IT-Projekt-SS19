@@ -549,7 +549,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Group group = new Group();
 		group.setName(name);
 
-		this.groupMapper.insert(group);
+		group = this.groupMapper.insert(group);
 		
 		/*
 		 * Nachdem die  ID vorhanden ist, wird der User der Gruppe hinzugefügt.
