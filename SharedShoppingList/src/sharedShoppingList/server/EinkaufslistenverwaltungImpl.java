@@ -160,17 +160,20 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	public Article delete(Article article) throws IllegalArgumentException {
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByArticle(article);
+
 		/*
 		 * Prüfen ob Listeneinträge mit dem jeweiligen Artikel vorhanden sind.
 		 */
-		if(listEntries != null) {
-			
+
+		if(listEntries.size() > 0) {
+			 
 			return null;
-				
+			
 			
 		}else {
 			this.articleMapper.delete(article);
 			return article;
+			
 		}
 		/*
 		 * Eigentliches Löschen des Artikels
