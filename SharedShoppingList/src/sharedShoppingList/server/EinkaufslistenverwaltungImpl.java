@@ -364,7 +364,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		 * Falls ein Store in einem Listeneintrag auftaucht, soll dieser nicht gelöscht werden
 		 * Gui wirft Meldung
 		 */
-		if(listEntries != null) {
+		if(listEntries.size() > 0) {
 			 
 			return null;
 				
