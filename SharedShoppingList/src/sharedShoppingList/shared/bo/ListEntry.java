@@ -47,12 +47,21 @@ public class ListEntry extends BusinessObject {
 	private ShoppingList shoppinglist;
 	private User user;
 	private Store store;
+	private Favourite favourite;
 	
 	
 	
 	
 	
 	
+	public Favourite getFavourite() {
+		return favourite;
+	}
+
+	public void setFavourite(Favourite favourite) {
+		this.favourite = favourite;
+	}
+
 	public Timestamp getBuyDate() {
 		return buyDate;
 	}
