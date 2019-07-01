@@ -100,7 +100,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
 
-	void deleteArticle(Favourite favourite, AsyncCallback<Void> callback);
+	void delete (Favourite favourite, AsyncCallback<Void> callback);
 
 	void getAllFavourites(AsyncCallback<Vector<Favourite>> callback);
 

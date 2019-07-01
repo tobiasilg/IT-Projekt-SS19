@@ -103,7 +103,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 	
 	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
 	
-	public void deleteArticle (Favourite favourite) throws IllegalArgumentException;
+	public void delete(Favourite favourite) throws IllegalArgumentException;
 	
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
 	
