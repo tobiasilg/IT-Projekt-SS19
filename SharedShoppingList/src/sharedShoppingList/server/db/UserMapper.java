@@ -209,14 +209,14 @@ public class UserMapper {
 	 */
 	
 	public Vector <User> findByGroup(Group group) {
-		System.out.println("Beginn findByGroup Mapper Methode");
+	
 		Connection con = DBConnection.connection();
 		String sql = "SELECT user.id, user.name, user.username, "
 				+"user.gmail, user.createDate, user.modDate "
 				+"FROM membership INNER JOIN user "
 				+"ON membership.userid = user.id "
 				+"WHERE membership.groupid = " + group.getId();
-		System.out.println("findByGroup nach sql");
+	
 		
 		Vector<User> users= new Vector<User>();
 		

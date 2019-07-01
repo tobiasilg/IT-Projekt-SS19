@@ -350,14 +350,13 @@ public class ShoppingListForm extends VerticalPanel {
 
 		});
 
-		elv.getAllListEntriesByShoppingList(gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
+		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
-				Window.alert("");
+				Window.alert("Fehler in ShoppingListForm");
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
-				Window.alert("onSuccess getAllbyshoppinglist");
 				for (ListEntry le : listEntry) {
 					list.add(le);
 				}
@@ -435,6 +434,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 			this.selectedShoppingList = sl;
 			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
+			
+			dataProvider.getList().clear();
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
 		}

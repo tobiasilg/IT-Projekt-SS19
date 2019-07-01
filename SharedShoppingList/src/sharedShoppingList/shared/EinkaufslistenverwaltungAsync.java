@@ -59,7 +59,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createStore(String name, AsyncCallback<Store> callback);
 
-	void delete(Store store, AsyncCallback<Void> callback);
+	void delete(Store store, AsyncCallback<Store> callback);
 
 	void getAllStores(AsyncCallback<Vector<Store>> callback);
 
@@ -100,7 +100,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
 
-	void deleteArticle(Favourite favourite, AsyncCallback<Void> callback);
+	void delete (Favourite favourite, AsyncCallback<Void> callback);
 
 	void getAllFavourites(AsyncCallback<Vector<Favourite>> callback);
 

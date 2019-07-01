@@ -66,7 +66,9 @@ public interface Einkaufslistenverwaltung extends RemoteService {
 
 	public Store createStore(String name) throws IllegalArgumentException;
 
-	public void delete(Store store) throws IllegalArgumentException;
+	
+	public Store delete(Store store) throws IllegalArgumentException;
+	
 
 	public Vector<Store> getAllStores() throws IllegalArgumentException;
 
@@ -101,16 +103,17 @@ public interface Einkaufslistenverwaltung extends RemoteService {
 
 	Vector<User> getUsersByGroup(Group group) throws IllegalArgumentException;
 
-	public Vector<Group> getGroupsByUser(User user) throws IllegalArgumentException;
-
-	public Favourite createFavourite(ListEntry listentry, Group group) throws IllegalArgumentException;
-
-	public void deleteArticle(Favourite favourite) throws IllegalArgumentException;
-
-	public Vector<Favourite> getAllFavourites() throws IllegalArgumentException;
-
-	public Vector<ListEntry> getAllListEntriesByShoppingList(ShoppingList sl) throws IllegalArgumentException;
-
+	
+	public Vector<Group> getGroupsByUser (User user) throws IllegalArgumentException;
+	
+	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
+	
+	public void delete(Favourite favourite) throws IllegalArgumentException;
+	
+	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
+	
+	public Vector<ListEntry>getAllListEntriesByShoppingList (ShoppingList sl) throws IllegalArgumentException;
+	
 	public Boolean changed(Vector<ListEntry> listEntry, ShoppingList shoppingList) throws IllegalArgumentException;
 
 	public Boolean changed(ShoppingList shoppingList) throws IllegalArgumentException;
