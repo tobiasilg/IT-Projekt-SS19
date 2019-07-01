@@ -29,7 +29,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void save(Article article, AsyncCallback<Void> callback);
 
-	void delete(Article article, AsyncCallback<Void> callback);
+	void delete(Article article, AsyncCallback<Article> callback);
 
 	void getAllArticles(AsyncCallback<Vector<Article>> callback);
 
