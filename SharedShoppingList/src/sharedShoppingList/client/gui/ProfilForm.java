@@ -376,7 +376,8 @@ public class ProfilForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			Window.Location.assign(logoutUrl);
+			user.setLogoutUrl(user.getLogoutUrl());
+			Window.open(user.getLogoutUrl(), "_self", "");
 
 		}
 	}
