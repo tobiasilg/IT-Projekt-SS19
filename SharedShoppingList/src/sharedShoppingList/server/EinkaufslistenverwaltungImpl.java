@@ -147,34 +147,41 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 
 	public void save(Article article) throws IllegalArgumentException {
+		
 		this.articleMapper.update(article);
+		 
 	}
 
 	/**
-	 * Löschen eines Articles und damit entfernen des Article Tupel aus der DB
-	 * Die Löschweitergabe sorgt dafür, dass auch Listeneinträge, welche den jeweiligen Artikel
-	 * enthalten, gelöscht werden. 
+	 * Löschen eines Artikels ohne jegliche Löschweitergabe
+	 * 
 	 * @param Article Objekt
 	 */
 
 	public Article delete(Article article) throws IllegalArgumentException {
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByArticle(article);
+
 		/*
-		 * Prüfen ob Listeneinträge mit dem jeweiligen Artikel vorhanden sind.
+		 * Falls ein Artikel in einem Listeneintrag auftaucht, soll dieser nicht gelöscht werden
+		 * Gui wirft Meldung
 		 */
-		if(listEntries != null) {
-			
+
+
+		if(listEntries.size() > 0) {
+
+			 
 			return null;
-				
+			
 			
 		}else {
+			/**
+			 * Eigentliches Löschen des Artikels
+			 */
 			this.articleMapper.delete(article);
 			return article;
+			
 		}
-		/*
-		 * Eigentliches Löschen des Artikels
-		 */
 		
 		
 	
@@ -350,25 +357,25 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 
-	public void delete(Store store) throws IllegalArgumentException {
+	public Store delete(Store store) throws IllegalArgumentException {
 		
 		Vector<ListEntry> listEntries = this.getAllListEntriesByStore(store);
 		/*
-		 * Prüfen ob Listeneinträge mit dem jeweiligen Händler vorhanden sind.
+		 * Falls ein Store in einem Listeneintrag auftaucht, soll dieser nicht gelöscht werden
+		 * Gui wirft Meldung
 		 */
-		
 		if(listEntries != null) {
-			for(ListEntry le:listEntries) {
-
-				this.listEntryMapper.delete(le);
+			 
+			return null;
 				
-			}
+			
+		}else {
+			/**
+			 * Eigentliches Löschen des Stores
+			 */
+			this.storeMapper.delete(store);
+			return store;
 		}
-		/*
-		 * Löschen des Händlers
-		 */
-
-		this.storeMapper.delete(store);
 
 	}
 	/*
@@ -552,7 +559,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		Group group = new Group();
 		group.setName(name);
 
-		this.groupMapper.insert(group);
+		group = this.groupMapper.insert(group);
 		
 		/*
 		 * Nachdem die  ID vorhanden ist, wird der User der Gruppe hinzugefügt.
@@ -674,7 +681,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			le.setUserId(favle.getUserId());
 			le.setArticleId(favle.getArticleId());
 			le.setShoppinglistId(sl.getId());
-			
+			le.setStoreId(favle.getStoreId());
+			System.out.println(favle);
 			this.listEntryMapper.insert(le);
 			
 			//le.setCreateDate(favourite.getlis);
@@ -752,7 +760,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.favouriteMapper.createFavourite(favourite);
 	}
 	
-	public void deleteArticle (Favourite favourite) throws IllegalArgumentException{
+	public void delete (Favourite favourite) throws IllegalArgumentException{
 		this.favouriteMapper.deleteFavourite(favourite);
 	}
 	

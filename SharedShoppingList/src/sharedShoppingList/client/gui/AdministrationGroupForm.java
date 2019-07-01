@@ -99,7 +99,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		if (g != null) {
 
 			selectedGroup = g;
-			renameTextBox.setText(gsltvm.getSelectedGroup().getName());
+			renameTextBox.setText(selectedGroup.getName());
 			
 			dataProvider.getList().clear();
 			
@@ -261,7 +261,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		});
 
 		// Alle User einer Gruppe sollen in die CellTable geladen werden
-		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback<Vector<User>>() {
+		elv.getUsersByGroup(selectedGroup, new AsyncCallback<Vector<User>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

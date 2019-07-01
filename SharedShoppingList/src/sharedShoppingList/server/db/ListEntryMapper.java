@@ -333,7 +333,7 @@ public class ListEntryMapper {
 		 */
 		
 		public ListEntry insert (ListEntry listEntry) {
-			Connection con = DBConnection.connection();
+			Connection con = DBConnection.connection();		
 			
 			String sql= "INSERT INTO listentry (name, amount, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
 			
@@ -412,7 +412,6 @@ public class ListEntryMapper {
 			
 			String sql= "";
 			if(store != null && beginningDate != null &&endDate!=null) {
-				System.out.println("Store und Date");
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 				String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
 				 sql = "SELECT le.*, e.groupId FROM listentry AS le "
@@ -420,7 +419,7 @@ public class ListEntryMapper {
 						+ "WHERE le.buyDate BETWEEN '" + date + "' AND '" + enddate
 						+  "AND e.groupId = " + groupId
 						+ " AND storeid = " + store.getId();
-				 System.out.println("Nach sql store and date");
+
 			}
 			if(store == null && beginningDate != null && endDate!=null) {
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
