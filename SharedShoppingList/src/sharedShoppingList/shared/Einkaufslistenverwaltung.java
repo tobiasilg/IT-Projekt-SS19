@@ -31,7 +31,7 @@ public interface Einkaufslistenverwaltung extends RemoteService{
 
 	void save(Article article) throws IllegalArgumentException;
 
-	void delete(Article article) throws IllegalArgumentException;
+	Article delete(Article article) throws IllegalArgumentException;
 
 	Vector<Article> getAllArticles() throws IllegalArgumentException;
 
