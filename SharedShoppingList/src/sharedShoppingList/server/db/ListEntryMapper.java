@@ -333,7 +333,7 @@ public class ListEntryMapper {
 		 */
 		
 		public ListEntry insert (ListEntry listEntry) {
-			Connection con = DBConnection.connection();
+			Connection con = DBConnection.connection();		
 			
 			String sql= "INSERT INTO listentry (name, amount, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
 			
