@@ -753,7 +753,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.favouriteMapper.createFavourite(favourite);
 	}
 	
-	public void deleteArticle (Favourite favourite) throws IllegalArgumentException{
+	public void delete (Favourite favourite) throws IllegalArgumentException{
 		this.favouriteMapper.deleteFavourite(favourite);
 	}
 	
