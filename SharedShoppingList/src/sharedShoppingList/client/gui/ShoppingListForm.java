@@ -27,12 +27,14 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
+import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -124,30 +126,37 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 		};
-
+		
 		checkBoxColumn.setFieldUpdater(new FieldUpdater<ListEntry, Boolean>() {
-
-			public void update(int index, ListEntry object, Boolean value) {
-
-				// dataProvider.getList().(listEntry);
-
-				AsyncCallback checkCallback = new AsyncCallback<Favourite>() {
+			public void update(int index, ListEntry listEntry, Boolean value) {
+				// Value is the button value. Object is the row object.
+				Article article = listEntry.getArticle();
+				AsyncCallback<Favourite> updateCallback = new AsyncCallback<Favourite>() {
 
 					public void onFailure(Throwable caught) {
 
 					}
 
 					public void onSuccess(Favourite result) {
-
+						Notification.show("Listeneintrag wurde gelöscht.");
 					}
 
 				};
 
-				elv.createFavourite(selectedListEntry, selectedGroup, checkCallback);
-
+				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
+				
+				if(value == false) {
+//					elv.delete.deleteArticle(article, callback);
+				}else {
+					elv.createFavourite(listEntry, selectedGroup, updateCallback);
+				}
+				
+				
+				
 			}
 		});
 
+		
 		/*
 		 * Spalte der Artikel
 		 */
@@ -159,18 +168,6 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getArticle().getName() + ", " + listEntry.getArticle().getUnit();
 			}
 		};
-
-//		/*
-//		 * Spalte der Einheit
-//		 */
-//
-//		TextCell unitTextCell = new TextCell();
-//		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
-//
-//			public String getValue(ListEntry listEntry) {
-//				return listEntry.getArticle().getUnit();
-//			}
-//		};
 
 		/*
 		 * Spalte der Menge
@@ -209,6 +206,19 @@ public class ShoppingListForm extends VerticalPanel {
 		};
 
 		/*
+		 * Spalte der Favoriten-Artikel
+		 */
+
+		CheckboxCell favCB = new CheckboxCell(true, false);
+		Column<ListEntry, Boolean> favColumn = new Column<ListEntry, Boolean>(favCB) {
+
+			public Boolean getValue(ListEntry object) {
+
+				return selectionModel.isSelected(object);
+			}
+		};
+
+		/*
 		 * Spalte des Lösch-Buttons
 		 */
 		ButtonCell deleteButton = new ButtonCell();
@@ -221,7 +231,6 @@ public class ShoppingListForm extends VerticalPanel {
 		};
 
 		deleteColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
-
 			public void update(int index, ListEntry listEntry, String value) {
 				// Value is the button value. Object is the row object.
 
@@ -232,24 +241,27 @@ public class ShoppingListForm extends VerticalPanel {
 					}
 
 					public void onSuccess(Void result) {
-
+						Notification.show("Listeneintrag wurde gelöscht.");
 					}
 
 				};
 
-				Window.alert("Listeneintrag löschen" + listEntry);
+				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
 				elv.delete(listEntry, deleteCallback);
+				dataProvider.getList().remove(listEntry);
 			}
 		});
+
+		checkBoxColumn.setHorizontalAlignment(ALIGN_CENTER);
 
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
-		// cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
-		cellTable.addColumn(deleteColumn, "");
+		cellTable.addColumn(deleteColumn, "Eintrag löschen");
+		cellTable.addColumn(favColumn, "Favoriten");
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(articleColumn, 20, Unit.PX);
@@ -259,9 +271,10 @@ public class ShoppingListForm extends VerticalPanel {
 //		cellTable.setColumnWidth(storeColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(deleteColumn, 20, Unit.PX);
 
-		// cellTable.setSelectionModel(selectionModel,
-		// DefaultSelectionEventManager.<ListEntry>createCheckboxManager());
+		// SelectionModel das die Klick der Checkboxen regelt
+		cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<ListEntry>createCheckboxManager());
 
+		// Connect the table to the data provider.
 		dataProvider.addDataDisplay(cellTable);
 
 	}

@@ -193,10 +193,14 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 				RootPanel.get("details").clear();
 				groupForm = new AdministrationGroupForm();
-				groupForm.setSelected(selectedGroup);
 				groupForm.setGsltvm(gsltvm);
+				groupForm.setSelected(gsltvm.getSelectedGroup());
+				Window.alert(""+gsltvm.getSelectedGroup().getName());
+				
 				gsltvm.setGroupForm(groupForm);
 				RootPanel.get("details").add(groupForm);
+				
+				
 			}
 		}
 	}
