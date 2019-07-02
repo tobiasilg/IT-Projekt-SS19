@@ -30,6 +30,9 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
+import sharedShoppingList.client.SharedShoppingListReportEntry.CurrentReportUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -42,11 +45,12 @@ public class FilterShoppingList extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	private final MultiSelectionModel<ListEntry> multiSelectionModel = new MultiSelectionModel<ListEntry>();
 
-	private User selectedUser;
+	private User selectedUser=null;
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm selectedShoppingListForm = null;
+	private User user = CurrentUser.getUser();
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -174,6 +178,14 @@ public class FilterShoppingList extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
+		
+		TextCell unitTextCell = new TextCell();
+		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+				return String.valueOf(listEntry.getArticle().getUnit());
+			}
+		};
 
 		/*
 		 * Spalter der Stores
@@ -240,6 +252,7 @@ public class FilterShoppingList extends VerticalPanel {
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
+		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(deleteColumn, "");
@@ -253,17 +266,24 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		elv.filterByUser(selectedUser, new AsyncCallback<Vector<ListEntry>>() {
+		
+		selectedUser=user;
+		
+		
+		elv.filterByUser(selectedUser,gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 		
 			public void onFailure(Throwable caught) {
-				Window.alert("");
+				
 
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
-
+				Window.alert("onSuccess" + selectedUser.getName());
+				Window.alert("ListEntry: " + listEntry);
+				
 				for (ListEntry le : listEntry) {
+					Window.alert("in der for" + le.getArticle().getUnit());
 					list.add(le);
 				}
 			}
