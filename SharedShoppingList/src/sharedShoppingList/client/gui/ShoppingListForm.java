@@ -69,7 +69,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button filterByUserButton = new Button("Filtern nach Usern");
+	private Button filterByUserButton = new Button("Meine Einträge");
 
 	private ListBox storesListBox = new ListBox();
 	private ListBox usersListBox = new ListBox();
@@ -319,8 +319,8 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
-		cellTable.addColumn(deleteColumn, "Eintrag löschen");
 		cellTable.addColumn(favColumn, "Favoriten");
+		cellTable.addColumn(deleteColumn, "Eintrag löschen");
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(articleColumn, 20, Unit.PX);
