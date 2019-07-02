@@ -254,22 +254,22 @@ public class ShoppingListForm extends VerticalPanel {
 		/*
 		 * Spalte der User
 		 */
+		Window.alert("selectedGROUP  "+gsltvm.getSelectedGroup());
+//		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback <Vector<User>>() {
+//
+//			public void onFailure(Throwable caught) {
+//				Notification.show("User konnten nicht sauber gezogen werden");
+//			}
+//			
+//			public void onSuccess(Vector<User> result) {
+//				Window.alert("Hallo");
+//
+//				for (User user: result) {
+//					users.addElement(user);
+//				}
+//			}
+//		});
 		
-		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
-
-			public void onFailure(Throwable caught) {
-				Notification.show("3. failure");
-			}
-			
-			public void onSuccess(Vector<User> result) {
-				Window.alert("Hallo");
-//				usersListBox.clear();
-				for (User user: result) {
-					users.addElement(user);
-
-				}
-			}
-		});
 		for (User u : users) {
 			userNames.add(u.getName());
 		}
@@ -290,7 +290,7 @@ public class ShoppingListForm extends VerticalPanel {
 			public void update(int index, ListEntry listEntry, String value) {
 			
 				for (User u : users) {
-					if(u.getName().contentEquals(value));{
+					if(u.getName().equals(value));{
 						listEntry.setUser(u);
 						dataProvider.refresh();
 						
