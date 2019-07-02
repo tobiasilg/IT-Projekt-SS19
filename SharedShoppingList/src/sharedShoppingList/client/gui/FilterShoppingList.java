@@ -30,9 +30,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.SharedShoppingListEditorEntry;
 import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
-import sharedShoppingList.client.SharedShoppingListReportEntry.CurrentReportUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -45,12 +43,13 @@ public class FilterShoppingList extends VerticalPanel {
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 	private final MultiSelectionModel<ListEntry> multiSelectionModel = new MultiSelectionModel<ListEntry>();
 
-	private User selectedUser=null;
+	private User selectedUser;
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm selectedShoppingListForm = null;
 	private User user = CurrentUser.getUser();
+	ShoppingListForm slf;
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -59,8 +58,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button filterByUserButton = new Button("Filtern nach User");
-	private Button unfilteredButton = new Button ("Filterung aufheben");
+	private Button cancelButton = new Button("Alle Einträge");
 	private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -95,7 +93,7 @@ public class FilterShoppingList extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHandler());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		unfilteredButton.addClickHandler(new UnfilterdClickHandler());
+		cancelButton.addClickHandler(new CancelClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
@@ -110,7 +108,7 @@ public class FilterShoppingList extends VerticalPanel {
 		buttonPanel.add(saveSlButton);
 		buttonPanel.add(deleteSlButton);
 
-		filterPanel.add(filterByUserButton);
+		filterPanel.add(cancelButton);
 		filterPanel.add(filterByStoreListBox);
 
 		// CellTable
@@ -178,6 +176,10 @@ public class FilterShoppingList extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
+		
+		/*
+		 * Spalte der Einheit
+		 */
 		
 		TextCell unitTextCell = new TextCell();
 		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
@@ -269,21 +271,17 @@ public class FilterShoppingList extends VerticalPanel {
 		
 		selectedUser=user;
 		
-		
 		elv.filterByUser(selectedUser,gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 		
 			public void onFailure(Throwable caught) {
-				
+				Window.alert("");
 
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
-				Window.alert("onSuccess" + selectedUser.getName());
-				Window.alert("ListEntry: " + listEntry);
-				
+
 				for (ListEntry le : listEntry) {
-					Window.alert("in der for" + le.getArticle().getUnit());
 					list.add(le);
 				}
 			}
@@ -353,17 +351,18 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	
-	private class UnfilterdClickHandler implements ClickHandler {
+	/*
+	 * Clickhandler um wieder zurück auf alle Listeneinträge zu springen
+	 */
+	private class CancelClickHandler implements ClickHandler {
 		public void onClick (ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				selectedShoppingListForm = new ShoppingListForm();
-				selectedShoppingListForm.setSelected(selectedShoppingList);
-				selectedShoppingListForm.setSelected(selectedGroup);
-				RootPanel.get("details").add(selectedShoppingListForm);
-			
-			
-		}
+				slf = new ShoppingListForm();
+				slf.setSelected(selectedShoppingList);
+				slf.setSelected(selectedGroup);
+				RootPanel.get("details").add(slf);
+			}
 	}
 	}
 
