@@ -1,4 +1,3 @@
-
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
@@ -81,8 +80,10 @@ public class ShoppingListForm extends VerticalPanel {
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
 	private TextBox renameTextBox = new TextBox();
+
 	Vector<Store> stores = new Vector<Store>();
   List<String> storeNames = new ArrayList<String>();
+
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
@@ -170,7 +171,9 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, String> articleColumn = new Column<ListEntry, String>(articleTextCell) {
 
 			public String getValue(ListEntry listEntry) {
+
 				return listEntry.getArticle().getName();
+
 			}
 		};
 
@@ -204,7 +207,7 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-		
+
 
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
@@ -221,7 +224,7 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		});
 
-	
+
 		for (Store s : stores) {
 			storeNames.add(s.getName());
 		}

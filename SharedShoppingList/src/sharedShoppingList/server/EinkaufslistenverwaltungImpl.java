@@ -868,16 +868,15 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<ListEntry> filterByUser(User user, ShoppingList sl)throws IllegalArgumentException{
-		return this.listEntryMapper.findAllByCurrentUserAndSL(user, sl);
-//		
-//
-//		if(le.size() >0) {
-//			System.out.println("if filterByUser");
-//			return le;
-//		}
-//		System.out.println("filterByUser return null");
-//		return null;
+	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException{
+		Vector<ListEntry> le= this.getAllListEntriesByUser(user);
+		
+
+		if(le != null) {
+			return le;
+		}
+		
+		return null;
 	}
 
 	@Override
