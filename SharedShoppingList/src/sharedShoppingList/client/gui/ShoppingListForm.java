@@ -85,7 +85,10 @@ public class ShoppingListForm extends VerticalPanel {
 
 	private TextBox renameTextBox = new TextBox();
 	Vector<Store> stores = new Vector<Store>();
-  List<String> storeNames = new ArrayList<String>();
+	List<String> storeNames = new ArrayList<String>();
+  
+  	Vector <User> users = new Vector<User>();
+  	List<String> userNames = new ArrayList<String>();
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
@@ -271,16 +274,64 @@ public class ShoppingListForm extends VerticalPanel {
 		/*
 		 * Spalte der User
 		 */
+		
+		elv.getAllUsers(new AsyncCallback<Vector<User>>() {
 
-		TextCell userTextCell = new TextCell();
-		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userTextCell) {
+			public void onFailure(Throwable caught) {
+				Notification.show("3. failure");
+			}
+			
+			public void onSuccess(Vector<User> result) {
+				Window.alert("Hallo");
+//				usersListBox.clear();
+				for (User user: result) {
+					users.addElement(user);
+
+				}
+			}
+		});
+		for (User u : users) {
+			userNames.add(u.getName());
+		}
+		
+		SelectionCell userSelectionCell= new SelectionCell(userNames);
+		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
-				return listEntry.getUser().getName();
 
+				return listEntry.getUser().getName();
 			}
 		};
+		
+		userColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
+			@Override
+			public void update(int index, ListEntry listEntry, String value) {
+			
+				for (User u : users) {
+					if(u.getName().contentEquals(value));{
+						listEntry.setUser(u);
+						dataProvider.refresh();
+						
+					}
+				}
+				elv.save(listEntry, new SaveListAsyncCallback());
+				
+//				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
+			
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		/*
 		 * Spalte der Favoriten-Artikel
 		 */
@@ -735,6 +786,17 @@ public class ShoppingListForm extends VerticalPanel {
 
 		}
 
+	}
+	
+	private class SaveListAsyncCallback implements AsyncCallback <Void>{
+
+		public void onFailure (Throwable caught) {
+
+		}
+
+		public void onSuccess (Void result) {
+
+		}
 	}
 
 	private class FinalDeleteListCallback implements AsyncCallback<Void> {
