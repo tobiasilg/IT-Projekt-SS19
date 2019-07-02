@@ -49,6 +49,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm selectedShoppingListForm = null;
 	private User user = CurrentUser.getUser();
+	ShoppingListForm slf;
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -57,8 +58,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button filterByUserButton = new Button("Filtern nach User");
-	private Button unfilteredButton = new Button ("Filterung aufheben");
+	private Button cancelButton = new Button("Alle Einträge");
 	private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -93,7 +93,7 @@ public class FilterShoppingList extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHandler());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		unfilteredButton.addClickHandler(new UnfilterdClickHandler());
+		cancelButton.addClickHandler(new CancelClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
@@ -108,7 +108,7 @@ public class FilterShoppingList extends VerticalPanel {
 		buttonPanel.add(saveSlButton);
 		buttonPanel.add(deleteSlButton);
 
-		filterPanel.add(filterByUserButton);
+		filterPanel.add(cancelButton);
 		filterPanel.add(filterByStoreListBox);
 
 		// CellTable
@@ -351,17 +351,18 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	
-	private class UnfilterdClickHandler implements ClickHandler {
+	/*
+	 * Clickhandler um wieder zurück auf alle Listeneinträge zu springen
+	 */
+	private class CancelClickHandler implements ClickHandler {
 		public void onClick (ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				selectedShoppingListForm = new ShoppingListForm();
-				selectedShoppingListForm.setSelected(selectedShoppingList);
-				selectedShoppingListForm.setSelected(selectedGroup);
-				RootPanel.get("details").add(selectedShoppingListForm);
-			
-			
-		}
+				slf = new ShoppingListForm();
+				slf.setSelected(selectedShoppingList);
+				slf.setSelected(selectedGroup);
+				RootPanel.get("details").add(slf);
+			}
 	}
 	}
 
