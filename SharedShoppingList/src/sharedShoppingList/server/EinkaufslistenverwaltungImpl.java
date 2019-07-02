@@ -497,7 +497,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.listEntryMapper.findAllListEntries();
 		
 	}
-	
+	 
 	/**
 	 * Methode wird benötigt um nach dem Löschen einer ShoppingListe, die zugehörigen
 	 * Listeneinträge zu löschen
@@ -868,7 +868,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException{
+	public Vector<ListEntry> filterByUser(User user, ShoppingList sl)throws IllegalArgumentException{
 		Vector<ListEntry> le= this.getAllListEntriesByUser(user);
 		
 
