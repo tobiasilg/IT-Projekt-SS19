@@ -195,6 +195,64 @@ public class ListEntryMapper {
 				
 			}
 			return result;
+		} 
+		
+		/*
+		 * Methode zur Auflistung aller Einträge einer Einkaufsliste gefiltert nach User
+		 * Gui: Filter Button, der dafür sorgt, dass nur LE des currentusers ausgegeben werden
+		 */
+
+		public Vector<ListEntry> findAllByCurrentUserAndSL(User user, ShoppingList sl){
+			Connection con = DBConnection.connection();
+
+			String sql="SELECT article.name, article.unit, listentry.id, listentry.checked, listentry.amount, user.name as username, store.name as storename, favourite.id as favid FROM listentry " + 
+					"left join article " + 
+					"	on listentry.articleid = article.id " + 
+					"left join user " + 
+					"	on listentry.userid = user.id " + 
+					"left join store " + 
+					"	on listentry.storeid = store.id " + 
+					"left join favourite " + 
+					"	on listentry.id=favourite.listentryid " + 
+					"WHERE listentry.shoppinglistid= " + sl.getId() +
+					" AND listentry.userid= "+ user.getId();
+
+			Vector<ListEntry> result= new Vector<ListEntry>();
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					ListEntry listEntry = new ListEntry();
+					listEntry.setChecked(rs.getBoolean("checked"));
+					listEntry.setAmount(rs.getDouble("amount"));
+					listEntry.setId(rs.getInt("id"));
+
+					Article article = new Article();
+					article.setName(rs.getString("name"));
+					article.setUnit(rs.getString("unit"));
+
+					User u=new User();
+					u.setName(rs.getString("username"));
+
+					Store store= new Store();
+					store.setName(rs.getString("storename"));
+
+					Favourite fav=new Favourite();
+					fav.setId(rs.getInt("favid"));
+
+
+					listEntry.setArticle(article);
+					listEntry.setStore(store);
+					listEntry.setUser(u);
+					listEntry.setFavourite(fav);
+
+					result.addElement(listEntry);
+				}
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}
+			return result;
 		}
 		
 		/*

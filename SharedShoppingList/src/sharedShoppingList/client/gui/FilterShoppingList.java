@@ -30,6 +30,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -47,6 +48,8 @@ public class FilterShoppingList extends VerticalPanel {
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm selectedShoppingListForm = null;
+	private User user = CurrentUser.getUser();
+	ShoppingListForm slf;
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -55,8 +58,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private Button saveSlButton = new Button("Änderungen speichern");
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
-	private Button filterByUserButton = new Button("Filtern nach User");
-	private Button unfilteredButton = new Button ("Filterung aufheben");
+	private Button cancelButton = new Button("Alle Einträge");
 	private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -91,7 +93,7 @@ public class FilterShoppingList extends VerticalPanel {
 		saveSlButton.addClickHandler(new RenameShoppingListClickHandler());
 		deleteSlButton.addClickHandler(new DeleteShoppingListClickHandler());
 		createShoppingListButton.addClickHandler(new CreateShoppingListClickHandler());
-		unfilteredButton.addClickHandler(new UnfilterdClickHandler());
+		cancelButton.addClickHandler(new CancelClickHandler());
 
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
@@ -106,7 +108,7 @@ public class FilterShoppingList extends VerticalPanel {
 		buttonPanel.add(saveSlButton);
 		buttonPanel.add(deleteSlButton);
 
-		filterPanel.add(filterByUserButton);
+		filterPanel.add(cancelButton);
 		filterPanel.add(filterByStoreListBox);
 
 		// CellTable
@@ -172,6 +174,18 @@ public class FilterShoppingList extends VerticalPanel {
 
 			public String getValue(ListEntry listEntry) {
 				return String.valueOf(listEntry.getAmount());
+			}
+		};
+		
+		/*
+		 * Spalte der Einheit
+		 */
+		
+		TextCell unitTextCell = new TextCell();
+		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+				return String.valueOf(listEntry.getArticle().getUnit());
 			}
 		};
 
@@ -240,6 +254,7 @@ public class FilterShoppingList extends VerticalPanel {
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
+		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(deleteColumn, "");
@@ -253,7 +268,10 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		elv.filterByUser(selectedUser, new AsyncCallback<Vector<ListEntry>>() {
+		
+		selectedUser=user;
+		
+		elv.filterByUser(selectedUser,gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 		
 			public void onFailure(Throwable caught) {
@@ -333,17 +351,18 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	
-	private class UnfilterdClickHandler implements ClickHandler {
+	/*
+	 * Clickhandler um wieder zurück auf alle Listeneinträge zu springen
+	 */
+	private class CancelClickHandler implements ClickHandler {
 		public void onClick (ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				selectedShoppingListForm = new ShoppingListForm();
-				selectedShoppingListForm.setSelected(selectedShoppingList);
-				selectedShoppingListForm.setSelected(selectedGroup);
-				RootPanel.get("details").add(selectedShoppingListForm);
-			
-			
-		}
+				slf = new ShoppingListForm();
+				slf.setSelected(selectedShoppingList);
+				slf.setSelected(selectedGroup);
+				RootPanel.get("details").add(slf);
+			}
 	}
 	}
 
