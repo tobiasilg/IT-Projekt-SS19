@@ -1,3 +1,4 @@
+
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
@@ -738,3 +739,5 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 }
+
+
