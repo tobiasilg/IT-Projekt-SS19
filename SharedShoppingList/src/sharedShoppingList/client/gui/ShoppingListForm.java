@@ -10,8 +10,6 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -44,7 +42,6 @@ import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
-import sharedShoppingList.shared.bo.User;
 
 /**
  * 
@@ -201,24 +198,6 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		/*
-		 * Spalte der Stores
-		 */
-
-		elv.getAllListEntriesByShoppingList(gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
-
-			public void onFailure(Throwable caught) {
-				Window.alert("");
-			}
-
-			public void onSuccess(Vector<ListEntry> listEntry) {
-				Window.alert("onSuccess getAllbyshoppinglist");
-				for (ListEntry le : listEntry) {
-					list.add(le);
-				}
-
-			}
-		});
 
 		// StoresListBox
 
