@@ -10,7 +10,8 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
-
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -31,7 +32,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
@@ -43,6 +44,7 @@ import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
 
 /**
  * 
@@ -73,19 +75,23 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
 	private Button filterByUserButton = new Button("Filtern nach Usern");
 
+	private ListBox storesListBox = new ListBox();
+	private ListBox usersListBox = new ListBox();
+
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
 	private TextBox renameTextBox = new TextBox();
+	Vector<Store> stores = new Vector<Store>();
+  List<String> storeNames = new ArrayList<String>();
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
 
 	// Create a data provider.
-	Vector<Store> stores = new Vector<Store>();
-	Vector<String> storeNames = new Vector<String>();
+
 	private ListDataProvider<ListEntry> dataProvider = new ListDataProvider<ListEntry>();
 	private List<ListEntry> list = dataProvider.getList();
 	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
@@ -207,14 +213,16 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-	elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		
+
+		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
 			public void onFailure(Throwable caught) {
 				Notification.show("3. failure");
 			}
 
 			public void onSuccess(Vector<Store> result) {
-
+				storesListBox.clear();
 				for (Store store : result) {
 					stores.addElement(store);
 
@@ -222,6 +230,7 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		});
 
+	
 		for (Store s : stores) {
 			storeNames.add(s.getName());
 		}
@@ -383,7 +392,28 @@ public class ShoppingListForm extends VerticalPanel {
 
 		});
 
+
+		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
+
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler in ShoppingListForm");
+			}
+
+			public void onSuccess(Vector<ListEntry> listEntry) {
+				for (ListEntry le : listEntry) {
+					list.add(le);
+				}
+
+			}
+		});
+
+
 	}
+
+	/***********************************************************************
+	 * Abschnitt der METHODEN
+	 ***********************************************************************
+	 */
 
 	/***********************************************************************
 	 * Delete DialogBox
@@ -448,6 +478,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 			this.selectedShoppingList = sl;
 			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
+			
+			dataProvider.getList().clear();
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
 		}
