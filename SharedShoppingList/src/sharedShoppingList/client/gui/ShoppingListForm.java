@@ -326,8 +326,13 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, String> favColumn = new Column<ListEntry, String>(favSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
-
-				return "ja";
+				
+				int favid = listEntry.getFavourite().getId();
+				if (favid == 0) {
+					return "nein";
+				}else {
+					return "ja";
+				}
 
 			}
 		};
