@@ -42,6 +42,7 @@ import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
 import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
+import sharedShoppingList.shared.bo.User;
 
 /**
  * 
