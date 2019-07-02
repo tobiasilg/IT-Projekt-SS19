@@ -89,10 +89,11 @@ public class FavouriteMapper {
 	return favourite;
 	}
 	
-	public void deleteFavourite (Favourite favourite) {
+	public void deleteFavourite (ListEntry listentry, Group group) {
 		Connection con = DBConnection.connection();
 		
-		String sql ="DELETE FROM favourite WHERE id ="+ favourite.getId();
+		String sql ="DELETE FROM favourite WHERE groupid= "+ group.getId() +
+			" AND listentryid = "+ listentry.getId();
 		
 		try {
 			

@@ -100,7 +100,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createFavourite(ListEntry listentry, Group group, AsyncCallback<Favourite> callback);
 
-	void delete (Favourite favourite, AsyncCallback<Void> callback);
+	void delete (ListEntry listentry, Group group, AsyncCallback<Void> callback);
 
 	void getAllFavourites(AsyncCallback<Vector<Favourite>> callback);
 
@@ -116,7 +116,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void filterByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
 
-	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
+	void filterByUser(User user, ShoppingList sl, AsyncCallback<Vector<ListEntry>> callback);
 
 	void getArticleById(int id, AsyncCallback<Article> callback);
 
