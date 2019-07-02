@@ -1,6 +1,6 @@
 package sharedShoppingList.client.gui;
 
-//import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	private AdministrationGroupForm groupForm; // Klasse die die Gruppe mit den Gruppenmitgliedern anzeigt
 	private ShoppingListForm shoppingListForm; // Klasse die die Einkaufsliste der jeweiligen Gruppe anzeigt
 
-//	private ArrayList<Group> groups = new ArrayList<Group>();
+	//private ArrayList<Group> groups = new ArrayList<Group>();
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedList = null;
@@ -117,14 +117,14 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	/*
 	 * Getter und Setter für Group ArrayList
 	 */
-
+//
 //	public ArrayList<Group> getGroups() {
 //		return groups;
 //	}
-
+//
 //	public void setGroups(ArrayList<Group> groups) {
 //		this.groups = groups;
-
+//
 //	}
 	/*
 	 * Setter für die Forms
@@ -147,6 +147,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 		selectedGroup = g;
 		groupForm.setSelected(g);
 		selectedList = null;
+	//	shoppingListForm.setSelected(null);
 		RootPanel.get("details").add(groupForm);
 	}
 
@@ -187,11 +188,14 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	 * Knoten in den Tree
 	 */
 	void addGroup(Group group) {
-		//List<Group> listofGroups = groupDataProvider.getList();
-		//listofGroups.add(g);
-		//this.getGroups().add(g);
-		//selectionModel.setSelected(g, true);
-		//groupDataProvider.refresh();
+		
+//		List<Group> listofGroups = groupDataProvider.getList();
+//		this.getGroups().add(group);
+//		listofGroups.add(group);
+//		
+//		selectionModel.setSelected(group, true);
+//		groupDataProvider.refresh();
+		
 		groupDataProvider.getList().add(group);
 		Window.alert("addGroup");
 		selectionModel.setSelected(group, true);
@@ -218,6 +222,26 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 	void removeGroup(Group group) {
 		groupDataProvider.getList().remove(group);
 		shoppingListDataProviders.remove(group);
+	}
+	
+	public void refresh() {
+		groupDataProvider.getList().clear();
+		this.einkaufslistenVerwaltung.getGroupsByUser(user, new AsyncCallback<Vector<Group>>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Notification.show(caught.toString());
+				}
+
+				@Override
+				public void onSuccess(Vector<Group> group) {
+
+					for (Group g : group) {
+						groupDataProvider.getList().add(g);
+				}
+		}
+		
+	});
 	}
 
 	/*
@@ -317,8 +341,10 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 					for(Group g : group) {
 						//Window.alert("g hat den Wert: " + g.getName());
 						
-						groupDataProvider.getList().add(g);
-						//GroupShoppingListTreeViewModel.this.addGroup(g);
+					//	groupDataProvider.getList().add(g);
+//						GroupShoppingListTreeViewModel.this.addGroup(g);
+						//groupDataProvider.getList().add(g);
+						GroupShoppingListTreeViewModel.this.addGroup(g);
 					//	Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
 					}
 			
