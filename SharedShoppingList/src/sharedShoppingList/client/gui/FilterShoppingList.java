@@ -30,6 +30,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.SharedShoppingListEditorEntry.CurrentUser;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -47,6 +48,7 @@ public class FilterShoppingList extends VerticalPanel {
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
 	private ShoppingListForm selectedShoppingListForm = null;
+	private User user = CurrentUser.getUser();
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
@@ -174,6 +176,18 @@ public class FilterShoppingList extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
+		
+		/*
+		 * Spalte der Einheit
+		 */
+		
+		TextCell unitTextCell = new TextCell();
+		Column<ListEntry, String> unitColumn = new Column<ListEntry, String>(unitTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+				return String.valueOf(listEntry.getArticle().getUnit());
+			}
+		};
 
 		/*
 		 * Spalter der Stores
@@ -240,6 +254,7 @@ public class FilterShoppingList extends VerticalPanel {
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
+		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(deleteColumn, "");
@@ -253,7 +268,10 @@ public class FilterShoppingList extends VerticalPanel {
 	 ***********************************************************************
 	 */
 	public void onLoad() {
-		elv.filterByUser(selectedUser, new AsyncCallback<Vector<ListEntry>>() {
+		
+		selectedUser=user;
+		
+		elv.filterByUser(selectedUser,gsltvm.getSelectedList(), new AsyncCallback<Vector<ListEntry>>() {
 
 		
 			public void onFailure(Throwable caught) {
