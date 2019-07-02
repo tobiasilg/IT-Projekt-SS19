@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
+
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -85,7 +85,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	// Create a data provider.
 	Vector<Store> stores = new Vector<Store>();
-	Vector<String> storeNames = new Vector<String>();
+	List<String> storeNames = new ArrayList<String>();
 	private ListDataProvider<ListEntry> dataProvider = new ListDataProvider<ListEntry>();
 	private List<ListEntry> list = dataProvider.getList();
 	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
@@ -207,10 +207,10 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-	elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
 			public void onFailure(Throwable caught) {
-				Notification.show("3. failure");
+				Notification.show("Fehler beim Laden der Einzelhändler");
 			}
 
 			public void onSuccess(Vector<Store> result) {
@@ -221,29 +221,29 @@ public class ShoppingListForm extends VerticalPanel {
 				}
 			}
 		});
-
+		List<String> storeNames = new ArrayList<String>();
 		for (Store s : stores) {
 			storeNames.add(s.getName());
 		}
 		SelectionCell storeSelectionCell = new SelectionCell(storeNames);
 		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storeSelectionCell) {
 
-			public String getValue(ListEntry listEntry) {
-
-				return listEntry.getStore().getName();
+			public String getValue(ListEntry object) {
+				return object.getStore().getName();
 			}
 		};
 
 		storeColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
-
-			@Override
+						
 			public void update(int index, ListEntry listEntry, String value) {
-				for (Store s : stores) {
-					if (s.getName().equals(value)) {
-						listEntry.setStore(s);
+				for (Store store : stores) {
+					if(store.getName().equals(value)) {
+						listEntry.setStore(store);
 					}
 				}
-
+				elv.save(listEntry, new SaveListAsyncCallback());
+				
+				
 			}
 		});
 
@@ -690,6 +690,17 @@ public class ShoppingListForm extends VerticalPanel {
 
 		}
 
+	}
+	
+	private class SaveListAsyncCallback implements AsyncCallback <Void>{
+		
+		public void onFailure (Throwable caught) {
+			
+		}
+		
+		public void onSuccess (Void result) {
+			
+		}
 	}
 
 	private class FinalDeleteListCallback implements AsyncCallback<Void> {
