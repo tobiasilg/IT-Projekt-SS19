@@ -9,6 +9,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -89,6 +90,22 @@ public class Navigator extends FlowPanel {
 		gsltvm = new GroupShoppingListTreeViewModel();
 		
 		tree = new CellTree(gsltvm, "Root");
+		
+		//Link zur Benutzerdokumentation:
+		
+			/**
+			 * Bei Projektfertigstellung auskommentieren und finalen Link bitte noch anpassen
+			 * 
+			 * @TODO Link update
+			 */
+			
+			/*
+			HTML link = 
+					new HTML("<a href=\"https://drive.google.com/open?id=1SFYfOuubtRB8qTkFat00Dc56nvUHQvRL8kpAtkdmd3s\" "
+					+ "target=\"_blank\">"
+					+  "Benutzerhandbuch lesen</a>");
+			agf.add(link);*/
+		
 		
 		// Zusammenführen der Forms für den Tree
 		gsltvm.setGroupForm(agf);
