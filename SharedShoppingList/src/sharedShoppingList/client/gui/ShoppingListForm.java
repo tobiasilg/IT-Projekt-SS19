@@ -35,6 +35,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
+import sharedShoppingList.client.gui.AdministrationGroupForm.SaveRenameGroupCallback;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
@@ -570,7 +571,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 		if (sl != null) {
 
-			this.selectedShoppingList = sl;
+			selectedShoppingList = sl;
 			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
 
 			dataProvider.getList().clear();
@@ -668,18 +669,19 @@ public class ShoppingListForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 
-			if (renameTextBox.getValue() == "") {
-				Window.alert("Die Einkaufsliste muss einen Namen besitzen!");
+			if (selectedShoppingList != null) {
+
+				selectedShoppingList.setName(renameTextBox.getValue());
+
+				elv.save(selectedShoppingList, new RenameShoppingListCallback());
 
 			} else {
-				selectedShoppingList.setName(renameTextBox.getValue());
-				elv.save(selectedShoppingList, new RenameShoppingListCallback());
+				Window.alert("Es wurde keine Liste ausgewhält");
 			}
 
 		}
 
 	}
-
 	private class DeleteShoppingListClickHanlder implements ClickHandler {
 
 		@Override
@@ -793,7 +795,7 @@ public class ShoppingListForm extends VerticalPanel {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 
 			slf.setSelected(selectedShoppingList);
-			slf.setSelected(selectedGroup);
+	//		slf.setSelected(selectedGroup);
 			RootPanel.get("details").add(slf);
 
 		}
@@ -840,6 +842,9 @@ public class ShoppingListForm extends VerticalPanel {
 		@Override
 		public void onSuccess(Void result) {
 			Notification.show("Die Einkaufsliste wurde erfolgreich gelöscht");
+			
+			
+			RootPanel.get("details").clear();
 
 			gsltvm.removeShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
