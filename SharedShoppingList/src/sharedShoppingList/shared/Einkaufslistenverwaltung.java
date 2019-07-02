@@ -122,7 +122,7 @@ public interface Einkaufslistenverwaltung extends RemoteService {
 
 	public Vector<ListEntry> filterByStore(Store store) throws IllegalArgumentException;
 
-	public Vector<ListEntry> filterByUser(User user, ShoppingList sl) throws IllegalArgumentException;
+	public Vector<ListEntry> filterByUser(User user) throws IllegalArgumentException;
 
 	public Article getArticleById(int id) throws IllegalArgumentException;
 

@@ -116,7 +116,7 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void filterByStore(Store store, AsyncCallback<Vector<ListEntry>> callback);
 
-	void filterByUser(User user, ShoppingList sl, AsyncCallback<Vector<ListEntry>> callback);
+	void filterByUser(User user, AsyncCallback<Vector<ListEntry>> callback);
 
 	void getArticleById(int id, AsyncCallback<Article> callback);
 
