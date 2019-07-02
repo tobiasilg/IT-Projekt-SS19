@@ -2,6 +2,7 @@
 package sharedShoppingList.client.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -30,7 +31,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
@@ -83,8 +83,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private TextBox renameTextBox = new TextBox();
 
 	Vector<Store> stores = new Vector<Store>();
-  List<String> storeNames = new ArrayList<String>();
-
+	List<String> storeNames = new ArrayList<String>();
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
@@ -189,7 +188,7 @@ public class ShoppingListForm extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
-		
+
 		/*
 		 * Spalte der Einheit
 		 */
@@ -202,13 +201,10 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-
 		// StoresListBox
 
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
-
-
 
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
@@ -224,7 +220,6 @@ public class ShoppingListForm extends VerticalPanel {
 				}
 			}
 		});
-
 
 		for (Store s : stores) {
 			storeNames.add(s.getName());
@@ -264,18 +259,62 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
+		ArrayList<String> favs = new ArrayList<String>();
+		favs.addAll(Arrays.asList("nein", "ja"));
+
 		/*
 		 * Spalte der Favoriten-Artikel
 		 */
+		// SelectionModel das die Klick der Checkboxen regelt
+		SelectionCell favSelectionCell = new SelectionCell(favs);
+		Column<ListEntry, String> favColumn = new Column<ListEntry, String>(favSelectionCell) {
 
-		CheckboxCell favCB = new CheckboxCell(true, false);
-		Column<ListEntry, Boolean> favColumn = new Column<ListEntry, Boolean>(favCB) {
+			public String getValue(ListEntry listEntry) {
 
-			public Boolean getValue(ListEntry object) {
+				return "ja";
 
-				return selectionModel.isSelected(object);
 			}
 		};
+
+		favColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
+			public void update(int index, ListEntry listEntry, String value) {
+				// Value is the button value. Object is the row object.
+
+				AsyncCallback<Favourite> creteFavCallback = new AsyncCallback<Favourite>() {
+
+					public void onFailure(Throwable caught) {
+
+					}
+
+					public void onSuccess(Favourite result) {
+						Notification.show("Eintrag ist jetzt ein Favourite.");
+
+					}
+
+				};
+
+				AsyncCallback<Void> deleteFavCallback = new AsyncCallback<Void>() {
+
+					public void onFailure(Throwable caught) {
+
+					}
+
+					public void onSuccess(Void result) {
+						Notification.show("Eintrag ist jetzt kein Favourite mehr.");
+
+					}
+
+				};
+
+				Window.alert("Value" + value);
+				if (value == "ja") {
+					elv.createFavourite(listEntry, gsltvm.getSelectedGroup(), creteFavCallback);
+				} else {
+					elv.delete(listEntry, gsltvm.getSelectedGroup(), deleteFavCallback);
+				}
+
+			}
+		});
 
 		/*
 		 * Spalte des Lösch-Buttons
@@ -388,7 +427,6 @@ public class ShoppingListForm extends VerticalPanel {
 
 		});
 
-
 		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
@@ -402,7 +440,6 @@ public class ShoppingListForm extends VerticalPanel {
 
 			}
 		});
-
 
 	}
 
@@ -474,7 +511,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 			this.selectedShoppingList = sl;
 			infoTitleLabel.setText("Einkaufsliste: " + selectedShoppingList.getName());
-			
+
 			dataProvider.getList().clear();
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
@@ -739,4 +776,3 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 }
-
