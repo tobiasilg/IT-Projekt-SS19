@@ -96,6 +96,10 @@ body {
 
 #header {
 	background-color: #d5dee0;
+  	background-image: -webkit-gradient(linear, left top, right top, from(lightgrey) , to(darkgrey));
+  	background-image: -webkit-linear-gradient(left, lightgrey , darkgrey);
+  	background-image: -o-linear-gradient(left, lightgrey , darkgrey);
+  	background-image: linear-gradient(to right, lightgrey , darkgrey); /* Verlauf */
 	-ms-grid-column: 1;
 	grid-column-start: 1;
 	-ms-grid-column-span: 4;
@@ -138,6 +142,10 @@ body {
 
 #footer {
 	background-color: #d5dee0;
+  	background-image: -webkit-gradient(linear, left top, right top, from(lightgrey) , to(darkgrey));
+  	background-image: -webkit-linear-gradient(left, lightgrey , darkgrey);
+  	background-image: -o-linear-gradient(left, lightgrey , darkgrey);
+  	background-image: linear-gradient(to right, lightgrey , darkgrey); /* Verlauf */
 	-ms-grid-column: 1;
 	grid-column-start: 1;
 	-ms-grid-column-span: 4;
@@ -639,6 +647,8 @@ body {
 	-webkit-box-align: stretch;
 	-ms-flex-align: stretch;
 	align-items: stretch;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	position: relative;
 	
@@ -670,6 +680,8 @@ body {
 	-webkit-box-align: stretch;
 	-ms-flex-align: stretch;
 	align-items: stretch;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	position: relative;
 	z-index: 30;
@@ -685,11 +697,16 @@ body {
 	cursor: pointer;
 	text-align: center;
 	white-space: nowrap;
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	font-size: 1rem;
-	user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 	text-decoration: none;
 }
 .deleteButton.gwt-Button {
@@ -700,7 +717,10 @@ body {
 	cursor: pointer;
 	text-align: center;
 	font-size: 1rem;
-	user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 	
 }
 .createButton.gwt-Button {
@@ -711,12 +731,18 @@ body {
 	cursor: pointer;
 	text-align: center;
 	white-space: nowrap;
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	border: 1px solid transparent;
 	border-radius: 4px;
-	box-shadow: none;
+	-webkit-box-shadow: none;
+	        box-shadow: none;
 	font-size: 1rem;
-	user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 	text-decoration: none;
 	
 }
