@@ -83,6 +83,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private VerticalPanel cellTableVP = new VerticalPanel();
 
 	private TextBox renameTextBox = new TextBox();
+	Vector<Store> stores = new Vector<Store>();
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
@@ -210,7 +211,7 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-		Vector<Store> stores = new Vector<Store>();
+		
 
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
 
