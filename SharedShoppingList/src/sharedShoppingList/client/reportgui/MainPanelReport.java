@@ -114,7 +114,7 @@ public class MainPanelReport extends VerticalPanel {
 
 	public void onLoad() {
 
-		Window.alert("User: " + user.getId());
+		
 
 		/**
 		 * Zusammensetzung der Panels und Widgets
@@ -199,7 +199,7 @@ public class MainPanelReport extends VerticalPanel {
 //				Group currentGroup = result;
 //				currentGroup.getId();
 
-				Window.alert("result: " + result);
+				
 
 				ArrayList<Group> groups = new ArrayList<Group>();
 				Group noGroup = new Group();
@@ -230,7 +230,7 @@ public class MainPanelReport extends VerticalPanel {
 
 				selectedStore = allStores.get(storeListBox.getSelectedIndex());
 
-				Window.alert("Store: " + selectedStore.getName());
+				
 
 				if (FromDateBox.getValue() == null && toDateBox.getValue() == null) {
 
@@ -241,16 +241,14 @@ public class MainPanelReport extends VerticalPanel {
 				} else if (selectedStore.getId() == 0) {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
-					Window.alert("Datum von: " + sqlStartDate);
-					Window.alert("Datum bis: " + sqlEndDate);
+					
 					repoClient.createListByPeriodAndStore(null, sqlStartDate, sqlEndDate, currentGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nur nach Datum filtern");
 				} else {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
-					Window.alert("Datum: " + sqlStartDate);
-					Window.alert("Datum bis: " + sqlEndDate);
+					
 					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate, sqlEndDate, currentGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
 					Window.alert("Nach allem Filtern");
@@ -284,7 +282,7 @@ public class MainPanelReport extends VerticalPanel {
 				RootPanel.get("report").add(new HTML(writer.getReportText()));
 			}
 
-			Window.alert("komme bis zur onSuccess");
+			
 
 		}
 	}

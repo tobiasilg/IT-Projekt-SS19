@@ -143,8 +143,8 @@ public class ListEntryMapper {
 	public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
 		Connection con = DBConnection.connection();
 
-		String sql = "SELECT article.name, article.unit, listentry.id, listentry.checked,"
-				+ " listentry.amount, user.name as username, store.name as storename,"
+		String sql = "SELECT article.id as articleid, article.name, article.unit, listentry.id, listentry.checked,"
+				+ " listentry.amount, user. id as userid, user.name as username, store.id as storeid, store.name as storename,"
 				+ " favourite.id as favid FROM listentry " + "left join article "
 				+ "	on listentry.articleid = article.id " + "left join user " + "	on listentry.userid = user.id "
 				+ "left join store " + "	on listentry.storeid = store.id " + "left join favourite "
@@ -163,23 +163,28 @@ public class ListEntryMapper {
 				listEntry.setId(rs.getInt("id"));
 
 				Article article = new Article();
+				article.setId(rs.getInt("articleid"));
 				article.setName(rs.getString("name"));
 				article.setUnit(rs.getString("unit"));
 
 				User user = new User();
+				user.setId(rs.getInt("userid"));
 				user.setName(rs.getString("username"));
 
 				Store store = new Store();
+				store.setId(rs.getInt("storeid"));
 				store.setName(rs.getString("storename"));
 
 				Favourite fav = new Favourite();
 				fav.setId(rs.getInt("favid"));
 
 				listEntry.setArticle(article);
+				listEntry.setArticleId(rs.getInt("articleid"));
 				listEntry.setStore(store);
+				listEntry.setStoreId(rs.getInt("storeid"));
 				listEntry.setUser(user);
+				listEntry.setUserId(rs.getInt("userid"));
 				listEntry.setFavourite(fav);
-				System.out.println(listEntry.getFavourite().getId());
 
 				result.addElement(listEntry);
 
@@ -325,12 +330,12 @@ public class ListEntryMapper {
 	public Vector<ListEntry> findAllByCurrentUser(User user) {
 		Connection con = DBConnection.connection();
 		String sql = "SELECT * FROM listentry WHERE userid=" + user.getId();
-		
-		Vector<ListEntry> result= new Vector<ListEntry>();
+
+		Vector<ListEntry> result = new Vector<ListEntry>();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			
+
 			while (rs.next()) {
 				ListEntry listEntry = new ListEntry();
 				listEntry.setId(rs.getInt("id"));
@@ -343,31 +348,29 @@ public class ListEntryMapper {
 				listEntry.setUserId(rs.getInt("userid"));
 				listEntry.setStoreId(rs.getInt("storeid"));
 				listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
-				
+
 				result.addElement(listEntry);
 			}
-		}catch(SQLException ex){
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 		return result;
-			
-		}
-		
-		public void deleteFav(int listentryid) {
-			
-			Connection con = DBConnection.connection();
-			String sql="DELETE FROM favourite where listentryid = " + listentryid;
-			try {
 
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate(sql);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
+	}
+
+	public void deleteFav(int listentryid) {
+
+		Connection con = DBConnection.connection();
+		String sql = "DELETE FROM favourite where listentryid = " + listentryid;
+		try {
+
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		
+
+	}
 
 	/*
 	 * Methode zum Löschen eines Listeneintrags aus der Datenbank
@@ -466,22 +469,22 @@ public class ListEntryMapper {
 		if (store != null && beginningDate != null && endDate != null) {
 			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 			String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
-			sql = "SELECT le.*, e.groupId FROM listentry AS le "
-					+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id " + "WHERE le.buyDate BETWEEN '" + date
-					+ "' AND '" + enddate + "AND e.groupId = " + groupId + " AND storeid = " + store.getId();
+			sql = "SELECT le.*, e.groupId FROM listentry AS le"
+					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id " + "WHERE le.buyDate BETWEEN '" + date
+					+ "' AND '" + enddate + "' AND e.groupId = " + groupId + " AND storeid = " + store.getId();
 
 		}
 		if (store == null && beginningDate != null && endDate != null) {
 			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 			String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
-			sql = "SELECT le.*, e.groupId FROM listentry AS le"
-					+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" + "WHERE le.buyDate BETWEEN '" + date
-					+ "' AND '" + enddate + "AND e.groupId =" + groupId;
+			sql = "SELECT le.*, e.id FROM listentry AS le"
+					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id " + "WHERE le.buyDate BETWEEN '" + date
+					+ "' AND '" + enddate + "' AND e.id =" + groupId;
 		}
 		if (store != null && beginningDate == null && endDate == null) {
 			sql = "SELECT le.*, e.groupId FROM listentry AS le"
-					+ "LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" + "WHERE e.groupId =" + groupId
-					+ "AND storeid =" + store.getId();
+					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" + "WHERE e.groupId =" + groupId
+					+ " AND storeid =" + store.getId();
 
 		}
 		Vector<ListEntry> result = new Vector<ListEntry>();
