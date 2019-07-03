@@ -94,6 +94,8 @@ public class ShoppingListForm extends VerticalPanel {
 	private List<ListEntry> list = dataProvider.getList();
 	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
 
+	private int newListEntryid = 0;
+
 	/**
 	 * The key provider that allows us to identify Contacts even if a field changes.
 	 * We identify contacts by their unique ID.
@@ -131,7 +133,6 @@ public class ShoppingListForm extends VerticalPanel {
 			public Boolean getValue(ListEntry object) {
 
 				return object.isChecked();
-
 
 			}
 
@@ -175,7 +176,12 @@ public class ShoppingListForm extends VerticalPanel {
 
 			public String getValue(ListEntry listEntry) {
 
-				return listEntry.getArticle().getName();
+				if (listEntry.getId() == newListEntryid) {
+					return "new";
+
+				} else {
+					return "";
+				}
 
 			}
 		};
@@ -284,15 +290,15 @@ public class ShoppingListForm extends VerticalPanel {
 				elef.setShoppinglistForm(ShoppingListForm.this);
 				elef.setSelectedGroup(selectedGroup);
 				elef.setSelected(selectedShoppingList);
-				
+
 				selectedListEntry = listEntry;
-				
+
 				elef.setSelectedListEntry(listEntry);
-				
+
 				Window.alert(String.valueOf(listEntry.getId()));
-				
+
 				RootPanel.get("details").add(elef);
-			
+
 			}
 		});
 
@@ -386,7 +392,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 				};
 
-	//			Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
+				// Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
 				elv.delete(listEntry, deleteCallback);
 				dataProvider.getList().remove(listEntry);
 			}
@@ -430,6 +436,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 	public void onLoad() {
 
+		newListEntryid = gsltvm.getSelectedList().getNewOne();
+
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
@@ -471,7 +479,7 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 		});
- 
+
 		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
@@ -528,7 +536,7 @@ public class ShoppingListForm extends VerticalPanel {
 			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
 		}
 	}
-	
+
 	public ListEntry getSelectedListEntry() {
 		return selectedListEntry;
 	}
@@ -536,7 +544,6 @@ public class ShoppingListForm extends VerticalPanel {
 	public void setSelectedListEntry(ListEntry selectedListEntry) {
 		this.selectedListEntry = selectedListEntry;
 	}
-
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
@@ -552,7 +559,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
-	//	Window.alert(g.getName());
+		// Window.alert(g.getName());
 		this.selectedGroup = g;
 
 	}
@@ -572,7 +579,6 @@ public class ShoppingListForm extends VerticalPanel {
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
 		}
-		
 
 	}
 
@@ -843,7 +849,7 @@ public class ShoppingListForm extends VerticalPanel {
 			RootPanel.get("navigator").clear();
 			Navigator nav = new Navigator();
 			RootPanel.get("navigator").add(nav);
-			
+
 			gsltvm.removeShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
 		}
