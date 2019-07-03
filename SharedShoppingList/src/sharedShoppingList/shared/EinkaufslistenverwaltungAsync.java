@@ -129,4 +129,6 @@ public interface EinkaufslistenverwaltungAsync {
 
 	void createUser(String name, String gmail, String username, AsyncCallback<User> callback);
 
+	void setNewOne(ShoppingList sl, ListEntry le, AsyncCallback<Void> callback);
+
 }

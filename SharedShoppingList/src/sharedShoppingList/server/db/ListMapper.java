@@ -68,6 +68,7 @@ public class ListMapper {
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
 				shoppinglist.setModDate(rs.getTimestamp("modDate"));
 				shoppinglist.setGroupId(rs.getInt("groupid"));
+				shoppinglist.setNewOne(rs.getInt("newOne"));
 				
 			
 				return shoppinglist;
@@ -100,6 +101,7 @@ public class ListMapper {
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
 				shoppinglist.setModDate(rs.getTimestamp("modDate"));
 				shoppinglist.setGroupId(rs.getInt("groupid"));
+				shoppinglist.setNewOne(rs.getInt("newOne"));
 				
 				result.addElement(shoppinglist);
 			}
@@ -129,6 +131,7 @@ public class ListMapper {
 				shoppinglist.setCreateDate(rs.getTimestamp("createDate"));
 				shoppinglist.setModDate(rs.getTimestamp("modDate"));
 				shoppinglist.setGroupId(rs.getInt("groupid"));
+				shoppinglist.setNewOne(rs.getInt("newOne"));
 				
 				result.addElement(shoppinglist);
 			}
@@ -166,7 +169,7 @@ public class ListMapper {
 	public ShoppingList insert (ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
 		
-		String sql= "INSERT INTO shoppinglist (id, name, groupid) VALUES ("+shoppinglist.getId() + ",'" + shoppinglist.getName()+ "',"+shoppinglist.getGroupId()+ ")";
+		String sql= "INSERT INTO shoppinglist (id, name, groupid, newOne) VALUES ("+shoppinglist.getId() + ",'" + shoppinglist.getName()+ "',"+shoppinglist.getGroupId()+"," + shoppinglist.getNewOne()+ ")";
 		
 		try {
 	    	/*
@@ -205,7 +208,7 @@ public class ListMapper {
 	
 	public ShoppingList update(ShoppingList shoppinglist) {
 		Connection con = DBConnection.connection();
-		String sql= "UPDATE shoppinglist SET name= '"+ shoppinglist.getName()+"' WHERE id= "+ shoppinglist.getId();
+		String sql= "UPDATE shoppinglist SET name= '"+ shoppinglist.getName()+"', newOne= "+ shoppinglist.getNewOne() +" WHERE id= "+ shoppinglist.getId();
 
 		try {
 			Statement stmt = con.createStatement();

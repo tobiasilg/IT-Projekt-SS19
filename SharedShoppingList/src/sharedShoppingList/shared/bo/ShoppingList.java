@@ -14,10 +14,27 @@ public class ShoppingList extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 	
 	private int groupId;
+	private int newOne;
+	
+	
 	
 	public ShoppingList() {
 		super();
 	}
+	
+	
+
+	public int getNewOne() {
+		return newOne;
+	}
+
+
+
+	public void setNewOne(int newOne) {
+		this.newOne = newOne;
+	}
+
+
 
 	public int getGroupId() {
 		return groupId;
