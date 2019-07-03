@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -62,6 +61,7 @@ public class ShoppingListForm extends VerticalPanel {
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
+
 	private ShoppingListForm slf = null;
 	private Store selectedStore;
 
@@ -71,9 +71,6 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
 	private Button filterByUserButton = new Button("Meine Einträge");
-
-	private ListBox storesListBox = new ListBox();
-	private ListBox usersListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
@@ -262,19 +259,26 @@ public class ShoppingListForm extends VerticalPanel {
 		};
 
 		editColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
-//
-//
+
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
 
 				RootPanel.get("details").clear();
-				EditListEntryForm nlef = new EditListEntryForm();
-//				nlef.setGsltvm(ShoppingListForm.this.gsltvm);
-//				nlef.setShoppinglistForm(ShoppingListForm.this);
-//				nlef.setSelected(selectedShoppingList);
-//				nlef.setSelectedGroup(selectedGroup);
-				RootPanel.get("details").add(nlef);
 
+				EditListEntryForm elef = new EditListEntryForm();
+				elef.setGsltvm(ShoppingListForm.this.gsltvm);
+				elef.setShoppinglistForm(ShoppingListForm.this);
+				elef.setSelectedGroup(selectedGroup);
+				elef.setSelected(selectedShoppingList);
+				
+				selectedListEntry = listEntry;
+				
+				elef.setSelectedListEntry(listEntry);
+				
+				Window.alert(String.valueOf(listEntry.getId()));
+				
+				RootPanel.get("details").add(elef);
+			
 			}
 		});
 
@@ -368,7 +372,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 				};
 
-				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
+	//			Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
 				elv.delete(listEntry, deleteCallback);
 				dataProvider.getList().remove(listEntry);
 			}
@@ -509,6 +513,15 @@ public class ShoppingListForm extends VerticalPanel {
 			this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
 		}
 	}
+	
+	public ListEntry getSelectedListEntry() {
+		return selectedListEntry;
+	}
+
+	public void setSelectedListEntry(ListEntry selectedListEntry) {
+		this.selectedListEntry = selectedListEntry;
+	}
+
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
@@ -524,7 +537,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
-		Window.alert(g.getName());
+	//	Window.alert(g.getName());
 		this.selectedGroup = g;
 
 	}
@@ -544,6 +557,7 @@ public class ShoppingListForm extends VerticalPanel {
 		} else {
 			infoTitleLabel.setText("Einkaufsliste: ");
 		}
+		
 
 	}
 
@@ -811,7 +825,10 @@ public class ShoppingListForm extends VerticalPanel {
 			Notification.show("Die Einkaufsliste wurde erfolgreich gelöscht");
 
 			RootPanel.get("details").clear();
-
+			RootPanel.get("navigator").clear();
+			Navigator nav = new Navigator();
+			RootPanel.get("navigator").add(nav);
+			
 			gsltvm.removeShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
 		}
