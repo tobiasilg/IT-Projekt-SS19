@@ -435,25 +435,25 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 */
 	public ListEntry createListentry(String name, User user, Article article, double amount, Store store, ShoppingList sl) throws IllegalArgumentException {
 		ListEntry listentry = new ListEntry();
-		System.out.println("createListentry");
+		
 
 	
 		listentry.setName(name);
 		
 		listentry.setUserId(user.getId());
-		System.out.println("UserID:"+ user.getId());
+		
 		
 		listentry.setArticleId(article.getId());
-		System.out.println("ArtikelID:"+ article.getId());
+	
 		
 		listentry.setAmount(amount);
-		System.out.println("Menge:"+ amount);
+		
 		
 		listentry.setStoreId(store.getId());
-		System.out.println("StoreID:"+ store.getId());
+		
 		
 		listentry.setShoppinglistId(sl.getId());
-		System.out.println("ShoppingListID:"+ sl.getId());
+	
 		
 		
 		
@@ -487,7 +487,12 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	}
 	
 	public void delete(ListEntry listEntry) throws IllegalArgumentException{
+	
+		
+		this.listEntryMapper.deleteFav(listEntry.getId());
+
 		this.listEntryMapper.delete(listEntry);
+
 	}
 	
 	public Vector<ListEntry> getAllListEntriesByArticle(Article article) throws IllegalArgumentException {
@@ -630,8 +635,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 					for(ListEntry le: listEntries) {
 						
 						/*
-						 * Zuerst werden die Listeneinträge gelöscht
+						 * Zuerst werden die Listeneinträge inklusive Favoriten gelöscht
 						 */
+						this.listEntryMapper.deleteFav(le.getId());
 						this.listEntryMapper.delete(le);
 					}
 					
@@ -648,7 +654,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		 * Zum Schluss wird die gewünschte Gruppe gelöscht
 		 */
 		
-		System.out.println(group.getName());
+		
 		
 		this.groupMapper.deleteMembership(group.getId());
 		this.groupMapper.delete(group);
@@ -689,7 +695,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 			le.setArticleId(favle.getArticleId());
 			le.setShoppinglistId(sl.getId());
 			le.setStoreId(favle.getStoreId());
-			System.out.println(favle);
+			
 			this.listEntryMapper.insert(le);
 			
 			//le.setCreateDate(favourite.getlis);
@@ -742,6 +748,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		 */
 		if(listEntries != null) {
 			for(ListEntry le:listEntries) {
+				
+				this.listEntryMapper.deleteFav(le.getId());
 
 				this.listEntryMapper.delete(le);
 				
