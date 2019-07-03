@@ -15,7 +15,7 @@ public class HeaderRepo extends VerticalPanel {
 //	 EinkaufslistenVerwaltungAsync einkaufslistenverwaltung = null;
 
 	// Erstellung der Header Divs
-	private Label label = new Label("KEKWAY-REPORT"); // Label der den Namen im Header anzeigt
+	private Label label = new Label("KEKBUY-REPORT"); // Label der den Namen im Header anzeigt
 	private Label headerSubtitle = new Label("share it - buy it");
 	private HorizontalPanel hp = new HorizontalPanel();
 	private Button linkToMainBtn = new Button("Zur Startseite");
