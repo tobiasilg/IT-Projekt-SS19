@@ -37,6 +37,7 @@ public class EditListEntryForm extends FlowPanel {
 	ShoppingListForm shoppingListForm = null;
 	//ShoppingListForm slf;
 	ListEntry selectedListEntry;
+	ListEntry newListEntry;
 
 	Article article;
 	String unit;
@@ -229,7 +230,10 @@ public class EditListEntryForm extends FlowPanel {
 
 	public void setSelectedListEntry(ListEntry selectedListEntry) {
 		this.selectedListEntry = selectedListEntry;
-		//articleSuggestBox.setText(selectedListEntry.getArticle().getName());
+		
+		articleSuggestBox.setText(selectedListEntry.getArticle().getName());
+		amountTextBox.setText(String.valueOf(selectedListEntry.getAmount()));
+		
 	}
 
 	/***********************************************************************
@@ -313,12 +317,21 @@ public class EditListEntryForm extends FlowPanel {
 //				Window.alert("Einzelhändler auswählen!");
 
 			else {
-				
-				Window.alert("UpdateEntryCallback vorher " + String.valueOf(selectedListEntry.getId()));
 
-				elv.save(selectedListEntry, new UpdateEntryCallback());
 				
-				Window.alert("UpdateEntryCallback nachher " + String.valueOf(selectedListEntry.getId()));
+				newListEntry = selectedListEntry;
+		
+				newListEntry.setAmount(Double.parseDouble(amountTextBox.getValue()));
+				newListEntry.setStore(stores.get(storesListBox.getSelectedIndex()));
+				newListEntry.setUser(users.get(usersListBox.getSelectedIndex()));
+				
+				Window.alert("Menge " + newListEntry.getAmount());
+				Window.alert("Storre " + newListEntry.getStore().getName());
+				Window.alert("user" + newListEntry.getUser().getName());
+
+				elv.save(newListEntry, new UpdateEntryCallback());
+				
+				Window.alert("UpdateEntryCallback nachher " + String.valueOf(newListEntry.getId()));
 				
 			
 	
