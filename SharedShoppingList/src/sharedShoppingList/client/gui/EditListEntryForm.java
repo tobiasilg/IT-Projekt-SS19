@@ -322,7 +322,7 @@ public class EditListEntryForm extends FlowPanel {
 				newListEntry = selectedListEntry;
 		
 				newListEntry.setAmount(Double.parseDouble(amountTextBox.getValue()));
-				newListEntry.setStore(stores.get(storesListBox.getSelectedIndex()));
+				newListEntry.setStoreId(stores.get(storesListBox.getSelectedIndex()).getId());
 				
 				newListEntry.setUserId(users.get(usersListBox.getSelectedIndex()).getId());
 				
@@ -331,6 +331,7 @@ public class EditListEntryForm extends FlowPanel {
 				
 				Window.alert("Menge " + newListEntry.getAmount());
 				Window.alert("Store " + newListEntry.getStore().getName());
+				Window.alert("storeID " + newListEntry.getUserId());
 				Window.alert("user" + newListEntry.getUser().getName());
 				
 				Window.alert("userID" + newListEntry.getUserId());
@@ -360,7 +361,7 @@ public class EditListEntryForm extends FlowPanel {
 				Window.alert("Das Ändern eines Listeneintrags hat funktioniert!");
 				RootPanel.get("details").clear();
 				ShoppingListForm slf = new ShoppingListForm();
-				slf.setSelectedListEntry(selectedListEntry);
+				//slf.setSelectedListEntry(selectedListEntry);
 				slf.setSelected(selectedShoppingList);
 				slf.setSelected(selectedGroup);
 				RootPanel.get("details").add(slf);
