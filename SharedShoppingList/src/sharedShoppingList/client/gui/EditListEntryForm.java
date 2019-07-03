@@ -56,7 +56,7 @@ public class EditListEntryForm extends VerticalPanel {
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
 
-	private Label label = new Label ("Listeneintrag editieren");
+	private Label label = new Label (selectedShoppingList.getName()+":" + "Listeneintrag editieren");
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Aktualisieren");
 
