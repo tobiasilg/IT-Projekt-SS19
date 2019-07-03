@@ -324,14 +324,13 @@ public class ListEntryMapper {
 
 	public Vector<ListEntry> findAllByCurrentUser(User user) {
 		Connection con = DBConnection.connection();
-
 		String sql = "SELECT * FROM listentry WHERE userid=" + user.getId();
-
-		Vector<ListEntry> result = new Vector<ListEntry>();
+		
+		Vector<ListEntry> result= new Vector<ListEntry>();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-
+			
 			while (rs.next()) {
 				ListEntry listEntry = new ListEntry();
 				listEntry.setId(rs.getInt("id"));
@@ -344,21 +343,13 @@ public class ListEntryMapper {
 				listEntry.setUserId(rs.getInt("userid"));
 				listEntry.setStoreId(rs.getInt("storeid"));
 				listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
-
+				
 				result.addElement(listEntry);
-
-			
-			String sql= "DELETE FROM listentry WHERE id=" + listEntry.getId();
-			
-		    try {
-		    	
-		    	Statement stmt = con.createStatement();
-		    	stmt.executeUpdate(sql);	 
-		      
-		    }
-		    catch (SQLException e2) {
-		      e2.printStackTrace();
-		    }
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
 			
 		}
 		
@@ -376,45 +367,7 @@ public class ListEntryMapper {
 			
 		}
 		
-		/*
-		 * Methode um einen neuen Listeneintrag der Datenbank hinzuzufügen
-		 */
 		
-		public ListEntry insert (ListEntry listEntry) {
-			Connection con = DBConnection.connection();		
-			
-			String sql= "INSERT INTO listentry (name, amount, userid, storeid, articleid, shoppinglistid) VALUES ('"+ listEntry.getName()+ "',"+listEntry.getAmount()+","+ listEntry.getUserId()+","+listEntry.getStoreId()+","+ listEntry.getArticleId()+","+listEntry.getShoppinglistId()+")";
-			
-			try {
-		    	/*
-		    	 * Einstellung dass automatisch generierte  ID's aus der DB
-		    	 * zureuckgeliefert werden.
-		    	 * Somit kann ohne einen Refresh der Listeneintrag sofort angezeigt werden
-		    	 */
-		    	
-		    	PreparedStatement stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); //ID wird aus der DB geholt
-		    	int affectedRows = stmt.executeUpdate(); //Wurde etwas in die DB geschrieben?
-
-		        if (affectedRows == 0) { //Kein neuer Eintrag in DB
-		            throw new SQLException("Creating ListEntry failed, no rows affected.");
-		        }
-		        
-		        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-		        	
-		            if (generatedKeys.next()) {
-		                listEntry.setId(generatedKeys.getInt(1)); //index 1 = id column
-		            }
-		            else {
-		                throw new SQLException("Creating ListEntry failed, no ID obtained.");
-		            }
-		        }
-
-			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-		return result;
-	}
 
 	/*
 	 * Methode zum Löschen eines Listeneintrags aus der Datenbank

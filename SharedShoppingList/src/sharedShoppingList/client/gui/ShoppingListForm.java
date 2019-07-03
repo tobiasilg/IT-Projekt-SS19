@@ -281,11 +281,11 @@ public class ShoppingListForm extends VerticalPanel {
 			public void update(int index, ListEntry listEntry, String value) {
 
 				RootPanel.get("details").clear();
-				NewListEntryForm nlef = new NewListEntryForm();
-				nlef.setGsltvm(ShoppingListForm.this.gsltvm);
-				nlef.setShoppinglistForm(ShoppingListForm.this);
-				nlef.setSelected(selectedShoppingList);
-				nlef.setSelectedGroup(selectedGroup);
+				EditListEntryForm nlef = new EditListEntryForm();
+//				nlef.setGsltvm(ShoppingListForm.this.gsltvm);
+//				nlef.setShoppinglistForm(ShoppingListForm.this);
+//				nlef.setSelected(selectedShoppingList);
+//				nlef.setSelectedGroup(selectedGroup);
 				RootPanel.get("details").add(nlef);
 				
 			
@@ -400,7 +400,9 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(favColumn, "Favoriten");
+		cellTable.addColumn(editColumn, "bearbeiten");
 		cellTable.addColumn(deleteColumn, "Eintrag löschen");
+		
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(articleColumn, 20, Unit.PX);
