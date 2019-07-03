@@ -115,6 +115,31 @@ public class FavouriteMapper {
 		
 	}
 	
+	public void deleteFav ( ListEntry listentry) {
+		Connection con = DBConnection.connection();
+		
+		String sql ="DELETE FROM favourite WHERE listentryid = "+ listentry.getId();
+		
+		try {
+			
+	    	/*
+	    	 * Deactivate autoCommit for save insert in DATABASE
+	    	 */
+			
+			con.setAutoCommit(false);
+			
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			
+			con.commit();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public Vector <Favourite> findAllFavourites () {
 		
 		Connection con = DBConnection.connection();
@@ -195,6 +220,51 @@ public class FavouriteMapper {
 				
 				listentry.setArticle(article);
 				favourite.setListEntry(listentry);
+				
+				
+				result.addElement(favourite);
+				}
+				
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+				
+			}
+			return result;
+		
+	}
+public Vector <Favourite> findFavouritesByListEntry (ListEntry listentry) {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT f.*, a.id AS articleId, l.amount AS Menge, a.name AS Artikelname,"
+				+ " a.unit AS Einheit, l.userid, l.storeid FROM favourite AS f"
+				+ " LEFT JOIN listentry AS l ON f.listentryid = l.id"
+				+ " LEFT JOIN article AS a ON a.id = l.articleid WHERE f.listentryid =" + listentry.getId();
+		
+		Vector <Favourite> result = new Vector <Favourite> ();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while (rs.next()) {
+				Favourite favourite = new Favourite();
+				favourite.setId(rs.getInt("id"));
+				favourite.setGroupsId(rs.getInt("groupId"));
+				favourite.setListEntryId(rs.getInt("listEntryId"));
+				
+				Article article = new Article();
+				article.setId(rs.getInt("id"));
+				article.setName(rs.getString("Artikelname"));
+				article.setUnit(rs.getString("Einheit"));
+				
+				ListEntry le = new ListEntry ();
+				le.setAmount(rs.getDouble("Menge"));
+				le.setUserId(rs.getInt("userid"));
+				
+				
+				le.setStoreId(rs.getInt("storeid"));
+				
+				le.setArticle(article);
+				favourite.setListEntry(le);
 				
 				
 				result.addElement(favourite);

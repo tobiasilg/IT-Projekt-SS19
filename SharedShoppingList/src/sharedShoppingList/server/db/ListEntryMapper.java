@@ -389,6 +389,20 @@ public class ListEntryMapper {
 			
 		}
 		
+		public void deleteFav(int listentryid) {
+			
+			Connection con = DBConnection.connection();
+			String sql="DELETE FROM favourite where listentryid = " + listentryid;
+			try {
+
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 		/*
 		 * Methode um einen neuen Listeneintrag der Datenbank hinzuzufügen
 		 */
