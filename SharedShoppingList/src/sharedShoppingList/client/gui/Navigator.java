@@ -9,7 +9,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -42,7 +41,7 @@ public class Navigator extends FlowPanel {
 	private Label navTitle = new Label("Meine Gruppen");
 
 	// Erstellen des Images für Favorite Article
-	Image star = new Image();
+//	Image star = new Image();
 
 	/*
 	 * Klassen auf die im Navigator verwiesen werden
@@ -116,12 +115,12 @@ public class Navigator extends FlowPanel {
 		
 		tree.setAnimationEnabled(true);
 
-		star.setUrl("/images/star.png");
+//		star.setUrl("/images/star.png");
 
 		// Vergeben der Stylenamen
 		this.addStyleName("nav");
 
-		star.addStyleName("navIcon");
+//		star.addStyleName("navIcon");
 		neuButton.addStyleName("navButton");
 		navTitle.addStyleName("navTitle");
 		navPanel.addStyleName("navPanel");
@@ -131,7 +130,7 @@ public class Navigator extends FlowPanel {
 		refreshPanel.addStyleName("refreshPanel");
 		tree.addStyleName("navTree");
 
-		navImage.add(star);
+//		navImage.add(star);
 		buttonPanel.add(neuButton);
 		refreshPanel.add(refreshLabel);
 
@@ -218,20 +217,5 @@ public class Navigator extends FlowPanel {
 
 	}
 
-	/*
-	 * Die Klasse ShowFavoriteArticleForm ermöglicht die Weiterletung zur
-	 * FavoriteArticleForm
-	 */
-//	private class ShowFavoriteArticleForm implements ClickHandler {
-//
-//		@Override
-//		public void onClick(ClickEvent event) {
-//			RootPanel.get("details").clear();
-//			faf = new FavoriteArticleForm();
-//			RootPanel.get("details").add(faf);
-//
-//		}
-//
-//	}
 
 }

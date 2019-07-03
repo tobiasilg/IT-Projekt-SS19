@@ -175,8 +175,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					groupForm.setSelected(group);
-					//shoppingListForm.setSelectedGroup(selectedGroup);
+					shoppingListForm.setSelected(selectedGroup);
 				}
 			});
 		}
@@ -197,6 +196,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 //		groupDataProvider.refresh();
 		
 		groupDataProvider.getList().add(group);
+	//	groupDataProvider.refresh();
 		Window.alert("addGroup");
 		selectionModel.setSelected(group, true);
 
@@ -343,8 +343,10 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 						
 					//	groupDataProvider.getList().add(g);
 //						GroupShoppingListTreeViewModel.this.addGroup(g);
-						//groupDataProvider.getList().add(g);
-						GroupShoppingListTreeViewModel.this.addGroup(g);
+						groupDataProvider.getList().add(g);
+						//GroupShoppingListTreeViewModel.this.addGroup(g);
+						groupDataProvider.refresh();
+						
 					//	Window.alert("Key der Gruppe: " + groupDataProvider.getKey(group));
 					}
 			
