@@ -179,7 +179,9 @@ public class ListEntryMapper {
 
 				listEntry.setArticle(article);
 				listEntry.setStore(store);
+				listEntry.setStoreId(rs.getInt("storeid"));
 				listEntry.setUser(user);
+				listEntry.setUserId(rs.getInt("userid"));
 				listEntry.setFavourite(fav);
 				System.out.println(listEntry.getFavourite().getId());
 
@@ -327,12 +329,12 @@ public class ListEntryMapper {
 	public Vector<ListEntry> findAllByCurrentUser(User user) {
 		Connection con = DBConnection.connection();
 		String sql = "SELECT * FROM listentry WHERE userid=" + user.getId();
-		
-		Vector<ListEntry> result= new Vector<ListEntry>();
+
+		Vector<ListEntry> result = new Vector<ListEntry>();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			
+
 			while (rs.next()) {
 				ListEntry listEntry = new ListEntry();
 				listEntry.setId(rs.getInt("id"));
@@ -345,31 +347,29 @@ public class ListEntryMapper {
 				listEntry.setUserId(rs.getInt("userid"));
 				listEntry.setStoreId(rs.getInt("storeid"));
 				listEntry.setShoppinglistId(rs.getInt("shoppinglistid"));
-				
+
 				result.addElement(listEntry);
 			}
-		}catch(SQLException ex){
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 		return result;
-			
-		}
-		
-		public void deleteFav(int listentryid) {
-			
-			Connection con = DBConnection.connection();
-			String sql="DELETE FROM favourite where listentryid = " + listentryid;
-			try {
 
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate(sql);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
+	}
+
+	public void deleteFav(int listentryid) {
+
+		Connection con = DBConnection.connection();
+		String sql = "DELETE FROM favourite where listentryid = " + listentryid;
+		try {
+
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		
+
+	}
 
 	/*
 	 * Methode zum Löschen eines Listeneintrags aus der Datenbank
