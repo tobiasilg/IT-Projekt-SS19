@@ -132,17 +132,9 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(cbCell) {
 
 			public Boolean getValue(ListEntry object) {
-				// Get the value from the selection model.
-				Boolean listEntryChecked = object.isChecked();
 
-				if (listEntryChecked = true) {
+				return object.isChecked();
 
-//					Window.alert("Checked: " + listEntryChecked);
-
-					return selectionModel.isSelected(object);
-				} else {
-					return false;
-				}
 
 			}
 
@@ -158,9 +150,6 @@ public class ShoppingListForm extends VerticalPanel {
 //				}
 				listEntry.setChecked(value);
 
-				Window.alert("Wurde jetzt gecheckt: " + value);
-				Window.alert(listEntry.getUser().getId() + "  USERID");
-				Window.alert("listEntry" + listEntry.isChecked());
 				elv.save(listEntry, new CheckedSaveAsyncCallback());
 
 			}
@@ -463,7 +452,7 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 		});
-
+ 
 		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
 
 			public void onFailure(Throwable caught) {
@@ -471,7 +460,6 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
-				Window.alert("in getallbyshoppinglist");
 				for (ListEntry le : listEntry) {
 					list.add(le);
 
