@@ -323,12 +323,18 @@ public class EditListEntryForm extends FlowPanel {
 		
 				newListEntry.setAmount(Double.parseDouble(amountTextBox.getValue()));
 				newListEntry.setStore(stores.get(storesListBox.getSelectedIndex()));
-				newListEntry.setUser(users.get(usersListBox.getSelectedIndex()));
+				
+				newListEntry.setUserId(users.get(usersListBox.getSelectedIndex()).getId());
+				
+//				users.get(newListEntry.getUserId());
+////				selectedListEntry.getUser().getId();
 				
 				Window.alert("Menge " + newListEntry.getAmount());
-				Window.alert("Storre " + newListEntry.getStore().getName());
+				Window.alert("Store " + newListEntry.getStore().getName());
 				Window.alert("user" + newListEntry.getUser().getName());
-
+				
+				Window.alert("userID" + newListEntry.getUserId());
+				
 				elv.save(newListEntry, new UpdateEntryCallback());
 				
 				Window.alert("UpdateEntryCallback nachher " + String.valueOf(newListEntry.getId()));
