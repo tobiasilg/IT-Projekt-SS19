@@ -483,9 +483,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	
 		
 		this.listEntryMapper.deleteFav(listEntry.getId());
-		System.out.println("delete fav");
+
 		this.listEntryMapper.delete(listEntry);
-		System.out.println("delete listentry");
+
 	}
 	
 	public Vector<ListEntry> getAllListEntriesByArticle(Article article) throws IllegalArgumentException {
@@ -628,8 +628,9 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 					for(ListEntry le: listEntries) {
 						
 						/*
-						 * Zuerst werden die Listeneinträge gelöscht
+						 * Zuerst werden die Listeneinträge inklusive Favoriten gelöscht
 						 */
+						this.listEntryMapper.deleteFav(le.getId());
 						this.listEntryMapper.delete(le);
 					}
 					
@@ -740,6 +741,8 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		 */
 		if(listEntries != null) {
 			for(ListEntry le:listEntries) {
+				
+				this.listEntryMapper.deleteFav(le.getId());
 
 				this.listEntryMapper.delete(le);
 				
