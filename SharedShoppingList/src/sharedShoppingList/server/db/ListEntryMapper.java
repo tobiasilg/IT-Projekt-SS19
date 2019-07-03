@@ -143,7 +143,9 @@ public class ListEntryMapper {
 		public Vector<ListEntry> findAllByShoppingList(ShoppingList sl) {
 			Connection con = DBConnection.connection();
 			
-			String sql="SELECT article.name, article.unit, listentry.id, listentry.checked, listentry.amount, user.name as username, store.name as storename, favourite.id as favid FROM listentry " + 
+			String sql="SELECT article.name, article.unit, listentry.id, listentry.checked,"
+					+ " listentry.amount, user.name as username, store.name as storename,"
+					+ " favourite.id as favid FROM listentry " + 
 					"left join article " + 
 					"	on listentry.articleid = article.id " + 
 					"left join user " + 
@@ -185,6 +187,7 @@ public class ListEntryMapper {
 					listEntry.setStore(store);
 					listEntry.setUser(user);
 					listEntry.setFavourite(fav);
+					System.out.println(listEntry.getFavourite().getId());
 					
 					result.addElement(listEntry);
 				

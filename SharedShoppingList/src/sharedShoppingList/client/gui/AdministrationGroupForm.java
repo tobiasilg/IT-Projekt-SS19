@@ -50,7 +50,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 //	private User user = CurrentUser.getUser();
 	private User newGroupUser = null;
 	private Group selectedGroup = null;
-	
+
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
 
 	private ShoppingListCreationForm shoppingListCreationForm;
@@ -99,16 +99,14 @@ public class AdministrationGroupForm extends VerticalPanel {
 		if (g != null) {
 
 			selectedGroup = g;
-			renameTextBox.setText(selectedGroup.getName());
-			
+			renameTextBox.setText("Name: " + selectedGroup.getName());
+
 			dataProvider.getList().clear();
-			
-			
+
 		} else {
 			renameTextBox.setText("");
 		}
 	}
-
 
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
@@ -132,7 +130,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		addUserButton.addClickHandler(new AddUserClickHandler());
 
 		userTextBox.getElement().setPropertyString("placeholder", "Mitglied hinzufügen...");
-		
+
 		TextCell userTextCell = new TextCell();
 
 		Column<User, String> stringColumn = new Column<User, String>(userTextCell) {
@@ -140,7 +138,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 			public String getValue(User user) {
 
 				return user.getGmail();
-			
 
 			}
 		};
@@ -184,7 +181,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		stringColumn.setFieldUpdater(new FieldUpdater<User, String>() {
 			public void update(int index, User user, String value) {
 				// Value is the textCell value. Object is the row object.
-			//	user.setName(value);
+				// user.setName(value);
 				user.setGmail(value);
 
 			}
@@ -194,9 +191,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 		memberTable.addColumn(stringColumn, "Users");
 		memberTable.addColumn(deleteColumn, "Mitglied entfernen");
 		memberTable.setColumnWidth(stringColumn, 20, Unit.PC);
-		
+
 		dataProvider.addDataDisplay(memberTable);
-		
+
 	}
 
 	/***********************************************************************
@@ -239,11 +236,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 //		saveGroupNameButton.setPixelSize(130, 40);
 //		deleteGroupButton.setPixelSize(130, 40);
 //		createShoppingListButton.setPixelSize(130, 40);
-		
+
 		saveGroupNameButton.addStyleName("saveButton");
 		deleteGroupButton.addStyleName("deleteButton");
 		createShoppingListButton.addStyleName("createButton");
-		
+
 		addUserButton.addStyleName("createButton");
 
 		// scrollPanel.setHeight("12");
@@ -277,11 +274,11 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 					if (list.contains(user)) {
 
-					break;
-						
+						break;
+
 					} else {
 						list.add(user);
-					
+
 					}
 
 				}
@@ -305,9 +302,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 			}
 		});
-		
 
 	}
+
 	/***********************************************************************
 	 * Methoden
 	 ***********************************************************************
@@ -419,10 +416,10 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(User result) {
 
 			Window.alert("UserCallback");
-			
+
 			newGroupUser = result;
 			result.getGmail();
-			
+
 			elv.addUser(newGroupUser, selectedGroup, new AddUserCallback());
 
 			dataProvider.getList().add(newGroupUser);
@@ -431,7 +428,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	private class AddUserCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -444,7 +441,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void result) {
 
 			Notification.show("Das Gruppenmitglied wurde erfolgreich hinzugefügt");
-
 
 		}
 
@@ -579,6 +575,9 @@ public class AdministrationGroupForm extends VerticalPanel {
 		public void onSuccess(Void result) {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 
+			RootPanel.get("details").clear();
+			GroupCreationForm gcf = new GroupCreationForm();
+			RootPanel.get("details").add(gcf);
 			gsltvm.removeGroup(selectedGroup);
 
 		}

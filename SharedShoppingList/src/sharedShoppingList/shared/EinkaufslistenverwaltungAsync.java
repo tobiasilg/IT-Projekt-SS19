@@ -87,6 +87,7 @@ public interface EinkaufslistenverwaltungAsync {
 	void save(User user, AsyncCallback<Void> callback);
 
 	void getAllUsers(AsyncCallback<Vector<User>> callback);
+	
 
 	void getUserByID(int id, AsyncCallback<User> callback);
 
