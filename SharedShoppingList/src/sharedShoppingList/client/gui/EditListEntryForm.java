@@ -313,10 +313,15 @@ public class EditListEntryForm extends FlowPanel {
 //				Window.alert("Einzelhändler auswählen!");
 
 			else {
+				
+				Window.alert("UpdateEntryCallback vorher " + String.valueOf(selectedListEntry.getId()));
 
 				elv.save(selectedListEntry, new UpdateEntryCallback());
-				Window.alert("UpdateEntryCallback");
-
+				
+				Window.alert("UpdateEntryCallback nachher " + String.valueOf(selectedListEntry.getId()));
+				
+			
+	
 			}
 		}
 
