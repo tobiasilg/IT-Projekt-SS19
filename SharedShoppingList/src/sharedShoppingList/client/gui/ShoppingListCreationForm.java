@@ -23,9 +23,8 @@ import sharedShoppingList.shared.bo.User;
 /**
  * Formular für das Anlegen einer neuen ShoppingListe im Datenstamm
  * 
- * @author nicolaifischbach
+ * @author nicolaifischbach + moritzhampe
  * 
- *         Info: Anbindung dan Tree fehlt noch
  * 
  */
 
@@ -37,7 +36,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 	GroupShoppingListTreeViewModel gsltvm = null;
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
-	ShoppingListForm showForm = null;
 	AdministrationGroupForm groupForm = null;
 
 	private FlowPanel shoppingListPanel = new FlowPanel();
@@ -195,12 +193,11 @@ public class ShoppingListCreationForm extends FlowPanel {
 				groupForm = new AdministrationGroupForm();
 				groupForm.setGsltvm(gsltvm);
 				groupForm.setSelected(gsltvm.getSelectedGroup());
-				Window.alert(""+gsltvm.getSelectedGroup().getName());
-				
+				Window.alert("" + gsltvm.getSelectedGroup().getName());
+
 				gsltvm.setGroupForm(groupForm);
 				RootPanel.get("details").add(groupForm);
-				
-				
+
 			}
 		}
 	}
@@ -219,8 +216,6 @@ public class ShoppingListCreationForm extends FlowPanel {
 				Window.alert("Einkaufsliste muss einen Namen besitzen !");
 
 			} else {
-//				 elv.createShoppingList(shoppingListNameTextBox.getValue(), new
-//				 ListCreationCallback());
 
 				elv.createShoppingList(shoppingListNameTextBox.getValue(), selectedGroup,
 						new ListCreationCallback(selectedGroup));
@@ -258,12 +253,10 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 			RootPanel.get("details").clear();
 			selectedShoppingList = result;
+			ShoppingListForm showForm = new ShoppingListForm();
 			showForm.setSelected(selectedShoppingList);
-			showForm.setSelected(gsltvm.getSelectedGroup());
+			showForm.setSelected(selectedGroup);
 			RootPanel.get("details").add(showForm);
-
-			gsltvm.setSelectedList(selectedShoppingList);
-			gsltvm.getSelectionModel().setSelected(selectedShoppingList, true);
 
 			gsltvm.addShoppingListOfGroup(selectedShoppingList, group);
 

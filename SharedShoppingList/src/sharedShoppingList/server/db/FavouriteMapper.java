@@ -58,7 +58,7 @@ public class FavouriteMapper {
 	public Favourite createFavourite(Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
-		String sql="INSERT INTO favourite (groupsId, listEntryId) VALUES ("+ favourite.getGroupsId()+"," +favourite.getListEntryId()+")";
+		String sql="INSERT INTO favourite (groupid, listentryid) VALUES ("+ favourite.getGroupsId()+"," +favourite.getListEntryId()+")";
 	
 		
 		try {
@@ -89,10 +89,11 @@ public class FavouriteMapper {
 	return favourite;
 	}
 	
-	public void deleteFavourite (Favourite favourite) {
+	public void deleteFavourite (ListEntry listentry, Group group) {
 		Connection con = DBConnection.connection();
 		
-		String sql ="DELETE FROM favourite WHERE id ="+ favourite.getId();
+		String sql ="DELETE FROM favourite WHERE groupid= "+ group.getId() +
+			" AND listentryid = "+ listentry.getId();
 		
 		try {
 			
@@ -194,6 +195,7 @@ public class FavouriteMapper {
 				
 				listentry.setArticle(article);
 				favourite.setListEntry(listentry);
+				
 				
 				result.addElement(favourite);
 				}

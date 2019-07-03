@@ -108,7 +108,7 @@ public interface Einkaufslistenverwaltung extends RemoteService {
 	
 	public Favourite createFavourite (ListEntry listentry, Group group) throws IllegalArgumentException;
 	
-	public void delete(Favourite favourite) throws IllegalArgumentException;
+	public void delete(ListEntry listentry, Group group) throws IllegalArgumentException;
 	
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException;
 	
@@ -122,7 +122,7 @@ public interface Einkaufslistenverwaltung extends RemoteService {
 
 	public Vector<ListEntry> filterByStore(Store store) throws IllegalArgumentException;
 
-	public Vector<ListEntry> filterByUser(User user) throws IllegalArgumentException;
+	public Vector<ListEntry> filterByUser(User user, ShoppingList sl) throws IllegalArgumentException;
 
 	public Article getArticleById(int id) throws IllegalArgumentException;
 

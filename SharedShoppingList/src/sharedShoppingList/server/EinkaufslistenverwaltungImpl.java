@@ -497,7 +497,7 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.listEntryMapper.findAllListEntries();
 		
 	}
-	
+	 
 	/**
 	 * Methode wird benötigt um nach dem Löschen einer ShoppingListe, die zugehörigen
 	 * Listeneinträge zu löschen
@@ -760,8 +760,11 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.favouriteMapper.createFavourite(favourite);
 	}
 	
-	public void delete (Favourite favourite) throws IllegalArgumentException{
-		this.favouriteMapper.deleteFavourite(favourite);
+	public void delete (ListEntry listentry, Group group) throws IllegalArgumentException{
+		
+		
+		
+		this.favouriteMapper.deleteFavourite(listentry, group);
 	}
 	
 	public Vector <Favourite> getAllFavourites() throws IllegalArgumentException{
@@ -868,15 +871,15 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 	 * @throws IllegalArgumentException
 	 */
 	
-	public Vector<ListEntry> filterByUser(User user)throws IllegalArgumentException{
-		Vector<ListEntry> le= this.getAllListEntriesByUser(user);
+	public Vector<ListEntry> filterByUser(User user, ShoppingList sl)throws IllegalArgumentException{
+		return this.listEntryMapper.findAllByCurrentUserAndSL(user, sl);
 		
-
-		if(le != null) {
-			return le;
-		}
-		
-		return null;
+//
+//		if(le != null) {
+//			return le;
+//		}
+//		
+//		return null;
 	}
 
 	@Override
