@@ -22,7 +22,7 @@ import sharedShoppingList.shared.bo.User;
 /**
  * Formular für das Anlegen einer neuen Gruppe im Datenstamm
  * 
- * @author nicolaifischbach
+ * @author nicolaifischbach + moritzhampe
  * 
  */
 
@@ -32,8 +32,6 @@ public class GroupCreationForm extends FlowPanel {
 	User user = CurrentUser.getUser();
 
 	GroupShoppingListTreeViewModel gsltvm;
-	AdministrationGroupForm groupForm = null;
-	Group group = null;
 
 	private FlowPanel groupBox = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -45,6 +43,7 @@ public class GroupCreationForm extends FlowPanel {
 
 	private Button saveButton = new Button("Speichern");
 	private Button cancelButton = new Button("Abbrechen");
+	
 
 	// Konstruktor
 	public GroupCreationForm() {
@@ -129,10 +128,10 @@ public class GroupCreationForm extends FlowPanel {
 				Window.alert("Die Gruppe muss einen Namen besitzen !");
 			} else {
 
-				groupForm = new AdministrationGroupForm();
-				
-		//	elv.createGroup(groupNameTextBox.getValue(), new GroupCreationCallback())
+//				groupForm = new AdministrationGroupForm();
+	
 				elv.createGroup(user, groupNameTextBox.getValue(), new GroupCreationCallback());
+
 
 			}
 		}
@@ -143,6 +142,9 @@ public class GroupCreationForm extends FlowPanel {
 	 * Callback wird benötigt, um die Gruppe zu erstellen
 	 */
 	class GroupCreationCallback implements AsyncCallback<Group> {
+		
+		Group group = null;
+		
 		@Override
 		public void onFailure(Throwable caught) {
 			Notification.show("Die Gruppen konnte nicht erstellt werden");
@@ -152,16 +154,17 @@ public class GroupCreationForm extends FlowPanel {
 		public void onSuccess(Group result) {
 
 		//	Notification.show(String.valueOf(result.getName()));
-			Notification.show(result.getName());
 
 			RootPanel.get("details").clear();
 			group = result;
+			AdministrationGroupForm groupForm = new AdministrationGroupForm();
 			groupForm.setSelected(group);
 			RootPanel.get("details").add(groupForm);
-
+			
+			Notification.show(group.getName());
+			
 			gsltvm.addGroup(group);
 			
-
 		}
 	}
 }

@@ -58,7 +58,7 @@ public class FavouriteMapper {
 	public Favourite createFavourite(Favourite favourite) {
 		Connection con = DBConnection.connection();
 		
-		String sql="INSERT INTO favourite (groupsId, listEntryId) VALUES ("+ favourite.getGroupsId()+"," +favourite.getListEntryId()+")";
+		String sql="INSERT INTO favourite (groupid, listentryid) VALUES ("+ favourite.getGroupsId()+"," +favourite.getListEntryId()+")";
 	
 		
 		try {
@@ -195,6 +195,7 @@ public class FavouriteMapper {
 				
 				listentry.setArticle(article);
 				favourite.setListEntry(listentry);
+				
 				
 				result.addElement(favourite);
 				}
