@@ -441,28 +441,61 @@ public class ListEntryMapper {
 	public ListEntry update(ListEntry listentry) {
 		Connection con = DBConnection.connection();
 
-		String date = null;
+		String date = "";
+		
 		if (listentry.getBuyDate() != null) {
+			System.out.println("if not null"+listentry.getBuyDate());
 			
 			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
+			
+			String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + "," + " amount='"
+					+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
+					+ listentry.getUserId() + "," + " checked=" + listentry.isChecked() + "," + " buyDate ='" + date + "'"
+					+ " WHERE id= " + listentry.getId();
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return listentry;
+			
+		}else {
+			
+			String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + "," + " amount='"
+					+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
+					+ listentry.getUserId() + "," + " checked=" + listentry.isChecked()
+					+ " WHERE id= " + listentry.getId();
+			System.out.println("else null" + listentry.getBuyDate());
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(sql);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return listentry;
 		}
 
-		String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + "," + " amount='"
-				+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
-				+ listentry.getUserId() + "," + " checked=" + listentry.isChecked() + "," + " buyDate ='" + date + "'"
-				+ " WHERE id= " + listentry.getId();
-		System.out.println(listentry.getUserId());
-		System.out.println(date);
+//		String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + "," + " amount='"
+//				+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
+//				+ listentry.getUserId() + "," + " checked=" + listentry.isChecked() + "," + " buyDate ='" + date + "'"
+//				+ " WHERE id= " + listentry.getId();
+		
 
-		try {
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(sql);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return listentry;
+//		try {
+//			Statement stmt = con.createStatement();
+//			stmt.executeUpdate(sql);
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return listentry;
 	}
 
 	public List<ListEntry> findByStoreAndDate(Store store, Timestamp beginningDate, Timestamp endDate, int groupId) {
