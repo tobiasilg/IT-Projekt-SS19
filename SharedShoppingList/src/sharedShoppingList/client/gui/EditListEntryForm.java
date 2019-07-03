@@ -337,6 +337,7 @@ public class EditListEntryForm extends FlowPanel {
 				
 				elv.save(newListEntry, new UpdateEntryCallback());
 				
+				
 				Window.alert("UpdateEntryCallback nachher " + String.valueOf(newListEntry.getId()));
 				
 			
