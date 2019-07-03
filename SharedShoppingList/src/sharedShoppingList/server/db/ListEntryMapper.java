@@ -470,21 +470,29 @@ public class ListEntryMapper {
 			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 			String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
 			sql = "SELECT le.*, e.groupId FROM listentry AS le"
-					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id " + "WHERE le.buyDate BETWEEN '" + date
-					+ "' AND '" + enddate + "' AND e.groupId = " + groupId + " AND storeid = " + store.getId();
+					+" LEFT JOIN shoppinglist sl ON sl.id = le.shoppinglistid"
+					+" LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" 
+					+" LEFT JOIN store as s on s.id=le.storeid"
+					+" WHERE le.buyDate BETWEEN '" + date
+					+"' AND '" + enddate + "' AND e.groupId = " + groupId + " AND storeid = " + store.getId();
 
 		}
 		if (store == null && beginningDate != null && endDate != null) {
+			System.out.println(groupId);
 			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 			String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
 			sql = "SELECT le.*, e.id FROM listentry AS le"
-					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id " + "WHERE le.buyDate BETWEEN '" + date
-					+ "' AND '" + enddate + "' AND e.id =" + groupId;
+					+" LEFT JOIN shoppinglist AS sl ON sl.id = le.shoppinglistid"
+					+" LEFT JOIN einkaufsgruppe AS e ON e.id = sl.groupid " + "WHERE le.buyDate BETWEEN '" + date
+					+"' AND '" + enddate + "' AND e.id =" + groupId;
 		}
 		if (store != null && beginningDate == null && endDate == null) {
 			sql = "SELECT le.*, e.groupId FROM listentry AS le"
-					+ " LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" + "WHERE e.groupId =" + groupId
-					+ " AND storeid =" + store.getId();
+					+" LEFT JOIN shoppinglist sl ON sl.id = le.shoppinglistid"
+					+" LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" 
+					+" LEFT JOIN store as s on s.id = le.storeid"
+					+" WHERE e.id =" + groupId
+					+" AND storeid =" + store.getId();
 
 		}
 		Vector<ListEntry> result = new Vector<ListEntry>();
