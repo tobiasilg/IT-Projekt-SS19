@@ -144,7 +144,7 @@ public class ListEntryMapper {
 		Connection con = DBConnection.connection();
 
 		String sql = "SELECT article.name, article.unit, listentry.id, listentry.checked,"
-				+ " listentry.amount, user.name as username, store.name as storename,"
+				+ " listentry.amount, user. id as userid, user.name as username, store.id as storeid, store.name as storename,"
 				+ " favourite.id as favid FROM listentry " + "left join article "
 				+ "	on listentry.articleid = article.id " + "left join user " + "	on listentry.userid = user.id "
 				+ "left join store " + "	on listentry.storeid = store.id " + "left join favourite "
@@ -167,9 +167,11 @@ public class ListEntryMapper {
 				article.setUnit(rs.getString("unit"));
 
 				User user = new User();
+				user.setId(rs.getInt("userid"));
 				user.setName(rs.getString("username"));
 
 				Store store = new Store();
+				store.setId(rs.getInt("storeid"));
 				store.setName(rs.getString("storename"));
 
 				Favourite fav = new Favourite();
