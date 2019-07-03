@@ -208,25 +208,8 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		TextCell storeSelectionCell = new TextCell();
 
-			public void onFailure(Throwable caught) {
-				Notification.show("3. failure");
-			}
-
-			public void onSuccess(Vector<Store> result) {
-				storesListBox.clear();
-				for (Store store : result) {
-					stores.addElement(store);
-
-				}
-			}
-		});
-
-		for (Store s : stores) {
-			storeNames.add(s.getName());
-		}
-		SelectionCell storeSelectionCell = new SelectionCell(storeNames);
 		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storeSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
@@ -235,43 +218,12 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		storeColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
-
-			@Override
-			public void update(int index, ListEntry listEntry, String value) {
-				for (Store s : stores) {
-					if (s.getName().equals(value)) {
-						listEntry.setStore(s);
-					}
-				}
-
-			}
-		});
-
 		/*
 		 * Spalte der User
 		 */
 
-//		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback <Vector<User>>() {
-//
-//			public void onFailure(Throwable caught) {
-//				Notification.show("User konnten nicht sauber gezogen werden");
-//			}
-//			
-//			public void onSuccess(Vector<User> result) {
-//				Window.alert("Hallo");
-//
-//				for (User user: result) {
-//					users.addElement(user);
-//				}
-//			}
-//		});
+		TextCell userSelectionCell = new TextCell();
 
-		for (User u : users) {
-			userNames.add(u.getName());
-		}
-
-		SelectionCell userSelectionCell = new SelectionCell(userNames);
 		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
@@ -280,26 +232,39 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		userColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
+		
+		/*
+		 * Spalte der User
+		 */
+		ButtonCell editCell = new ButtonCell();
+		Column<ListEntry, String> editColumn = new Column<ListEntry, String>(editCell) {
 
+			public String getValue(ListEntry listEntry) {
+
+				return "bearb.";
+			}
+		};
+
+
+		editColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
+//
+//
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
 
-				for (User u : users) {
-					if (u.getName().equals(value))
-						;
-					{
-						listEntry.setUser(u);
-						dataProvider.refresh();
-
-					}
-				}
-				elv.save(listEntry, new SaveListAsyncCallback());
-
-//				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-
+				RootPanel.get("details").clear();
+				NewListEntryForm nlef = new NewListEntryForm();
+				nlef.setGsltvm(ShoppingListForm.this.gsltvm);
+				nlef.setShoppinglistForm(ShoppingListForm.this);
+				nlef.setSelected(selectedShoppingList);
+				nlef.setSelectedGroup(selectedGroup);
+				RootPanel.get("details").add(nlef);
+				
+			
 			}
 		});
+		
+
 
 		ArrayList<String> favs = new ArrayList<String>();
 		favs.addAll(Arrays.asList("nein", "ja"));
@@ -544,6 +509,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
+		Window.alert(g.getName());
 		this.selectedGroup = g;
 
 	}
@@ -837,6 +803,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
+
 	private class CheckedSaveAsyncCallback implements AsyncCallback<Void> {
 
 		public void onFailure(Throwable caught) {
@@ -847,5 +814,6 @@ public class ShoppingListForm extends VerticalPanel {
 			Window.alert("CheckedSave");
 		}
 	}
+
 
 }
