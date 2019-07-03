@@ -159,7 +159,8 @@ public class ShoppingListForm extends VerticalPanel {
 				listEntry.setChecked(value);
 
 				Window.alert("Wurde jetzt gecheckt: " + value);
-				Window.alert(listEntry.getUserId() + "  USERID");
+				Window.alert(listEntry.getUser().getId() + "  USERID");
+				Window.alert("listEntry" + listEntry.isChecked());
 				elv.save(listEntry, new CheckedSaveAsyncCallback());
 
 			}
@@ -190,13 +191,13 @@ public class ShoppingListForm extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
-		
-		amountColumn.setFieldUpdater (new FieldUpdater <ListEntry, String>() {
+
+		amountColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
 			public void update(int index, ListEntry listEntry, String value) {
-				
+
 				listEntry.setAmount(Double.parseDouble(value));
-				
+
 				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
 
 					@Override
@@ -214,10 +215,9 @@ public class ShoppingListForm extends VerticalPanel {
 				};
 
 				elv.save(listEntry, saveCallback);
-				
+
 			}
 		});
-		
 
 		/*
 		 * Spalte der Einheit
@@ -260,7 +260,6 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		
 		/*
 		 * Spalte der User
 		 */
@@ -272,7 +271,6 @@ public class ShoppingListForm extends VerticalPanel {
 				return "bearb.";
 			}
 		};
-
 
 		editColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 //
@@ -287,12 +285,9 @@ public class ShoppingListForm extends VerticalPanel {
 //				nlef.setSelected(selectedShoppingList);
 //				nlef.setSelectedGroup(selectedGroup);
 				RootPanel.get("details").add(nlef);
-				
-			
+
 			}
 		});
-		
-
 
 		ArrayList<String> favs = new ArrayList<String>();
 		favs.addAll(Arrays.asList("nein", "ja"));
@@ -402,7 +397,7 @@ public class ShoppingListForm extends VerticalPanel {
 		cellTable.addColumn(favColumn, "Favoriten");
 		cellTable.addColumn(editColumn, "bearbeiten");
 		cellTable.addColumn(deleteColumn, "Eintrag löschen");
-		
+
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(articleColumn, 20, Unit.PX);
@@ -476,8 +471,10 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
+				Window.alert("in getallbyshoppinglist");
 				for (ListEntry le : listEntry) {
 					list.add(le);
+
 				}
 
 			}
@@ -833,7 +830,6 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
-
 	private class CheckedSaveAsyncCallback implements AsyncCallback<Void> {
 
 		public void onFailure(Throwable caught) {
@@ -844,6 +840,5 @@ public class ShoppingListForm extends VerticalPanel {
 			Window.alert("CheckedSave");
 		}
 	}
-
 
 }
