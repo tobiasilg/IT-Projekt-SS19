@@ -443,6 +443,7 @@ public class ListEntryMapper {
 
 		String date = null;
 		if (listentry.getBuyDate() != null) {
+			
 			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
 		}
 
@@ -450,6 +451,8 @@ public class ListEntryMapper {
 				+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
 				+ listentry.getUserId() + "," + " checked=" + listentry.isChecked() + "," + " buyDate ='" + date + "'"
 				+ " WHERE id= " + listentry.getId();
+		System.out.println(listentry.getUserId());
+		System.out.println(date);
 
 		try {
 			Statement stmt = con.createStatement();
@@ -469,12 +472,13 @@ public class ListEntryMapper {
 		if (store != null && beginningDate != null && endDate != null) {
 			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(beginningDate);
 			String enddate = new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(endDate);
-			sql = "SELECT le.*, e.groupId FROM listentry AS le"
+			sql = "SELECT le.*, e.id FROM listentry AS le"
 					+" LEFT JOIN shoppinglist sl ON sl.id = le.shoppinglistid"
-					+" LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" 
+					+" LEFT JOIN einkaufsgruppe AS e ON e.id = sl.groupid" 
 					+" LEFT JOIN store as s on s.id=le.storeid"
 					+" WHERE le.buyDate BETWEEN '" + date
-					+"' AND '" + enddate + "' AND e.groupId = " + groupId + " AND storeid = " + store.getId();
+					+"' AND '" + enddate + "' AND e.id = " + groupId + " AND storeid = " + store.getId();
+			System.out.println("Alles StoreID:" + store.getId() + "GroupID: " + groupId);
 
 		}
 		if (store == null && beginningDate != null && endDate != null) {
@@ -485,14 +489,17 @@ public class ListEntryMapper {
 					+" LEFT JOIN shoppinglist AS sl ON sl.id = le.shoppinglistid"
 					+" LEFT JOIN einkaufsgruppe AS e ON e.id = sl.groupid " + "WHERE le.buyDate BETWEEN '" + date
 					+"' AND '" + enddate + "' AND e.id =" + groupId;
+			System.out.println( " nur Datum GroupID: " + groupId);
 		}
 		if (store != null && beginningDate == null && endDate == null) {
-			sql = "SELECT le.*, e.groupId FROM listentry AS le"
+			sql = "SELECT le.*, e.id FROM listentry AS le"
 					+" LEFT JOIN shoppinglist sl ON sl.id = le.shoppinglistid"
-					+" LEFT JOIN einkaufsgruppe AS e ON le.shoppinglistid = e.id" 
+					+" LEFT JOIN einkaufsgruppe AS e ON e.id = sl.groupid" 
 					+" LEFT JOIN store as s on s.id = le.storeid"
 					+" WHERE e.id =" + groupId
-					+" AND storeid =" + store.getId();
+					+" AND storeid =" + store.getId()
+					+" AND checked = 1";
+			System.out.println("Nur Store StoreID:" + store.getId() + "GroupID: " + groupId);
 
 		}
 		Vector<ListEntry> result = new Vector<ListEntry>();
