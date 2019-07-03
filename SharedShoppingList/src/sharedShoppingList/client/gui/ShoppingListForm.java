@@ -190,6 +190,34 @@ public class ShoppingListForm extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
+		
+		amountColumn.setFieldUpdater (new FieldUpdater <ListEntry, String>() {
+
+			public void update(int index, ListEntry listEntry, String value) {
+				
+				listEntry.setAmount(Double.parseDouble(value));
+				
+				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						Notification.show("Menge wurde gespeichert");
+					}
+
+				};
+
+				elv.save(listEntry, saveCallback);
+				
+			}
+		});
+		
 
 		/*
 		 * Spalte der Einheit
