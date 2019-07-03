@@ -175,8 +175,7 @@ public class GroupShoppingListTreeViewModel implements TreeViewModel{
 
 				public void onSuccess(Group group) {
 					selectedGroup = group;
-					groupForm.setSelected(group);
-					//shoppingListForm.setSelectedGroup(selectedGroup);
+					shoppingListForm.setSelected(selectedGroup);
 				}
 			});
 		}
