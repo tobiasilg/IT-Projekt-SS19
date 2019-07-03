@@ -167,6 +167,20 @@ public class ShoppingListForm extends VerticalPanel {
 		};
 
 		/*
+		 * Spalte der Artikel
+		 */
+
+		TextCell newOneTextCell = new TextCell();
+		Column<ListEntry, String> newOneColumn = new Column<ListEntry, String>(newOneTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+
+				return listEntry.getArticle().getName();
+
+			}
+		};
+
+		/*
 		 * Spalte der Menge
 		 */
 
@@ -382,6 +396,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
+		cellTable.addColumn(newOneColumn, "letzte Änderung");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
 		cellTable.addColumn(unitColumn, "Einheit");
