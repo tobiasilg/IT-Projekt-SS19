@@ -31,13 +31,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.gui.AdministrationGroupForm.SaveRenameGroupCallback;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -59,7 +57,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
-	private final SingleSelectionModel<ListEntry> selectionModel = new SingleSelectionModel<ListEntry>();
+	private final MultiSelectionModel<ListEntry> selectionModel = new MultiSelectionModel<ListEntry>();
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
@@ -135,7 +133,16 @@ public class ShoppingListForm extends VerticalPanel {
 
 			public Boolean getValue(ListEntry object) {
 				// Get the value from the selection model.
-				return selectionModel.isSelected(object);
+				Boolean listEntryChecked = object.isChecked();
+
+				if (listEntryChecked = true) {
+
+//					Window.alert("Checked: " + listEntryChecked);
+
+					return selectionModel.isSelected(object);
+				} else {
+					return false;
+				}
 
 			}
 
@@ -144,26 +151,16 @@ public class ShoppingListForm extends VerticalPanel {
 		checkBoxColumn.setFieldUpdater(new FieldUpdater<ListEntry, Boolean>() {
 			public void update(int index, ListEntry listEntry, Boolean value) {
 				// Value is the button value. Object is the row object.
-				Article article = listEntry.getArticle();
-				AsyncCallback<Favourite> updateCallback = new AsyncCallback<Favourite>() {
+//				if (value = true) {
+//					listEntry.setChecked(true);
+//				} else {
+//					listEntry.setChecked(false);
+//				}
+				listEntry.setChecked(value);
 
-					public void onFailure(Throwable caught) {
-
-					}
-
-					public void onSuccess(Favourite result) {
-						Notification.show("Listeneintrag wurde gelöscht.");
-					}
-
-				};
-
-				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
-
-				if (value == false) {
-//					elv.delete.deleteArticle(article, callback);
-				} else {
-					elv.createFavourite(listEntry, selectedGroup, updateCallback);
-				}
+				Window.alert("Wurde jetzt gecheckt: " + value);
+				Window.alert(listEntry.getUserId() + "  USERID");
+				elv.save(listEntry, new CheckedSaveAsyncCallback());
 
 			}
 		});
@@ -224,7 +221,9 @@ public class ShoppingListForm extends VerticalPanel {
 		/*
 		 * Spalte der User
 		 */
+
 		TextCell userSelectionCell = new TextCell();
+
 		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
@@ -232,6 +231,7 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getUser().getName();
 			}
 		};
+
 		
 		/*
 		 * Spalte der User
@@ -245,11 +245,13 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
+
 		editColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 //
 //
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
+
 				RootPanel.get("details").clear();
 				NewListEntryForm nlef = new NewListEntryForm();
 				nlef.setGsltvm(ShoppingListForm.this.gsltvm);
@@ -262,6 +264,7 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		});
 		
+
 
 		ArrayList<String> favs = new ArrayList<String>();
 		favs.addAll(Arrays.asList("nein", "ja"));
@@ -799,5 +802,18 @@ public class ShoppingListForm extends VerticalPanel {
 		}
 
 	}
+
+
+	private class CheckedSaveAsyncCallback implements AsyncCallback<Void> {
+
+		public void onFailure(Throwable caught) {
+
+		}
+
+		public void onSuccess(Void result) {
+			Window.alert("CheckedSave");
+		}
+	}
+
 
 }

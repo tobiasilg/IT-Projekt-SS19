@@ -464,12 +464,19 @@ public class EinkaufslistenverwaltungImpl extends RemoteServiceServlet implement
 		return this.listEntryMapper.insert(listentry);
 	}
 
+
 	public void save(ListEntry listentry) throws IllegalArgumentException {
 		/*
 		 * Wenn checked angehakt wurde, soll ein neues Datum (das aktuelle) gesetzt werden
 		 */
+		Date date= new Date();
+		 
+		 long time = date.getTime();		 
+		 Timestamp ts = new Timestamp(time);
+		
 		if(listentry.isChecked()) {
-			listentry.setBuyDate((Timestamp) new Date());
+			System.out.println(ts);
+			listentry.setBuyDate(ts);
 		}
 		else {
 			listentry.setBuyDate(null);
