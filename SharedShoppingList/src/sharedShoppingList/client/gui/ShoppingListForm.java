@@ -63,7 +63,6 @@ public class ShoppingListForm extends VerticalPanel {
 	private ListEntry selectedListEntry = null;
 
 	private ShoppingListForm slf = null;
-	private Store selectedStore;
 
 	private Label infoTitleLabel = new Label();
 
@@ -283,10 +282,10 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
 
-//				RootPanel.get("details").clear();
+			RootPanel.get("details").clear();
 //
 				EditListEntryForm elef = new EditListEntryForm();
-				elef.center();
+//				elef.center();
 				elef.setGsltvm(ShoppingListForm.this.gsltvm);
 				elef.setShoppinglistForm(ShoppingListForm.this);
 				elef.setSelectedGroup(selectedGroup);
@@ -298,7 +297,7 @@ public class ShoppingListForm extends VerticalPanel {
 //
 //				Window.alert(String.valueOf(listEntry.getId()));
 //
-//				RootPanel.get("details").add(elef);
+			RootPanel.get("details").add(elef);
 
 			}
 		});
@@ -427,6 +426,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 		// Connect the table to the data provider.
 		dataProvider.addDataDisplay(cellTable);
+		
+
 
 	}
 
@@ -436,9 +437,10 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-
+		
+		
 		newListEntryid = gsltvm.getSelectedList().getNewOne();
-
+			
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
@@ -482,6 +484,7 @@ public class ShoppingListForm extends VerticalPanel {
 		});
 
 		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
+			
 
 			public void onFailure(Throwable caught) {
 				Window.alert("Fehler in ShoppingListForm");
@@ -490,11 +493,13 @@ public class ShoppingListForm extends VerticalPanel {
 			public void onSuccess(Vector<ListEntry> listEntry) {
 				for (ListEntry le : listEntry) {
 					list.add(le);
+					
 
 				}
 
 			}
 		});
+		
 
 	}
 
@@ -612,14 +617,14 @@ public class ShoppingListForm extends VerticalPanel {
 	 * was already showing, then the popup is centered.
 	 */
 
-	private class DeleteListEntryClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
-			deleteListEntryDialogBox.center();
-		}
-	}
+//	private class DeleteListEntryClickHandler implements ClickHandler {
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
+//			deleteListEntryDialogBox.center();
+//		}
+//	}
 
 	/**
 	 * Die Nested-Class <code>YesDeleteClickHandler</code> implementiert das
