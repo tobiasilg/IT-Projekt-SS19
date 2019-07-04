@@ -287,6 +287,7 @@ public class NewListEntryForm extends DialogBox {
 
 			// Erstellung Listeneintrag
 			ListEntry listEntry = new ListEntry();
+			
 
 			listEntry.setName(name);
 			listEntry.setArticle(article);
@@ -338,8 +339,35 @@ public class NewListEntryForm extends DialogBox {
 				slf.setSelected(selectedGroup);
 				RootPanel.get("details").add(slf);
 				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
+				
+				elv.setNewOne(gsltvm.getSelectedList(), selectedListEntry, new NewOneCallback());
+				gsltvm.getSelectedList().setNewOne(selectedListEntry.getId());
+				
 			}
 		}
+		
+		
+		/***********************************************************************
+		 * CALLBACK
+		 ***********************************************************************
+		 */
+
+		public class NewOneCallback implements AsyncCallback<Void> {
+
+			@Override
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Void arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+
 
 	}
 

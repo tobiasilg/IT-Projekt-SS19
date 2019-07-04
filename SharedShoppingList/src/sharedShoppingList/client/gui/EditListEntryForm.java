@@ -9,7 +9,8 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.DialogBox;
+
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import sharedShoppingList.client.ClientsideSettings;
+
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
 import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Group;
@@ -27,7 +29,7 @@ import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
-public class EditListEntryForm extends FlowPanel {
+public class EditListEntryForm extends DialogBox {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
@@ -114,8 +116,11 @@ public class EditListEntryForm extends FlowPanel {
 
 	public void onLoad() {
 
-		this.add(label);
+//		this.add(label);
 		this.add(grid);
+		this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
+		
+		
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
@@ -135,6 +140,8 @@ public class EditListEntryForm extends FlowPanel {
 			}
 		});
 
+		
+		Window.alert("getSelectedGROUP: " + gsltvm.getSelectedGroup());
 //		 UsersListBox
 //		 Lade alle User aus der Datenbank
 		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback<Vector<User>>() {
@@ -148,7 +155,7 @@ public class EditListEntryForm extends FlowPanel {
 				for (User user : result) {
 					users.addElement(user);
 					usersListBox.addItem(user.getName());
-					usersListBox.setVisibleItemCount(1);
+//					usersListBox.setVisibleItemCount(1);
 				}
 
 			}
@@ -161,7 +168,7 @@ public class EditListEntryForm extends FlowPanel {
 			public void onFailure(Throwable caught) {
 				Notification.show("3. failure");
 			}
-
+ 
 			public void onSuccess(Vector<Store> result) {
 				storesListBox.clear();
 				for (Store store : result) {
@@ -245,14 +252,14 @@ public class EditListEntryForm extends FlowPanel {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			if (selectedShoppingList != null) {
-				RootPanel.get("details").clear();
-				ShoppingListForm slf = new ShoppingListForm();
-				slf.setSelected(selectedShoppingList);
-				slf.setSelected(selectedGroup);
-				RootPanel.get("details").add(slf);
-			}
-
+//			if (selectedShoppingList != null) {
+//				RootPanel.get("details").clear();
+//				ShoppingListForm slf = new ShoppingListForm();
+//				slf.setSelected(selectedShoppingList);
+//				slf.setSelected(selectedGroup);
+//				RootPanel.get("details").add(slf);
+//			}
+			hide();
 		}
 
 	}
@@ -320,26 +327,24 @@ public class EditListEntryForm extends FlowPanel {
 
 				
 				newListEntry = selectedListEntry;
-		
+				
 				newListEntry.setAmount(Double.parseDouble(amountTextBox.getValue()));
 				newListEntry.setStoreId(stores.get(storesListBox.getSelectedIndex()).getId());
 				
 				newListEntry.setUserId(users.get(usersListBox.getSelectedIndex()).getId());
+				newListEntry.setShoppinglistId(gsltvm.getSelectedList().getId());
+				newListEntry.setArticleId(selectedListEntry.getArticleId());
 				
 //				users.get(newListEntry.getUserId());
 ////				selectedListEntry.getUser().getId();
 				
-				Window.alert("Menge " + newListEntry.getAmount());
-				Window.alert("Store " + newListEntry.getStore().getName());
-				Window.alert("storeID " + newListEntry.getUserId());
-				Window.alert("user" + newListEntry.getUser().getName());
 				
-				Window.alert("userID" + newListEntry.getUserId());
-				
+
+								
 				elv.save(newListEntry, new UpdateEntryCallback());
 				
 				
-				Window.alert("UpdateEntryCallback nachher " + String.valueOf(newListEntry.getId()));
+				
 				
 			
 	
@@ -358,16 +363,50 @@ public class EditListEntryForm extends FlowPanel {
 			}
 
 			public void onSuccess(Void result) {
-				Window.alert("Das Ändern eines Listeneintrags hat funktioniert!");
-				RootPanel.get("details").clear();
-				ShoppingListForm slf = new ShoppingListForm();
-				//slf.setSelectedListEntry(selectedListEntry);
-				slf.setSelected(selectedShoppingList);
-				slf.setSelected(selectedGroup);
-				RootPanel.get("details").add(slf);
-//				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
+				elv.setNewOne(gsltvm.getSelectedList(), selectedListEntry, new NewOneCallback());
+				gsltvm.getSelectedList().setNewOne(selectedListEntry.getId());
+				
+				
+				
+//				ShoppingListForm slf = new ShoppingListForm();
+//				
+//				
+//				slf.setSelectedListEntry(selectedListEntry);
+//				slf.setSelected(selectedShoppingList);
+//				slf.setSelected(selectedGroup);
+//				RootPanel.get("details").clear();
+//				RootPanel.get("details").add(slf);
+				
+				hide();
+				
+				
+//				
+				
 			}
 		}
+		
+		/***********************************************************************
+		 * CALLBACK
+		 ***********************************************************************
+		 */
+
+		public class NewOneCallback implements AsyncCallback<Void> {
+
+			@Override
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Void arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+
+
 
 	}
 }

@@ -448,10 +448,11 @@ public class ListEntryMapper {
 			
 			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(listentry.getBuyDate());
 			
-			String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + "," + " amount='"
+			String sql = "UPDATE listentry SET " + "articleid= " + listentry.getArticleId() + ","  + " amount='"
 					+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
 					+ listentry.getUserId() + "," + " checked=" + listentry.isChecked() + "," + " buyDate ='" + date + "'"
 					+ " WHERE id= " + listentry.getId();
+			System.out.println("mapper if SLID:"+ listentry.getShoppinglistId());
 			try {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(sql);
@@ -468,7 +469,7 @@ public class ListEntryMapper {
 					+ listentry.getAmount() + "'," + " storeid=" + listentry.getStoreId() + "," + " userid="
 					+ listentry.getUserId() + "," + " checked=" + listentry.isChecked()
 					+ " WHERE id= " + listentry.getId();
-			System.out.println("else null" + listentry.getBuyDate());
+			
 			
 			try {
 				Statement stmt = con.createStatement();
