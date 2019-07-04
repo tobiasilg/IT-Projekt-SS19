@@ -9,8 +9,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -29,7 +28,7 @@ import sharedShoppingList.shared.bo.ShoppingList;
 import sharedShoppingList.shared.bo.Store;
 import sharedShoppingList.shared.bo.User;
 
-public class EditListEntryForm extends DialogBox {
+public class EditListEntryForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
@@ -37,7 +36,7 @@ public class EditListEntryForm extends DialogBox {
 
 	ShoppingList selectedShoppingList = null;
 	ShoppingListForm shoppingListForm = null;
-	//ShoppingListForm slf;
+	// ShoppingListForm slf;
 	ListEntry selectedListEntry;
 	ListEntry newListEntry;
 
@@ -60,6 +59,8 @@ public class EditListEntryForm extends DialogBox {
 	private Label label = new Label();
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Aktualisieren");
+
+	// private int newListEntryid = 0;
 
 	/***********************************************************************
 	 * Konstruktor
@@ -116,11 +117,12 @@ public class EditListEntryForm extends DialogBox {
 
 	public void onLoad() {
 
-//		this.add(label);
+		// newListEntryid = gsltvm.getSelectedList().getNewOne();
+
+		this.add(label);
 		this.add(grid);
-		this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
-		
-		
+		// this.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop());
+
 		/*
 		 * Lade alle Artikel aus der Datenbank in das articleOracle
 		 */
@@ -140,7 +142,6 @@ public class EditListEntryForm extends DialogBox {
 			}
 		});
 
-		
 		Window.alert("getSelectedGROUP: " + gsltvm.getSelectedGroup());
 //		 UsersListBox
 //		 Lade alle User aus der Datenbank
@@ -168,14 +169,13 @@ public class EditListEntryForm extends DialogBox {
 			public void onFailure(Throwable caught) {
 				Notification.show("3. failure");
 			}
- 
+
 			public void onSuccess(Vector<Store> result) {
 				storesListBox.clear();
 				for (Store store : result) {
 					stores.addElement(store);
 					storesListBox.addItem(store.getName());
 					storesListBox.setVisibleItemCount(1);
-
 
 				}
 			}
@@ -230,17 +230,17 @@ public class EditListEntryForm extends DialogBox {
 	public void setShoppinglistForm(ShoppingListForm shoppingListForm) {
 		this.shoppingListForm = shoppingListForm;
 	}
-	
+
 	public ListEntry getSelectedListEntry() {
 		return selectedListEntry;
 	}
 
 	public void setSelectedListEntry(ListEntry selectedListEntry) {
 		this.selectedListEntry = selectedListEntry;
-		
+
 		articleSuggestBox.setText(selectedListEntry.getArticle().getName());
 		amountTextBox.setText(String.valueOf(selectedListEntry.getAmount()));
-		
+
 	}
 
 	/***********************************************************************
@@ -259,11 +259,10 @@ public class EditListEntryForm extends DialogBox {
 //				slf.setSelected(selectedGroup);
 //				RootPanel.get("details").add(slf);
 //			}
-			hide();
+//			hide();
 		}
 
 	}
-	
 
 	private class SaveClickHandler implements ClickHandler {
 
@@ -309,8 +308,8 @@ public class EditListEntryForm extends DialogBox {
 			listEntry.setStore(store);
 			listEntry.setShoppinglist(selectedShoppingList);
 			listEntry.setUser(user);
-		
-			//Window.alert(user.getId() + "");
+
+			// Window.alert(user.getId() + "");
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -325,29 +324,17 @@ public class EditListEntryForm extends DialogBox {
 
 			else {
 
-				
 				newListEntry = selectedListEntry;
-				
+
 				newListEntry.setAmount(Double.parseDouble(amountTextBox.getValue()));
 				newListEntry.setStoreId(stores.get(storesListBox.getSelectedIndex()).getId());
-				
+
 				newListEntry.setUserId(users.get(usersListBox.getSelectedIndex()).getId());
 				newListEntry.setShoppinglistId(gsltvm.getSelectedList().getId());
 				newListEntry.setArticleId(selectedListEntry.getArticleId());
-				
-//				users.get(newListEntry.getUserId());
-////				selectedListEntry.getUser().getId();
-				
-				
 
-								
 				elv.save(newListEntry, new UpdateEntryCallback());
-				
-				
-				
-				
-			
-	
+
 			}
 		}
 
@@ -363,28 +350,27 @@ public class EditListEntryForm extends DialogBox {
 			}
 
 			public void onSuccess(Void result) {
+
+				// ShoppingListForm slf = new ShoppingListForm();
+
 				elv.setNewOne(gsltvm.getSelectedList(), selectedListEntry, new NewOneCallback());
 				gsltvm.getSelectedList().setNewOne(selectedListEntry.getId());
-				
-				
-				
-//				ShoppingListForm slf = new ShoppingListForm();
-//				
+
+				RootPanel.get("details").clear();
+				// RootPanel.get("details").add(slf);
+
 //				
 //				slf.setSelectedListEntry(selectedListEntry);
 //				slf.setSelected(selectedShoppingList);
 //				slf.setSelected(selectedGroup);
-//				RootPanel.get("details").clear();
-//				RootPanel.get("details").add(slf);
-				
-				hide();
-				
-				
+
+				// hide();
+
 //				
-				
+
 			}
 		}
-		
+
 		/***********************************************************************
 		 * CALLBACK
 		 ***********************************************************************
@@ -395,18 +381,16 @@ public class EditListEntryForm extends DialogBox {
 			@Override
 			public void onFailure(Throwable arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void onSuccess(Void arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		}
-
-
 
 	}
 }
