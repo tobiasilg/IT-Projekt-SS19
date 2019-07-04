@@ -9,9 +9,9 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -35,7 +35,7 @@ import sharedShoppingList.shared.bo.User;
  *
  */
 
-public class NewListEntryForm extends DialogBox {
+public class NewListEntryForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
@@ -70,6 +70,7 @@ public class NewListEntryForm extends DialogBox {
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Neu");
 
+	private Label titel = new Label();
 	/***********************************************************************
 	 * Konstruktor
 	 ***********************************************************************
@@ -114,6 +115,8 @@ public class NewListEntryForm extends DialogBox {
 
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
+		
+		titel.addStyleName("profilTitle");
 
 		// Füge das Grid der Dialogbox hinzu
 
@@ -125,7 +128,8 @@ public class NewListEntryForm extends DialogBox {
 	 */
 
 	public void onLoad() {
-
+		
+		this.add(titel);
 		this.add(grid);
 
 		/*
@@ -222,6 +226,8 @@ public class NewListEntryForm extends DialogBox {
 
 	public void setSelected(ShoppingList selectedShoppingList) {
 		this.selectedShoppingList = selectedShoppingList;
+		
+		titel.setText(selectedShoppingList.getName());
 	}
 
 	public ShoppingListForm getShoppinglistForm() {
