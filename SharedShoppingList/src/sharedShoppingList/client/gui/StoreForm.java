@@ -37,7 +37,7 @@ import sharedShoppingList.shared.bo.Store;
 
 public class StoreForm extends VerticalPanel {
 
-	private Label nameLabel = new Label("STOREVERWALTUNG");
+	private Label nameLabel = new Label("Storeverwaltung");
 	private TextBox nameTextBox = new TextBox();
 
 	private Button cancelButton = new Button("abbrechen");
@@ -92,6 +92,9 @@ public class StoreForm extends VerticalPanel {
 		hpCreate.add(addButton);
 //		hpCreate.add(saveButton);
 		hpCreate.add(cancelButton);
+		cancelButton.addStyleName("deleteButton");
+		addButton.addStyleName("saveButton");
+		nameLabel.addStyleName("profilTitle");
 
 //		scrollPanel.add(table);
 
@@ -107,17 +110,17 @@ public class StoreForm extends VerticalPanel {
 		this.setHeight("100");
 		this.setHorizontalAlignment(ALIGN_CENTER);
 		this.addStyleName("storeForm");
-		this.setCellHorizontalAlignment(hpCreate, ALIGN_CENTER);
+		// this.setCellHorizontalAlignment(hpCreate, ALIGN_CENTER);
 		nameLabel.setWidth("100%");
 
 		hpCreate.addStyleName("hpCreateStore");
 		hpCreate.setWidth("100%");
 		hpCreate.setHorizontalAlignment(ALIGN_CENTER);
 		hpCreate.setStyleName("hpCreateStore");
-		nameLabel.addStyleName("storeFormLabel");
+		// nameLabel.addStyleName("storeFormLabel");
 		nameTextBox.addStyleName("profilTextBox");
 //		saveButton.addStyleName("speicherButton");
-		addButton.addStyleName("storeFormButton");
+		// addButton.addStyleName("storeFormButton");
 
 		// Lade alle Store aus der Datenbank
 		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
@@ -163,8 +166,6 @@ public class StoreForm extends VerticalPanel {
 			public void update(int index, Store store, String value) {
 				// Value is the button value. Object is the row object.
 //				
-
-				
 
 				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 

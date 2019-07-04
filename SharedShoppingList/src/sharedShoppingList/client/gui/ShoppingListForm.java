@@ -282,10 +282,12 @@ public class ShoppingListForm extends VerticalPanel {
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
 
+
 			RootPanel.get("details").clear();
 //
 				EditListEntryForm elef = new EditListEntryForm();
 //				elef.center();
+
 				elef.setGsltvm(ShoppingListForm.this.gsltvm);
 				elef.setShoppinglistForm(ShoppingListForm.this);
 				elef.setSelectedGroup(selectedGroup);
@@ -297,6 +299,7 @@ public class ShoppingListForm extends VerticalPanel {
 //
 //				Window.alert(String.valueOf(listEntry.getId()));
 //
+
 			RootPanel.get("details").add(elef);
 
 			}
