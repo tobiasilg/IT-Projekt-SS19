@@ -25,19 +25,16 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import sharedShoppingList.client.ClientsideSettings;
-import sharedShoppingList.client.gui.AdministrationGroupForm.SaveRenameGroupCallback;
 import sharedShoppingList.shared.EinkaufslistenverwaltungAsync;
-import sharedShoppingList.shared.bo.Article;
 import sharedShoppingList.shared.bo.Favourite;
 import sharedShoppingList.shared.bo.Group;
 import sharedShoppingList.shared.bo.ListEntry;
@@ -59,13 +56,13 @@ public class ShoppingListForm extends VerticalPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
-	private final SingleSelectionModel<ListEntry> selectionModel = new SingleSelectionModel<ListEntry>();
+	private final MultiSelectionModel<ListEntry> selectionModel = new MultiSelectionModel<ListEntry>();
 
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	private ListEntry selectedListEntry = null;
+
 	private ShoppingListForm slf = null;
-	private Store selectedStore;
 
 	private Label infoTitleLabel = new Label();
 
@@ -73,9 +70,6 @@ public class ShoppingListForm extends VerticalPanel {
 	private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	private Button createShoppingListButton = new Button("Listeneintrag erstellen");
 	private Button filterByUserButton = new Button("Meine Einträge");
-
-	private ListBox storesListBox = new ListBox();
-	private ListBox usersListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
@@ -87,9 +81,8 @@ public class ShoppingListForm extends VerticalPanel {
 	Vector<Store> stores = new Vector<Store>();
 	List<String> storeNames = new ArrayList<String>();
 
-  	Vector <User> users = new Vector<User>();
-  	List<String> userNames = new ArrayList<String>();
-
+	Vector<User> users = new Vector<User>();
+	List<String> userNames = new ArrayList<String>();
 
 //	Vector<Store> stores = new Vector<Store>();
 //	Vector<User> users = new Vector<User>();
@@ -99,6 +92,8 @@ public class ShoppingListForm extends VerticalPanel {
 	private ListDataProvider<ListEntry> dataProvider = new ListDataProvider<ListEntry>();
 	private List<ListEntry> list = dataProvider.getList();
 	private CellTable<ListEntry> cellTable = new CellTable<ListEntry>(KEY_PROVIDER);
+
+	private int newListEntryid = 0;
 
 	/**
 	 * The key provider that allows us to identify Contacts even if a field changes.
@@ -135,8 +130,8 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(cbCell) {
 
 			public Boolean getValue(ListEntry object) {
-				// Get the value from the selection model.
-				return selectionModel.isSelected(object);
+
+				return object.isChecked();
 
 			}
 
@@ -145,26 +140,14 @@ public class ShoppingListForm extends VerticalPanel {
 		checkBoxColumn.setFieldUpdater(new FieldUpdater<ListEntry, Boolean>() {
 			public void update(int index, ListEntry listEntry, Boolean value) {
 				// Value is the button value. Object is the row object.
-				Article article = listEntry.getArticle();
-				AsyncCallback<Favourite> updateCallback = new AsyncCallback<Favourite>() {
+//				if (value = true) {
+//					listEntry.setChecked(true);
+//				} else {
+//					listEntry.setChecked(false);
+//				}
+				listEntry.setChecked(value);
 
-					public void onFailure(Throwable caught) {
-
-					}
-
-					public void onSuccess(Favourite result) {
-						Notification.show("Listeneintrag wurde gelöscht.");
-					}
-
-				};
-
-				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
-
-				if (value == false) {
-//					elv.delete.deleteArticle(article, callback);
-				} else {
-					elv.createFavourite(listEntry, selectedGroup, updateCallback);
-				}
+				elv.save(listEntry, new CheckedSaveAsyncCallback());
 
 			}
 		});
@@ -184,6 +167,25 @@ public class ShoppingListForm extends VerticalPanel {
 		};
 
 		/*
+		 * Spalte der Artikel
+		 */
+
+		TextCell newOneTextCell = new TextCell();
+		Column<ListEntry, String> newOneColumn = new Column<ListEntry, String>(newOneTextCell) {
+
+			public String getValue(ListEntry listEntry) {
+
+				if (listEntry.getId() == newListEntryid) {
+					return "new";
+
+				} else {
+					return "";
+				}
+
+			}
+		};
+
+		/*
 		 * Spalte der Menge
 		 */
 
@@ -194,6 +196,33 @@ public class ShoppingListForm extends VerticalPanel {
 				return String.valueOf(listEntry.getAmount());
 			}
 		};
+
+		amountColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
+
+			public void update(int index, ListEntry listEntry, String value) {
+
+				listEntry.setAmount(Double.parseDouble(value));
+
+				AsyncCallback<Void> saveCallback = new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						Notification.show("Menge wurde gespeichert");
+					}
+
+				};
+
+				elv.save(listEntry, saveCallback);
+
+			}
+		});
 
 		/*
 		 * Spalte der Einheit
@@ -212,25 +241,8 @@ public class ShoppingListForm extends VerticalPanel {
 		// StoresListBox
 		// Lade alle Stores aus der Datenbank
 
-		elv.getAllStores(new AsyncCallback<Vector<Store>>() {
+		TextCell storeSelectionCell = new TextCell();
 
-			public void onFailure(Throwable caught) {
-				Notification.show("3. failure");
-			}
-
-			public void onSuccess(Vector<Store> result) {
-				storesListBox.clear();
-				for (Store store : result) {
-					stores.addElement(store);
-
-				}
-			}
-		});
-
-		for (Store s : stores) {
-			storeNames.add(s.getName());
-		}
-		SelectionCell storeSelectionCell = new SelectionCell(storeNames);
 		Column<ListEntry, String> storeColumn = new Column<ListEntry, String>(storeSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
@@ -239,43 +251,12 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 		};
 
-		storeColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
-
-			@Override
-			public void update(int index, ListEntry listEntry, String value) {
-				for (Store s : stores) {
-					if (s.getName().equals(value)) {
-						listEntry.setStore(s);
-					}
-				}
-
-			}
-		});
-
 		/*
 		 * Spalte der User
 		 */
-		Window.alert("selectedGROUP  "+gsltvm.getSelectedGroup());
-//		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback <Vector<User>>() {
-//
-//			public void onFailure(Throwable caught) {
-//				Notification.show("User konnten nicht sauber gezogen werden");
-//			}
-//			
-//			public void onSuccess(Vector<User> result) {
-//				Window.alert("Hallo");
-//
-//				for (User user: result) {
-//					users.addElement(user);
-//				}
-//			}
-//		});
-		
-		for (User u : users) {
-			userNames.add(u.getName());
-		}
-		
-		SelectionCell userSelectionCell= new SelectionCell(userNames);
+
+		TextCell userSelectionCell = new TextCell();
+
 		Column<ListEntry, String> userColumn = new Column<ListEntry, String>(userSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
@@ -283,41 +264,49 @@ public class ShoppingListForm extends VerticalPanel {
 				return listEntry.getUser().getName();
 			}
 		};
-		
-		userColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
+		/*
+		 * Spalte der User
+		 */
+		ButtonCell editCell = new ButtonCell();
+		Column<ListEntry, String> editColumn = new Column<ListEntry, String>(editCell) {
+
+			public String getValue(ListEntry listEntry) {
+
+				return "bearb.";
+			}
+		};
+
+		editColumn.setFieldUpdater(new FieldUpdater<ListEntry, String>() {
 
 			@Override
 			public void update(int index, ListEntry listEntry, String value) {
-			
-				for (User u : users) {
-					if(u.getName().equals(value));{
-						listEntry.setUser(u);
-						dataProvider.refresh();
-						
-					}
-				}
-				elv.save(listEntry, new SaveListAsyncCallback());
-				
-//				EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
-			
+
+
+			RootPanel.get("details").clear();
+//
+				EditListEntryForm elef = new EditListEntryForm();
+//				elef.center();
+
+				elef.setGsltvm(ShoppingListForm.this.gsltvm);
+				elef.setShoppinglistForm(ShoppingListForm.this);
+				elef.setSelectedGroup(selectedGroup);
+				elef.setSelected(selectedShoppingList);
+
+				selectedListEntry = listEntry;
+
+				elef.setSelectedListEntry(listEntry);
+//
+//				Window.alert(String.valueOf(listEntry.getId()));
+//
+
+			RootPanel.get("details").add(elef);
+
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		ArrayList<String> favs = new ArrayList<String>();
 		favs.addAll(Arrays.asList("nein", "ja"));
-
 
 		/*
 		 * Spalte der Favoriten-Artikel
@@ -327,11 +316,11 @@ public class ShoppingListForm extends VerticalPanel {
 		Column<ListEntry, String> favColumn = new Column<ListEntry, String>(favSelectionCell) {
 
 			public String getValue(ListEntry listEntry) {
-				
+
 				int favid = listEntry.getFavourite().getId();
 				if (favid == 0) {
 					return "nein";
-				}else {
+				} else {
 					return "ja";
 				}
 
@@ -406,7 +395,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 				};
 
-				Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
+				// Window.alert("Listeneintrag löschen" + listEntry.getArticle().getName());
 				elv.delete(listEntry, deleteCallback);
 				dataProvider.getList().remove(listEntry);
 			}
@@ -416,13 +405,16 @@ public class ShoppingListForm extends VerticalPanel {
 
 		// Die Spalten werden hier der CellTable hinzugefügt
 		cellTable.addColumn(checkBoxColumn, "Erledigt?");
+		cellTable.addColumn(newOneColumn, "letzte Änderung");
 		cellTable.addColumn(articleColumn, "Artikel");
 		cellTable.addColumn(amountColumn, "Menge");
 		cellTable.addColumn(unitColumn, "Einheit");
 		cellTable.addColumn(userColumn, "Wer?");
 		cellTable.addColumn(storeColumn, "Wo?");
 		cellTable.addColumn(favColumn, "Favoriten");
+		cellTable.addColumn(editColumn, "bearbeiten");
 		cellTable.addColumn(deleteColumn, "Eintrag löschen");
+
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(checkBoxColumn, 20, Unit.PX);
 //		cellTable.setColumnWidth(articleColumn, 20, Unit.PX);
@@ -437,6 +429,8 @@ public class ShoppingListForm extends VerticalPanel {
 
 		// Connect the table to the data provider.
 		dataProvider.addDataDisplay(cellTable);
+		
+
 
 	}
 
@@ -446,7 +440,10 @@ public class ShoppingListForm extends VerticalPanel {
 	 */
 
 	public void onLoad() {
-
+		
+		
+		newListEntryid = gsltvm.getSelectedList().getNewOne();
+			
 		renameTextBox.getElement().setPropertyString("placeholder", "Einkaufsliste umbenennen...");
 		renameTextBox.setWidth("15rem");
 
@@ -490,6 +487,7 @@ public class ShoppingListForm extends VerticalPanel {
 		});
 
 		elv.getAllListEntriesByShoppingList(selectedShoppingList, new AsyncCallback<Vector<ListEntry>>() {
+			
 
 			public void onFailure(Throwable caught) {
 				Window.alert("Fehler in ShoppingListForm");
@@ -498,10 +496,13 @@ public class ShoppingListForm extends VerticalPanel {
 			public void onSuccess(Vector<ListEntry> listEntry) {
 				for (ListEntry le : listEntry) {
 					list.add(le);
+					
+
 				}
 
 			}
 		});
+		
 
 	}
 
@@ -545,6 +546,14 @@ public class ShoppingListForm extends VerticalPanel {
 		}
 	}
 
+	public ListEntry getSelectedListEntry() {
+		return selectedListEntry;
+	}
+
+	public void setSelectedListEntry(ListEntry selectedListEntry) {
+		this.selectedListEntry = selectedListEntry;
+	}
+
 	public GroupShoppingListTreeViewModel getGsltvm() {
 		return gsltvm;
 
@@ -559,6 +568,7 @@ public class ShoppingListForm extends VerticalPanel {
 	}
 
 	public void setSelected(Group g) {
+		// Window.alert(g.getName());
 		this.selectedGroup = g;
 
 	}
@@ -610,14 +620,14 @@ public class ShoppingListForm extends VerticalPanel {
 	 * was already showing, then the popup is centered.
 	 */
 
-	private class DeleteListEntryClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
-			deleteListEntryDialogBox.center();
-		}
-	}
+//	private class DeleteListEntryClickHandler implements ClickHandler {
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//			DeleteListEntryDialogBox deleteListEntryDialogBox = new DeleteListEntryDialogBox();
+//			deleteListEntryDialogBox.center();
+//		}
+//	}
 
 	/**
 	 * Die Nested-Class <code>YesDeleteClickHandler</code> implementiert das
@@ -682,6 +692,7 @@ public class ShoppingListForm extends VerticalPanel {
 		}
 
 	}
+
 	private class DeleteShoppingListClickHanlder implements ClickHandler {
 
 		@Override
@@ -795,7 +806,7 @@ public class ShoppingListForm extends VerticalPanel {
 			Notification.show("Die Gruppe wurde erfolgreich gelöscht");
 
 			slf.setSelected(selectedShoppingList);
-	//		slf.setSelected(selectedGroup);
+			// slf.setSelected(selectedGroup);
 			RootPanel.get("details").add(slf);
 
 		}
@@ -819,14 +830,14 @@ public class ShoppingListForm extends VerticalPanel {
 		}
 
 	}
-	
-	private class SaveListAsyncCallback implements AsyncCallback <Void>{
 
-		public void onFailure (Throwable caught) {
+	private class SaveListAsyncCallback implements AsyncCallback<Void> {
+
+		public void onFailure(Throwable caught) {
 
 		}
 
-		public void onSuccess (Void result) {
+		public void onSuccess(Void result) {
 
 		}
 	}
@@ -842,9 +853,11 @@ public class ShoppingListForm extends VerticalPanel {
 		@Override
 		public void onSuccess(Void result) {
 			Notification.show("Die Einkaufsliste wurde erfolgreich gelöscht");
-			
-			
+
 			RootPanel.get("details").clear();
+			RootPanel.get("navigator").clear();
+			Navigator nav = new Navigator();
+			RootPanel.get("navigator").add(nav);
 
 			gsltvm.removeShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
@@ -852,8 +865,15 @@ public class ShoppingListForm extends VerticalPanel {
 
 	}
 
+	private class CheckedSaveAsyncCallback implements AsyncCallback<Void> {
+
+		public void onFailure(Throwable caught) {
+
+		}
+
+		public void onSuccess(Void result) {
+			Window.alert("CheckedSave");
+		}
+	}
+
 }
-
-
-
-

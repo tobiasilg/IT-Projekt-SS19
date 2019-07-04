@@ -156,6 +156,9 @@ public class GroupCreationForm extends FlowPanel {
 		//	Notification.show(String.valueOf(result.getName()));
 
 			RootPanel.get("details").clear();
+			RootPanel.get("navigator").clear();
+			Navigator nav = new Navigator();
+			RootPanel.get("navigator").add(nav);
 			group = result;
 			AdministrationGroupForm groupForm = new AdministrationGroupForm();
 			groupForm.setSelected(group);
@@ -163,7 +166,7 @@ public class GroupCreationForm extends FlowPanel {
 			
 			Notification.show(group.getName());
 			
-			gsltvm.addGroup(group);
+	//		gsltvm.addGroup(group);
 			
 		}
 	}

@@ -84,9 +84,9 @@ public class ShoppingListCreationForm extends FlowPanel {
 
 		shoppingListNameTextBox.getElement().setPropertyString("placeholder", "Shoppingliste... ");
 
-		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
-
+		buttonPanel.add(saveButton);
+		
 		shoppingListPanel.add(shoppingListLabel);
 		shoppingListPanel.add(insertLabel);
 		shoppingListPanel.add(shoppingListNameTextBox);
