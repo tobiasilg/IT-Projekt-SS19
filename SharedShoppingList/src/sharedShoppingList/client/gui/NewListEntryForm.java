@@ -9,9 +9,9 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -35,7 +35,7 @@ import sharedShoppingList.shared.bo.User;
  *
  */
 
-public class NewListEntryForm extends DialogBox {
+public class NewListEntryForm extends FlowPanel {
 
 	EinkaufslistenverwaltungAsync elv = ClientsideSettings.getEinkaufslistenverwaltung();
 	private GroupShoppingListTreeViewModel gsltvm = new GroupShoppingListTreeViewModel();
@@ -44,10 +44,14 @@ public class NewListEntryForm extends DialogBox {
 	ShoppingList selectedShoppingList = null;
 	ShoppingListForm shoppingListForm = null;
 	ShoppingListForm slf;
+
 	ListEntry selectedListEntry;
+	// ListEntry newListEntry;
+
 	Article article;
 	String unit;
 	NewListEntryForm nlef;
+
 	// private User u = CurrentUser.getUser();
 
 	private MultiWordSuggestOracle articleOracle = new MultiWordSuggestOracle();
@@ -58,7 +62,7 @@ public class NewListEntryForm extends DialogBox {
 	Vector<User> users = new Vector<User>();
 
 	private Grid grid = new Grid(5, 5);
-	//private Label unitListLabel = new Label();
+	// private Label unitListLabel = new Label();
 	private TextBox amountTextBox = new TextBox();
 	private ListBox usersListBox = new ListBox();
 	private ListBox storesListBox = new ListBox();
@@ -66,6 +70,7 @@ public class NewListEntryForm extends DialogBox {
 	private Button cancelButton = new Button("Abrechen");
 	private Button saveButton = new Button("Neu");
 
+	private Label titel = new Label();
 	/***********************************************************************
 	 * Konstruktor
 	 ***********************************************************************
@@ -86,7 +91,7 @@ public class NewListEntryForm extends DialogBox {
 //		unitListBox.addItem("Milliliter");
 
 		// setting itemcount value to 1 turns listbox into a drop-down list.
-	//	unitListBox.setVisibleItemCount(1);
+		// unitListBox.setVisibleItemCount(1);
 
 		// Zusammenbau des Grid
 
@@ -110,6 +115,8 @@ public class NewListEntryForm extends DialogBox {
 
 		saveButton.addStyleName("buttonAbfrage");
 		cancelButton.addStyleName("buttonAbfrage");
+		
+		titel.addStyleName("profilTitle");
 
 		// Füge das Grid der Dialogbox hinzu
 
@@ -121,7 +128,8 @@ public class NewListEntryForm extends DialogBox {
 	 */
 
 	public void onLoad() {
-
+		
+		this.add(titel);
 		this.add(grid);
 
 		/*
@@ -137,7 +145,7 @@ public class NewListEntryForm extends DialogBox {
 
 				for (Article a : result) {
 					articles.addElement(a);
-					articleOracle.add(a.getName() + ", "+ a.getUnit() );
+					articleOracle.add(a.getName() + ", " + a.getUnit());
 				}
 
 			}
@@ -180,7 +188,6 @@ public class NewListEntryForm extends DialogBox {
 				}
 			}
 		});
-		
 
 	}
 
@@ -219,6 +226,8 @@ public class NewListEntryForm extends DialogBox {
 
 	public void setSelected(ShoppingList selectedShoppingList) {
 		this.selectedShoppingList = selectedShoppingList;
+		
+		titel.setText(selectedShoppingList.getName());
 	}
 
 	public ShoppingListForm getShoppinglistForm() {
@@ -253,12 +262,12 @@ public class NewListEntryForm extends DialogBox {
 	private class SaveClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			
-			 selectedShoppingList = gsltvm.getSelectedList(); 
-			 selectedGroup = gsltvm.getSelectedGroup();
-			 
+
+			selectedShoppingList = gsltvm.getSelectedList();
+			selectedGroup = gsltvm.getSelectedGroup();
+
 			Window.alert("Einkaufslite: " + selectedShoppingList.getName());
-			
+
 			String newArticle = articleSuggestBox.getText();
 
 			Article article = new Article();
@@ -276,10 +285,10 @@ public class NewListEntryForm extends DialogBox {
 			Store store = new Store();
 //			store.setName(storesListBox.getSelectedItemText());
 			store = stores.get(storesListBox.getSelectedIndex());
-			Window.alert("Storename: " + store.getName() );
+			Window.alert("Storename: " + store.getName());
 
 			User user = new User();
-			//user.setName(usersListBox.getSelectedItemText());
+			// user.setName(usersListBox.getSelectedItemText());
 			user = users.get(usersListBox.getSelectedIndex());
 
 			String name = new String();
@@ -287,7 +296,6 @@ public class NewListEntryForm extends DialogBox {
 
 			// Erstellung Listeneintrag
 			ListEntry listEntry = new ListEntry();
-			
 
 			listEntry.setName(name);
 			listEntry.setArticle(article);
@@ -295,7 +303,7 @@ public class NewListEntryForm extends DialogBox {
 			listEntry.setStore(store);
 			listEntry.setShoppinglist(selectedShoppingList);
 			listEntry.setUser(user);
-			Window.alert(user.getId()+"");
+			Window.alert(user.getId() + "");
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -311,11 +319,12 @@ public class NewListEntryForm extends DialogBox {
 			else {
 				Window.alert(name + user + article + newAmount + store + selectedShoppingList);
 				Window.alert("UserID" + user.getId());
-				
-				elv.createListentry(name, user, article, newAmount, store, selectedShoppingList, new CreateListEntryCallback());
 
+				elv.createListentry(name, user, article, newAmount, store, selectedShoppingList,
+						new CreateListEntryCallback());
 
 			}
+
 		}
 
 		/***********************************************************************
@@ -331,22 +340,26 @@ public class NewListEntryForm extends DialogBox {
 
 			public void onSuccess(ListEntry result) {
 
-				if (result != null)
-					RootPanel.get("details").clear();
-				slf = new ShoppingListForm();
-				
-				slf.setSelected(selectedShoppingList);
-				slf.setSelected(selectedGroup);
-				RootPanel.get("details").add(slf);
+				Window.alert("selectedlistentryid" + result.getId());
+
+				elv.setNewOne(gsltvm.getSelectedList(), result, new NewOneCallback());
+				gsltvm.getSelectedList().setNewOne(result.getId());
+
+//				ShoppingListForm slf = new ShoppingListForm();
+//
+				RootPanel.get("details").clear();
+
+//				slf.setSelected(selectedShoppingList);
+//				slf.setSelected(selectedGroup);
+//				slf.setSelectedListEntry(result);
+//		
+//				RootPanel.get("details").add(slf);
+
 				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
-				
-				elv.setNewOne(gsltvm.getSelectedList(), selectedListEntry, new NewOneCallback());
-				gsltvm.getSelectedList().setNewOne(selectedListEntry.getId());
-				
+
 			}
 		}
-		
-		
+
 		/***********************************************************************
 		 * CALLBACK
 		 ***********************************************************************
@@ -357,17 +370,16 @@ public class NewListEntryForm extends DialogBox {
 			@Override
 			public void onFailure(Throwable arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void onSuccess(Void arg0) {
 				// TODO Auto-generated method stub
-				
-			}
-			
-		}
 
+			}
+
+		}
 
 	}
 
