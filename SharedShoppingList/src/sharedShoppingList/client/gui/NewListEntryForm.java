@@ -249,10 +249,9 @@ public class NewListEntryForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				slf = new ShoppingListForm();
-				slf.setSelected(selectedShoppingList);
-				slf.setSelected(selectedGroup);
-				RootPanel.get("details").add(slf);
+				
+				shoppingListForm.setSelected(selectedGroup);
+				RootPanel.get("details").add(shoppingListForm);
 			}
 
 		}
@@ -266,7 +265,7 @@ public class NewListEntryForm extends FlowPanel {
 			selectedShoppingList = gsltvm.getSelectedList();
 			selectedGroup = gsltvm.getSelectedGroup();
 
-			Window.alert("Einkaufslite: " + selectedShoppingList.getName());
+			
 
 			String newArticle = articleSuggestBox.getText();
 
@@ -285,7 +284,6 @@ public class NewListEntryForm extends FlowPanel {
 			Store store = new Store();
 //			store.setName(storesListBox.getSelectedItemText());
 			store = stores.get(storesListBox.getSelectedIndex());
-			Window.alert("Storename: " + store.getName());
 
 			User user = new User();
 			// user.setName(usersListBox.getSelectedItemText());
@@ -303,7 +301,7 @@ public class NewListEntryForm extends FlowPanel {
 			listEntry.setStore(store);
 			listEntry.setShoppinglist(selectedShoppingList);
 			listEntry.setUser(user);
-			Window.alert(user.getId() + "");
+			
 
 			if (amountTextBox == null) {
 				Window.alert("Menge eingeben!");
@@ -317,8 +315,7 @@ public class NewListEntryForm extends FlowPanel {
 //				Window.alert("Einzelhändler auswählen!");
 
 			else {
-				Window.alert(name + user + article + newAmount + store + selectedShoppingList);
-				Window.alert("UserID" + user.getId());
+				
 
 				elv.createListentry(name, user, article, newAmount, store, selectedShoppingList,
 						new CreateListEntryCallback());
@@ -339,24 +336,14 @@ public class NewListEntryForm extends FlowPanel {
 			}
 
 			public void onSuccess(ListEntry result) {
-
-				Window.alert("selectedlistentryid" + result.getId());
+				
+				RootPanel.get("details").clear();
 
 				elv.setNewOne(gsltvm.getSelectedList(), result, new NewOneCallback());
 				gsltvm.getSelectedList().setNewOne(result.getId());
-
-//				ShoppingListForm slf = new ShoppingListForm();
-//
-				RootPanel.get("details").clear();
-
-//				slf.setSelected(selectedShoppingList);
-//				slf.setSelected(selectedGroup);
-//				slf.setSelectedListEntry(result);
-//		
-//				RootPanel.get("details").add(slf);
-
-				Window.alert("Neuer Eintrag für" + selectedShoppingList.getName());
-
+				
+				shoppingListForm.setSelected(selectedGroup);
+				RootPanel.get("details").add(shoppingListForm);
 			}
 		}
 

@@ -99,7 +99,7 @@ public class AdministrationGroupForm extends VerticalPanel {
 		if (g != null) {
 
 			selectedGroup = g;
-			renameTextBox.setText("Name: " + selectedGroup.getName());
+			renameTextBox.setText(selectedGroup.getName());
 
 			dataProvider.getList().clear();
 
@@ -414,8 +414,6 @@ public class AdministrationGroupForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(User result) {
-
-			Window.alert("UserCallback");
 
 			newGroupUser = result;
 			result.getGmail();

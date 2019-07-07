@@ -295,8 +295,8 @@ public class ReportClientImpl extends RemoteServiceServlet implements ReportClie
 		headerRow.addColumn(new Column("Artikel"));
 		headerRow.addColumn(new Column("Menge"));
 		headerRow.addColumn(new Column("Einheit"));
-		headerRow.addColumn(new Column("Käufer"));
-		headerRow.addColumn(new Column("Händler"));
+		headerRow.addColumn(new Column("Kaeufer"));
+		headerRow.addColumn(new Column("Haendler"));
 		
 		result.addRow(headerRow);
 		

@@ -48,13 +48,13 @@ public class FilterShoppingList extends VerticalPanel {
 
 	// private Vector<Vector<Object>> entries = new Vector<Vector<Object>>();
 
-	private Label infoTitleLabel = new Label();
+	private Label infoTitleLabel = new Label("Eigene Eintraege");
 
 	// private Button saveSlButton = new Button("Änderungen speichern");
 	// private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	// private Button createShoppingListButton = new Button("Listeneintrag
 	// erstellen");
-	private Button cancelButton = new Button("Alle Einträge");
+	private Button cancelButton = new Button("Alle Eintr&auml;ge");
 	// private ListBox filterByStoreListBox = new ListBox();
 
 	private HorizontalPanel firstRowPanel = new HorizontalPanel();
@@ -107,7 +107,8 @@ public class FilterShoppingList extends VerticalPanel {
 		filterPanel.add(cancelButton);
 //		filterPanel.add(filterByStoreListBox);
 		cancelButton.addStyleName("createButton");
-
+		infoTitleLabel.addStyleName("profilTitle");
+		
 		// CellTable
 		cellTableVP.add(cellTable);
 		cellTableVP.setBorderWidth(1);
@@ -147,7 +148,7 @@ public class FilterShoppingList extends VerticalPanel {
 		Column<ListEntry, Boolean> checkBoxColumn = new Column<ListEntry, Boolean>(new CheckboxCell(true, false)) {
 
 			public Boolean getValue(ListEntry object) {
-				return multiSelectionModel.isSelected(object);
+				return object.isChecked();
 			}
 		};
 
@@ -354,10 +355,11 @@ public class FilterShoppingList extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				slf = new ShoppingListForm();
-				slf.setSelected(selectedShoppingList);
-				slf.setSelected(selectedGroup);
-				RootPanel.get("details").add(slf);
+				selectedShoppingListForm.setSelected(selectedGroup);
+				
+				RootPanel.get("details").add(selectedShoppingListForm);
+				
+				
 			}
 		}
 	}

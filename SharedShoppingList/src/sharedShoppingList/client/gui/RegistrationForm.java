@@ -72,6 +72,7 @@ public class RegistrationForm extends FlowPanel {
 			user.setUsername(uName);
 			Window.alert(user.getName() + user.getId() + user.getGmail() + user.getUsername());
 
+			//elv.createUser(name, user.getGmail(), uName, new SaveUserCallback());
 			elv.save(user, new SaveUserCallback());
 		}
 
@@ -145,7 +146,7 @@ public class RegistrationForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(User result) {
-			Window.open(destinationUrl.getHref(), "_self", "");
+			Window.Location.reload();
 
 		}
 
@@ -165,8 +166,8 @@ public class RegistrationForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Void result) {
-			Notification.show("User wurde upgedated");
-			Window.open(destinationUrl.getHref(), "_self", "");
+			Window.Location.reload();
+			
 		}
 
 	}

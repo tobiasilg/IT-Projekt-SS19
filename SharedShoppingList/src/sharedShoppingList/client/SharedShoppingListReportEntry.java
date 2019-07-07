@@ -30,9 +30,11 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 	private Anchor signInLink = new Anchor("Einloggen");
 
 	private Label loginLabel = new Label(
-			"Melden Sie sich in Ihrem Google-Konto an, um auf die SharedShoppingList-Anwendung zuzugreifen.");
+			"Melden Sie sich in Ihrem Google-Konto an, um Ihre Einkaeufe mit Kekbuy zu organisieren");
 
 	public void onModuleLoad() {
+		
+		loginLabel.addStyleName("profilTitle");
 
 		loginService = ClientsideSettings.getLoginService();
 
@@ -132,12 +134,12 @@ public class SharedShoppingListReportEntry implements EntryPoint {
 		private static User u = null;
 
 		public static User getUser() {
-			Window.alert("GetUser: " + u);
+			
 			return u;
 		}
 
 		public static void setUser(User u) {
-			Window.alert("SetUser: " + u);
+			
 			CurrentReportUser.u = u;
 		}
 	}
