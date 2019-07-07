@@ -48,13 +48,15 @@ public class FilterShoppingList extends VerticalPanel {
 
 
 
-	private Label infoTitleLabel = new Label();
+	private Label infoTitleLabel = new Label("Eigene Eintraege");
 
 	// private Button saveSlButton = new Button("Änderungen speichern");
 	// private Button deleteSlButton = new Button("Einkaufsliste löschen");
 	// private Button createShoppingListButton = new Button("Listeneintrag
 	// erstellen");
-	private Button cancelButton = new Button("Alle Einträge");
+
+	private Button cancelButton = new Button("Alle Eintraege");
+
 
 
 
@@ -109,7 +111,8 @@ public class FilterShoppingList extends VerticalPanel {
 
 //		filterPanel.add(filterByStoreListBox);
 		cancelButton.addStyleName("createButton");
-
+		infoTitleLabel.addStyleName("profilTitle");
+		
 
 		// CellTable
 		cellTableVP.add(cellTable);
@@ -357,14 +360,13 @@ public class FilterShoppingList extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			if (selectedShoppingList != null) {
 				RootPanel.get("details").clear();
-				//slf = new ShoppingListForm();
-				//slf.setSelected(selectedShoppingList);
-				//slf.setSelected(selectedGroup);
-				
+
 				selectedShoppingListForm.setSelected(selectedGroup);
 				
-				
 				RootPanel.get("details").add(selectedShoppingListForm);
+				
+				
+
 			}
 		}
 	}

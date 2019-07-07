@@ -109,7 +109,7 @@ public class MainPanelReport extends VerticalPanel {
 	}
 
 	public void setSelectedGroup(Group selectedGroup) {
-		Window.alert("selectedGroup " + selectedGroup);
+		
 		this.selectedGroup = selectedGroup;
 	}
 
@@ -232,7 +232,7 @@ public class MainPanelReport extends VerticalPanel {
 
 					repoClient.createListByPeriodAndStore(selectedStore, null, null, selectedGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
-					Window.alert("Nur nach Stores filtern");
+					
 
 				} else if (selectedStore.getId() == 0) {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
@@ -240,14 +240,14 @@ public class MainPanelReport extends VerticalPanel {
 
 					repoClient.createListByPeriodAndStore(null, sqlStartDate, sqlEndDate, selectedGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
-					Window.alert("Nur nach Datum filtern");
+					
 				} else {
 					sqlStartDate = new java.sql.Timestamp(FromDateBox.getValue().getTime());
 					sqlEndDate = new java.sql.Timestamp(toDateBox.getValue().getTime());
 
 					repoClient.createListByPeriodAndStore(selectedStore, sqlStartDate, sqlEndDate, selectedGroupID,
 							new createListByPeriodAndStoreAsyncCallback());
-					Window.alert("Nach allem Filtern");
+					
 				}
 			}
 

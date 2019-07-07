@@ -129,7 +129,8 @@ public class ArticleForm extends VerticalPanel {
 		nameLabel.addStyleName("profilTitle");
 		nameTextBox.addStyleName("profilTextBox");
 //		saveButton.addStyleName("speicherButton");
-		addButton.addStyleName("speicherButton");
+		addButton.addStyleName("saveButton");
+		cancelButton.addStyleName("deleteButton");
 
 		// Lade alle Store aus der Datenbank
 		elv.getAllArticles(new AsyncCallback<Vector<Article>>() {

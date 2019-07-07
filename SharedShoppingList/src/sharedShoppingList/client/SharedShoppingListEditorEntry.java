@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import sharedShoppingList.client.gui.Header;
+import sharedShoppingList.client.gui.LandingPage;
 import sharedShoppingList.client.gui.Navigator;
 import sharedShoppingList.client.gui.RegistrationForm;
 import sharedShoppingList.shared.LoginServiceAsync;
@@ -43,7 +44,7 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	private Anchor signInLink = new Anchor("Einloggen");
 
 	private Label loginLabel = new Label(
-			"Melden Sie sich in Ihrem Google-Konto an, um auf die SharedShoppingList-Anwendung zuzugreifen.");
+			"Melden Sie sich in Ihrem Google-Konto an, um Ihre Einkaeufe mit Kekbuy zu organisieren");
 
 	/**
 	 * Da diese Klasse das Interface <code>EntryPoint</code> implementiert, wird die
@@ -53,6 +54,8 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 	 */
 
 	public void onModuleLoad() {
+		
+		loginLabel.addStyleName("profilTitle");
 
 //		rootPanelHeader.add(header);
 //		rootPanelNavigator.add(navigator);
@@ -93,9 +96,14 @@ public class SharedShoppingListEditorEntry implements EntryPoint {
 
 					Navigator navigator = new Navigator();
 					RootPanel rootPanelNavigator = RootPanel.get("navigator");
+					
+					LandingPage landingPage = new LandingPage();
+					RootPanel rootPanelLandingPage = RootPanel.get("details");
 
 					rootPanelHeader.add(header);
 					rootPanelNavigator.add(navigator);
+					rootPanelLandingPage.add(landingPage);
+					
 				}
 			} else {
 

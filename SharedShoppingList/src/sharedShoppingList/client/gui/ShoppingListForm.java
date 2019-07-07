@@ -357,7 +357,7 @@ public class ShoppingListForm extends VerticalPanel {
 
 				};
 
-				Window.alert("Value" + value);
+				
 				if (value == "ja") {
 					elv.createFavourite(listEntry, gsltvm.getSelectedGroup(), creteFavCallback);
 				} else {
@@ -494,6 +494,9 @@ public class ShoppingListForm extends VerticalPanel {
 			}
 
 			public void onSuccess(Vector<ListEntry> listEntry) {
+				
+				dataProvider.getList().clear();
+				
 				for (ListEntry le : listEntry) {
 					list.add(le);
 					
@@ -872,7 +875,7 @@ public class ShoppingListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(Void result) {
-			Window.alert("CheckedSave");
+			Notification.show("Artikel ist gekauft");
 		}
 	}
 

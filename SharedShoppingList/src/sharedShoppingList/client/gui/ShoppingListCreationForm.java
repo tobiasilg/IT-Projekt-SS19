@@ -37,6 +37,10 @@ public class ShoppingListCreationForm extends FlowPanel {
 	private Group selectedGroup = null;
 	private ShoppingList selectedShoppingList = null;
 	AdministrationGroupForm groupForm = null;
+	
+	private ShoppingListForm shoppingListForm = new ShoppingListForm();
+	
+	ShoppingListForm showForm = new ShoppingListForm();
 
 	private FlowPanel shoppingListPanel = new FlowPanel();
 	private FlowPanel buttonPanel = new FlowPanel();
@@ -252,13 +256,25 @@ public class ShoppingListCreationForm extends FlowPanel {
 			Notification.show(String.valueOf(result.getId()));
 
 			RootPanel.get("details").clear();
+			RootPanel.get("navigator").clear();
+			Navigator nav = new Navigator();
+			RootPanel.get("navigator").add(nav);
+			
 			selectedShoppingList = result;
-			ShoppingListForm showForm = new ShoppingListForm();
-			showForm.setSelected(selectedShoppingList);
 			showForm.setSelected(selectedGroup);
+			showForm.setSelected(selectedShoppingList);
+			
+			
 			RootPanel.get("details").add(showForm);
+			
+			
+//			selectedShoppingList = result;
+//			ShoppingListForm showForm = new ShoppingListForm();
+//			showForm.setSelected(selectedShoppingList);
+//			showForm.setSelected(selectedGroup);
+//			RootPanel.get("details").add(showForm);
 
-			gsltvm.addShoppingListOfGroup(selectedShoppingList, group);
+			gsltvm.addShoppingListOfGroup(selectedShoppingList, selectedGroup);
 
 		}
 

@@ -142,8 +142,6 @@ public class EditListEntryForm extends FlowPanel {
 			}
 		});
 
-		Window.alert("getSelectedGROUP: " + gsltvm.getSelectedGroup());
-//		 UsersListBox
 //		 Lade alle User aus der Datenbank
 		elv.getUsersByGroup(gsltvm.getSelectedGroup(), new AsyncCallback<Vector<User>>() {
 
@@ -252,14 +250,9 @@ public class EditListEntryForm extends FlowPanel {
 	private class CancelClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-//			if (selectedShoppingList != null) {
-//				RootPanel.get("details").clear();
-//				ShoppingListForm slf = new ShoppingListForm();
-//				slf.setSelected(selectedShoppingList);
-//				slf.setSelected(selectedGroup);
-//				RootPanel.get("details").add(slf);
-//			}
-//			hide();
+			
+			shoppingListForm.setSelected(selectedGroup);
+			RootPanel.get("details").add(shoppingListForm);
 		}
 
 	}
@@ -271,8 +264,6 @@ public class EditListEntryForm extends FlowPanel {
 			selectedShoppingList = gsltvm.getSelectedList();
 			selectedGroup = gsltvm.getSelectedGroup();
 
-//			Window.alert("Einkaufslite: " + selectedShoppingList.getName());
-
 			String newArticle = articleSuggestBox.getText();
 
 			Article article = new Article();
@@ -283,14 +274,13 @@ public class EditListEntryForm extends FlowPanel {
 					break;
 				}
 			}
-//			Window.alert(article.getName()+"Artikelname");
-//			Window.alert(article.getId()+"ArtikelID") ;
+
 			float newAmount = Float.parseFloat(amountTextBox.getText());
 
 			Store store = new Store();
 //			store.setName(storesListBox.getSelectedItemText());
 			store = stores.get(storesListBox.getSelectedIndex());
-			Window.alert("Storename: " + store.getName());
+		
 
 			User user = new User();
 			// user.setName(usersListBox.getSelectedItemText());
@@ -351,23 +341,13 @@ public class EditListEntryForm extends FlowPanel {
 
 			public void onSuccess(Void result) {
 
-				// ShoppingListForm slf = new ShoppingListForm();
+				RootPanel.get("details").clear();
 
 				elv.setNewOne(gsltvm.getSelectedList(), selectedListEntry, new NewOneCallback());
 				gsltvm.getSelectedList().setNewOne(selectedListEntry.getId());
 
-				RootPanel.get("details").clear();
-				// RootPanel.get("details").add(slf);
-
-//				
-//				slf.setSelectedListEntry(selectedListEntry);
-//				slf.setSelected(selectedShoppingList);
-//				slf.setSelected(selectedGroup);
-
-				// hide();
-
-//				
-
+				shoppingListForm.setSelected(selectedGroup);
+				RootPanel.get("details").add(shoppingListForm);
 			}
 		}
 
