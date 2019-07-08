@@ -52,3 +52,9 @@ war/WEB-INF/classes/
 .svn/
 /.settings
 /.gwt
+SharedShoppingList/.classpath
+SharedShoppingList/.project
+SharedShoppingList/.settings/org.eclipse.wst.common.project.facet.core.xml
+SharedShoppingList/.settings/com.google.cloud.tools.eclipse.appengine.libraries/master-container.container
+*.container
+SharedShoppingList/.settings/com.google.cloud.tools.eclipse.appengine.libraries/_libraries.container

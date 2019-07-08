@@ -96,6 +96,10 @@ body {
 
 #header {
 	background-color: #d5dee0;
+	background-image: -webkit-gradient(linear, left top, right top, from(lightgrey) , to(darkgrey));
+	background-image: -webkit-linear-gradient(left, lightgrey , darkgrey);
+	background-image: -o-linear-gradient(left, lightgrey , darkgrey);
+	background-image: linear-gradient(to right, lightgrey , darkgrey); /* Verlauf */
 	-ms-grid-column: 1;
 	    grid-column-start: 1;
 	-ms-grid-column-span: 4;
@@ -133,6 +137,10 @@ body {
 
 #footer {
 	background-color: #d5dee0;
+	background-image: -webkit-gradient(linear, left top, right top, from(lightgrey) , to(darkgrey));
+	background-image: -webkit-linear-gradient(left, lightgrey , darkgrey);
+	background-image: -o-linear-gradient(left, lightgrey , darkgrey);
+	background-image: linear-gradient(to right, lightgrey , darkgrey); /* Verlauf */
 	-ms-grid-column: 1;
 	    grid-column-start: 1;
 	-ms-grid-column-span: 4;
